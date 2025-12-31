@@ -81,74 +81,89 @@ class _RescheduleVisitDialogState extends State<RescheduleVisitDialog> {
                       showPatientName: true,
                     ),
                     const Divider(),
-                    ...widget.visit.clinic.clinic_schedule
-                        .firstWhere(
-                          (sch) =>
-                              sch.intday == widget.visit.visitSchedule.intday,
-                        )
-                        .shifts
-                        .map((shift) {
-                          final _isSelected = shift == _shift;
-                          return Card.outlined(
-                            elevation: _isSelected ? 0 : 6,
-                            color: _isSelected ? Colors.amber.shade50 : null,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusGeometry.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RadioListTile(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadiusGeometry.circular(
-                                    12,
-                                  ),
-                                ),
-                                title: Row(
-                                  children: [
-                                    Text(shift.formattedFromTo(context)),
-                                    const Spacer(),
-                                    Builder(
-                                      builder: (context) {
-                                        final _sh = Shift.fromScheduleShift(
-                                          shift,
-                                        );
-                                        final _visitsPerShift =
-                                            v.visitsPerShift?[_sh];
-                                        while (_visitsPerShift == null) {
-                                          return CircularProgressIndicator();
-                                        }
-                                        return Text.rich(
-                                          TextSpan(
-                                            text: '$_visitsPerShift'
-                                                .toArabicNumber(context),
-                                            children: [
-                                              TextSpan(text: ' / '),
-                                              TextSpan(
-                                                text: '(${shift.visit_count})'
-                                                    .toArabicNumber(context),
-                                                style: TextStyle(
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
+                    RadioGroup(
+                      groupValue: _shift,
+                      onChanged: (value) {
+                        setState(() {
+                          _shift = value;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          ...widget.visit.clinic.clinic_schedule
+                              .firstWhere(
+                                (sch) =>
+                                    sch.intday ==
+                                    widget.visit.visitSchedule.intday,
+                              )
+                              .shifts
+                              .map((shift) {
+                                final _isSelected = shift == _shift;
+                                return Card.outlined(
+                                  elevation: _isSelected ? 0 : 6,
+                                  color: _isSelected
+                                      ? Colors.amber.shade50
+                                      : null,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      12,
                                     ),
-                                    const SizedBox(width: 10),
-                                  ],
-                                ),
-                                value: shift,
-                                groupValue: _shift,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _shift = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        }),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: RadioListTile(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadiusGeometry.circular(12),
+                                      ),
+                                      title: Row(
+                                        children: [
+                                          Text(shift.formattedFromTo(context)),
+                                          const Spacer(),
+                                          Builder(
+                                            builder: (context) {
+                                              final _sh =
+                                                  Shift.fromScheduleShift(
+                                                    shift,
+                                                  );
+                                              final _visitsPerShift =
+                                                  v.visitsPerShift?[_sh];
+                                              while (_visitsPerShift == null) {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return Text.rich(
+                                                TextSpan(
+                                                  text: '$_visitsPerShift'
+                                                      .toArabicNumber(context),
+                                                  children: [
+                                                    TextSpan(text: ' / '),
+                                                    TextSpan(
+                                                      text:
+                                                          '(${shift.visit_count})'
+                                                              .toArabicNumber(
+                                                                context,
+                                                              ),
+                                                      style: TextStyle(
+                                                        color: Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(width: 10),
+                                        ],
+                                      ),
+                                      value: shift,
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ],
+                      ),
+                    ),
+
                     Text(
                       field.errorText ?? '',
                       style: TextStyle(color: Colors.red, fontSize: 12),

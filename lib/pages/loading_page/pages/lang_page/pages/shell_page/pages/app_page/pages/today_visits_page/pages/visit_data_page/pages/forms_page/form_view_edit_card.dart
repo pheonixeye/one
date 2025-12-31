@@ -169,7 +169,7 @@ class _VisitFormViewEditCardState extends State<VisitFormViewEditCard> {
                                     child: Text(e, textAlign: TextAlign.center),
                                   );
                                 }).toList(),
-                                value:
+                                initialValue:
                                     _state?.form_data
                                             .firstWhereOrNull(
                                               (x) => x.id == e.id,

@@ -63,35 +63,37 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                       subtitle: FormField<String?>(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         builder: (field) {
-                          return Column(
-                            spacing: 8,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (_data != null)
-                                ..._data.map((e) {
-                                  return RadioListTile(
-                                    title: Text(
-                                      l.isEnglish ? e.name_en : e.name_ar,
+                          return RadioGroup<String>(
+                            groupValue: _document_type_id,
+                            onChanged: (val) {
+                              setState(() {
+                                _document_type_id = val;
+                              });
+                            },
+                            child: Column(
+                              spacing: 8,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (_data != null)
+                                  ..._data.map((e) {
+                                    return RadioListTile(
+                                      title: Text(
+                                        l.isEnglish ? e.name_en : e.name_ar,
+                                      ),
+                                      value: e.id,
+                                    );
+                                  }),
+                                if (field.hasError)
+                                  Text(
+                                    field.errorText ?? '',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
                                     ),
-                                    value: e.id,
-                                    groupValue: _document_type_id,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        _document_type_id = val;
-                                      });
-                                    },
-                                  );
-                                }),
-                              if (field.hasError)
-                                Text(
-                                  field.errorText ?? '',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 12,
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           );
                         },
                         validator: (value) {

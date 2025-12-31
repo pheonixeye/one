@@ -138,7 +138,7 @@ class _AddDoctorAccountDialogState extends State<AddDoctorAccountDialog> {
                               onChanged: (spec) {
                                 _speciality.value = spec;
                               },
-                              value: _speciality.value,
+                              initialValue: _speciality.value,
                               validator: (value) {
                                 if (value == null) {
                                   return context.loc.selectSpeciality;

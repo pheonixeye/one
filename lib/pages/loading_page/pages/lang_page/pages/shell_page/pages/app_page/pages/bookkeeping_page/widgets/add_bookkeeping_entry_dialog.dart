@@ -147,7 +147,7 @@ class _AddBookkeepingEntryDialogState extends State<AddBookkeepingEntryDialog> {
                                 hintText: context.loc.bkType,
                               ),
                               isExpanded: true,
-                              value: _type,
+                              initialValue: _type,
                               alignment: Alignment.center,
                               items: [
                                 ...BookkeepingDirection.values.map((e) {

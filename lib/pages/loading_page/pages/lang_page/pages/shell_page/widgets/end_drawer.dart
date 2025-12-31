@@ -79,7 +79,7 @@ class EndDrawer extends StatelessWidget {
                 routePath: AppRouter.clinics,
                 selected: selected(AppRouter.clinics),
               ),
-              //TODO: add when done
+              //todo: add when done
               const ThinDivider(),
               DrawerNavBtn(
                 title: context.loc.doctorAccounts,

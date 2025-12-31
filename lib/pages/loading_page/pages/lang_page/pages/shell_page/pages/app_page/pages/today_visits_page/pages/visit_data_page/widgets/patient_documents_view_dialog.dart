@@ -124,31 +124,41 @@ class _PatientDocumentsViewDialogState
                           child: SingleChildScrollView(
                             controller: _controller,
                             scrollDirection: Axis.horizontal,
-                            child: Row(
-                              spacing: 8,
-                              children: [
-                                if (a.constants != null)
-                                  ...a.constants!.documentType.map((e) {
-                                    return SizedBox(
-                                      width: 120,
-                                      child: RadioListTile<String>(
-                                        title: Text(
-                                          l.isEnglish ? e.name_en : e.name_ar,
-                                        ),
-                                        value: e.id,
-                                        groupValue: _documentTypeId,
-                                        onChanged: (val) {
-                                          if (val != null) {
-                                            setState(() {
-                                              _documentTypeId = val;
-                                            });
-                                            d.filterAndGroup(_documentTypeId!);
-                                          }
-                                        },
-                                      ),
-                                    );
-                                  }),
-                              ],
+                            child: Builder(
+                              builder: (context) {
+                                final _documentTypes =
+                                    a.constants?.documentType;
+                                return RadioGroup<String>(
+                                  groupValue: _documentTypeId,
+                                  onChanged: (val) {
+                                    if (val != null) {
+                                      setState(() {
+                                        _documentTypeId = val;
+                                      });
+                                      d.filterAndGroup(_documentTypeId!);
+                                    }
+                                  },
+                                  child: Row(
+                                    spacing: 8,
+                                    children: [
+                                      if (_documentTypes != null)
+                                        ..._documentTypes.map((e) {
+                                          return SizedBox(
+                                            width: 120,
+                                            child: RadioListTile<String>(
+                                              title: Text(
+                                                l.isEnglish
+                                                    ? e.name_en
+                                                    : e.name_ar,
+                                              ),
+                                              value: e.id,
+                                            ),
+                                          );
+                                        }),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),

@@ -121,152 +121,156 @@ class _DrugDoseViewEditCardState extends State<DrugDoseViewEditCard> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(context.loc.drugDose),
                     ),
-                    subtitle: Row(
-                      children: [
-                        ...DrugCardState.values.map((e) {
-                          final _isSelected = _state == e;
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                              ),
-                              child: RadioListTile(
-                                selected: _isSelected,
-                                selectedTileColor: Colors.blue.shade50,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  side: _isSelected
-                                      ? BorderSide()
-                                      : BorderSide.none,
-                                ),
-                                title: Text(l.isEnglish ? e.en : e.ar),
-                                value: e,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _state = value;
-                                  });
-                                },
-                                groupValue: _state,
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ),
-                if (_state == DrugCardState.saved_dose)
-                  ...widget.item.default_doses.map((x) {
-                    return RadioListTile(
-                      title: Text(x),
-                      value: x,
-                      groupValue: _drugSavedDose,
-                      onChanged: (value) async {
+                    subtitle: RadioGroup<DrugCardState>(
+                      groupValue: _state,
+                      onChanged: (value) {
                         setState(() {
-                          _drugSavedDose = value;
+                          _state = value;
                         });
-                        await shellFunction(
-                          context,
-                          toExecute: () async {
-                            await v.setDrugDose(
-                              widget.item.id,
-                              _drugSavedDose!,
-                            );
-                          },
-                        );
                       },
-                    );
-                  })
-                else if (_state == DrugCardState.new_dose)
-                  //todo: formulate a point & click ui
-                  Form(
-                    key: formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: _drugNewDose,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                          ...DrugCardState.values.map((e) {
+                            final _isSelected = _state == e;
+                            return Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
                                 ),
-                                hintText:
-                                    '${context.loc.enter} ${context.loc.drugDose}',
+                                child: RadioListTile(
+                                  selected: _isSelected,
+                                  selectedTileColor: Colors.blue.shade50,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: _isSelected
+                                        ? BorderSide()
+                                        : BorderSide.none,
+                                  ),
+                                  title: Text(l.isEnglish ? e.en : e.ar),
+                                  value: e,
+                                ),
                               ),
-                              maxLines: 3,
-                              onChanged: (value) {
-                                setState(() {
-                                  _drugNewDose = value;
-                                });
-                              },
-                              validator: (value) {
-                                if (_drugNewDose == null ||
-                                    _drugNewDose!.isEmpty) {
-                                  return '${context.loc.enter} ${context.loc.drugDose}';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: SmBtn(
-                              tooltip: context.loc.saveToDefaultDoses,
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  await shellFunction(
-                                    context,
-                                    toExecute: () async {
-                                      final _toUpdateDrug = widget.item
-                                          .copyWith(
-                                            default_doses: [
-                                              ...widget.item.default_doses,
-                                              _drugNewDose!,
-                                            ],
-                                          );
-                                      await p.updateItem(
-                                        _toUpdateDrug.toJson(),
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              child: const Icon(Icons.favorite),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: SmBtn(
-                              tooltip: context.loc.save,
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  await shellFunction(
-                                    context,
-                                    toExecute: () async {
-                                      //todo
-                                      await v.setDrugDose(
-                                        widget.item.id,
-                                        _drugNewDose!,
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              child: const Icon(Icons.save),
-                            ),
-                          ),
+                            );
+                          }),
                         ],
                       ),
                     ),
-                  )
-                else
-                  const SizedBox(),
+                  ),
+                ),
+                RadioGroup<String>(
+                  groupValue: _drugSavedDose,
+                  onChanged: (value) async {
+                    setState(() {
+                      _drugSavedDose = value;
+                    });
+                    await shellFunction(
+                      context,
+                      toExecute: () async {
+                        await v.setDrugDose(widget.item.id, _drugSavedDose!);
+                      },
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      if (_state == DrugCardState.saved_dose)
+                        ...widget.item.default_doses.map((x) {
+                          return RadioListTile(title: Text(x), value: x);
+                        })
+                      else if (_state == DrugCardState.new_dose)
+                        //todo: formulate a point & click ui
+                        Form(
+                          key: formKey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    initialValue: _drugNewDose,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      hintText:
+                                          '${context.loc.enter} ${context.loc.drugDose}',
+                                    ),
+                                    maxLines: 3,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _drugNewDose = value;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (_drugNewDose == null ||
+                                          _drugNewDose!.isEmpty) {
+                                        return '${context.loc.enter} ${context.loc.drugDose}';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: SmBtn(
+                                    tooltip: context.loc.saveToDefaultDoses,
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        await shellFunction(
+                                          context,
+                                          toExecute: () async {
+                                            final _toUpdateDrug = widget.item
+                                                .copyWith(
+                                                  default_doses: [
+                                                    ...widget
+                                                        .item
+                                                        .default_doses,
+                                                    _drugNewDose!,
+                                                  ],
+                                                );
+                                            await p.updateItem(
+                                              _toUpdateDrug.toJson(),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    child: const Icon(Icons.favorite),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: SmBtn(
+                                    tooltip: context.loc.save,
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        await shellFunction(
+                                          context,
+                                          toExecute: () async {
+                                            //todo
+                                            await v.setDrugDose(
+                                              widget.item.id,
+                                              _drugNewDose!,
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    child: const Icon(Icons.save),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      else
+                        const SizedBox(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

@@ -50,32 +50,34 @@ class _FormPickerDialogState extends State<FormPickerDialog> {
           content: SizedBox(
             width: context.visitItemDialogWidth,
             height: context.visitItemDialogHeight,
-            child: ListView.builder(
-              itemCount: _items.length,
-              itemBuilder: (context, index) {
-                final _item = _items[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card.outlined(
-                    elevation: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RadioListTile<PcForm>(
-                        title: Text(
-                          l.isEnglish ? _item.name_en : _item.name_ar,
+            child: RadioGroup(
+              groupValue: _form,
+              onChanged: (value) {
+                if (value != null) {
+                  Navigator.pop(context, value);
+                }
+              },
+              child: ListView.builder(
+                itemCount: _items.length,
+                itemBuilder: (context, index) {
+                  final _item = _items[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card.outlined(
+                      elevation: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RadioListTile<PcForm>(
+                          title: Text(
+                            l.isEnglish ? _item.name_en : _item.name_ar,
+                          ),
+                          value: _item,
                         ),
-                        value: _item,
-                        groupValue: _form,
-                        onChanged: (value) {
-                          if (value != null) {
-                            Navigator.pop(context, value);
-                          }
-                        },
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         );

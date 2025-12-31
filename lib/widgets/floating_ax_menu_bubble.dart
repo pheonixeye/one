@@ -114,7 +114,7 @@ class FloatingActionMenuBubble extends AnimatedWidget {
           child: ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (_, __) => const SizedBox(height: 12.0),
+            separatorBuilder: (_, _) => const SizedBox(height: 12.0),
             padding: const EdgeInsets.symmetric(vertical: 12),
             itemCount: items.length,
             itemBuilder: buildItem,

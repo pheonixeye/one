@@ -187,7 +187,7 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                                   })
                                   .toList(),
                               alignment: Alignment.center,
-                              value: _sourceClinic,
+                              initialValue: _sourceClinic,
                               onChanged: (val) {
                                 setState(() {
                                   _sourceClinic = val;
@@ -272,7 +272,7 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                                     })
                                     .toList(),
                                 alignment: Alignment.center,
-                                value: _destinationClinic,
+                                initialValue: _destinationClinic,
                                 onChanged: (val) {
                                   setState(() {
                                     _destinationClinic = val;

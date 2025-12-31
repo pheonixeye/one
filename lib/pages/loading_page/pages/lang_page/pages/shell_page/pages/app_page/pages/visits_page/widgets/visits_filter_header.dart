@@ -261,7 +261,7 @@ class _VisitsFilterHeaderState extends State<VisitsFilterHeader> {
                                             );
                                           }),
                                       ],
-                                      value: _docNotifier.value,
+                                      initialValue: _docNotifier.value,
                                       onChanged: (val) {
                                         if (val != null) {
                                           _docNotifier.value = val;
@@ -304,7 +304,7 @@ class _VisitsFilterHeaderState extends State<VisitsFilterHeader> {
                                           Text(context.loc.pickClinic),
                                         ],
                                       ),
-                                      value: _clinicNotifier.value,
+                                      initialValue: _clinicNotifier.value,
                                       items: [
                                         ..._clinics.map((clinic) {
                                           return DropdownMenuItem<Clinic>(

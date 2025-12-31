@@ -155,7 +155,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                   info.title,
-                  // 'عيادات اليفيا', //TODO
+                  // 'عيادات اليفيا',
                   style: pw.TextStyle(
                     fontSize: 20,
                     fontWeight: pw.FontWeight.bold,
@@ -167,7 +167,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                   info.subtitle,
-                  // 'لعلاج الالام', //TODO
+                  // 'لعلاج الالام',
                   style: pw.TextStyle(fontSize: 8),
                   textAlign: pw.TextAlign.center,
                 ),
@@ -235,7 +235,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                   info.footer,
-                  // 'عيادات اليفيا لعلاج الالم', //TODO
+                  // 'عيادات اليفيا لعلاج الالم',
                   style: pw.TextStyle(fontSize: 8),
                   textAlign: pw.TextAlign.center,
                 ),
@@ -244,7 +244,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                   info.address,
-                  // '٧٤ شارع الملتقي العربي - مساكن شيراتون - الدور الثالث', //TODO
+                  // '٧٤ شارع الملتقي العربي - مساكن شيراتون - الدور الثالث',
                   style: pw.TextStyle(fontSize: 8),
                   textAlign: pw.TextAlign.center,
                 ),
@@ -253,7 +253,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                   info.phone,
-                  // '01016075325', //TODO
+                  // '01016075325',
                   style: pw.TextStyle(fontSize: 8),
                   textAlign: pw.TextAlign.center,
                 ),

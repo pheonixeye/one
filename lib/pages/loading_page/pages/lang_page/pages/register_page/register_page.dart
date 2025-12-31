@@ -351,7 +351,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           _speciality = spec;
                                         });
                                       },
-                                      value: _speciality,
+                                      initialValue: _speciality,
                                       validator: (value) {
                                         if (value == null) {
                                           return context.loc.selectSpeciality;

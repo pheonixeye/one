@@ -388,7 +388,7 @@ class _DoctorItemCreateEditDialogState
                             );
                           }),
                         ],
-                        value: _radiologyTypeController,
+                        initialValue: _radiologyTypeController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: context.loc.radSpecialInstructions,

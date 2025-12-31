@@ -67,7 +67,7 @@ class AppTheme {
     ),
 
     appBarTheme: AppBarTheme(
-      color: appBarColor,
+      backgroundColor: appBarColor,
       elevation: 8,
       centerTitle: false,
       shape: const RoundedRectangleBorder(

@@ -174,39 +174,41 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                       padding: const EdgeInsets.all(8.0),
                       child: FormField<Clinic>(
                         builder: (field) {
-                          return Column(
-                            spacing: 8,
-                            children: [
-                              ...(c.result as ApiDataResult<List<Clinic>>).data
-                                  .map((e) {
-                                    bool _isSelected = e == _clinic;
-                                    return RadioListTile<Clinic>(
-                                      shape: _tileBorder(_isSelected),
-                                      selected: _isSelected,
-                                      tileColor: _unSelectedColor,
-                                      selectedTileColor: _selectedColor,
-                                      title: Text(
-                                        l.isEnglish ? e.name_en : e.name_ar,
-                                      ),
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      value: e,
-                                      groupValue: _clinic,
-                                      onChanged: e.is_active
-                                          ? (value) {
-                                              setState(() {
-                                                _clinic = value;
-                                                _clinicSchedule = null;
-                                                _scheduleShift = null;
-                                                _visitDate = null;
-                                                _visitDateController.clear();
-                                              });
-                                            }
-                                          : null,
-                                    );
-                                  }),
-                              _validationErrorWidget<Clinic>(field),
-                            ],
+                          return RadioGroup<Clinic>(
+                            groupValue: _clinic,
+                            onChanged: (value) {
+                              setState(() {
+                                _clinic = value;
+                                _clinicSchedule = null;
+                                _scheduleShift = null;
+                                _visitDate = null;
+                                _visitDateController.clear();
+                              });
+                            },
+                            child: Column(
+                              spacing: 8,
+                              children: [
+                                ...(c.result as ApiDataResult<List<Clinic>>)
+                                    .data
+                                    .map((e) {
+                                      bool _isSelected = e == _clinic;
+                                      return RadioListTile<Clinic>(
+                                        shape: _tileBorder(_isSelected),
+                                        selected: _isSelected,
+                                        enabled: e.is_active,
+                                        tileColor: _unSelectedColor,
+                                        selectedTileColor: _selectedColor,
+                                        title: Text(
+                                          l.isEnglish ? e.name_en : e.name_ar,
+                                        ),
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        value: e,
+                                      );
+                                    }),
+                                _validationErrorWidget<Clinic>(field),
+                              ],
+                            ),
                           );
                         },
                         validator: (value) {
@@ -228,37 +230,41 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                         padding: const EdgeInsets.all(8.0),
                         child: FormField<Doctor>(
                           builder: (field) {
-                            return Column(
-                              spacing: 8,
-                              children: [
-                                if (_clinic != null)
-                                  ...(d.allDoctors as List<Doctor>)
-                                      .where(
-                                        (d) => _clinic!.doc_id.contains(d.id),
-                                      )
-                                      .map((e) {
-                                        bool _isSelected = e == _doctor;
-                                        return RadioListTile<Doctor>(
-                                          shape: _tileBorder(_isSelected),
-                                          selected: _isSelected,
-                                          tileColor: _unSelectedColor,
-                                          selectedTileColor: _selectedColor,
-                                          title: Text(
-                                            l.isEnglish ? e.name_en : e.name_ar,
-                                          ),
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
-                                          value: e,
-                                          groupValue: _doctor,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _doctor = value;
-                                            });
-                                          },
-                                        );
-                                      }),
-                                _validationErrorWidget<Doctor>(field),
-                              ],
+                            return RadioGroup<Doctor>(
+                              groupValue: _doctor,
+                              onChanged: (value) {
+                                setState(() {
+                                  _doctor = value;
+                                });
+                              },
+                              child: Column(
+                                spacing: 8,
+                                children: [
+                                  if (_clinic != null)
+                                    ...(d.allDoctors as List<Doctor>)
+                                        .where(
+                                          (d) => _clinic!.doc_id.contains(d.id),
+                                        )
+                                        .map((e) {
+                                          bool _isSelected = e == _doctor;
+                                          return RadioListTile<Doctor>(
+                                            shape: _tileBorder(_isSelected),
+                                            selected: _isSelected,
+                                            tileColor: _unSelectedColor,
+                                            selectedTileColor: _selectedColor,
+                                            title: Text(
+                                              l.isEnglish
+                                                  ? e.name_en
+                                                  : e.name_ar,
+                                            ),
+                                            controlAffinity:
+                                                ListTileControlAffinity.leading,
+                                            value: e,
+                                          );
+                                        }),
+                                  _validationErrorWidget<Doctor>(field),
+                                ],
+                              ),
                             );
                           },
                           validator: (value) {
@@ -286,45 +292,46 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                             return null;
                           },
                           builder: (field) {
-                            return Column(
-                              spacing: 8,
-                              children: [
-                                ..._clinic!.clinic_schedule.map((e) {
-                                  bool _isSelected = e == _clinicSchedule;
-                                  return RadioListTile<ClinicSchedule>(
-                                    shape: _tileBorder(_isSelected),
-                                    selected: _isSelected,
-                                    tileColor: _unSelectedColor,
-                                    selectedTileColor: _selectedColor,
-                                    title: Text(
-                                      l.isEnglish
-                                          ? Weekdays.getWeekday(e.intday).en
-                                          : Weekdays.getWeekday(e.intday).ar,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    value: e,
-                                    groupValue: _clinicSchedule,
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        _clinicSchedule = value;
-                                        _scheduleShift = null;
-                                        _visitDate = null;
-                                        _visitDateController.clear();
-                                      });
+                            return RadioGroup<ClinicSchedule>(
+                              groupValue: _clinicSchedule,
+                              onChanged: (value) async {
+                                setState(() {
+                                  _clinicSchedule = value;
+                                  _scheduleShift = null;
+                                  _visitDate = null;
+                                  _visitDateController.clear();
+                                });
 
-                                      if (_clinic != null &&
-                                          _visitDate != null) {
-                                        await v.calculateVisitsPerClinicShift(
-                                          _clinic!.id,
-                                          _visitDate!,
-                                        );
-                                      }
-                                    },
+                                if (_clinic != null && _visitDate != null) {
+                                  await v.calculateVisitsPerClinicShift(
+                                    _clinic!.id,
+                                    _visitDate!,
                                   );
-                                }),
-                                _validationErrorWidget(field),
-                              ],
+                                }
+                              },
+                              child: Column(
+                                spacing: 8,
+                                children: [
+                                  ..._clinic!.clinic_schedule.map((e) {
+                                    bool _isSelected = e == _clinicSchedule;
+                                    return RadioListTile<ClinicSchedule>(
+                                      shape: _tileBorder(_isSelected),
+                                      selected: _isSelected,
+                                      tileColor: _unSelectedColor,
+                                      selectedTileColor: _selectedColor,
+                                      title: Text(
+                                        l.isEnglish
+                                            ? Weekdays.getWeekday(e.intday).en
+                                            : Weekdays.getWeekday(e.intday).ar,
+                                      ),
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      value: e,
+                                    );
+                                  }),
+                                  _validationErrorWidget(field),
+                                ],
+                              ),
                             );
                           },
                         ),
@@ -417,90 +424,97 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                           return null;
                         },
                         builder: (field) {
-                          return Column(
-                            spacing: 8,
-                            children: [
-                              if (_clinicSchedule != null)
-                                ..._clinicSchedule!.shifts.map((e) {
-                                  final _shift = Shift.fromScheduleShift(e);
-                                  //todo: disable tile if _isDisabled
-                                  bool _isSelected = e == _scheduleShift;
-                                  bool _isDisabled =
-                                      (v.visitsPerShift?[_shift] != null &&
-                                      v.visitsPerShift![_shift]! >=
-                                          e.visit_count);
+                          return RadioGroup<ScheduleShift>(
+                            groupValue: _scheduleShift,
+                            onChanged: (value) {
+                              setState(() {
+                                _scheduleShift = value;
+                              });
+                            },
+                            child: Column(
+                              spacing: 8,
+                              children: [
+                                if (_clinicSchedule != null)
+                                  ..._clinicSchedule!.shifts.map((e) {
+                                    final _shift = Shift.fromScheduleShift(e);
+                                    //todo: disable tile if _isDisabled
+                                    bool _isSelected = e == _scheduleShift;
+                                    bool _isDisabled =
+                                        (v.visitsPerShift?[_shift] != null &&
+                                        v.visitsPerShift![_shift]! >=
+                                            e.visit_count);
 
-                                  return RadioListTile<ScheduleShift>(
-                                    shape: _tileBorder(_isSelected),
-                                    selected: _isSelected,
-                                    tileColor: _unSelectedColor,
-                                    selectedTileColor: _selectedColor,
-                                    title: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            e.formattedFromTo(context),
-                                            style: !_isDisabled
-                                                ? null
-                                                : TextStyle(
-                                                    color: Colors.red,
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                  ),
-                                          ),
-                                        ),
-                                        if (_visitDate != null)
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0,
-                                            ),
-                                            child: Tooltip(
-                                              message:
-                                                  context.loc.dayVisitCount,
-                                              child: v.isUpdating
-                                                  ? CupertinoActivityIndicator()
-                                                  : Text.rich(
-                                                      TextSpan(
-                                                        text: '',
-                                                        children: [
-                                                          TextSpan(
-                                                            text: '${v.visitsPerShift?[_shift] ?? '0'} ${_isSelected ? '+ 1' : ''}'
-                                                                .toArabicNumber(
-                                                                  context,
-                                                                ),
-                                                            style: TextStyle(
-                                                              color: _isDisabled
-                                                                  ? Colors.red
-                                                                  : Colors.blue,
-                                                            ),
-                                                          ),
-                                                          TextSpan(text: ' / '),
-                                                          TextSpan(
-                                                            text: '${e.visit_count}'
-                                                                .toArabicNumber(
-                                                                  context,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                    return RadioListTile<ScheduleShift>(
+                                      shape: _tileBorder(_isSelected),
+                                      selected: _isSelected,
+                                      tileColor: _unSelectedColor,
+                                      selectedTileColor: _selectedColor,
+                                      title: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              e.formattedFromTo(context),
+                                              style: !_isDisabled
+                                                  ? null
+                                                  : TextStyle(
+                                                      color: Colors.red,
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
                                                     ),
                                             ),
                                           ),
-                                      ],
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    value: e,
-                                    groupValue: _scheduleShift,
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        _scheduleShift = value;
-                                      });
-                                    },
-                                  );
-                                }),
-                              _validationErrorWidget(field),
-                            ],
+                                          if (_visitDate != null)
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8.0,
+                                                  ),
+                                              child: Tooltip(
+                                                message:
+                                                    context.loc.dayVisitCount,
+                                                child: v.isUpdating
+                                                    ? CupertinoActivityIndicator()
+                                                    : Text.rich(
+                                                        TextSpan(
+                                                          text: '',
+                                                          children: [
+                                                            TextSpan(
+                                                              text: '${v.visitsPerShift?[_shift] ?? '0'} ${_isSelected ? '+ 1' : ''}'
+                                                                  .toArabicNumber(
+                                                                    context,
+                                                                  ),
+                                                              style: TextStyle(
+                                                                color:
+                                                                    _isDisabled
+                                                                    ? Colors.red
+                                                                    : Colors
+                                                                          .blue,
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text: ' / ',
+                                                            ),
+                                                            TextSpan(
+                                                              text: '${e.visit_count}'
+                                                                  .toArabicNumber(
+                                                                    context,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      value: e,
+                                    );
+                                  }),
+                                _validationErrorWidget(field),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -521,32 +535,34 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                           return null;
                         },
                         builder: (field) {
-                          return Column(
-                            spacing: 8,
-                            children: [
-                              ...a.constants!.visitType.map((e) {
-                                bool _isSelected = e == _visitType;
-                                return RadioListTile<VisitType>(
-                                  shape: _tileBorder(_isSelected),
-                                  selected: _isSelected,
-                                  tileColor: _unSelectedColor,
-                                  selectedTileColor: _selectedColor,
-                                  title: Text(
-                                    l.isEnglish ? e.name_en : e.name_ar,
-                                  ),
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  value: e,
-                                  groupValue: _visitType,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _visitType = value;
-                                    });
-                                  },
-                                );
-                              }),
-                              _validationErrorWidget(field),
-                            ],
+                          return RadioGroup<VisitType>(
+                            groupValue: _visitType,
+                            onChanged: (value) {
+                              setState(() {
+                                _visitType = value;
+                              });
+                            },
+                            child: Column(
+                              spacing: 8,
+                              children: [
+                                ...a.constants!.visitType.map((e) {
+                                  bool _isSelected = e == _visitType;
+                                  return RadioListTile<VisitType>(
+                                    shape: _tileBorder(_isSelected),
+                                    selected: _isSelected,
+                                    tileColor: _unSelectedColor,
+                                    selectedTileColor: _selectedColor,
+                                    title: Text(
+                                      l.isEnglish ? e.name_en : e.name_ar,
+                                    ),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    value: e,
+                                  );
+                                }),
+                                _validationErrorWidget(field),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -567,32 +583,34 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                           return null;
                         },
                         builder: (field) {
-                          return Column(
-                            spacing: 8,
-                            children: [
-                              ...a.constants!.visitStatus.map((e) {
-                                bool _isSelected = e == _visitStatus;
-                                return RadioListTile<VisitStatus>(
-                                  shape: _tileBorder(_isSelected),
-                                  selected: _isSelected,
-                                  tileColor: _unSelectedColor,
-                                  selectedTileColor: _selectedColor,
-                                  title: Text(
-                                    l.isEnglish ? e.name_en : e.name_ar,
-                                  ),
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  value: e,
-                                  groupValue: _visitStatus,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _visitStatus = value;
-                                    });
-                                  },
-                                );
-                              }),
-                              _validationErrorWidget(field),
-                            ],
+                          return RadioGroup<VisitStatus>(
+                            groupValue: _visitStatus,
+                            onChanged: (value) {
+                              setState(() {
+                                _visitStatus = value;
+                              });
+                            },
+                            child: Column(
+                              spacing: 8,
+                              children: [
+                                ...a.constants!.visitStatus.map((e) {
+                                  bool _isSelected = e == _visitStatus;
+                                  return RadioListTile<VisitStatus>(
+                                    shape: _tileBorder(_isSelected),
+                                    selected: _isSelected,
+                                    tileColor: _unSelectedColor,
+                                    selectedTileColor: _selectedColor,
+                                    title: Text(
+                                      l.isEnglish ? e.name_en : e.name_ar,
+                                    ),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    value: e,
+                                  );
+                                }),
+                                _validationErrorWidget(field),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -607,32 +625,35 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                       builder: (field) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            spacing: 8,
-                            children: [
-                              ...a.constants!.patientProgressStatus.map((e) {
-                                bool _isSelected = e == _patientProgressStatus;
-                                return RadioListTile<PatientProgressStatus>(
-                                  shape: _tileBorder(_isSelected),
-                                  selected: _isSelected,
-                                  tileColor: _unSelectedColor,
-                                  selectedTileColor: _selectedColor,
-                                  title: Text(
-                                    l.isEnglish ? e.name_en : e.name_ar,
-                                  ),
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  value: e,
-                                  groupValue: _patientProgressStatus,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _patientProgressStatus = value;
-                                    });
-                                  },
-                                );
-                              }),
-                              _validationErrorWidget(field),
-                            ],
+                          child: RadioGroup<PatientProgressStatus>(
+                            groupValue: _patientProgressStatus,
+                            onChanged: (value) {
+                              setState(() {
+                                _patientProgressStatus = value;
+                              });
+                            },
+                            child: Column(
+                              spacing: 8,
+                              children: [
+                                ...a.constants!.patientProgressStatus.map((e) {
+                                  bool _isSelected =
+                                      e == _patientProgressStatus;
+                                  return RadioListTile<PatientProgressStatus>(
+                                    shape: _tileBorder(_isSelected),
+                                    selected: _isSelected,
+                                    tileColor: _unSelectedColor,
+                                    selectedTileColor: _selectedColor,
+                                    title: Text(
+                                      l.isEnglish ? e.name_en : e.name_ar,
+                                    ),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    value: e,
+                                  );
+                                }),
+                                _validationErrorWidget(field),
+                              ],
+                            ),
                           ),
                         );
                       },

@@ -367,7 +367,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                                   ),
                                                 );
                                               }).toList(),
-                                              value:
+                                              initialValue:
                                                   _patientFormData
                                                           ?.field_value ==
                                                       ''
