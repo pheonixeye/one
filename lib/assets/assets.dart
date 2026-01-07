@@ -37,7 +37,7 @@ class AppAssets {
   static const String after_purchase = 'assets/images/after_purchase.svg';
 
   ///central loading images
-  static String loaders(int index) => 'assets/images/loaders/$index.jpg';
+  static String loaders(int index) => 'assets/images/loaders/$index.png';
 
   ///notification sound
   static const String notification_sound = 'sounds/notification.mp3';
