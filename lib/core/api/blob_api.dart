@@ -14,7 +14,7 @@ class BlobApi {
 
   Future<ApiResult<List<BlobFile>>> fetchBlobs() async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(_collection)
           .getFullList();
 
@@ -35,7 +35,7 @@ class BlobApi {
     required String filename,
   }) async {
     try {
-      await PocketbaseHelper.pb
+      await PocketbaseHelper.pbBase
           .collection(_collection)
           .update(
             id,

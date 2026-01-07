@@ -18,7 +18,7 @@ class DoctorSubscriptionInfoApi {
 
   Future<void> _checkDoctorSubscriptionStatus() async {
     if (_activeSubscriptionsChecked == false) {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(
             filter: "doc_id = '$doc_id' && subscription_status = 'active'",
@@ -31,7 +31,7 @@ class DoctorSubscriptionInfoApi {
       _items.map((e) async {
         if (e.passedExpirationTime) {
           final _toExpire = e.copyWith(subscription_status: 'expired');
-          await PocketbaseHelper.pb
+          await PocketbaseHelper.pbBase
               .collection(collection)
               .update(e.id, body: _toExpire.toJson());
         }
@@ -48,7 +48,7 @@ class DoctorSubscriptionInfoApi {
   fetchDoctorSubscriptionInfo() async {
     await _checkDoctorSubscriptionStatus();
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(
             filter: "doc_id = '$doc_id'",

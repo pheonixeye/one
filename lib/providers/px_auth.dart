@@ -3,9 +3,7 @@ import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/auth/api_auth.dart';
 import 'package:one/functions/dprint.dart';
 import 'package:one/models/app_constants/app_permission.dart';
-import 'package:one/models/dto_create_doctor_account.dart';
 import 'package:one/models/user/user.dart';
-import 'package:one/models/user/user_with_password.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -21,14 +19,6 @@ class PxAuth extends ChangeNotifier {
 
   static User? _user;
   User? get user => _user;
-
-  Future<void> createAccount(DtoCreateDoctorAccount dto) async {
-    await api.createAccount(dto);
-  }
-
-  Future<void> createDoctorAccount(UserWithPasswordAndDoctorAccount dto) async {
-    await api.createDoctorAccount(dto);
-  }
 
   Future<void> loginWithEmailAndPassword(
     String email,

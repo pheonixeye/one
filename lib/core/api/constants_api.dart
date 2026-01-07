@@ -38,31 +38,31 @@ class ConstantsApi {
     late final List<AppPermission> appPermission;
     late final List<DocumentType> documentType;
 
-    final _accountTypesRequest = PocketbaseHelper.pb
+    final _accountTypesRequest = PocketbaseHelper.pbBase
         .collection(account_types)
         .getList(perPage: _perPage);
 
-    final _visitStatusRequest = PocketbaseHelper.pb
+    final _visitStatusRequest = PocketbaseHelper.pbBase
         .collection(visit_status)
         .getList(perPage: _perPage);
 
-    final _visitTypeRequest = PocketbaseHelper.pb
+    final _visitTypeRequest = PocketbaseHelper.pbBase
         .collection(visit_type)
         .getList(perPage: _perPage);
 
-    final _subscriptionPlanRequest = PocketbaseHelper.pb
+    final _subscriptionPlanRequest = PocketbaseHelper.pbBase
         .collection(subscription_plan)
         .getList(perPage: _perPage);
 
-    final _patientProgressStatusRequest = PocketbaseHelper.pb
+    final _patientProgressStatusRequest = PocketbaseHelper.pbBase
         .collection(patient_progress_status)
         .getList(perPage: _perPage);
 
-    final _appPermissionRequest = PocketbaseHelper.pb
+    final _appPermissionRequest = PocketbaseHelper.pbBase
         .collection(app_permissions)
         .getList(perPage: _perPage);
 
-    final _documentTypeRequest = PocketbaseHelper.pb
+    final _documentTypeRequest = PocketbaseHelper.pbBase
         .collection(document_type)
         .getList(perPage: _perPage);
 

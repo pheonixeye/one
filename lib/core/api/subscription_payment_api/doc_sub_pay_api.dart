@@ -22,7 +22,7 @@ class DocSubPayApi {
     late final RecordModel _subPaymentGetQuery;
 
     try {
-      _subPaymentGetQuery = await PocketbaseHelper.pb
+      _subPaymentGetQuery = await PocketbaseHelper.pbBase
           .collection(subscription_payment_collection)
           .getFirstListItem(
             "x_pay_payment_id = '$x_pay_payment_id' && doc_id = '$doc_id'",
@@ -43,7 +43,7 @@ class DocSubPayApi {
     }
 
     try {
-      await PocketbaseHelper.pb
+      await PocketbaseHelper.pbBase
           .collection(subscription_payment_collection)
           .update(
             _payment.id,
@@ -64,7 +64,7 @@ class DocSubPayApi {
     }
 
     try {
-      await PocketbaseHelper.pb
+      await PocketbaseHelper.pbBase
           .collection(doctor_subscription_collection)
           .update(
             _payment.doctor_subscription_id,
@@ -86,7 +86,7 @@ class DocSubPayApi {
     required String x_pay_payment_id,
   }) async {
     try {
-      await PocketbaseHelper.pb
+      await PocketbaseHelper.pbBase
           .collection(subscription_payment_collection)
           .update(sub_pay_id, body: {'x_pay_payment_id': x_pay_payment_id});
     } catch (e) {
@@ -107,7 +107,7 @@ class DocSubPayApi {
     late final String _docSubRefId;
     late final String _subPayRefId;
     try {
-      final _docSubRequest = await PocketbaseHelper.pb
+      final _docSubRequest = await PocketbaseHelper.pbBase
           .collection(doctor_subscription_collection)
           .create(body: doctorSubscription.toJson());
       _docSubRefId = _docSubRequest.id;
@@ -122,7 +122,7 @@ class DocSubPayApi {
     }
 
     try {
-      final _subPayRequest = await PocketbaseHelper.pb
+      final _subPayRequest = await PocketbaseHelper.pbBase
           .collection(subscription_payment_collection)
           .create(
             body: {
@@ -143,7 +143,7 @@ class DocSubPayApi {
     }
 
     try {
-      await PocketbaseHelper.pb
+      await PocketbaseHelper.pbBase
           .collection(doctor_subscription_collection)
           .update(_docSubRefId, body: {'payment_id': _subPayRefId});
     } catch (e) {
@@ -157,7 +157,7 @@ class DocSubPayApi {
     }
 
     try {
-      await PocketbaseHelper.pb
+      await PocketbaseHelper.pbBase
           .collection(subscription_payment_collection)
           .update(_subPayRefId, body: {'x_pay_payment_id': x_pay_payment_id});
     } catch (e) {

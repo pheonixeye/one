@@ -20,7 +20,7 @@ class PatientPreviousVisitsApi {
   }) async {
     try {
       // print(_todayFormatted);
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
             page: page,

@@ -19,6 +19,8 @@ class LogApi {
       message: message,
       user_id: PxAuth.doc_id_static_getter,
     );
-    await PocketbaseHelper.pb.collection(collection).create(body: log.toJson());
+    await PocketbaseHelper.pbBase
+        .collection(collection)
+        .create(body: log.toJson());
   }
 }

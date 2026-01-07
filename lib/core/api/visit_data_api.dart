@@ -26,7 +26,7 @@ class VisitDataApi {
 
   Future<ApiResult<VisitData>> fetchVisitData() async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFirstListItem("visit_id = '$visit_id'", expand: _expand);
 
@@ -42,11 +42,11 @@ class VisitDataApi {
   }
 
   Future<void> attachForm(VisitData visit_data, VisitFormItem form_data) async {
-    final _formCreateRequest = await PocketbaseHelper.pb
+    final _formCreateRequest = await PocketbaseHelper.pbBase
         .collection(forms_data_collection)
         .create(body: form_data.toJson());
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           visit_data.id,
@@ -55,11 +55,11 @@ class VisitDataApi {
   }
 
   Future<void> detachForm(VisitData visit_data, VisitFormItem form_data) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(forms_data_collection)
         .delete(form_data.id);
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(visit_data.id, body: {'forms_data_ids-': form_data.id});
   }
@@ -68,7 +68,7 @@ class VisitDataApi {
     VisitData visit_data,
     VisitFormItem form_data,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(forms_data_collection)
         .update(form_data.id, body: form_data.toJson());
   }
@@ -77,7 +77,7 @@ class VisitDataApi {
     VisitData visit_data,
     List<String> drugs_ids,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           visit_data.id,
@@ -91,7 +91,7 @@ class VisitDataApi {
     VisitData visit_data,
     List<String> drugs_ids,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           visit_data.id,
@@ -105,7 +105,7 @@ class VisitDataApi {
     VisitData visit_data,
     List<String> drugs_ids,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           visit_data.id,
@@ -120,7 +120,7 @@ class VisitDataApi {
     String drug_id,
     String drug_dose,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           visit_data.id,
@@ -143,7 +143,7 @@ class VisitDataApi {
       ProfileSetupItem.supplies => {'supplies_ids+': item_id},
     };
 
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(visit_data.id, body: _update, expand: _expand);
     //todo: parse data
@@ -186,7 +186,7 @@ class VisitDataApi {
       ProfileSetupItem.supplies => {'supplies_ids-': item_id},
     };
 
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(visit_data.id, body: _update, expand: _expand);
 
@@ -229,7 +229,7 @@ class VisitDataApi {
         item.id: new_quantity,
       },
     };
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(visit_data.id, body: _update, expand: _expand);
 

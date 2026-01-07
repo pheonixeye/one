@@ -16,7 +16,7 @@ class ClinicInventoryApi {
   Future<ApiResult<List<ClinicInventoryItem>>>
   fetchClinicInventoryItems() async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(filter: "clinic_id = '$clinic_id'", expand: _expand);
 
@@ -39,13 +39,13 @@ class ClinicInventoryApi {
     final List<ClinicInventoryItem> _itemsAddResult = [];
     for (final item in items) {
       try {
-        final _response = await PocketbaseHelper.pb
+        final _response = await PocketbaseHelper.pbBase
             .collection(collection)
             .create(body: item.toJson());
         final _item = ClinicInventoryItem.fromRecordModel(_response);
         _itemsAddResult.add(_item);
       } catch (e) {
-        final _response = await PocketbaseHelper.pb
+        final _response = await PocketbaseHelper.pbBase
             .collection(collection)
             .update(item.id, body: item.toJson());
         final _item = ClinicInventoryItem.fromRecordModel(_response);
@@ -59,7 +59,7 @@ class ClinicInventoryApi {
   Future<void> updateInventoryItemAvailableQuantity({
     required ClinicInventoryItem inventoryItem,
   }) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           inventoryItem.id,

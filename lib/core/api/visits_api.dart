@@ -53,7 +53,7 @@ class VisitsApi {
     ).format(_date_after_visit);
     try {
       // print(_todayFormatted);
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
             page: page,
@@ -82,12 +82,12 @@ class VisitsApi {
   Future<void> addNewVisit(VisitCreateDto dto) async {
     //TODO: error prone logic - multiple requests can fail;
     //create visit reference
-    final _result = await PocketbaseHelper.pb
+    final _result = await PocketbaseHelper.pbBase
         .collection(collection)
         .create(body: dto.toJson(), expand: _expand);
 
     //create visit_data reference
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(visit_data_collection)
         .create(
           body: VisitDataDto.initial(
@@ -101,11 +101,11 @@ class VisitsApi {
     final _visitSchedule = dto.visit_schedule.copyWith(visit_id: _result.id);
 
     //create visit_schedule reference
-    final visit_schedule = await PocketbaseHelper.pb
+    final visit_schedule = await PocketbaseHelper.pbBase
         .collection(visit_schedule_collection)
         .create(body: _visitSchedule.toJson());
     //update visit with visit_schedule id
-    final _updatedResult = await PocketbaseHelper.pb
+    final _updatedResult = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           _result.id,
@@ -138,7 +138,7 @@ class VisitsApi {
   }
 
   Future<void> updateVisit(Visit visit, String key, dynamic value) async {
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(visit.id, body: {key: value}, expand: _expand);
 
@@ -176,7 +176,7 @@ class VisitsApi {
     ).format(_month_plus_date);
 
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(
             filter:
@@ -202,7 +202,7 @@ class VisitsApi {
     required String visit_shift_id,
     required Shift shift,
   }) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(visit_schedule_collection)
         .update(visit_shift_id, body: shift.toJson());
   }

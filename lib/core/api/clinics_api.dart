@@ -22,7 +22,7 @@ class ClinicsApi {
     late List<Clinic> _clinics;
 
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(_collection)
           .getList(filter: "doc_id ~ '$doc_id'");
       try {
@@ -46,7 +46,7 @@ class ClinicsApi {
     late List<Clinic> _clinics;
 
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(_collection)
           .getList();
       try {
@@ -67,13 +67,13 @@ class ClinicsApi {
   }
 
   Future<void> createNewClinic(Clinic clinic) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .create(body: clinic.toJson());
   }
 
   Future<void> updateClinicInfo(Clinic clinic) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(clinic.id, body: clinic.toJson());
   }
@@ -83,7 +83,7 @@ class ClinicsApi {
     required Uint8List file_bytes,
     required String filename,
   }) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           clinic.id,
@@ -98,17 +98,17 @@ class ClinicsApi {
   }
 
   Future<void> deletePrescriptionFile(Clinic clinic) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(clinic.id, body: {'prescription_file': ''});
   }
 
   Future<void> deleteClinic(Clinic clinic) async {
-    await PocketbaseHelper.pb.collection(_collection).delete(clinic.id);
+    await PocketbaseHelper.pbBase.collection(_collection).delete(clinic.id);
   }
 
   Future<void> toggleClinicActivation(Clinic clinic) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(clinic.id, body: {'is_active': !clinic.is_active});
   }
@@ -117,14 +117,14 @@ class ClinicsApi {
     Clinic clinic,
     PrescriptionDetails details,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(clinic.id, body: {'prescription_details': details.toJson()});
   }
 
   Future<void> addClinicSchedule(Clinic clinic, ClinicSchedule schedule) async {
     final _newSchedule = [...clinic.clinic_schedule, schedule];
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           schedule.clinic_id,
@@ -141,7 +141,7 @@ class ClinicsApi {
     final _newSchedule = clinic.clinic_schedule
       ..removeWhere((e) => e.id == schedule.id);
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           schedule.clinic_id,
@@ -163,7 +163,7 @@ class ClinicsApi {
 
     _newSchedule[_elementIndex] = schedule;
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           schedule.clinic_id,
@@ -188,7 +188,7 @@ class ClinicsApi {
 
     _newSchedule[_scheduleIndex] = schedule.copyWith(shifts: _newShifts);
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           schedule.clinic_id,
@@ -213,7 +213,7 @@ class ClinicsApi {
 
     _newSchedule[_scheduleIndex] = schedule.copyWith(shifts: _newShifts);
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           schedule.clinic_id,
@@ -242,7 +242,7 @@ class ClinicsApi {
 
     _newSchedule[_scheduleIndex] = schedule.copyWith(shifts: _newShifts);
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(
           schedule.clinic_id,
@@ -258,7 +258,7 @@ class ClinicsApi {
         ? {'doc_id-': doc_id}
         : {'doc_id+': doc_id};
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(clinic.id, body: _update);
   }

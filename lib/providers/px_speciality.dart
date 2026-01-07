@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:one/core/api/specialities_api.dart';
-import 'package:one/functions/dprint.dart';
 import 'package:one/models/speciality.dart';
 
 class PxSpec extends ChangeNotifier {
-  PxSpec() {
+  PxSpec({required this.api}) {
     _init();
   }
 
+  final SpecialitiesApi api;
+
   Future<void> _init() async {
     if (_specialities == null) {
-      _specialities = await SpecialitiesApi.fetchSpecialities();
+      _specialities = await api.fetchSpecialities();
       notifyListeners();
-      dprint('PxSpec._init()');
     }
   }
 

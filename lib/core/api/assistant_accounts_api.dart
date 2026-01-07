@@ -20,7 +20,7 @@ class AssistantAccountsApi {
     String passwordConfirm,
   ) async {
     try {
-      final result = await PocketbaseHelper.pb
+      final result = await PocketbaseHelper.pbBase
           .collection(collection)
           .create(
             body: {
@@ -50,7 +50,7 @@ class AssistantAccountsApi {
 
   Future<ApiResult<List<User>>> fetchAssistantAccounts() async {
     try {
-      final result = await PocketbaseHelper.pb
+      final result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
             filter: "account_type_id = '$assistantAccountTypeId'",
@@ -76,7 +76,7 @@ class AssistantAccountsApi {
     String account_id,
     String permission_id,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(account_id, body: {'app_permissions_ids+': permission_id});
   }
@@ -85,7 +85,7 @@ class AssistantAccountsApi {
     String account_id,
     String permission_id,
   ) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(account_id, body: {'app_permissions_ids-': permission_id});
   }
@@ -97,7 +97,7 @@ class AssistantAccountsApi {
   // }
 
   Future<RecordModel?> toogleActivity(String user_id, bool is_active) async {
-    final result = await PocketbaseHelper.pb
+    final result = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(user_id, body: {'is_active': is_active});
 
@@ -105,7 +105,7 @@ class AssistantAccountsApi {
   }
 
   Future<RecordModel?> updateAccountName(String user_id, String name) async {
-    final result = await PocketbaseHelper.pb
+    final result = await PocketbaseHelper.pbBase
         .collection(collection)
         .update(user_id, body: {'name': name});
 

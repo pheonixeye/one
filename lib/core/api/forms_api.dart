@@ -11,18 +11,18 @@ class FormsApi {
   final String collection = 'forms';
 
   Future<void> createPcForm(PcForm form) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .create(body: form.toJson());
   }
 
   Future<void> deletePcForm(String id) async {
-    await PocketbaseHelper.pb.collection(collection).delete(id);
+    await PocketbaseHelper.pbBase.collection(collection).delete(id);
   }
 
   Future<ApiResult<List<PcForm>>> fetchDoctorForms() async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList();
 
@@ -38,13 +38,13 @@ class FormsApi {
   }
 
   Future<void> updatePcForm(PcForm form) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(form.id, body: form.toJson());
   }
 
   Future<void> addNewFieldToForm(PcForm form, PcFormField newField) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           form.id,
@@ -61,7 +61,7 @@ class FormsApi {
     final _newList = form.form_fields
       ..removeWhere((f) => f.id == toUpdate.id)
       ..add(toUpdate);
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           form.id,
@@ -73,7 +73,7 @@ class FormsApi {
 
   Future<void> removeFieldFromForm(PcForm form, PcFormField toRemove) async {
     final _newList = form.form_fields..removeWhere((f) => f.id == toRemove.id);
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           form.id,

@@ -21,7 +21,7 @@ class VisitFilterApi {
     required String to,
   }) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(
             filter: "visit_date >= '$from' && visit_date <= '$to'",
@@ -47,7 +47,7 @@ class VisitFilterApi {
     required String to,
   }) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(
             filter: "visit_date >= '$from' && visit_date <= '$to'",
@@ -70,7 +70,7 @@ class VisitFilterApi {
 
   Future<ApiResult<Visit>> fetchOneExpandedVisit(String visit_id) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getOne(visit_id, expand: _expand);
 

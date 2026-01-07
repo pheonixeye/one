@@ -18,7 +18,7 @@ class DoctorApi {
   static final _user_expand = _user_expandList.join(',');
 
   Future<Doctor> fetchDoctorProfile() async {
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection(collection)
         .getOne(doc_id, expand: doctor_expand);
 
@@ -31,7 +31,7 @@ class DoctorApi {
   }
 
   Future<User> fetchDoctorAuthUser() async {
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection('users')
         .getOne(doc_id, expand: _user_expand);
 
@@ -41,7 +41,7 @@ class DoctorApi {
   }
 
   Future<List<Doctor>> fetchAllDoctors() async {
-    final _response = await PocketbaseHelper.pb
+    final _response = await PocketbaseHelper.pbBase
         .collection(collection)
         .getFullList(expand: doctor_expand);
 
@@ -57,7 +57,7 @@ class DoctorApi {
   }
 
   Future<List<User>> fetchAllDoctorsAuthAccounts() async {
-    final result = await PocketbaseHelper.pb
+    final result = await PocketbaseHelper.pbBase
         .collection('users')
         .getList(
           filter: "account_type_id != '$assistantAccountTypeId'",
@@ -72,7 +72,7 @@ class DoctorApi {
   }
 
   Future<void> toogleAccountActivation(String user_id, bool is_active) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection('users')
         .update(user_id, body: {'is_active': is_active});
   }

@@ -64,7 +64,7 @@ class ExpandedPatientDocument extends Equatable {
 
 extension ImageUrlOnExpandedPatientDocument on ExpandedPatientDocument {
   String get imageUrl =>
-      '${PocketbaseHelper.pb.baseURL}/api/files/${PatientDocumentApi.collection}/$id/$document';
+      '${PocketbaseHelper.pbBase.baseURL}/api/files/${PatientDocumentApi.collection}/$id/$document';
 
   Future<Uint8List> documentUint8List() async {
     final _request = await http.get(Uri.parse(imageUrl));

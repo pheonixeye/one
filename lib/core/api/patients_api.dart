@@ -15,7 +15,7 @@ class PatientsApi {
     required int perPage,
   }) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(_collection)
           .getList(page: page, perPage: perPage, sort: '-created');
 
@@ -33,14 +33,14 @@ class PatientsApi {
   }
 
   Future<void> createPatientProfile(Patient patient) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .create(body: patient.toJson());
   }
 
   Future<ApiResult> searchPatientByPhone({required String query}) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(_collection)
           .getList(filter: "phone = '$query'");
 
@@ -63,7 +63,7 @@ class PatientsApi {
     required int perPage,
   }) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(_collection)
           .getList(
             filter: "name ?~ '$query'",
@@ -85,14 +85,14 @@ class PatientsApi {
   }
 
   Future<void> editPatientBaseData(Patient patient) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(_collection)
         .update(patient.id, body: patient.toJson());
   }
 
   static Future<Patient> getPatientById(String patientId) async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection('patients')
           .getOne(patientId);
 

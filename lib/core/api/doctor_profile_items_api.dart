@@ -44,7 +44,7 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
     // }
 
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(perPage: 500, page: 1);
 
@@ -79,19 +79,19 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
   }
 
   Future<void> createItem(Map<String, dynamic> item) async {
-    await PocketbaseHelper.pb.collection(collection).create(body: item);
+    await PocketbaseHelper.pbBase.collection(collection).create(body: item);
     // await _box.clear();
   }
 
   Future<void> updateItem(Map<String, dynamic> item) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(item['id'], body: item);
     // await _box.clear();
   }
 
   Future<void> deleteItem(DoctorItem item) async {
-    await PocketbaseHelper.pb.collection(collection).delete(item.id);
+    await PocketbaseHelper.pbBase.collection(collection).delete(item.id);
     // await _box.clear();
   }
 
@@ -99,7 +99,7 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
   Future<ApiResult<List<DoctorItem>>> searchForItems(String item_name) async {
     String filterField = containsArabic(item_name) ? 'name_ar' : 'name_en';
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
             perPage: 500,

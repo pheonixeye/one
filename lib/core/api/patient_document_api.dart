@@ -47,7 +47,7 @@ class PatientDocumentApi {
     String filename,
   ) async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .create(
             body: document.toJson(),
@@ -74,7 +74,7 @@ class PatientDocumentApi {
   Future<ApiResult<List<ExpandedPatientDocument>>>
   fetchPatientDocuments() async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(filter: "patient_id = '$patient_id'", expand: _expand);
 
@@ -94,7 +94,7 @@ class PatientDocumentApi {
   Future<ApiResult<List<ExpandedPatientDocument>>>
   fetchPatientDocumentsOfOneVisit(String visit_id) async {
     try {
-      final _result = await PocketbaseHelper.pb
+      final _result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getFullList(
             filter:

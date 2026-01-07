@@ -8,12 +8,12 @@ import 'package:http/http.dart' as http;
 
 extension Imageurl on Speciality {
   String get imageUrl =>
-      '${PocketbaseHelper.pb.baseURL}/api/files/specialities/$id/$image';
+      '${PocketbaseHelper.pbBase.baseURL}/api/files/specialities/$id/$image';
 }
 
 extension PrescriptionFileUrl on Clinic {
   String prescriptionFileUrl() =>
-      '${PocketbaseHelper.pb.baseURL}/api/files/clinics/$id/$prescription_file';
+      '${PocketbaseHelper.pbBase.baseURL}/api/files/clinics/$id/$prescription_file';
 
   Future<Uint8List> prescImageBytes() async {
     final _response = await http.get(Uri.parse(prescriptionFileUrl()));
@@ -23,5 +23,5 @@ extension PrescriptionFileUrl on Clinic {
 
 extension PatientDocumentUrl on PatientDocument {
   String patientDocumentUrl() =>
-      '${PocketbaseHelper.pb.baseURL}/api/files/patient__documents/$id/$document';
+      '${PocketbaseHelper.pbBase.baseURL}/api/files/patient__documents/$id/$document';
 }

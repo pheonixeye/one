@@ -6,8 +6,8 @@ class SpecialitiesApi {
 
   static const String collection = 'specialities';
 
-  static Future<List<Speciality>> fetchSpecialities() async {
-    final result = await PocketbaseHelper.pb
+  Future<List<Speciality>> fetchSpecialities() async {
+    final result = await PocketbaseHelper.pbBase
         .collection(collection)
         .getFullList();
 

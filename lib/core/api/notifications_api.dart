@@ -108,7 +108,7 @@ class NotificationsApi {
     required int perPage,
   }) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
             page: page,
@@ -136,7 +136,7 @@ class NotificationsApi {
     String user_id,
   ) async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .update(id, body: {'+read_by': user_id}, expand: _expand);
 
@@ -152,7 +152,7 @@ class NotificationsApi {
   }
 
   Future<void> saveNotification(SavedNotification savedNotification) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .create(body: savedNotification.toDto());
   }
@@ -178,7 +178,7 @@ class NotificationsApi {
   }
 
   Future<Uint8List> fetchNotificationSoundBlob() async {
-    final _result = await PocketbaseHelper.pb
+    final _result = await PocketbaseHelper.pbBase
         .collection('blobs')
         .getFirstListItem("name = 'notification_sound'");
 

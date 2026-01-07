@@ -1,13 +1,10 @@
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/assistant_accounts_api.dart';
-import 'package:one/core/api/notifications_api.dart';
-import 'package:one/core/api/wa_api.dart';
 import 'package:one/core/api/blob_api.dart';
+import 'package:one/core/api/specialities_api.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
-import 'package:one/providers/px_notifications.dart';
 import 'package:one/providers/px_speciality.dart';
-import 'package:one/providers/px_whatsapp.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/auth/api_auth.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
@@ -51,34 +48,26 @@ final List<SingleChildWidget> providers = [
   ),
 
   ChangeNotifierProvider(
-    create: (context) => PxWhatsapp(
-      api: WaApi(),
+    create: (context) => PxSpec(
+      api: const SpecialitiesApi(),
+    ),
+  ),
+
+  ChangeNotifierProvider(
+    create: (context) => PxAppConstants(
+      api: const ConstantsApi(),
     ),
   ),
   ChangeNotifierProvider(
-    create: (context) => PxNotifications(
-      api: NotificationsApi(),
+    create: (context) => PxAuth(
+      api: const AuthApi(),
     ),
-  ),
-  ChangeNotifierProvider(
-    create: (context) => PxSpec(),
   ),
   ChangeNotifierProvider(
     create: (context) => PxBlobs(
       api: BlobApi(),
     ),
   ),
-  ChangeNotifierProvider(
-    create: (context) => PxAppConstants(
-      api: ConstantsApi(),
-    ),
-  ),
-  ChangeNotifierProvider(
-    create: (context) => PxAuth(
-      api: AuthApi(),
-    ),
-  ),
-
   ChangeNotifierProvider(
     create: (context) => PxDoctor(
       api: DoctorApi(
@@ -151,7 +140,6 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxClinics(
-      // context: context,
       api: ClinicsApi(doc_id: context.read<PxAuth>().doc_id),
     ),
   ),

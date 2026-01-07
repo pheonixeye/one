@@ -16,7 +16,7 @@ class PatientFormsApi {
 
   Future<ApiResult<List<PatientFormItem>>> fetchPatientForms() async {
     try {
-      final _response = await PocketbaseHelper.pb
+      final _response = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(filter: "patient_id = '$patient_id'", sort: '-created');
 
@@ -36,13 +36,13 @@ class PatientFormsApi {
   }
 
   Future<void> attachFormToPatient(PatientFormItem formItem) async {
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .create(body: formItem.toJson());
   }
 
   Future<void> detachFormFromPatient(PatientFormItem formItem) async {
-    await PocketbaseHelper.pb.collection(collection).delete(formItem.id);
+    await PocketbaseHelper.pbBase.collection(collection).delete(formItem.id);
   }
 
   Future<void> updatePatientFormFieldData(
@@ -53,7 +53,7 @@ class PatientFormsApi {
       ..removeWhere((e) => e.id == formData.id)
       ..add(formData);
 
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           formItem.id,
@@ -93,7 +93,7 @@ class PatientFormsApi {
         }
       }).toList();
     }
-    await PocketbaseHelper.pb
+    await PocketbaseHelper.pbBase
         .collection(collection)
         .update(
           formItem.id,
