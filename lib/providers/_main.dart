@@ -2,7 +2,7 @@ import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/notifications_api.dart';
 import 'package:one/core/api/wa_api.dart';
-import 'package:one/core/blob_api.dart';
+import 'package:one/core/api/blob_api.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_notifications.dart';
@@ -46,18 +46,38 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider.value(
     value: AppRouter.router.routeInformationProvider,
   ),
-  ChangeNotifierProvider(create: (context) => PxLocale()),
+  ChangeNotifierProvider(
+    create: (context) => PxLocale(),
+  ),
 
-  ChangeNotifierProvider(create: (context) => PxWhatsapp(api: WaApi())),
   ChangeNotifierProvider(
-    create: (context) => PxNotifications(api: NotificationsApi()),
+    create: (context) => PxWhatsapp(
+      api: WaApi(),
+    ),
   ),
-  ChangeNotifierProvider(create: (context) => PxSpec()),
-  ChangeNotifierProvider(create: (context) => PxBlobs(api: BlobApi())),
   ChangeNotifierProvider(
-    create: (context) => PxAppConstants(api: ConstantsApi()),
+    create: (context) => PxNotifications(
+      api: NotificationsApi(),
+    ),
   ),
-  ChangeNotifierProvider(create: (context) => PxAuth(api: AuthApi())),
+  ChangeNotifierProvider(
+    create: (context) => PxSpec(),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxBlobs(
+      api: BlobApi(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxAppConstants(
+      api: ConstantsApi(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxAuth(
+      api: AuthApi(),
+    ),
+  ),
 
   ChangeNotifierProvider(
     create: (context) => PxDoctor(
@@ -69,12 +89,16 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxAssistantAccounts(
-      api: AssistantAccountsApi(AppBusinessConstants.ASSISTANT_ACCOUNT_TYPE_ID),
+      api: AssistantAccountsApi(
+        AppBusinessConstants.ASSISTANT_ACCOUNT_TYPE_ID,
+      ),
     ),
   ),
   ChangeNotifierProvider(
     create: (context) => PxDocSubscriptionInfo(
-      api: DoctorSubscriptionInfoApi(doc_id: context.read<PxAuth>().doc_id),
+      api: DoctorSubscriptionInfoApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
     ),
   ),
 
@@ -82,19 +106,25 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     key: ValueKey(ProfileSetupItem.drugs),
     create: (context) => PxDoctorProfileItems<DoctorDrugItem>(
-      api: DoctorProfileItemsApi<DoctorDrugItem>(item: ProfileSetupItem.drugs),
+      api: DoctorProfileItemsApi<DoctorDrugItem>(
+        item: ProfileSetupItem.drugs,
+      ),
     ),
   ),
   ChangeNotifierProvider(
     key: ValueKey(ProfileSetupItem.labs),
     create: (context) => PxDoctorProfileItems<DoctorLabItem>(
-      api: DoctorProfileItemsApi<DoctorLabItem>(item: ProfileSetupItem.labs),
+      api: DoctorProfileItemsApi<DoctorLabItem>(
+        item: ProfileSetupItem.labs,
+      ),
     ),
   ),
   ChangeNotifierProvider(
     key: ValueKey(ProfileSetupItem.rads),
     create: (context) => PxDoctorProfileItems<DoctorRadItem>(
-      api: DoctorProfileItemsApi<DoctorRadItem>(item: ProfileSetupItem.rads),
+      api: DoctorProfileItemsApi<DoctorRadItem>(
+        item: ProfileSetupItem.rads,
+      ),
     ),
   ),
   ChangeNotifierProvider(
@@ -114,22 +144,38 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   //profile items providers##
-  ChangeNotifierProvider(create: (context) => PxForms(api: FormsApi())),
+  ChangeNotifierProvider(
+    create: (context) => PxForms(
+      api: FormsApi(),
+    ),
+  ),
   ChangeNotifierProvider(
     create: (context) => PxClinics(
       // context: context,
       api: ClinicsApi(doc_id: context.read<PxAuth>().doc_id),
     ),
   ),
-  ChangeNotifierProvider(create: (context) => PxPatients(api: PatientsApi())),
-
-  ChangeNotifierProvider(create: (context) => PxVisits(api: VisitsApi())),
-
   ChangeNotifierProvider(
-    create: (context) => PxSupplyMovements(api: SupplyMovementApi()),
+    create: (context) => PxPatients(
+      api: PatientsApi(),
+    ),
   ),
 
   ChangeNotifierProvider(
-    create: (context) => PxBookkeeping(api: BookkeepingApi()),
+    create: (context) => PxVisits(
+      api: VisitsApi(),
+    ),
+  ),
+
+  ChangeNotifierProvider(
+    create: (context) => PxSupplyMovements(
+      api: SupplyMovementApi(),
+    ),
+  ),
+
+  ChangeNotifierProvider(
+    create: (context) => PxBookkeeping(
+      api: BookkeepingApi(),
+    ),
   ),
 ];

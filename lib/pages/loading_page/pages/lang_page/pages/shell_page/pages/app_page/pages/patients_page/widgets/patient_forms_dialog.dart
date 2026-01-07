@@ -1,3 +1,4 @@
+import 'package:one/models/pc_form.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:one/widgets/snackbar_.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/api_result_mapper.dart';
 import 'package:one/models/patient_form_field_data.dart';
 import 'package:one/models/patient_form_item.dart';
 import 'package:one/models/pc_form_field_types.dart';
@@ -113,19 +113,24 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                           );
                         }
                         while (f.result != null &&
-                            (f.result as FormDataResult).data.isEmpty) {
+                            (f.result as ApiDataResult<List<PcForm>>)
+                                .data
+                                .isEmpty) {
                           return CentralNoItems(
                             message: context.loc.noFormsFound,
                           );
                         }
-                        final _pcForms = (f.result as FormDataResult).data;
+                        final _pcForms =
+                            (f.result as ApiDataResult<List<PcForm>>).data;
                         return ListView.builder(
                           itemCount: _pcForms.length,
                           itemBuilder: (context, index) {
                             final _pcForm = _pcForms[index];
 
                             final _formItem =
-                                (pf.result as PatientFormItemResult).data
+                                (pf.result
+                                        as ApiDataResult<List<PatientFormItem>>)
+                                    .data
                                     .firstWhereOrNull(
                                       (e) => e.form_id == _pcForm.id,
                                     );

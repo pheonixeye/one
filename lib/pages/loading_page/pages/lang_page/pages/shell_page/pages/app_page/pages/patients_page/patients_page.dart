@@ -9,7 +9,6 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/patient.dart';
-import 'package:one/models/api_result_mapper.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/create_edit_patient_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_info_card.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/search_patients_header.dart';
@@ -94,7 +93,9 @@ class _PatientsPageState extends State<PatientsPage> {
                       );
                     } else {
                       while (p.data != null &&
-                          (p.data! as PatientDataResult).data.isEmpty) {
+                          (p.data! as ApiDataResult<List<Patient>>)
+                              .data
+                              .isEmpty) {
                         return Center(
                           child: Card.outlined(
                             child: Padding(
@@ -106,10 +107,12 @@ class _PatientsPageState extends State<PatientsPage> {
                       }
                       return ListView.builder(
                         controller: _controller,
-                        itemCount: (p.data! as PatientDataResult).data.length,
+                        itemCount: (p.data! as ApiDataResult<List<Patient>>)
+                            .data
+                            .length,
                         itemBuilder: (context, index) {
-                          final item =
-                              (p.data! as PatientDataResult).data[index];
+                          final item = (p.data! as ApiDataResult<List<Patient>>)
+                              .data[index];
                           return ChangeNotifierProvider.value(
                             key: ValueKey(item),
                             value: PxPatientDocuments(

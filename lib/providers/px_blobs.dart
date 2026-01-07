@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:one/core/api/_api_result.dart';
-import 'package:one/core/blob_api.dart';
+import 'package:one/core/api/blob_api.dart';
 import 'package:one/models/blob_file.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
