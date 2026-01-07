@@ -24,7 +24,10 @@ class AppProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: providers, child: const MyApp());
+    return MultiProvider(
+      providers: providers,
+      child: const MyApp(),
+    );
   }
 }
 
