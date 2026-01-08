@@ -5,17 +5,11 @@ class PocketbaseHelper {
 
   static PocketBase get pbBase => _pb;
 
-  final String? dataInstanceUrl;
+  static PocketBase? _pbData;
 
-  PocketbaseHelper._(this.dataInstanceUrl) {
-    if (dataInstanceUrl != null) {
-      _pbData = PocketBase(dataInstanceUrl!);
-    }
+  static PocketBase? get pbData => _pbData;
+
+  static void initialize(String url) {
+    _pbData = PocketBase(url);
   }
-
-  static PocketbaseHelper instance(String? dataInstanceUrl) =>
-      PocketbaseHelper._(dataInstanceUrl);
-
-  PocketBase? _pbData;
-  PocketBase? get pbData => _pbData;
 }

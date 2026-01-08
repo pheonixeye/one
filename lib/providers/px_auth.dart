@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/auth/api_auth.dart';
+import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/functions/dprint.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/organization.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,9 @@ class PxAuth extends ChangeNotifier {
   static User? _user;
   User? get user => _user;
 
+  static Organization? _organization;
+  Organization? get organization => _organization;
+
   Future<void> loginWithEmailAndPassword(
     String email,
     String password, [
@@ -33,6 +38,12 @@ class PxAuth extends ChangeNotifier {
       );
       _auth = result;
       _user = User.fromRecordModel(_auth!.record);
+      _organization = Organization.fromJson(
+        result?.record.get<RecordModel>('expand.org_id').toJson() ?? {},
+      );
+      if (_organization != null) {
+        PocketbaseHelper.initialize(_organization!.pb_endpoint);
+      }
       notifyListeners();
     } catch (e) {
       _auth = null;

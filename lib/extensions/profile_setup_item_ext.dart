@@ -12,6 +12,8 @@ extension WidgetExt on ProfileSetupItem {
       ProfileSetupItem.procedures =>
         '${context.loc.add} ${context.loc.procedures}',
       ProfileSetupItem.supplies => '${context.loc.add} ${context.loc.supplies}',
+      ProfileSetupItem.documents =>
+        '${context.loc.add} ${context.loc.documents}',
     };
   }
 
@@ -22,6 +24,7 @@ extension WidgetExt on ProfileSetupItem {
       ProfileSetupItem.rads => context.loc.radiology,
       ProfileSetupItem.procedures => context.loc.procedures,
       ProfileSetupItem.supplies => context.loc.supplies,
+      ProfileSetupItem.documents => context.loc.documents,
     };
   }
 }

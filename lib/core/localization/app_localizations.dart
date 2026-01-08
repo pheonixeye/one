@@ -2491,6 +2491,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Selected Reciept Info Found On This Device'**
   String get noRecieptInfoFound;
+
+  /// No description provided for @accountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Type'**
+  String get accountType;
 }
 
 class _AppLocalizationsDelegate

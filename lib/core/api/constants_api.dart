@@ -1,6 +1,5 @@
 // import 'dart:convert';
 
-import 'package:one/models/app_constants/document_type.dart';
 // import 'package:hive_ce/hive.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/models/app_constants/account_type.dart';
@@ -22,7 +21,7 @@ class ConstantsApi {
   static const String subscription_plan = 'subscription_plans';
   static const String patient_progress_status = 'patient_progress_status';
   static const String app_permissions = 'app_permissions';
-  static const String document_type = 'document_type';
+  // static const String document_type = 'document_type';
 
   static const String collection = 'constants';
   static String collectionSaveDate = 'constants_save_date';
@@ -36,7 +35,7 @@ class ConstantsApi {
     late final List<SubscriptionPlan> subscriptionPlan;
     late final List<PatientProgressStatus> patientProgressStatus;
     late final List<AppPermission> appPermission;
-    late final List<DocumentType> documentType;
+    // late final List<DocumentType> documentType;
 
     final _accountTypesRequest = PocketbaseHelper.pbBase
         .collection(account_types)
@@ -62,9 +61,9 @@ class ConstantsApi {
         .collection(app_permissions)
         .getList(perPage: _perPage);
 
-    final _documentTypeRequest = PocketbaseHelper.pbBase
-        .collection(document_type)
-        .getList(perPage: _perPage);
+    // final _documentTypeRequest = PocketbaseHelper.pbBase
+    //     .collection(document_type)
+    //     .getList(perPage: _perPage);
 
     final _result = await Future.wait([
       _accountTypesRequest,
@@ -73,7 +72,7 @@ class ConstantsApi {
       _subscriptionPlanRequest,
       _patientProgressStatusRequest,
       _appPermissionRequest,
-      _documentTypeRequest,
+      // _documentTypeRequest,
     ]);
 
     accountTypes = _result[0].items
@@ -99,9 +98,9 @@ class ConstantsApi {
     appPermission = _result[5].items
         .map((e) => AppPermission.fromJson(e.toJson()))
         .toList();
-    documentType = _result[6].items
-        .map((e) => DocumentType.fromJson(e.toJson()))
-        .toList();
+    // documentType = _result[6].items
+    //     .map((e) => DocumentType.fromJson(e.toJson()))
+    //     .toList();
 
     _constants = AppConstants(
       accountTypes: accountTypes,
@@ -110,7 +109,7 @@ class ConstantsApi {
       subscriptionPlan: subscriptionPlan,
       patientProgressStatus: patientProgressStatus,
       appPermission: appPermission,
-      documentType: documentType,
+      // documentType: documentType,
     );
 
     return _constants;

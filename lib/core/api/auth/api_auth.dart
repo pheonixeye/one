@@ -25,7 +25,11 @@ class AuthApi {
     try {
       _result = await PocketbaseHelper.pbBase
           .collection('users')
-          .authWithPassword(email, password, expand: _expand);
+          .authWithPassword(
+            email,
+            password,
+            expand: _expand,
+          );
     } on ClientException catch (e) {
       dprint(e.toString());
       throw AuthException(e);
@@ -55,7 +59,9 @@ class AuthApi {
     try {
       result = await PocketbaseHelper.pbBase
           .collection('users')
-          .authRefresh(expand: _expand);
+          .authRefresh(
+            expand: _expand,
+          );
     } on ClientException catch (e) {
       dprint(e.toString());
       throw AuthException(e);

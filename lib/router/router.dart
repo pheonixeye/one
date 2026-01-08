@@ -117,6 +117,7 @@ class AppRouter {
   static const String rads = "rads";
   static const String procedures = "procedures";
   static const String supplies = "supplies";
+  static const String documents = "documents";
   // patient_portal_routes
   // static const String patient_portal = 'patient_portal';
   // static const String patient_id = ':patient_id';

@@ -1249,4 +1249,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noRecieptInfoFound =>
       'No Selected Reciept Info Found On This Device';
+
+  @override
+  String get accountType => 'Account Type';
 }

@@ -1,8 +1,6 @@
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/models/blob_file.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/nav_bar_menu_btn.dart';
 import 'package:one/providers/px_blobs.dart';
-import 'package:one/providers/px_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:one/assets/assets.dart';
@@ -19,8 +17,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxNotifications, PxLocale>(
-      builder: (context, n, l, _) {
+    return Consumer<PxLocale>(
+      builder: (context, l, _) {
         return AppBar(
           automaticallyImplyLeading: false,
           title: InkWell(
@@ -72,7 +70,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
                 const Spacer(),
-                const NavBarMenuBtn(),
+                //TODO
+                // const NavBarMenuBtn(),
                 const SizedBox(width: 10),
               ],
             ),

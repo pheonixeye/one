@@ -5,6 +5,7 @@ enum ProfileSetupItem {
   labs(AppRouter.labs),
   rads(AppRouter.rads),
   procedures(AppRouter.procedures),
+  documents(AppRouter.documents),
   supplies(AppRouter.supplies);
 
   final String route;

@@ -1245,4 +1245,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noRecieptInfoFound =>
       'لم يتم العثور علي تفاصيل الايصال الاولية علي هذا الجهاز - برجاء اختيار التفاصيل من صفحة الاعدادات';
+
+  @override
+  String get accountType => 'نوع الحساب';
 }
