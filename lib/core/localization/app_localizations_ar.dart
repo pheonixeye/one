@@ -1248,4 +1248,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accountType => 'نوع الحساب';
+
+  @override
+  String get documents => 'المستندات';
 }

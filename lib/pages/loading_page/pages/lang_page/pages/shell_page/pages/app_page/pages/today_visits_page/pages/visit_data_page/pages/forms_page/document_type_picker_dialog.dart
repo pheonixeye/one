@@ -1,6 +1,9 @@
+import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/providers/px_app_constants.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
+import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +22,19 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxAppConstants, PxLocale>(
+    return Consumer2<PxDoctorProfileItems<DoctorDocumentTypeItem>, PxLocale>(
       builder: (context, a, l, _) {
-        while (a.constants == null) {
+        while (a.data == null) {
           return const CentralLoading();
         }
-        final _data = a.constants?.documentType;
+        while (a.data is ApiErrorResult) {
+          return CentralError(
+            code: (a.data as ApiErrorResult).errorCode,
+            toExecute: a.retry,
+          );
+        }
+        final _data =
+            (a.data as ApiDataResult<List<DoctorDocumentTypeItem>>).data;
         return AlertDialog(
           title: Row(
             children: [
@@ -74,15 +84,14 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                               spacing: 8,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (_data != null)
-                                  ..._data.map((e) {
-                                    return RadioListTile(
-                                      title: Text(
-                                        l.isEnglish ? e.name_en : e.name_ar,
-                                      ),
-                                      value: e.id,
-                                    );
-                                  }),
+                                ..._data.map((e) {
+                                  return RadioListTile(
+                                    title: Text(
+                                      l.isEnglish ? e.name_en : e.name_ar,
+                                    ),
+                                    value: e.id,
+                                  );
+                                }),
                                 if (field.hasError)
                                   Text(
                                     field.errorText ?? '',

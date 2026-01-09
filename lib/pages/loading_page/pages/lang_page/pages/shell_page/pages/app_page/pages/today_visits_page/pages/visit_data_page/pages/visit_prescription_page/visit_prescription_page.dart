@@ -539,14 +539,15 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                 return;
                                               }
                                             }
-                                            final _docType = a
-                                                .constants!
-                                                .documentType
-                                                .firstWhere(
-                                                  (e) =>
-                                                      e.name_en ==
-                                                      'Prescription',
-                                                );
+                                            //TODO:
+                                            // final _docType = a
+                                            //     .constants!
+                                            //     .documentType
+                                            //     .firstWhere(
+                                            //       (e) =>
+                                            //           e.name_en ==
+                                            //           'Prescription',
+                                            //     );
                                             final _patientDocument =
                                                 PatientDocument(
                                                   id: '',
@@ -554,7 +555,8 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                   related_visit_id: visit.id,
                                                   related_visit_data_id:
                                                       visit_data.id,
-                                                  document_type_id: _docType.id,
+                                                  document_type_id:
+                                                      '_docType.id',
                                                   document: '',
                                                 );
                                             await PatientDocumentApi(

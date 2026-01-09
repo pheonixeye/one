@@ -136,7 +136,7 @@ class VisitDataApi {
     ProfileSetupItem setupItem,
   ) async {
     final Map<String, dynamic> _update = switch (setupItem) {
-      ProfileSetupItem.drugs => {},
+      ProfileSetupItem.drugs || ProfileSetupItem.documents => {},
       ProfileSetupItem.labs => {'labs_ids+': item_id},
       ProfileSetupItem.rads => {'rads_ids+': item_id},
       ProfileSetupItem.procedures => {'procedures_ids+': item_id},
@@ -179,7 +179,7 @@ class VisitDataApi {
     ProfileSetupItem setupItem,
   ) async {
     final Map<String, dynamic> _update = switch (setupItem) {
-      ProfileSetupItem.drugs => {},
+      ProfileSetupItem.drugs || ProfileSetupItem.documents => {},
       ProfileSetupItem.labs => {'labs_ids-': item_id},
       ProfileSetupItem.rads => {'rads_ids-': item_id},
       ProfileSetupItem.procedures => {'procedures_ids-': item_id},

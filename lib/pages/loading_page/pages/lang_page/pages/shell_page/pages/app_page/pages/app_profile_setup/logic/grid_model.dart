@@ -47,4 +47,9 @@ List<GridModel> gridModelList(BuildContext context) => [
     title: context.loc.supplies,
     path: AppRouter.supplies,
   ),
+  GridModel(
+    asset: AppAssets.documents,
+    title: context.loc.documents,
+    path: AppRouter.documents,
+  ),
 ];

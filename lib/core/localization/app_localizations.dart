@@ -2497,6 +2497,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account Type'**
   String get accountType;
+
+  /// No description provided for @documents.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documents;
 }
 
 class _AppLocalizationsDelegate

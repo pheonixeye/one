@@ -9,6 +9,7 @@ class DoctorProcedureItem extends DoctorItem implements Equatable {
 
   const DoctorProcedureItem({
     required super.id,
+    required super.doc_id,
     required super.name_en,
     required super.name_ar,
     required this.price,
@@ -18,6 +19,7 @@ class DoctorProcedureItem extends DoctorItem implements Equatable {
 
   DoctorProcedureItem copyWith({
     String? id,
+    String? doc_id,
     String? name_en,
     String? name_ar,
     int? price,
@@ -25,6 +27,7 @@ class DoctorProcedureItem extends DoctorItem implements Equatable {
   }) {
     return DoctorProcedureItem(
       id: id ?? this.id,
+      doc_id: doc_id ?? this.doc_id,
       name_en: name_en ?? this.name_en,
       name_ar: name_ar ?? this.name_ar,
       price: price ?? this.price,
@@ -36,6 +39,7 @@ class DoctorProcedureItem extends DoctorItem implements Equatable {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
+      'doc_id': doc_id,
       'name_en': name_en,
       'name_ar': name_ar,
       'price': price,
@@ -46,6 +50,7 @@ class DoctorProcedureItem extends DoctorItem implements Equatable {
   factory DoctorProcedureItem.fromJson(Map<String, dynamic> map) {
     return DoctorProcedureItem(
       id: map['id'] as String,
+      doc_id: map['doc_id'] as String,
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
       price: map['price'] as int,
@@ -54,7 +59,14 @@ class DoctorProcedureItem extends DoctorItem implements Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name_en, name_ar, price, discount_percentage];
+  List<Object?> get props => [
+    id,
+    doc_id,
+    name_en,
+    name_ar,
+    price,
+    discount_percentage,
+  ];
 
   @override
   bool get stringify => true;

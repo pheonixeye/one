@@ -5,11 +5,9 @@ import 'package:one/models/doctor_items/_doctor_item.dart';
 import 'package:one/models/doctor_items/profile_setup_item.dart';
 
 class DoctorDocumentTypeItem extends DoctorItem implements Equatable {
-  final String doc_id;
-
   const DoctorDocumentTypeItem({
-    required this.doc_id,
     required super.id,
+    required super.doc_id,
     required super.name_en,
     required super.name_ar,
     super.item = ProfileSetupItem.documents,

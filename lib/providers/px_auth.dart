@@ -57,6 +57,12 @@ class PxAuth extends ChangeNotifier {
     try {
       _auth = await api.loginWithToken();
       _user = User.fromRecordModel(_auth!.record);
+      _organization = Organization.fromJson(
+        _auth?.record.get<RecordModel>('expand.org_id').toJson() ?? {},
+      );
+      if (_organization != null) {
+        PocketbaseHelper.initialize(_organization!.pb_endpoint);
+      }
       notifyListeners();
       dprint('token from api: ${_auth?.token.substring(20, 25)}');
     } catch (e) {
@@ -72,6 +78,7 @@ class PxAuth extends ChangeNotifier {
       api.logout();
       _auth = null;
       _user = null;
+      _organization = null;
     } catch (e) {
       dprint(e.toString());
     }

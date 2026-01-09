@@ -1,4 +1,6 @@
+import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -47,7 +49,9 @@ class DoctorItemViewCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: SmBtn(child: Text('${index + 1}')),
+                    child: SmBtn(
+                      child: Text('${index + 1}'.toArabicNumber(context)),
+                    ),
                   ),
                   Expanded(
                     child: Text(l.isEnglish ? item.name_en : item.name_ar),
@@ -161,6 +165,8 @@ class DoctorItemViewCard extends StatelessWidget {
                     (item as DoctorProcedureItem).viewWidgets(context),
                   ProfileSetupItem.supplies =>
                     (item as DoctorSupplyItem).viewWidgets(context),
+                  ProfileSetupItem.documents =>
+                    (item as DoctorDocumentTypeItem).viewWidgets(context),
                 },
               ],
             ),

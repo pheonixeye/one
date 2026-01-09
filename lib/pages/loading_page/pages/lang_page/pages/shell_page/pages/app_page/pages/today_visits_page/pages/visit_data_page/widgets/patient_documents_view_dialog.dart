@@ -1,8 +1,9 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/models/patient_document/expanded_patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/document_action_btn.dart';
-import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_documents.dart';
 import 'package:one/widgets/central_error.dart';
@@ -43,21 +44,31 @@ class _PatientDocumentsViewDialogState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<PxAppConstants, PxPatientDocuments, PxLocale>(
+    return Consumer3<
+      PxDoctorProfileItems<DoctorDocumentTypeItem>,
+      PxPatientDocuments,
+      PxLocale
+    >(
       builder: (context, a, d, l, _) {
-        while (a.constants == null || d.documents == null) {
+        while (a.data == null || d.documents == null) {
           return const CentralLoading();
         }
         final _result =
             (d.documents as ApiResult<List<ExpandedPatientDocument>>);
-        while (_result is ApiErrorResult<List<ExpandedPatientDocument>>) {
+        while (_result is ApiErrorResult<List<ExpandedPatientDocument>> ||
+            a.data is ApiErrorResult) {
           return CentralError(
             code: (_result as ApiErrorResult).errorCode,
-            toExecute: d.retry,
+            toExecute: () async {
+              a.retry();
+              d.retry();
+            },
           );
         }
         final _data =
             (_result as ApiDataResult<List<ExpandedPatientDocument>>).data;
+        final _documentTypes =
+            (a.data as ApiDataResult<List<DoctorDocumentTypeItem>>).data;
         while (_data.isEmpty) {
           return CentralNoItems(message: context.loc.noItemsFound);
         }
@@ -126,8 +137,6 @@ class _PatientDocumentsViewDialogState
                             scrollDirection: Axis.horizontal,
                             child: Builder(
                               builder: (context) {
-                                final _documentTypes =
-                                    a.constants?.documentType;
                                 return RadioGroup<String>(
                                   groupValue: _documentTypeId,
                                   onChanged: (val) {
@@ -141,20 +150,19 @@ class _PatientDocumentsViewDialogState
                                   child: Row(
                                     spacing: 8,
                                     children: [
-                                      if (_documentTypes != null)
-                                        ..._documentTypes.map((e) {
-                                          return SizedBox(
-                                            width: 120,
-                                            child: RadioListTile<String>(
-                                              title: Text(
-                                                l.isEnglish
-                                                    ? e.name_en
-                                                    : e.name_ar,
-                                              ),
-                                              value: e.id,
+                                      ..._documentTypes.map((e) {
+                                        return SizedBox(
+                                          width: 120,
+                                          child: RadioListTile<String>(
+                                            title: Text(
+                                              l.isEnglish
+                                                  ? e.name_en
+                                                  : e.name_ar,
                                             ),
-                                          );
-                                        }),
+                                            value: e.id,
+                                          ),
+                                        );
+                                      }),
                                     ],
                                   ),
                                 );

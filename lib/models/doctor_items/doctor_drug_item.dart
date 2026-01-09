@@ -9,6 +9,7 @@ class DoctorDrugItem extends DoctorItem {
 
   const DoctorDrugItem({
     required super.id,
+    required super.doc_id,
     required super.name_en,
     required super.name_ar,
     required this.concentration,
@@ -20,6 +21,7 @@ class DoctorDrugItem extends DoctorItem {
 
   DoctorDrugItem copyWith({
     String? id,
+    String? doc_id,
     String? name_en,
     String? name_ar,
     double? concentration,
@@ -29,6 +31,7 @@ class DoctorDrugItem extends DoctorItem {
   }) {
     return DoctorDrugItem(
       id: id ?? this.id,
+      doc_id: doc_id ?? this.doc_id,
       name_en: name_en ?? this.name_en,
       name_ar: name_ar ?? this.name_ar,
       concentration: concentration ?? this.concentration,
@@ -46,6 +49,7 @@ class DoctorDrugItem extends DoctorItem {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
+      'doc_id': doc_id,
       'name_en': name_en,
       'name_ar': name_ar,
       'concentration': concentration,
@@ -58,6 +62,7 @@ class DoctorDrugItem extends DoctorItem {
   factory DoctorDrugItem.fromJson(Map<String, dynamic> map) {
     return DoctorDrugItem(
       id: map['id'] as String,
+      doc_id: map['doc_id'] as String,
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
       concentration: map['concentration'] as double,
@@ -76,6 +81,7 @@ class DoctorDrugItem extends DoctorItem {
   List<Object> get props {
     return [
       id,
+      doc_id,
       name_en,
       name_ar,
       concentration,

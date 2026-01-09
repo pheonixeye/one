@@ -2,6 +2,7 @@ import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/specialities_api.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_speciality.dart';
@@ -97,6 +98,7 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctorProfileItems<DoctorDrugItem>(
       api: DoctorProfileItemsApi<DoctorDrugItem>(
         item: ProfileSetupItem.drugs,
+        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),
@@ -105,6 +107,7 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctorProfileItems<DoctorLabItem>(
       api: DoctorProfileItemsApi<DoctorLabItem>(
         item: ProfileSetupItem.labs,
+        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),
@@ -113,6 +116,7 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctorProfileItems<DoctorRadItem>(
       api: DoctorProfileItemsApi<DoctorRadItem>(
         item: ProfileSetupItem.rads,
+        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),
@@ -121,6 +125,7 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctorProfileItems<DoctorSupplyItem>(
       api: DoctorProfileItemsApi<DoctorSupplyItem>(
         item: ProfileSetupItem.supplies,
+        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),
@@ -129,6 +134,16 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctorProfileItems<DoctorProcedureItem>(
       api: DoctorProfileItemsApi<DoctorProcedureItem>(
         item: ProfileSetupItem.procedures,
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.documents),
+    create: (context) => PxDoctorProfileItems<DoctorDocumentTypeItem>(
+      api: DoctorProfileItemsApi<DoctorDocumentTypeItem>(
+        item: ProfileSetupItem.documents,
+        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),

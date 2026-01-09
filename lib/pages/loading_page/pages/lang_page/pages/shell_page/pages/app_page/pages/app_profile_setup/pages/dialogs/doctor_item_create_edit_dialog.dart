@@ -4,6 +4,7 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/profile_setup_item_ext.dart';
 import 'package:one/models/doctor_items/doctor_rad_item.dart';
 import 'package:one/models/doctor_items/profile_setup_item.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
 
@@ -77,6 +78,9 @@ class _DoctorItemCreateEditDialogState
   ///final double buying_price;
   ///final double selling_price;
   ///final bool notify_on_reorder_quantity;
+  ///[DOCUMENTS]
+  ///final String name_en;
+  ///final String name_ar;
   ///
 
   @override
@@ -576,6 +580,7 @@ class _DoctorItemCreateEditDialogState
                   ),
                 ),
               ],
+              ProfileSetupItem.documents => [],
             },
           ],
         ),
@@ -588,6 +593,7 @@ class _DoctorItemCreateEditDialogState
             if (formKey.currentState!.validate()) {
               final _itemJson = {
                 'id': widget.item?['id'] ?? '',
+                'doc_id': context.read<PxAuth>().doc_id,
                 'name_en': _nameEnController.text,
                 'name_ar': _nameArController.text,
                 'item': widget.type.name.toString(),
@@ -625,7 +631,6 @@ class _DoctorItemCreateEditDialogState
                   _procedureDiscountController.text,
                 ),
               };
-              // prettyPrint(_itemJson);
               Navigator.pop(context, _itemJson);
             }
           },

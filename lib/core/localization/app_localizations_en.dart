@@ -1252,4 +1252,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountType => 'Account Type';
+
+  @override
+  String get documents => 'Documents';
 }

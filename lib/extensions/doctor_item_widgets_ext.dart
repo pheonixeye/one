@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/models/doctor_items/doctor_drug_item.dart';
 import 'package:one/models/doctor_items/doctor_lab_item.dart';
 import 'package:one/models/doctor_items/doctor_procedure_item.dart';
@@ -279,6 +280,16 @@ extension WxDoctorProcedureItem on DoctorProcedureItem {
         ],
       ),
     );
+  }
+
+  Widget createEditWidget(BuildContext context) {
+    return const SizedBox();
+  }
+}
+
+extension WxDoctorDocumentTypeItem on DoctorDocumentTypeItem {
+  Widget viewWidgets(BuildContext context) {
+    return SizedBox();
   }
 
   Widget createEditWidget(BuildContext context) {

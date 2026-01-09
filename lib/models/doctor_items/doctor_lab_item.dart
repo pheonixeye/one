@@ -9,6 +9,7 @@ class DoctorLabItem extends DoctorItem implements Equatable {
 
   const DoctorLabItem({
     required super.id,
+    required super.doc_id,
     required super.name_en,
     required super.name_ar,
     required this.special_instructions,
@@ -17,12 +18,14 @@ class DoctorLabItem extends DoctorItem implements Equatable {
 
   DoctorLabItem copyWith({
     String? id,
+    String? doc_id,
     String? name_en,
     String? name_ar,
     String? special_instructions,
   }) {
     return DoctorLabItem(
       id: id ?? this.id,
+      doc_id: doc_id ?? this.doc_id,
       special_instructions: special_instructions ?? this.special_instructions,
       name_en: name_en ?? this.name_en,
       name_ar: name_ar ?? this.name_ar,
@@ -33,6 +36,7 @@ class DoctorLabItem extends DoctorItem implements Equatable {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
+      'doc_id': doc_id,
       'name_en': name_en,
       'name_ar': name_ar,
       'special_instructions': special_instructions,
@@ -42,6 +46,7 @@ class DoctorLabItem extends DoctorItem implements Equatable {
   factory DoctorLabItem.fromJson(Map<String, dynamic> map) {
     return DoctorLabItem(
       id: map['id'] as String,
+      doc_id: map['doc_id'] as String,
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
       special_instructions: map['special_instructions'] as String,
@@ -49,7 +54,13 @@ class DoctorLabItem extends DoctorItem implements Equatable {
   }
 
   @override
-  List<Object> get props => [id, name_en, name_ar, special_instructions];
+  List<Object> get props => [
+    id,
+    doc_id,
+    name_en,
+    name_ar,
+    special_instructions,
+  ];
 
   @override
   bool get stringify => true;
