@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:one/core/api/patient_document_api.dart';
+import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -92,7 +93,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                 fit: StackFit.expand,
                                 children: [
                                   //todo: put items
-                                  ...clinic.prescription_details.details.entries.map((
+                                  ...PrescriptionDetails.initial().details.entries.map((
                                     x,
                                   ) {
                                     return Visibility(
@@ -174,7 +175,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                     );
                                   }),
                                   if (s.view == PrescriptionView.regular)
-                                    ...clinic.prescription_details.details.entries.map((
+                                    ...PrescriptionDetails.initial().details.entries.map((
                                       x,
                                     ) {
                                       return Visibility(
@@ -626,8 +627,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                       scrollDirection: Axis.horizontal,
                                       children: [
                                         if (s.view == PrescriptionView.regular)
-                                          ...clinic
-                                              .prescription_details
+                                          ...PrescriptionDetails.initial()
                                               .details
                                               .entries
                                               .map((e) {

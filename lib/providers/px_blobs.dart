@@ -44,7 +44,11 @@ class PxBlobs extends ChangeNotifier {
     required Uint8List file_bytes,
     required String filename,
   }) async {
-    await api.updateBlobFile(id, file_bytes: file_bytes, filename: filename);
+    await api.updateBlobFile(
+      id,
+      file_bytes: file_bytes,
+      filename: filename,
+    );
     await _init();
   }
 }

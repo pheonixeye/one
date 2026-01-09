@@ -434,5 +434,6 @@
     "enterValidPhoneForReciept" : "Enter a Valid Phone Number For The Reciept",
     "noRecieptInfoFound" : "No Selected Reciept Info Found On This Device",
     "accountType" : "Account Type",
-    "documents" : "Documents"
+    "documents" : "Documents",
+    "noImageFound" : "No Image Found"
 }

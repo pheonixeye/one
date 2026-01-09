@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:one/assets/assets.dart';
+import 'package:one/extensions/loc_ext.dart';
 
 class ImageViewDialog extends StatelessWidget {
   const ImageViewDialog({
@@ -28,7 +30,30 @@ class ImageViewDialog extends StatelessWidget {
       content: SizedBox(
         width: MediaQuery.sizeOf(context).width / 2,
         height: MediaQuery.sizeOf(context).height / 2,
-        child: Image.memory(imageBytes),
+        child: Image.memory(
+          imageBytes,
+          errorBuilder: (context, error, stackTrace) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8,
+                  children: [
+                    Image.asset(
+                      AppAssets.errorIcon,
+                      width: 75,
+                      height: 75,
+                    ),
+                    Text(
+                      context.loc.noImageFound,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

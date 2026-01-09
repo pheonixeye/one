@@ -89,7 +89,7 @@ class PrescriptionPdfBuilder {
           child: pw.Stack(
             alignment: pw.Alignment.center,
             children: [
-              ...clinic.prescription_details.details.entries.map((e) {
+              ...PrescriptionDetails.initial().details.entries.map((e) {
                 return pw.Positioned(
                   top: e.value.y_coord,
                   left: e.value.x_coord,

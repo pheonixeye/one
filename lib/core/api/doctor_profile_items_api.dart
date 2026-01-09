@@ -25,7 +25,7 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
 
   Future<ApiResult<List<T>>> fetchDoctorProfileItems() async {
     try {
-      final _result = await PocketbaseHelper.pbData!
+      final _result = await PocketbaseHelper.pbData
           .collection(collection)
           .getList(
             perPage: 500,
@@ -60,24 +60,24 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
   }
 
   Future<void> createItem(Map<String, dynamic> item) async {
-    await PocketbaseHelper.pbData!.collection(collection).create(body: item);
+    await PocketbaseHelper.pbData.collection(collection).create(body: item);
   }
 
   Future<void> updateItem(Map<String, dynamic> item) async {
-    await PocketbaseHelper.pbData!
+    await PocketbaseHelper.pbData
         .collection(collection)
         .update(item['id'], body: item);
   }
 
   Future<void> deleteItem(DoctorItem item) async {
-    await PocketbaseHelper.pbData!.collection(collection).delete(item.id);
+    await PocketbaseHelper.pbData.collection(collection).delete(item.id);
   }
 
   @Unused()
   Future<ApiResult<List<DoctorItem>>> searchForItems(String item_name) async {
     String filterField = containsArabic(item_name) ? 'name_ar' : 'name_en';
     try {
-      final _result = await PocketbaseHelper.pbData!
+      final _result = await PocketbaseHelper.pbData
           .collection(collection)
           .getList(
             perPage: 500,

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
-import 'package:one/models/clinic/prescription_details.dart';
 
 class Clinic implements Equatable {
   final String id;
@@ -15,7 +14,6 @@ class Clinic implements Equatable {
   final bool is_main;
   final bool is_active;
   final String prescription_file;
-  final PrescriptionDetails prescription_details;
   final List<ClinicSchedule> clinic_schedule;
 
   const Clinic({
@@ -31,7 +29,6 @@ class Clinic implements Equatable {
     required this.is_main,
     required this.is_active,
     required this.prescription_file,
-    required this.prescription_details,
     required this.clinic_schedule,
   });
 
@@ -48,7 +45,6 @@ class Clinic implements Equatable {
     bool? is_main,
     bool? is_active,
     String? prescription_file,
-    PrescriptionDetails? prescription_details,
     List<ClinicSchedule>? clinic_schedule,
   }) {
     return Clinic(
@@ -64,7 +60,6 @@ class Clinic implements Equatable {
       is_main: is_main ?? this.is_main,
       is_active: is_active ?? this.is_active,
       prescription_file: prescription_file ?? this.prescription_file,
-      prescription_details: prescription_details ?? this.prescription_details,
       clinic_schedule: clinic_schedule ?? this.clinic_schedule,
     );
   }
@@ -83,7 +78,6 @@ class Clinic implements Equatable {
       'is_main': is_main,
       'is_active': is_active,
       'prescription_file': prescription_file,
-      'prescription_details': prescription_details.toJson(),
       'clinic_schedule': clinic_schedule.map((e) => e.toJson()).toList(),
     };
   }
@@ -102,9 +96,6 @@ class Clinic implements Equatable {
       is_main: map['is_main'] as bool,
       is_active: map['is_active'] as bool,
       prescription_file: map['prescription_file'] as String,
-      prescription_details: PrescriptionDetails.fromJson(
-        map['prescription_details'],
-      ),
       clinic_schedule: (map['clinic_schedule'] as List<dynamic>)
           .map((e) => ClinicSchedule.fromJson(e))
           .toList(),
@@ -129,7 +120,6 @@ class Clinic implements Equatable {
       is_main,
       is_active,
       prescription_file,
-      prescription_details,
       clinic_schedule,
     ];
   }

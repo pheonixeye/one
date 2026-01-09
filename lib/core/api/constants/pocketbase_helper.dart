@@ -7,9 +7,9 @@ class PocketbaseHelper {
 
   static PocketBase? _pbData;
 
-  static PocketBase? get pbData => _pbData;
+  static PocketBase get pbData => _pbData!;
 
   static void initialize(String url) {
-    _pbData = PocketBase(url);
+    _pbData ??= PocketBase(url);
   }
 }

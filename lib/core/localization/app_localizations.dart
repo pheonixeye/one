@@ -2503,6 +2503,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Documents'**
   String get documents;
+
+  /// No description provided for @noImageFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Image Found'**
+  String get noImageFound;
 }
 
 class _AppLocalizationsDelegate

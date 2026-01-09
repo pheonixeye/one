@@ -48,6 +48,7 @@ class PxAuth extends ChangeNotifier {
     } catch (e) {
       _auth = null;
       _user = null;
+      _organization = null;
       notifyListeners();
       rethrow;
     }
@@ -68,6 +69,7 @@ class PxAuth extends ChangeNotifier {
     } catch (e) {
       _auth = null;
       _user = null;
+      _organization = null;
       notifyListeners();
       rethrow;
     }

@@ -1,5 +1,6 @@
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/models/blob_file.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -42,12 +43,23 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     }
                     while (b.files[BlobNames.app_logo.toString()] == null ||
                         b.files[BlobNames.app_logo.toString()]!.isEmpty) {
-                      return Image.asset(AppAssets.icon, width: 40, height: 40);
+                      return Image.asset(
+                        AppAssets.icon,
+                        width: 40,
+                        height: 40,
+                      );
                     }
                     return Image.memory(
                       b.files[BlobNames.app_logo.toString()]!,
                       width: 40,
                       height: 40,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          AppAssets.icon,
+                          width: 40,
+                          height: 40,
+                        );
+                      },
                     );
                   },
                 ),
@@ -68,6 +80,29 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                if (!context.isMobile) const Spacer(),
+                Consumer<PxAuth>(
+                  builder: (context, auth, _) {
+                    while (auth.organization == null) {
+                      return const SizedBox(
+                        height: 8,
+                        width: 80,
+                        child: LinearProgressIndicator(),
+                      );
+                    }
+                    if (context.isMobile) {
+                      return SizedBox();
+                    } else {
+                      return Text(
+                        '${l.isEnglish ? auth.organization?.name_en : auth.organization?.name_ar}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      );
+                    }
+                  },
                 ),
                 const Spacer(),
                 //TODO

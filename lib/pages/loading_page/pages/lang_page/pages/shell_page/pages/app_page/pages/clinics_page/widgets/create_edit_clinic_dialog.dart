@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
-import 'package:one/models/clinic/prescription_details.dart';
 
 class CreateEditClinicDialog extends StatefulWidget {
   const CreateEditClinicDialog({super.key, this.clinic});
@@ -290,7 +289,6 @@ class _CreateEditClinicDialogState extends State<CreateEditClinicDialog> {
                 is_main: _is_main!,
                 is_active: true,
                 prescription_file: '',
-                prescription_details: PrescriptionDetails.initial(),
                 clinic_schedule: widget.clinic?.clinic_schedule ?? [],
               );
               Navigator.pop(context, _clinic);

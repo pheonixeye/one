@@ -1255,4 +1255,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get documents => 'Documents';
+
+  @override
+  String get noImageFound => 'No Image Found';
 }

@@ -8,15 +8,33 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:http/http.dart' as http;
 
 class BlobApi {
-  const BlobApi();
+  const BlobApi({
+    required this.doc_id,
+  });
 
+  final String doc_id;
   final _collection = 'blobs';
 
   Future<ApiResult<List<BlobFile>>> fetchBlobs() async {
     try {
-      final _result = await PocketbaseHelper.pbBase
+      final _result = await PocketbaseHelper.pbData
           .collection(_collection)
-          .getFullList();
+          .getFullList(
+            filter: "doc_id = '$doc_id'",
+          );
+
+      if (_result.isEmpty) {
+        BlobNames.values.map((b) async {
+          await PocketbaseHelper.pbData
+              .collection(_collection)
+              .create(
+                body: {
+                  'doc_id': doc_id,
+                  'name': b.name,
+                },
+              );
+        }).toList();
+      }
 
       final _blobs = _result.map((e) => BlobFile.fromRecordModel(e)).toList();
 
@@ -35,7 +53,7 @@ class BlobApi {
     required String filename,
   }) async {
     try {
-      await PocketbaseHelper.pbBase
+      await PocketbaseHelper.pbData
           .collection(_collection)
           .update(
             id,

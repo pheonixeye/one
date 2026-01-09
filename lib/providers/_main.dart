@@ -66,7 +66,9 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxBlobs(
-      api: BlobApi(),
+      api: BlobApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
     ),
   ),
   ChangeNotifierProvider(

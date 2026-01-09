@@ -4,14 +4,26 @@ import 'package:pocketbase/pocketbase.dart';
 
 class BlobFile extends Equatable {
   final String id;
+  final String doc_id;
   final String name;
   final String file;
 
-  const BlobFile({required this.id, required this.name, required this.file});
+  const BlobFile({
+    required this.id,
+    required this.doc_id,
+    required this.name,
+    required this.file,
+  });
 
-  BlobFile copyWith({String? id, String? name, String? file}) {
+  BlobFile copyWith({
+    String? id,
+    String? doc_id,
+    String? name,
+    String? file,
+  }) {
     return BlobFile(
       id: id ?? this.id,
+      doc_id: doc_id ?? this.doc_id,
       name: name ?? this.name,
       file: file ?? this.file,
     );
@@ -20,6 +32,7 @@ class BlobFile extends Equatable {
   factory BlobFile.fromRecordModel(RecordModel e) {
     return BlobFile(
       id: e.getStringValue('id'),
+      doc_id: e.getStringValue('doc_id'),
       name: e.getStringValue('name'),
       file: e.getStringValue('file'),
     );
@@ -29,12 +42,17 @@ class BlobFile extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [id, name, file];
+  List<Object> get props => [
+    id,
+    doc_id,
+    name,
+    file,
+  ];
 }
 
 extension PocketbaseExt on BlobFile {
   String get fileUrl =>
-      '${PocketbaseHelper.pbBase.baseURL}/api/files/blobs/$id/$file';
+      '${PocketbaseHelper.pbData.baseURL}/api/files/blobs/$id/$file';
 }
 
 enum BlobNames {

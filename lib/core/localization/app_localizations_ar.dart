@@ -1251,4 +1251,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get documents => 'المستندات';
+
+  @override
+  String get noImageFound => 'لم يتم العثور علي صورة';
 }
