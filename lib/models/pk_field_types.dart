@@ -1,11 +1,11 @@
-enum PcFormFieldType {
+enum PkFieldType {
   textfield,
   dropdown,
   checkbox;
 
-  const PcFormFieldType();
+  const PkFieldType();
 
-  static PcFormFieldType fromString(String value) {
+  static PkFieldType fromString(String value) {
     return switch (value) {
       'textfield' => textfield,
       'dropdown' => dropdown,

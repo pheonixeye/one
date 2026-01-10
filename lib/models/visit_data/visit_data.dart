@@ -7,7 +7,7 @@ import 'package:one/models/doctor_items/doctor_procedure_item.dart';
 import 'package:one/models/doctor_items/doctor_rad_item.dart';
 import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/models/patient.dart';
-import 'package:one/models/pc_form.dart';
+import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
 
 class VisitData extends Equatable {
@@ -20,7 +20,7 @@ class VisitData extends Equatable {
   final List<DoctorRadItem> rads;
   final List<DoctorProcedureItem> procedures;
   final List<DoctorSupplyItem> supplies;
-  final List<PcForm> forms;
+  final List<PkForm> forms;
   final List<VisitFormItem> forms_data;
   final Map drug_data;
   final Map<String, dynamic>? supplies_data;
@@ -51,7 +51,7 @@ class VisitData extends Equatable {
     List<DoctorRadItem>? rads,
     List<DoctorProcedureItem>? procedures,
     List<DoctorSupplyItem>? supplies,
-    List<PcForm>? forms,
+    List<PkForm>? forms,
     List<VisitFormItem>? forms_data,
     Map? drug_data,
     Map<String, dynamic>? supplies_data,
@@ -122,9 +122,9 @@ class VisitData extends Equatable {
           (x) => DoctorSupplyItem.fromJson(x as Map<String, dynamic>),
         ),
       ),
-      forms: List<PcForm>.from(
-        (map['forms'] as List<dynamic>).map<PcForm>(
-          (x) => PcForm.fromJson(x as Map<String, dynamic>),
+      forms: List<PkForm>.from(
+        (map['forms'] as List<dynamic>).map<PkForm>(
+          (x) => PkForm.fromJson(x as Map<String, dynamic>),
         ),
       ),
       forms_data: (map['forms_data'] as List<dynamic>)
@@ -187,7 +187,7 @@ class VisitData extends Equatable {
           .toList(),
       forms:
           (e.toJson()['expand']['forms_data_ids'] as List<dynamic>?)
-              ?.map((e) => PcForm.fromJson(e['expand']['form_id']))
+              ?.map((e) => PkForm.fromJson(e['expand']['form_id']))
               .toList() ??
           [],
       forms_data: e

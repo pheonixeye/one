@@ -1,4 +1,4 @@
-import 'package:one/models/pc_form.dart';
+import 'package:one/models/pk_form.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:one/widgets/snackbar_.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/patient_form_field_data.dart';
 import 'package:one/models/patient_form_item.dart';
-import 'package:one/models/pc_form_field_types.dart';
+import 'package:one/models/pk_field_types.dart';
 import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_forms.dart';
@@ -113,7 +113,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                           );
                         }
                         while (f.result != null &&
-                            (f.result as ApiDataResult<List<PcForm>>)
+                            (f.result as ApiDataResult<List<PkForm>>)
                                 .data
                                 .isEmpty) {
                           return CentralNoItems(
@@ -121,7 +121,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                           );
                         }
                         final _pcForms =
-                            (f.result as ApiDataResult<List<PcForm>>).data;
+                            (f.result as ApiDataResult<List<PkForm>>).data;
                         return ListView.builder(
                           itemCount: _pcForms.length,
                           itemBuilder: (context, index) {
@@ -186,11 +186,12 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                                 await pf.attachFormToPatient(
                                                   PatientFormItem(
                                                     id: '',
+                                                    doc_id: pf.api.doc_id,
                                                     patient_id:
                                                         pf.api.patient_id,
                                                     form_id: _pcForm.id,
                                                     form_data: [
-                                                      ..._pcForm.form_fields.map((
+                                                      ..._pcForm.fields.map((
                                                         _f,
                                                       ) {
                                                         return PatientFormFieldData(
@@ -260,9 +261,9 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                           );
                         }
                         return ListView.builder(
-                          itemCount: pf.pcForm?.form_fields.length,
+                          itemCount: pf.pcForm?.fields.length,
                           itemBuilder: (context, index) {
-                            final _formField = pf.pcForm?.form_fields[index];
+                            final _formField = pf.pcForm?.fields[index];
 
                             while (_formField == null) {
                               return Card.outlined(
@@ -282,15 +283,14 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                             return Card.outlined(
                               elevation: 6,
                               color: switch (_formField.field_type) {
-                                PcFormFieldType.textfield =>
-                                  Colors.green.shade50,
-                                PcFormFieldType.dropdown => Colors.blue.shade50,
-                                PcFormFieldType.checkbox => Colors.red.shade50,
+                                PkFieldType.textfield => Colors.green.shade50,
+                                PkFieldType.dropdown => Colors.blue.shade50,
+                                PkFieldType.checkbox => Colors.red.shade50,
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: switch (_formField.field_type) {
-                                  PcFormFieldType.textfield => ListTile(
+                                  PkFieldType.textfield => ListTile(
                                     title: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(_formField.field_name),
@@ -352,7 +352,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                       },
                                     ),
                                   ),
-                                  PcFormFieldType.dropdown => ListTile(
+                                  PkFieldType.dropdown => ListTile(
                                     title: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(_formField.field_name),
@@ -409,7 +409,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                       ],
                                     ),
                                   ),
-                                  PcFormFieldType.checkbox => ListTile(
+                                  PkFieldType.checkbox => ListTile(
                                     title: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(_formField.field_name),

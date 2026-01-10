@@ -1,5 +1,6 @@
 import 'package:one/core/api/patient_document_api.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
+import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visits_dialog.dart';
@@ -70,7 +71,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
             return ListTile(
               leading: SmBtn(
                 onPressed: null,
-                child: Text('${widget.index + 1}'),
+                child: Text('${widget.index + 1}'.toArabicNumber(context)),
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -445,13 +446,21 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                                   return MultiProvider(
                                     providers: [
                                       ChangeNotifierProvider(
-                                        create: (context) =>
-                                            PxForms(api: FormsApi()),
+                                        create: (context) => PxForms(
+                                          api: FormsApi(
+                                            doc_id: context
+                                                .read<PxAuth>()
+                                                .doc_id,
+                                          ),
+                                        ),
                                       ),
                                       ChangeNotifierProvider(
                                         create: (context) => PxPatientForms(
                                           api: PatientFormsApi(
                                             patient_id: widget.patient.id,
+                                            doc_id: context
+                                                .read<PxAuth>()
+                                                .doc_id,
                                           ),
                                         ),
                                       ),

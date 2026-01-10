@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one/models/clinic/prescription_details.dart';
-import 'package:one/models/pc_form.dart';
+import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -107,10 +107,10 @@ class PxVisitPrescriptionState extends ChangeNotifier {
   List<SingleFieldData>? _formItems;
   List<SingleFieldData>? get formItems => _formItems;
 
-  PcForm? _selectedForm;
-  PcForm? get selectedForm => _selectedForm;
+  PkForm? _selectedForm;
+  PkForm? get selectedForm => _selectedForm;
 
-  void selectFormItems(List<SingleFieldData>? items, PcForm? form) {
+  void selectFormItems(List<SingleFieldData>? items, PkForm? form) {
     _formItems = items;
     _selectedForm = form;
     notifyListeners();

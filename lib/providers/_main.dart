@@ -152,7 +152,9 @@ final List<SingleChildWidget> providers = [
   //profile items providers##
   ChangeNotifierProvider(
     create: (context) => PxForms(
-      api: FormsApi(),
+      api: FormsApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
     ),
   ),
   ChangeNotifierProvider(

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/pc_form.dart';
-import 'package:one/models/pc_form_field_types.dart';
+import 'package:one/models/pk_form.dart';
+import 'package:one/models/pk_field_types.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visit_data.dart';
@@ -19,7 +19,7 @@ class VisitFormViewEditCard extends StatefulWidget {
     required this.form_data,
     required this.index,
   });
-  final PcForm form;
+  final PkForm form;
   final int index;
   final VisitFormItem form_data;
 
@@ -94,7 +94,7 @@ class _VisitFormViewEditCardState extends State<VisitFormViewEditCard> {
                 ],
               ),
               children: [
-                ...widget.form.form_fields.map((e) {
+                ...widget.form.fields.map((e) {
                   var _form_field = _state?.form_data.firstWhere(
                     (x) => x.id == e.id,
                   );
@@ -104,7 +104,7 @@ class _VisitFormViewEditCardState extends State<VisitFormViewEditCard> {
                   );
 
                   return switch (e.field_type) {
-                    PcFormFieldType.textfield => ListTile(
+                    PkFieldType.textfield => ListTile(
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(e.field_name),
@@ -152,7 +152,7 @@ class _VisitFormViewEditCardState extends State<VisitFormViewEditCard> {
                         },
                       ),
                     ),
-                    PcFormFieldType.dropdown => ListTile(
+                    PkFieldType.dropdown => ListTile(
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(e.field_name),
@@ -204,7 +204,7 @@ class _VisitFormViewEditCardState extends State<VisitFormViewEditCard> {
                         ],
                       ),
                     ),
-                    PcFormFieldType.checkbox => ListTile(
+                    PkFieldType.checkbox => ListTile(
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(e.field_name),

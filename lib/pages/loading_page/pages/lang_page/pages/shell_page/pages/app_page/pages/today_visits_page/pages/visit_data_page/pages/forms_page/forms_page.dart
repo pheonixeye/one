@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/pc_form.dart';
+import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/form_picker_dialog.dart';
@@ -149,7 +149,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                 titleStyle: TextStyle(fontSize: 16, color: Colors.white),
                 onPress: () async {
                   _animationController.reverse();
-                  final _form = await showDialog<PcForm?>(
+                  final _form = await showDialog<PkForm?>(
                     context: context,
                     builder: (context) {
                       return const FormPickerDialog();
@@ -165,7 +165,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                     patient_id:
                         (v.result as ApiDataResult<VisitData>).data.patient.id,
                     form_id: _form.id,
-                    form_data: _form.form_fields
+                    form_data: _form.fields
                         .map(
                           (x) => SingleFieldData(
                             id: x.id,

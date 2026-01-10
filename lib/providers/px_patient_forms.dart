@@ -3,7 +3,7 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/patient_forms_api.dart';
 import 'package:one/models/patient_form_field_data.dart';
 import 'package:one/models/patient_form_item.dart';
-import 'package:one/models/pc_form.dart';
+import 'package:one/models/pk_form.dart';
 
 class PxPatientForms extends ChangeNotifier {
   final PatientFormsApi api;
@@ -40,21 +40,21 @@ class PxPatientForms extends ChangeNotifier {
     await _fetchPatientForms();
   }
 
-  PcForm? _pcForm;
-  PcForm? get pcForm => _pcForm;
+  PkForm? _pcForm;
+  PkForm? get pcForm => _pcForm;
 
   PatientFormItem? _formItem;
   PatientFormItem? get formItem => _formItem;
 
   Future<void> _checkIfFormIsUpdated(
-    PcForm? pcForm,
+    PkForm? pcForm,
     PatientFormItem? formItem,
   ) async {
     await api.checkIfFormIsUpdated(formItem!, pcForm!);
     await _fetchPatientForms();
   }
 
-  Future<void> selectForms(PcForm? pcForm, PatientFormItem? formItem) async {
+  Future<void> selectForms(PkForm? pcForm, PatientFormItem? formItem) async {
     await _checkIfFormIsUpdated(pcForm, formItem);
     _pcForm = pcForm;
     _formItem = formItem;

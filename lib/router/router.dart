@@ -569,7 +569,11 @@ class AppRouter {
                     name: forms,
                     builder: (context, state) {
                       return ChangeNotifierProvider.value(
-                        value: PxForms(api: const FormsApi()),
+                        value: PxForms(
+                          api: FormsApi(
+                            doc_id: context.read<PxAuth>().doc_id,
+                          ),
+                        ),
                         child: FormsPage(key: state.pageKey),
                       );
                     },

@@ -5,9 +5,9 @@ import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/pc_form.dart';
-import 'package:one/models/pc_form_field.dart';
-import 'package:one/models/pc_form_field_types.dart';
+import 'package:one/models/pk_form.dart';
+import 'package:one/models/pk_field.dart';
+import 'package:one/models/pk_field_types.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/forms_page/widgets/create_edit_form_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/forms_page/widgets/edit_field_name_dialog.dart';
 import 'package:one/providers/px_forms.dart';
@@ -15,7 +15,6 @@ import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/prompt_dialog.dart';
 import 'package:one/widgets/themed_popupmenu_btn.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class FormViewEditCard extends StatefulWidget {
   const FormViewEditCard({
@@ -23,7 +22,7 @@ class FormViewEditCard extends StatefulWidget {
     required this.pcForm,
     required this.index,
   });
-  final PcForm pcForm;
+  final PkForm pcForm;
   final int index;
   @override
   State<FormViewEditCard> createState() => _FormViewEditCardState();
@@ -63,7 +62,7 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                     subtitle: const Divider(),
                   ),
                 ),
-                ...widget.pcForm.form_fields.map((field) {
+                ...widget.pcForm.fields.map((field) {
                   return Card.outlined(
                     elevation: 6,
                     shape: RoundedSuperellipseBorder(
@@ -121,7 +120,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                       context,
                                       toExecute: () async {
                                         await f.updateFieldValue(
-                                          widget.pcForm,
                                           _newFieldToUpdateName,
                                         );
                                       },
@@ -171,7 +169,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                       context,
                                       toExecute: () async {
                                         await f.removeFieldFromForm(
-                                          widget.pcForm,
                                           field,
                                         );
                                       },
@@ -191,7 +188,7 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                               children: [
                                 Text(context.loc.fieldType),
                                 const SizedBox(width: 10),
-                                ...PcFormFieldType.values.map((type) {
+                                ...PkFieldType.values.map((type) {
                                   return Expanded(
                                     child: FilterChip.elevated(
                                       selected: type == field.field_type,
@@ -222,7 +219,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                           context,
                                           toExecute: () async {
                                             await f.updateFieldValue(
-                                              widget.pcForm,
                                               _newFieldWithUpdatedType,
                                             );
                                           },
@@ -304,7 +300,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                               context,
                                               toExecute: () async {
                                                 await f.updateFieldValue(
-                                                  widget.pcForm,
                                                   _fieldToUpdate,
                                                 );
                                               },
@@ -355,16 +350,18 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                           );
                           return;
                         }
-                        final _newField = PcFormField(
-                          id: const Uuid().v4(),
+                        final _newField = PkField(
+                          id: '',
+                          form_id: widget.pcForm.id,
+                          doc_id: widget.pcForm.doc_id,
                           field_name: 'new_field',
-                          field_type: PcFormFieldType.textfield,
+                          field_type: PkFieldType.textfield,
                           values: const [],
                         );
                         await shellFunction(
                           context,
                           toExecute: () async {
-                            await f.addNewFieldToForm(widget.pcForm, _newField);
+                            await f.addNewFieldToForm(_newField);
                           },
                         );
                       },
@@ -393,7 +390,7 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                           );
                           return;
                         }
-                        final _toUpdate = await showDialog<PcForm?>(
+                        final _toUpdate = await showDialog<PkForm?>(
                           context: context,
                           builder: (context) {
                             return CreateEditFormDialog(form: widget.pcForm);

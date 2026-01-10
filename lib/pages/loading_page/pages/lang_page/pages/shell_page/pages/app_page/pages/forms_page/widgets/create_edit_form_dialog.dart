@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/pc_form.dart';
+import 'package:one/models/pk_form.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:provider/provider.dart';
 
 class CreateEditFormDialog extends StatefulWidget {
   const CreateEditFormDialog({super.key, this.form});
-  final PcForm? form;
+  final PkForm? form;
 
   @override
   State<CreateEditFormDialog> createState() => _CreateEditFormDialogState();
@@ -107,11 +109,12 @@ class _CreateEditFormDialogState extends State<CreateEditFormDialog> {
         ElevatedButton.icon(
           onPressed: () {
             if (formKey.currentState!.validate()) {
-              final _form = PcForm(
+              final _form = PkForm(
                 id: widget.form?.id ?? '',
+                doc_id: context.read<PxAuth>().doc_id,
                 name_en: _nameEnController.text,
                 name_ar: _nameArController.text,
-                form_fields: widget.form?.form_fields ?? const [],
+                fields: widget.form?.fields ?? const [],
               );
               Navigator.pop(context, _form);
             }
