@@ -23,5 +23,5 @@ extension PrescriptionFileUrl on Clinic {
 
 extension PatientDocumentUrl on PatientDocument {
   String patientDocumentUrl() =>
-      '${PocketbaseHelper.pbData.baseURL}/api/files/patient__documents/$id/$document';
+      '${PocketbaseHelper.pbData.baseURL}/api/files/patient__documents/$id/$document_url';
 }

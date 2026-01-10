@@ -568,7 +568,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                                 related_visit_data_id: '',
                                 document_type_id:
                                     _imgSrcDocType.document_type_id,
-                                document: '',
+                                document_url: '',
                               );
 
                               if (context.mounted) {

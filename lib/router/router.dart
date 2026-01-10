@@ -206,7 +206,9 @@ class AppRouter {
                 path: login, // /:lang/login
                 name: login,
                 builder: (context, state) {
-                  return LoginPage(key: state.pageKey);
+                  return LoginPage(
+                    key: state.pageKey,
+                  );
                 },
                 redirect: (context, state) {
                   if (context.read<PxAuth>().isLoggedIn) {
@@ -217,7 +219,10 @@ class AppRouter {
               ),
               ShellRoute(
                 builder: (context, state, child) {
-                  return ShellPage(key: state.pageKey, child: child);
+                  return ShellPage(
+                    key: state.pageKey,
+                    child: child,
+                  );
                 },
                 redirect: (context, state) async {
                   final _auth = context.read<PxAuth>();
@@ -254,7 +259,9 @@ class AppRouter {
                             path: '/$app', // /:lang/app
                             name: app,
                             builder: (context, state) {
-                              return TodayVisitsPage(key: state.pageKey);
+                              return TodayVisitsPage(
+                                key: state.pageKey,
+                              );
                             },
                             routes: [
                               GoRoute(
@@ -432,8 +439,12 @@ class AppRouter {
                             name: patients,
                             builder: (context, state) {
                               return ChangeNotifierProvider.value(
-                                value: PxPatients(api: PatientsApi()),
-                                child: PatientsPage(key: state.pageKey),
+                                value: PxPatients(
+                                  api: PatientsApi(),
+                                ),
+                                child: PatientsPage(
+                                  key: state.pageKey,
+                                ),
                               );
                             },
                           ),
@@ -453,11 +464,14 @@ class AppRouter {
                                     ),
                                   ),
                                   ChangeNotifierProvider(
-                                    create: (context) =>
-                                        PxRecieptInfo(api: RecieptInfoApi()),
+                                    create: (context) => PxRecieptInfo(
+                                      api: RecieptInfoApi(),
+                                    ),
                                   ),
                                 ],
-                                child: VisitsPage(key: state.pageKey),
+                                child: VisitsPage(
+                                  key: state.pageKey,
+                                ),
                               );
                             },
                           ),
@@ -469,7 +483,9 @@ class AppRouter {
                             path: '/$bookkeeping',
                             name: bookkeeping,
                             builder: (context, state) {
-                              return BookkeepingPage(key: state.pageKey);
+                              return BookkeepingPage(
+                                key: state.pageKey,
+                              );
                             },
                           ),
                         ],
@@ -480,7 +496,9 @@ class AppRouter {
                             path: '/$_profile_setup',
                             name: _profile_setup,
                             builder: (context, state) {
-                              return AppProfileSetup(key: state.pageKey);
+                              return AppProfileSetup(
+                                key: state.pageKey,
+                              );
                             },
                             routes: [
                               ...ProfileSetupItem.values.map((e) {
@@ -515,7 +533,9 @@ class AppRouter {
                     path: mysubscription,
                     name: mysubscription,
                     builder: (context, state) {
-                      return MySubscriptionPage(key: state.pageKey);
+                      return MySubscriptionPage(
+                        key: state.pageKey,
+                      );
                     },
                     routes: [
                       GoRoute(
@@ -540,14 +560,18 @@ class AppRouter {
                     path: assistants,
                     name: assistants,
                     builder: (context, state) {
-                      return AssistantsPage(key: state.pageKey);
+                      return AssistantsPage(
+                        key: state.pageKey,
+                      );
                     },
                   ),
                   GoRoute(
                     path: doctors,
                     name: doctors,
                     builder: (context, state) {
-                      return DoctorsPage(key: state.pageKey);
+                      return DoctorsPage(
+                        key: state.pageKey,
+                      );
                     },
                   ),
                   GoRoute(
@@ -560,7 +584,9 @@ class AppRouter {
                             doc_id: context.read<PxAuth>().doc_id,
                           ),
                         ),
-                        child: ClinicsPage(key: state.pageKey),
+                        child: ClinicsPage(
+                          key: state.pageKey,
+                        ),
                       );
                     },
                   ),
@@ -574,7 +600,9 @@ class AppRouter {
                             doc_id: context.read<PxAuth>().doc_id,
                           ),
                         ),
-                        child: FormsPage(key: state.pageKey),
+                        child: FormsPage(
+                          key: state.pageKey,
+                        ),
                       );
                     },
                   ),
@@ -584,9 +612,12 @@ class AppRouter {
                     name: settings,
                     builder: (context, state) {
                       return ChangeNotifierProvider(
-                        create: (context) =>
-                            PxRecieptInfo(api: RecieptInfoApi()),
-                        child: SettingsPage(key: state.pageKey),
+                        create: (context) => PxRecieptInfo(
+                          api: RecieptInfoApi(),
+                        ),
+                        child: SettingsPage(
+                          key: state.pageKey,
+                        ),
                       );
                     },
                   ),
@@ -594,14 +625,18 @@ class AppRouter {
                     path: notifications,
                     name: notifications,
                     builder: (context, state) {
-                      return NotificationsPage(key: state.pageKey);
+                      return NotificationsPage(
+                        key: state.pageKey,
+                      );
                     },
                   ),
                   GoRoute(
                     path: inventory_supplies,
                     name: inventory_supplies,
                     builder: (context, state) {
-                      return SupplyMovementsPage(key: state.pageKey);
+                      return SupplyMovementsPage(
+                        key: state.pageKey,
+                      );
                     },
                   ),
                   //transaction_result page
@@ -610,7 +645,10 @@ class AppRouter {
                     name: transaction,
                     builder: (context, state) {
                       final _query = state.uri.queryParameters;
-                      return TransactionPage(key: state.pageKey, query: _query);
+                      return TransactionPage(
+                        key: state.pageKey,
+                        query: _query,
+                      );
                     },
                   ),
                   //transaction_result page
@@ -618,7 +656,9 @@ class AppRouter {
                     path: clinics_patients_movements,
                     name: clinics_patients_movements,
                     builder: (context, state) {
-                      return ClinicsPatientsMovementsPage(key: state.pageKey);
+                      return ClinicsPatientsMovementsPage(
+                        key: state.pageKey,
+                      );
                     },
                   ),
                 ],

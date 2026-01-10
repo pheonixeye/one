@@ -227,7 +227,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                       related_visit_id: _data.visit_id,
                       related_visit_data_id: _data.id,
                       document_type_id: _documentTypeId,
-                      document: '',
+                      document_url: '',
                     );
                     await shellFunction(
                       context,
