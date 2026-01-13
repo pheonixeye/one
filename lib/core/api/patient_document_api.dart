@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
@@ -8,6 +9,7 @@ import 'package:one/models/patient_document/patient_document.dart';
 import 'package:http/http.dart' as http;
 import 'package:pocketbase/pocketbase.dart';
 
+@PbData()
 class PatientDocumentApi {
   const PatientDocumentApi({required this.patient_id});
   final String patient_id;

@@ -909,6 +909,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  s3_dart_lite:
+    dependency: "direct main"
+    description:
+      name: s3_dart_lite
+      sha256: "12520a9eddd252b56dd1d33106abbf57ecf65ce6114f278fbf36a69ebbcde787"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   screenshot:
     dependency: "direct main"
     description:
@@ -1251,5 +1259,5 @@ packages:
     source: hosted
     version: "2.1.0"
 sdks:
-  dart: ">=3.9.0 <4.0.0"
+  dart: ">=3.10.4 <4.0.0"
   flutter: ">=3.35.0"

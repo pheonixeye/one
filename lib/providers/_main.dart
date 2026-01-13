@@ -5,6 +5,7 @@ import 'package:one/core/api/specialities_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
+import 'package:one/providers/px_s3_documents.dart';
 import 'package:one/providers/px_speciality.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/auth/api_auth.dart';
@@ -62,6 +63,11 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     create: (context) => PxAuth(
       api: const AuthApi(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxS3Documents(
+      context,
     ),
   ),
   ChangeNotifierProvider(

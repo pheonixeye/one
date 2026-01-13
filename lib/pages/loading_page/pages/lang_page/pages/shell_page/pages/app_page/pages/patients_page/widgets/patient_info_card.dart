@@ -569,6 +569,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                                 document_type_id:
                                     _imgSrcDocType.document_type_id,
                                 document_url: '',
+                                created: DateTime.now().toUtc(),
                               );
 
                               if (context.mounted) {

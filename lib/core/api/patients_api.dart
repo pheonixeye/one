@@ -1,3 +1,4 @@
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:pocketbase/pocketbase.dart';
 // import 'package:one/core/api/cache/api_caching_service.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
@@ -5,6 +6,7 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/models/patient.dart';
 
+@PbData()
 class PatientsApi {
   const PatientsApi();
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:one/models/pk_field.dart';
 
+@PbData()
 class PxForms extends ChangeNotifier {
   PxForms({required this.api}) {
     _fetchDoctorForms();

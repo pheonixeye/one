@@ -1,6 +1,8 @@
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/models/speciality.dart';
 
+@PbBase()
 class SpecialitiesApi {
   const SpecialitiesApi();
 

@@ -165,6 +165,7 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
                             related_visit_data_id: _data.id,
                             document_type_id: _imgSrcDocType.document_type_id,
                             document_url: '',
+                            created: DateTime.now().toUtc(),
                           );
 
                           if (context.mounted) {

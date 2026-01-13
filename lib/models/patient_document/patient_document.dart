@@ -7,6 +7,7 @@ class PatientDocument extends Equatable {
   final String related_visit_data_id;
   final String document_type_id;
   final String document_url;
+  final DateTime created;
 
   const PatientDocument({
     required this.id,
@@ -15,15 +16,18 @@ class PatientDocument extends Equatable {
     required this.related_visit_data_id,
     required this.document_type_id,
     required this.document_url,
+    required this.created,
   });
 
   PatientDocument copyWith({
     String? id,
     String? patient_id,
     String? related_visit_id,
+    String? related_visit_date,
     String? related_visit_data_id,
     String? document_type_id,
     String? document_url,
+    DateTime? created,
   }) {
     return PatientDocument(
       id: id ?? this.id,
@@ -33,6 +37,7 @@ class PatientDocument extends Equatable {
           related_visit_data_id ?? this.related_visit_data_id,
       document_type_id: document_type_id ?? this.document_type_id,
       document_url: document_url ?? this.document_url,
+      created: created ?? this.created,
     );
   }
 
@@ -44,6 +49,7 @@ class PatientDocument extends Equatable {
       'related_visit_data_id': related_visit_data_id,
       'document_type_id': document_type_id,
       'document_url': document_url,
+      'created': created,
     };
   }
 
@@ -55,6 +61,7 @@ class PatientDocument extends Equatable {
       related_visit_data_id: map['related_visit_data_id'] as String,
       document_type_id: map['document_type_id'] as String,
       document_url: map['document_url'] as String,
+      created: map['created'] as DateTime,
     );
   }
 
@@ -70,6 +77,7 @@ class PatientDocument extends Equatable {
       related_visit_data_id,
       document_type_id,
       document_url,
+      created,
     ];
   }
 }

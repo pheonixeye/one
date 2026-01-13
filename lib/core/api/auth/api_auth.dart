@@ -1,9 +1,11 @@
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/auth/auth_exception.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/functions/dprint.dart';
 import 'package:one/utils/shared_prefs.dart';
 
+@PbBase()
 class AuthApi {
   const AuthApi();
 

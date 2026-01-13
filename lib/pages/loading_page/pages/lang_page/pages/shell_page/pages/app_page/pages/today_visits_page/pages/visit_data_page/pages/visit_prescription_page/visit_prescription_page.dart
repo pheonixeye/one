@@ -559,6 +559,8 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                   document_type_id:
                                                       '_docType.id',
                                                   document_url: '',
+                                                  created: DateTime.now()
+                                                      .toUtc(),
                                                 );
                                             await PatientDocumentApi(
                                               patient_id: visit.patient.id,

@@ -1,6 +1,7 @@
 // import 'dart:convert';
 
 // import 'package:hive_ce/hive.dart';
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/app_constants/_app_constants.dart';
@@ -10,6 +11,7 @@ import 'package:one/models/app_constants/subscription_plan.dart';
 import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/app_constants/visit_type.dart';
 
+@PbBase()
 class ConstantsApi {
   const ConstantsApi();
   // static final _n = DateTime.now();

@@ -1,3 +1,4 @@
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -7,6 +8,7 @@ import 'package:one/models/patient_form_item.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:collection/collection.dart';
 
+@PbData()
 class PatientFormsApi {
   final String patient_id;
   final String doc_id;

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
@@ -7,6 +8,7 @@ import 'package:one/models/blob_file.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:http/http.dart' as http;
 
+@PbData()
 class BlobApi {
   const BlobApi({
     required this.doc_id,

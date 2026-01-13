@@ -228,6 +228,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                       related_visit_data_id: _data.id,
                       document_type_id: _documentTypeId,
                       document_url: '',
+                      created: DateTime.now().toUtc(),
                     );
                     await shellFunction(
                       context,
