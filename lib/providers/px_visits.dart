@@ -1,12 +1,8 @@
-// import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/shift.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/visits_api.dart';
-// import 'package:one/functions/first_where_or_null.dart';
-// import 'package:one/models/clinic/schedule_shift.dart';
-import 'package:one/models/visits/_visit.dart';
-import 'package:one/models/visits/visit_create_dto.dart';
+import 'package:one/models/visits/visit.dart';
 
 class PxVisits extends ChangeNotifier {
   final VisitsApi api;
@@ -45,7 +41,7 @@ class PxVisits extends ChangeNotifier {
 
   Future<void> retry() async => await _fetchVisitsOfToday();
 
-  Future<void> addNewVisit(VisitCreateDto dto) async {
+  Future<void> addNewVisit(Visit dto) async {
     await api.addNewVisit(dto);
     await _fetchVisitsOfToday();
   }
@@ -63,34 +59,12 @@ class PxVisits extends ChangeNotifier {
                 as ApiDataResult<List<Visit>>)
             .data;
     final _clinicVisits = _result
-        .where((e) => e.clinic.id == clinic_id)
+        .where((e) => e.clinic_id == clinic_id)
         .toList();
 
     toggleIsUpdating();
     return _clinicVisits;
   }
-
-  //todo:
-  // Future<int?> calculateRemainingVisitsPerClinicShift(
-  //   ClinicSchedule? schedule,
-  //   ScheduleShift? shift,
-  //   DateTime? visit_date,
-  // ) async {
-  //   if (schedule == null || shift == null || visit_date == null) {
-  //     return null;
-  //   }
-  //   toggleIsUpdating();
-  //   final _visits = await _fetchVisitsOfASpecificDate(visit_date)
-  //       as ApiDataResult<List<Visit>>;
-  //   final _shift_visits = _visits.data
-  //       .where((e) => e.visitSchedule.isInSameShift(schedule, shift))
-  //       .toList();
-  //   toggleIsUpdating();
-  //   _remainingVisitsPerClinicShift = _shift_visits.length;
-  //   notifyListeners();
-  //   // print(_remainingVisitsPerClinicShift);
-  //   return _shift_visits.length;
-  // }
 
   Map<Shift, int>? _visitsPerShift;
   Map<Shift, int>? get visitsPerShift => _visitsPerShift;
@@ -105,7 +79,7 @@ class PxVisits extends ChangeNotifier {
             as ApiDataResult<List<Visit>>;
 
     final _clinicVisits = _visits.data
-        .where((visit) => visit.clinic.id == clinic_id)
+        .where((visit) => visit.clinic_id == clinic_id)
         .toList();
 
     if (_clinicVisits.isEmpty) {
@@ -140,9 +114,6 @@ class PxVisits extends ChangeNotifier {
     toggleIsUpdating();
   }
 
-  // int? _remainingVisitsPerClinicShift;
-  // int? get remainingVisitsPerClinicShiftVar => _remainingVisitsPerClinicShift;
-
   bool _isUpdating = false;
   bool get isUpdating => _isUpdating;
 
@@ -176,12 +147,13 @@ class PxVisits extends ChangeNotifier {
     notifyListeners();
   }
 
+  //TODO
   Future<void> updateVisitScheduleShift({
-    required String visit_shift_id,
+    required String visit_id,
     required Shift shift,
   }) async {
     await api.updateVisitScheduleShift(
-      visit_shift_id: visit_shift_id,
+      visit_id: visit_id,
       shift: shift,
     );
     await _fetchVisitsOfToday();

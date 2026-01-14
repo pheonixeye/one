@@ -1,3 +1,4 @@
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/annotations/unused.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
@@ -12,6 +13,7 @@ import 'package:one/models/doctor_items/doctor_rad_item.dart';
 import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/models/doctor_items/profile_setup_item.dart';
 
+@PbData()
 class DoctorProfileItemsApi<T extends DoctorItem> {
   DoctorProfileItemsApi({
     required this.item,

@@ -3,7 +3,7 @@ import 'package:one/core/api/patients_api.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/patient.dart';
-import 'package:one/models/visits/visit_create_dto.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/scan_patient_qr_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
@@ -18,7 +18,6 @@ import 'package:go_router/go_router.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
-import 'package:one/models/visits/_visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/clinics_tab_bar.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/visit_view_card.dart';
 import 'package:one/providers/px_clinics.dart';
@@ -145,7 +144,7 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                           x,
                         ) {
                           final _clinicItems = _items
-                              .where((e) => e.clinic.id == x.id)
+                              .where((e) => e.clinic_id == x.id)
                               .toList();
 
                           while (_clinicItems.isEmpty) {
@@ -308,7 +307,7 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                       return;
                     }
                     //todo: open new visit dialog
-                    final _visitDto = await showDialog<VisitCreateDto?>(
+                    final _visitDto = await showDialog<Visit?>(
                       context: context,
                       builder: (context) {
                         return AddNewVisitDialog(patient: _patientFromDb!);

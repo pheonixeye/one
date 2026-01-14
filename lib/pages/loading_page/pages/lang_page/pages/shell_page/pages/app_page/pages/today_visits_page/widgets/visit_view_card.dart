@@ -1,4 +1,5 @@
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/visit_view_card/discount_managment_row.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/visit_view_card/visit_shift_row.dart';
 import 'package:one/providers/px_auth.dart';
@@ -10,7 +11,6 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/extensions/visit_ext.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/visits/_visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visits.dart';
@@ -200,8 +200,7 @@ class VisitViewCard extends StatelessWidget {
                                     return [
                                       ...a.visitTypes.map((e) {
                                         final _enabled =
-                                            e.name_en !=
-                                            visit.visit_type.name_en;
+                                            e.name_en != visit.visit_type;
                                         return PopupMenuItem(
                                           mouseCursor: _enabled
                                               ? SystemMouseCursors.click
@@ -307,8 +306,7 @@ class VisitViewCard extends StatelessWidget {
                                     return [
                                       ...a.visitStatuses.map((e) {
                                         final _enabled =
-                                            e.name_en !=
-                                            visit.visit_status.name_en;
+                                            e.name_en != visit.visit_status;
                                         return PopupMenuItem(
                                           mouseCursor: _enabled
                                               ? SystemMouseCursors.click
@@ -411,9 +409,7 @@ class VisitViewCard extends StatelessWidget {
                                       ...a.patientProgressStatuses.map((e) {
                                         final _enabled =
                                             e.name_en !=
-                                            visit
-                                                .patient_progress_status
-                                                .name_en;
+                                            visit.patient_progress_status;
                                         return PopupMenuItem(
                                           mouseCursor: _enabled
                                               ? SystemMouseCursors.click
@@ -520,7 +516,7 @@ class VisitViewCard extends StatelessWidget {
                             );
                             return;
                           }
-                          if (visit.visit_status.id == a.notAttended.id) {
+                          if (visit.visit_status == a.notAttended.name_en) {
                             showIsnackbar(context.loc.visitNotAttended);
                             return;
                           }
@@ -528,7 +524,7 @@ class VisitViewCard extends StatelessWidget {
                             AppRouter.visit_forms,
                             pathParameters: defaultPathParameters(context)
                               ..addAll({'visit_id': visit.id}),
-                            extra: visit.patient.id,
+                            extra: visit.patient_id,
                           );
                         },
                         child: const Icon(Icons.arrow_forward),

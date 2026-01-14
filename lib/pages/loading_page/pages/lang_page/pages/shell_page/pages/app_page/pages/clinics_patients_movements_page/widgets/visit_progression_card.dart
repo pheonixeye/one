@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:one/models/visits/visit.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:one/extensions/number_translator.dart';
-import 'package:one/models/visits/_visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
@@ -24,17 +24,17 @@ class _VisitProgressionCardState extends State<VisitProgressionCard> {
           return LinearProgressIndicator();
         }
         Color _buildColor() {
-          final _progressId = widget.item.patient_progress_status.id;
-          if (_progressId == a.has_not_attended_yet.id) {
+          final _progressId = widget.item.patient_progress_status;
+          if (_progressId == a.has_not_attended_yet.name_en) {
             return Colors.red.shade200;
           }
-          if (_progressId == a.in_waiting.id) {
+          if (_progressId == a.in_waiting.name_en) {
             return Colors.amber.shade200;
           }
-          if (_progressId == a.in_consultation.id) {
+          if (_progressId == a.in_consultation.name_en) {
             return Colors.green.shade200;
           }
-          if (_progressId == a.done_consultation.id) {
+          if (_progressId == a.done_consultation.name_en) {
             return Colors.blue.shade200;
           }
           return Colors.white;

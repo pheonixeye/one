@@ -63,10 +63,6 @@ class ConstantsApi {
         .collection(app_permissions)
         .getList(perPage: _perPage);
 
-    // final _documentTypeRequest = PocketbaseHelper.pbBase
-    //     .collection(document_type)
-    //     .getList(perPage: _perPage);
-
     final _result = await Future.wait([
       _accountTypesRequest,
       _visitStatusRequest,
@@ -100,9 +96,6 @@ class ConstantsApi {
     appPermission = _result[5].items
         .map((e) => AppPermission.fromJson(e.toJson()))
         .toList();
-    // documentType = _result[6].items
-    //     .map((e) => DocumentType.fromJson(e.toJson()))
-    //     .toList();
 
     _constants = AppConstants(
       accountTypes: accountTypes,
@@ -111,7 +104,6 @@ class ConstantsApi {
       subscriptionPlan: subscriptionPlan,
       patientProgressStatus: patientProgressStatus,
       appPermission: appPermission,
-      // documentType: documentType,
     );
 
     return _constants;

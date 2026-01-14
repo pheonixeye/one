@@ -1,10 +1,9 @@
-import 'package:one/extensions/clinic_schedule_shift_ext.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
 import 'package:one/models/shift.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visit_view_card.dart';
 import 'package:one/providers/px_visits_per_clinic_shift.dart';
 import 'package:one/widgets/central_loading.dart';
@@ -28,11 +27,11 @@ class _RescheduleVisitDialogState extends State<RescheduleVisitDialog> {
   void initState() {
     super.initState();
     final _sch = widget.visit.clinic.clinic_schedule.firstWhere(
-      (sch) => sch.intday == widget.visit.visitSchedule.intday,
+      (sch) => sch.intday == widget.visit.intday,
     );
     setState(() {
       _shift = _sch.shifts.firstWhere(
-        (shift) => widget.visit.visitSchedule.isInSameShift(_sch, shift),
+        (shift) => widget.visit.isInSameShift(_sch, shift),
       );
     });
   }
@@ -92,9 +91,7 @@ class _RescheduleVisitDialogState extends State<RescheduleVisitDialog> {
                         children: [
                           ...widget.visit.clinic.clinic_schedule
                               .firstWhere(
-                                (sch) =>
-                                    sch.intday ==
-                                    widget.visit.visitSchedule.intday,
+                                (sch) => sch.intday == widget.visit.intday,
                               )
                               .shifts
                               .map((shift) {

@@ -44,8 +44,39 @@ class PatientProgressStatus extends Equatable {
 
   @override
   List<Object> get props => [
-        id,
-        name_en,
-        name_ar,
-      ];
+    id,
+    name_en,
+    name_ar,
+  ];
+}
+
+enum PatientProgressStatusEnum {
+  InWaiting(
+    en: 'In Waiting',
+    ar: 'في الانتظار',
+  ),
+  InConsultation(
+    en: 'In Consultation',
+    ar: 'في الكشف',
+  ),
+  DoneConsultation(
+    en: 'Done Consultation',
+    ar: 'تم الكشف',
+  ),
+  HasNotAttendedYet(
+    en: 'Has Not Attended Yet',
+    ar: 'لم يحضر بعد',
+  ),
+  Canceled(
+    en: 'Canceled',
+    ar: 'تم الالغاء',
+  );
+
+  final String en;
+  final String ar;
+
+  const PatientProgressStatusEnum({
+    required this.en,
+    required this.ar,
+  });
 }

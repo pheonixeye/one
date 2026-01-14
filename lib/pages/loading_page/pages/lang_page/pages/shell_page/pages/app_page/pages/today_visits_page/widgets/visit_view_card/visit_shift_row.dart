@@ -4,7 +4,7 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
 import 'package:one/models/shift.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/visit_view_card/reschedule_visit_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_visits.dart';
@@ -49,7 +49,7 @@ class VisitShiftRow extends StatelessWidget {
                   return ChangeNotifierProvider(
                     create: (context) => PxVisitsPerClinicShift(
                       visit_date: visit.visit_date,
-                      clinic_id: visit.clinic.id,
+                      clinic_id: visit.clinic_id,
                     ),
                     child: RescheduleVisitDialog(visit: visit),
                   );
@@ -59,10 +59,10 @@ class VisitShiftRow extends StatelessWidget {
                 return;
               }
               final _clinicSchedule = visit.clinic.clinic_schedule.firstWhere(
-                (sch) => sch.intday == visit.visitSchedule.intday,
+                (sch) => sch.intday == visit.intday,
               );
 
-              if (visit.visitSchedule.isInSameShift(_clinicSchedule, _shift)) {
+              if (visit.isInSameShift(_clinicSchedule, _shift)) {
                 if (context.mounted) {
                   showIsnackbar(context.loc.sameShiftSelected);
                 }
@@ -75,7 +75,7 @@ class VisitShiftRow extends StatelessWidget {
                   toExecute: () async {
                     //todo
                     await context.read<PxVisits>().updateVisitScheduleShift(
-                      visit_shift_id: visit.visitSchedule.id,
+                      visit_id: visit.id,
                       shift: Shift.fromScheduleShift(_shift),
                     );
                   },

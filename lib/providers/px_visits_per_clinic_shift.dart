@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/visits_api.dart';
 import 'package:one/models/shift.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 
 class PxVisitsPerClinicShift extends ChangeNotifier {
   PxVisitsPerClinicShift({required this.visit_date, required this.clinic_id}) {
@@ -31,7 +31,7 @@ class PxVisitsPerClinicShift extends ChangeNotifier {
         await _fetchVisitsOfASpecificDate() as ApiDataResult<List<Visit>>;
 
     final _clinicVisits = _visits.data
-        .where((visit) => visit.clinic.id == clinic_id)
+        .where((visit) => visit.clinic_id == clinic_id)
         .toList();
 
     final _shifts = _clinicVisits.first.clinic.clinic_schedule

@@ -4,7 +4,7 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/visit_data/visit_data.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visit_view_card.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_previous_visits.dart';

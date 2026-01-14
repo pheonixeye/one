@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/patient_document/patient_document.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
@@ -19,7 +20,6 @@ import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/visit_data/visit_data.dart';
-import 'package:one/models/visits/_visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/visit_prescription_page/widgets/prescription_printer_dialog.dart';
 import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_locale.dart';
@@ -560,7 +560,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                             final _patientDocument =
                                                 PatientDocument(
                                                   id: '',
-                                                  patient_id: visit!.patient.id,
+                                                  patient_id: visit!.patient_id,
                                                   related_visit_id: visit.id,
                                                   related_visit_data_id:
                                                       visit_data.id,
@@ -577,7 +577,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                     document: _patientDocument,
                                                     payload: _bytesWithImage,
                                                     objectName:
-                                                        '${visit.patient.id}/${intl.DateFormat('dd_MM_yyyy', 'en').format(DateTime.now())}.jpg',
+                                                        '${visit.patient_id}/${intl.DateFormat('dd_MM_yyyy', 'en').format(DateTime.now())}.jpg',
                                                   );
                                             }
                                           },

@@ -5,7 +5,7 @@ import 'package:one/extensions/number_translator.dart';
 import 'package:one/extensions/size_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/bookkeeping/bookkeeping_name.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visit_view_card.dart';
 import 'package:one/providers/px_bookkeeping.dart';
 import 'package:one/providers/px_locale.dart';

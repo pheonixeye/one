@@ -4,25 +4,24 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/app_constants/patient_progress_status.dart';
 import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/app_constants/visit_type.dart';
-import 'package:one/models/visits/_visit.dart';
-import 'package:one/providers/px_app_constants.dart';
+import 'package:one/models/clinic/clinic.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
 
 extension CalculateFees on Visit {
-  num fees_for_bookkeeping(BuildContext context) {
-    final _const = context.read<PxAppConstants>();
+  num fees_for_bookkeeping(Clinic clinic) {
     late num fees;
     //check visit type
-    if (visit_type.id == _const.consultation.id) {
+    if (visit_type == VisitTypeEnum.Consultation.en) {
       fees = clinic.consultation_fees;
-    } else if (visit_type.id == _const.followup.id) {
+    } else if (visit_type == VisitTypeEnum.FollowUp.en) {
       fees = clinic.followup_fees;
     } else {
       fees = clinic.procedure_fees;
     }
     //check visit status
-    if (visit_status.id == _const.notAttended.id) {
+    if (visit_status == VisitStatusEnum.NotAttended.en) {
       fees = 0;
     }
 
@@ -69,12 +68,12 @@ extension FormattedVisitScheduleShift on Visit {
     final _lx = context.read<PxLocale>();
     final _now = DateTime.now();
     final _start_time = _now.copyWith(
-      hour: visitSchedule.start_hour,
-      minute: visitSchedule.start_min,
+      hour: s_h.toInt(),
+      minute: s_m.toInt(),
     );
     final _end_time = _now.copyWith(
-      hour: visitSchedule.end_hour,
-      minute: visitSchedule.end_min,
+      hour: e_h.toInt(),
+      minute: e_m.toInt(),
     );
     final _formattedStart = DateFormat.jmv(_lx.lang).format(_start_time);
     final _formattedEnd = DateFormat.jmv(_lx.lang).format(_end_time);

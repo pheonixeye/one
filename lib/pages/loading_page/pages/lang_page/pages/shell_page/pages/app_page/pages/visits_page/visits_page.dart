@@ -1,5 +1,5 @@
 import 'package:one/extensions/number_translator.dart';
-import 'package:one/extensions/visit_schedule_ext.dart';
+import 'package:one/extensions/visit_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/clinic/clinic.dart';
@@ -141,7 +141,7 @@ class _VisitsPageState extends State<VisitsPage> {
                                             ),
                                             //todo
                                             DataCell(
-                                              VisitOptionsBtn(concisedVisit: x),
+                                              VisitOptionsBtn(visit: x),
                                             ),
                                             DataCell(
                                               Center(
@@ -167,8 +167,8 @@ class _VisitsPageState extends State<VisitsPage> {
                                               Builder(
                                                 builder: (context) {
                                                   final _isAttended =
-                                                      x.visit_status_id ==
-                                                      a.attended.id;
+                                                      x.visit_status ==
+                                                      a.attended.name_en;
                                                   return Center(
                                                     child: Icon(
                                                       _isAttended
@@ -189,9 +189,7 @@ class _VisitsPageState extends State<VisitsPage> {
                                                     'dd - MM - yyyy',
                                                     l.lang,
                                                   ).format(
-                                                    DateTime.parse(
-                                                      x.visit_date,
-                                                    ),
+                                                    x.visit_date,
                                                   ),
                                                 ),
                                               ),
@@ -205,8 +203,8 @@ class _VisitsPageState extends State<VisitsPage> {
                                                         ?.visitType
                                                         .firstWhere(
                                                           (e) =>
-                                                              e.id ==
-                                                              x.visit_type_id,
+                                                              e.name_en ==
+                                                              x.visit_type,
                                                         );
                                                     return Text(
                                                       l.isEnglish
@@ -248,14 +246,13 @@ class _VisitsPageState extends State<VisitsPage> {
                                             DataCell(
                                               Center(
                                                 child: Text(
-                                                  x.visit_schedule
-                                                      .formattedShift(context),
+                                                  x.formattedShift(context),
                                                 ),
                                               ),
                                             ),
                                             DataCell(
                                               Center(
-                                                child: Text(x.added_by.name),
+                                                child: Text(x.added_by),
                                               ),
                                             ),
                                           ],

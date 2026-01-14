@@ -45,3 +45,22 @@ class VisitStatus extends Equatable {
   @override
   List<Object> get props => [id, name_en, name_ar];
 }
+
+enum VisitStatusEnum {
+  Attended(
+    en: 'Attended',
+    ar: 'تم الحضور',
+  ),
+  NotAttended(
+    en: 'Not Attended',
+    ar: 'لم يتم الحضور',
+  );
+
+  final String en;
+  final String ar;
+
+  const VisitStatusEnum({
+    required this.en,
+    required this.ar,
+  });
+}

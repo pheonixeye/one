@@ -5,7 +5,7 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/clinic/clinic.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visits.dart';
@@ -305,7 +305,6 @@ class _MonthlyVisitsCalendarDialogState
                                                                 visit,
                                                               ) {
                                                                 if (visit
-                                                                        .visitSchedule
                                                                         .isInSameShift(
                                                                           sch,
                                                                           shift,
@@ -315,9 +314,7 @@ class _MonthlyVisitsCalendarDialogState
                                                                           visit
                                                                               .visit_date,
                                                                         ) &&
-                                                                    visit
-                                                                            .clinic
-                                                                            .id ==
+                                                                    visit.clinic_id ==
                                                                         clinic
                                                                             .id) {
                                                                   return ListTile(

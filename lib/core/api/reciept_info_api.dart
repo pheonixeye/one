@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
@@ -7,6 +8,7 @@ import 'package:one/models/reciept_info.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+@PbData()
 class RecieptInfoApi {
   RecieptInfoApi() {
     _initHive();
@@ -22,7 +24,7 @@ class RecieptInfoApi {
 
   Future<ApiResult<List<RecieptInfo>>> fetchRecieptInfo() async {
     try {
-      final _response = await PocketbaseHelper.pbBase
+      final _response = await PocketbaseHelper.pbData
           .collection(_collection)
           .getList(sort: '-created');
 
@@ -40,17 +42,17 @@ class RecieptInfoApi {
   }
 
   Future<void> addRecieptInfo(RecieptInfo reciept_info) async {
-    await PocketbaseHelper.pbBase
+    await PocketbaseHelper.pbData
         .collection(_collection)
         .create(body: reciept_info.toJson());
   }
 
   Future<void> deleteRecieptInfo(String id) async {
-    await PocketbaseHelper.pbBase.collection(_collection).delete(id);
+    await PocketbaseHelper.pbData.collection(_collection).delete(id);
   }
 
   Future<void> updateRecieptInfo(RecieptInfo reciept_info) async {
-    await PocketbaseHelper.pbBase
+    await PocketbaseHelper.pbData
         .collection(_collection)
         .update(reciept_info.id, body: {...reciept_info.toJson()});
   }

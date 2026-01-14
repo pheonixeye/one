@@ -1,7 +1,7 @@
 import 'package:one/models/notifications/notification_topic.dart';
-import 'package:one/models/visits/_visit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
+import 'package:one/models/visits/visit.dart';
 
 class NotificationRequest extends Equatable {
   final NotificationTopic topic;
@@ -64,6 +64,7 @@ class NotificationRequest extends Equatable {
   List<Object?> get props => [topic, message, title, priority];
 
   factory NotificationRequest.fromVisit(Visit visit) {
+    //TODO: refactor
     final _title = 'تم اضافة حجز جديد';
     final _message =
         '''
@@ -72,7 +73,7 @@ class NotificationRequest extends Equatable {
 العيادة : ${visit.clinic.name_ar}
 نوع الحجز : ${visit.visit_type.name_ar}
 الطبيب المعالج : ${visit.doctor.name_ar}
-اضافة بواسطة : ${visit.added_by.email}
+اضافة بواسطة : ${visit.added_by}
 ''';
     return NotificationRequest(
       topic: NotificationTopic.allevia_bookings,

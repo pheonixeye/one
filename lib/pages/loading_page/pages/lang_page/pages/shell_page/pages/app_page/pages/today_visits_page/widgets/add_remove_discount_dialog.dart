@@ -2,7 +2,7 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
 import 'package:one/models/bookkeeping/bookkeeping_name.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visit_view_card.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:flutter/material.dart';

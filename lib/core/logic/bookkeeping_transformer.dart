@@ -5,7 +5,7 @@ import 'package:one/models/doctor_items/doctor_procedure_item.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/models/visit_data/visit_data.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 

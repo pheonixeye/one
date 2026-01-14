@@ -5,8 +5,7 @@ import 'package:one/core/api/visit_data_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
-import 'package:one/models/visits/_visit.dart';
-import 'package:one/models/visits/concised_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/reciept_prepare_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/visit_data_view_dialog.dart';
@@ -26,8 +25,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class VisitOptionsBtn extends StatefulWidget {
-  const VisitOptionsBtn({super.key, required this.concisedVisit});
-  final ConcisedVisit concisedVisit;
+  const VisitOptionsBtn({super.key, required this.visit});
+  final Visit visit;
 
   @override
   State<VisitOptionsBtn> createState() => _VisitOptionsBtnState();
@@ -54,7 +53,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                     await shellFunction(
                       context,
                       toExecute: () async {
-                        await v.fetchOneExpandedVisit(widget.concisedVisit.id);
+                        await v.fetchOneExpandedVisit(widget.visit.id);
                         _expandedVisit =
                             (v.expandedSingleVisit as ApiDataResult<Visit>)
                                 .data;
@@ -68,7 +67,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                         return ChangeNotifierProvider(
                           create: (context) => PxVisitData(
                             api: VisitDataApi(
-                              visit_id: widget.concisedVisit.id,
+                              visit_id: widget.visit.id,
                             ),
                           ),
                           child: VisitDataViewDialog(visit: _expandedVisit!),
@@ -79,7 +78,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(widget.concisedVisit.patient.name),
+                  child: Text(widget.visit.patient.name),
                 ),
               ),
               const Spacer(),
@@ -88,7 +87,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                   await shellFunction(
                     context,
                     toExecute: () async {
-                      await v.fetchOneExpandedVisit(widget.concisedVisit.id);
+                      await v.fetchOneExpandedVisit(widget.visit.id);
                       _expandedVisit =
                           (v.expandedSingleVisit as ApiDataResult<Visit>).data;
                     },
@@ -133,7 +132,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                               return ChangeNotifierProvider(
                                 create: (context) => PxOneVisitBookkeeping(
                                   api: BookkeepingApi(
-                                    visit_id: widget.concisedVisit.id,
+                                    visit_id: widget.visit.id,
                                   ),
                                 ),
                                 child: RecieptPrepareDialog(
@@ -158,7 +157,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                       padding: const EdgeInsets.all(0),
                       child: ChangeNotifierProvider(
                         create: (context) => PxVisitData(
-                          api: VisitDataApi(visit_id: widget.concisedVisit.id),
+                          api: VisitDataApi(visit_id: widget.visit.id),
                         ),
                         child: InkWell(
                           child: Row(
@@ -187,15 +186,15 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                               );
                               return;
                             }
-                            if (widget.concisedVisit.visit_status_id ==
-                                a.notAttended.id) {
+                            if (widget.visit.visit_status ==
+                                a.notAttended.name_en) {
                               showIsnackbar(context.loc.visitNotAttended);
                               return;
                             }
                             GoRouter.of(context).goNamed(
                               AppRouter.visit_forms,
                               pathParameters: defaultPathParameters(context)
-                                ..addAll({'visit_id': widget.concisedVisit.id}),
+                                ..addAll({'visit_id': widget.visit.id}),
                             );
                           },
                         ),
@@ -213,8 +212,8 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                           ],
                         ),
                         onTap: () async {
-                          if (widget.concisedVisit.visit_status_id ==
-                              a.notAttended.id) {
+                          if (widget.visit.visit_status ==
+                              a.notAttended.name_en) {
                             showIsnackbar(context.loc.visitNotAttended);
                             return;
                           }
@@ -224,19 +223,20 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                             builder: (context) {
                               return ChangeNotifierProvider(
                                 key: ValueKey(
-                                  '${widget.concisedVisit.patient.id}/${widget.concisedVisit.id}',
+                                  '${widget.visit.patient_id}/${widget.visit.id}',
                                 ),
                                 create: (context) => PxS3PatientDocuments(
                                   context: context,
                                   state: S3PatientDocumentsPxState
                                       .documents_one_visit_one_patient,
                                   api: S3PatientDocumentApi(
-                                    patient_id: widget.concisedVisit.patient.id,
-                                    visit_id: widget.concisedVisit.id,
+                                    patient_id: widget.visit.patient_id,
+                                    visit_id: widget.visit.id,
                                   ),
                                 ),
+                                //TODO:
                                 child: PatientDocumentsViewDialog(
-                                  patient: widget.concisedVisit.patient,
+                                  patient: widget.visit.patient_id,
                                 ),
                               );
                             },

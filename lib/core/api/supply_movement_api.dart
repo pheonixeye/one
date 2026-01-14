@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
@@ -12,6 +13,7 @@ import 'package:one/models/supplies/clinic_inventory_item.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_dto.dart';
 
+@PbData()
 class SupplyMovementApi {
   SupplyMovementApi();
 
@@ -39,7 +41,7 @@ class SupplyMovementApi {
 
       for (final dto in dtos) {
         if (dto != null) {
-          final _response = await PocketbaseHelper.pbBase
+          final _response = await PocketbaseHelper.pbData
               .collection(collection)
               .create(body: dto.toJson(), expand: _expand);
           _responseModels.add(_response);
@@ -127,7 +129,7 @@ class SupplyMovementApi {
     ).format(to.copyWith(day: to.day + 1));
 
     try {
-      final _response = await PocketbaseHelper.pbBase
+      final _response = await PocketbaseHelper.pbData
           .collection(collection)
           .getFullList(
             expand: _expand,

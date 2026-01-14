@@ -45,3 +45,26 @@ class VisitType extends Equatable {
   @override
   List<Object> get props => [id, name_en, name_ar];
 }
+
+enum VisitTypeEnum {
+  Consultation(
+    en: 'Consultation',
+    ar: 'كشف',
+  ),
+  FollowUp(
+    en: 'FollowUp',
+    ar: 'استشارة',
+  ),
+  Procedure(
+    en: 'Procedure',
+    ar: 'اجراء طبي',
+  );
+
+  final String en;
+  final String ar;
+
+  const VisitTypeEnum({
+    required this.en,
+    required this.ar,
+  });
+}

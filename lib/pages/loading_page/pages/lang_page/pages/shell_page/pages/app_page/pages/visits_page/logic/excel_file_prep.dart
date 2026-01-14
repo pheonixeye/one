@@ -4,12 +4,12 @@ import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/models/app_constants/_app_constants.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
 import 'package:one/models/doctor.dart';
-import 'package:one/models/visits/concised_visit.dart';
 import 'package:excel/excel.dart';
 import 'package:intl/intl.dart';
+import 'package:one/models/visits/visit.dart';
 
 class ExcelFilePrep {
-  final List<ConcisedVisit> visits;
+  final List<Visit> visits;
   final DateTime from;
   final DateTime to;
   ExcelFilePrep({required this.visits, required this.from, required this.to}) {
@@ -59,10 +59,10 @@ class ExcelFilePrep {
       final _visitIndex = visits.indexOf(visit);
       final _amount = _calculateVisitBookkeepingEntries(visit.id, _data);
       final _visit_status = constants.visitStatus.firstWhereOrNull(
-        (e) => e.id == visit.visit_status_id,
+        (e) => e.name_en == visit.visit_status,
       );
       final _visit_type = constants.visitType.firstWhereOrNull(
-        (e) => e.id == visit.visit_type_id,
+        (e) => e.name_en == visit.visit_type,
       );
       final _doctor = doctors.firstWhereOrNull((e) => e.id == visit.doc_id);
       _visitsSheet.appendRow([
@@ -74,14 +74,14 @@ class ExcelFilePrep {
               DateFormat(
                 'dd - MM - yyyy',
                 'ar',
-              ).format(DateTime.parse(visit.visit_date)),
+              ).format(visit.visit_date),
             ),
             2 => TextCellValue(visit.patient.name),
             3 => TextCellValue(visit.patient.phone),
             4 => TextCellValue(_doctor?.name_ar ?? ''),
             5 => TextCellValue(_visit_type?.name_ar ?? ''),
             6 => TextCellValue(_visit_status?.name_ar ?? ''),
-            7 => TextCellValue(visit.added_by.name),
+            7 => TextCellValue(visit.added_by),
             8 => TextCellValue(_amount.toString()),
             _ => TextCellValue(''),
           };

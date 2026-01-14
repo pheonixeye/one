@@ -1,7 +1,7 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
-import 'package:one/models/visits/_visit.dart';
 import 'package:flutter/material.dart';
+import 'package:one/models/visits/visit.dart';
 
 class PxPatientPreviousVisits extends ChangeNotifier {
   final PatientPreviousVisitsApi api;

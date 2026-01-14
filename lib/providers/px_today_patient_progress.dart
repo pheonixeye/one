@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:one/core/api/today_patient_progress_api.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 
 class PxTodayPatientProgress extends ChangeNotifier {
   final TodayPatientProgressApi api;
@@ -25,7 +25,7 @@ class PxTodayPatientProgress extends ChangeNotifier {
           toggleUpdating();
           final _data = event.record;
           if (_data != null) {
-            _visits.add(Visit.fromRecordModel(_data));
+            _visits.add(Visit.fromJson(_data.toJson()));
             _visits.sort(
               (b, a) =>
                   a.patient_entry_number.compareTo(b.patient_entry_number),
@@ -38,7 +38,7 @@ class PxTodayPatientProgress extends ChangeNotifier {
           final _data = event.record;
           if (_data != null) {
             toggleUpdating();
-            final _visit = Visit.fromRecordModel(_data);
+            final _visit = Visit.fromJson(_data.toJson());
             final _index = _visits.indexWhere((e) => e.id == _visit.id);
             _visits[_index] = _visit;
             _visits.sort(
@@ -54,7 +54,7 @@ class PxTodayPatientProgress extends ChangeNotifier {
           final _data = event.record;
           if (_data != null) {
             toggleUpdating();
-            final _visit = Visit.fromRecordModel(_data);
+            final _visit = Visit.fromJson(_data.toJson());
             final _index = _visits.indexWhere((e) => e.id == _visit.id);
             _visits.removeAt(_index);
             _visits.sort(

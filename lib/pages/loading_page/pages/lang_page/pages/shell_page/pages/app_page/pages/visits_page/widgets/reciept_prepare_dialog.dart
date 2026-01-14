@@ -9,7 +9,7 @@ import 'package:one/extensions/visit_ext.dart';
 import 'package:one/models/blob_file.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
 import 'package:one/models/reciept_info.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_one_visit_bookkeeping.dart';
@@ -271,7 +271,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                   height: 58,
                   padding: pw.EdgeInsets.all(8),
                   child: pw.BarcodeWidget.fromBytes(
-                    data: utf8.encode(widget.visit.patient.id),
+                    data: utf8.encode(widget.visit.patient_id),
                     barcode: pw.Barcode.fromType(pw.BarcodeType.QrCode),
                     height: 50,
                     width: 50,

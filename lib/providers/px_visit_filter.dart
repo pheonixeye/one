@@ -1,10 +1,9 @@
-import 'package:one/models/visits/concised_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/models/visits/visits_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/visit_filter_api.dart';
-import 'package:one/models/visits/_visit.dart';
 
 class PxVisitFilter extends ChangeNotifier {
   final VisitFilterApi api;
@@ -16,11 +15,11 @@ class PxVisitFilter extends ChangeNotifier {
   ApiResult<Visit>? _expandedSingleVisit;
   ApiResult<Visit>? get expandedSingleVisit => _expandedSingleVisit;
 
-  ApiResult<List<ConcisedVisit>>? _concisedVisits;
-  ApiResult<List<ConcisedVisit>>? get concisedVisits => _concisedVisits;
+  ApiResult<List<Visit>>? _concisedVisits;
+  ApiResult<List<Visit>>? get concisedVisits => _concisedVisits;
 
-  final List<ConcisedVisit> _filteredConcisedVisits = [];
-  List<ConcisedVisit> get filteredConcisedVisits => _filteredConcisedVisits;
+  final List<Visit> _filteredConcisedVisits = [];
+  List<Visit> get filteredConcisedVisits => _filteredConcisedVisits;
 
   final _now = DateTime.now();
 
@@ -35,7 +34,7 @@ class PxVisitFilter extends ChangeNotifier {
       DateFormat('yyyy-MM-dd', 'en').format(to.copyWith(day: to.day + 1));
 
   Future<void> _fetchConcisedVisitsOfDateRange() async {
-    _concisedVisits = await api.fetctConcisedVisitsOfDateRange(
+    _concisedVisits = await api.fetctVisitsOfDateRange(
       from: formattedFrom,
       to: formattedTo,
     );
@@ -59,6 +58,7 @@ class PxVisitFilter extends ChangeNotifier {
   }
 
   Future<void> fetchOneExpandedVisit(String visit_id) async {
+    //TODO
     _expandedSingleVisit = await api.fetchOneExpandedVisit(visit_id);
     notifyListeners();
   }
@@ -80,12 +80,12 @@ class PxVisitFilter extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<ConcisedVisit> _filterByDoctor(List<ConcisedVisit> data, String doc_id) {
+  List<Visit> _filterByDoctor(List<Visit> data, String doc_id) {
     return data.where((e) => e.doc_id == doc_id).toList();
   }
 
-  List<ConcisedVisit> _filterByClinic(
-    List<ConcisedVisit> data,
+  List<Visit> _filterByClinic(
+    List<Visit> data,
     String clinic_id,
   ) {
     return data.where((e) => e.clinic_id == clinic_id).toList();
@@ -95,7 +95,7 @@ class PxVisitFilter extends ChangeNotifier {
     _setVisitsfilter(value, id);
     _filteredConcisedVisits.clear();
     notifyListeners();
-    final _data = (_concisedVisits as ApiDataResult<List<ConcisedVisit>>).data;
+    final _data = (_concisedVisits as ApiDataResult<List<Visit>>).data;
     final _filtered = switch (_filter) {
       VisitsFilter.no_filter => _data,
       VisitsFilter.by_doctor => _filterByDoctor(_data, id),

@@ -1,7 +1,7 @@
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/doctor.dart';
 import 'package:one/models/shift.dart';
-import 'package:one/models/visit_schedule.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/prompt_dialog.dart';
@@ -21,7 +21,6 @@ import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
-import 'package:one/models/visits/visit_create_dto.dart';
 import 'package:one/models/weekdays.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
@@ -712,9 +711,9 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                   });
                   final _patientHasDuplicateVisit = _dateClinicVisits.any(
                     (v) =>
-                        v.clinic.id == _clinic!.id &&
+                        v.clinic_id == _clinic!.id &&
                         v.visit_date.isTheSameDate(_visitDate!) &&
-                        v.patient.id == widget.patient.id,
+                        v.patient_id == widget.patient.id,
                   );
 
                   if (_patientHasDuplicateVisit && context.mounted) {
@@ -732,31 +731,25 @@ class _AddNewVisitDialogState extends State<AddNewVisitDialog> {
                   }
 
                   if (context.mounted) {
-                    final _visitDto = VisitCreateDto(
+                    final _visitDto = Visit(
+                      id: '',
                       clinic_id: _clinic!.id,
                       patient_id: widget.patient.id,
-                      added_by_id: context.read<PxAuth>().user!.id,
+                      added_by: context.read<PxAuth>().user!.name,
                       doc_id: PxAuth.isUserNotDoctor
                           ? _doctor!.id
                           : context.read<PxAuth>().doc_id,
-                      clinic_schedule_id: _clinicSchedule!.id,
-                      clinic_schedule_shift_id: _scheduleShift!.id,
-                      visit_date: _visitDate!.toIso8601String(),
+                      visit_date: _visitDate!,
                       patient_entry_number: _nextEntryNumber,
-                      visit_status_id: _visitStatus!.id,
-                      visit_type_id: _visitType!.id,
-                      patient_progress_status_id: _patientProgressStatus!.id,
+                      visit_status: _visitStatus!.name_en,
+                      visit_type: _visitType!.name_en,
+                      patient_progress_status: _patientProgressStatus!.name_en,
                       comments: _commentsController.text,
-                      visit_schedule: VisitSchedule(
-                        id: '',
-                        clinic_id: _clinic!.id,
-                        visit_id: '',
-                        intday: _clinicSchedule!.intday,
-                        start_hour: _scheduleShift!.start_hour,
-                        start_min: _scheduleShift!.start_min,
-                        end_hour: _scheduleShift!.end_hour,
-                        end_min: _scheduleShift!.end_min,
-                      ),
+                      intday: _clinicSchedule!.intday,
+                      s_h: _scheduleShift!.start_hour,
+                      s_m: _scheduleShift!.start_min,
+                      e_h: _scheduleShift!.end_hour,
+                      e_m: _scheduleShift!.end_min,
                     );
                     Navigator.pop(context, _visitDto);
                   }

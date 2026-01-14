@@ -1,5 +1,5 @@
 import 'package:one/extensions/number_translator.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -113,8 +113,8 @@ class PreviousVisitViewCard extends StatelessWidget {
                       l.isEnglish ? 'Attendance:' : 'الحضور:',
                       style: TextStyle(decoration: TextDecoration.underline),
                     ),
-                    if (item.visit_status.id ==
-                        context.read<PxAppConstants>().attended.id)
+                    if (item.visit_status ==
+                        context.read<PxAppConstants>().attended.name_en)
                       const Icon(Icons.check, color: Colors.green)
                     else
                       const Icon(Icons.close, color: Colors.red),

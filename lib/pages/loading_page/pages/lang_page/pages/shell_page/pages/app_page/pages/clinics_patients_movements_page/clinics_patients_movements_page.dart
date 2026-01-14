@@ -136,7 +136,7 @@ class _ClinicsPatientsMovementsPageState
                               ...(c.result as ApiDataResult<List<Clinic>>).data
                                   .map((x) {
                                     final _clinicItems = _items
-                                        .where((e) => e.clinic.id == x.id)
+                                        .where((e) => e.clinic_id == x.id)
                                         .toList();
 
                                     while (_clinicItems.isEmpty) {

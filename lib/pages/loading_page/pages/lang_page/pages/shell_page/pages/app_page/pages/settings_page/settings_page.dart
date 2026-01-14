@@ -2,6 +2,7 @@ import 'package:one/constants/app_business_constants.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/change_log_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/change_password_btn.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/files_section.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/reciept_settings/reciept_settings_section.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/single_btn_tile.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
@@ -87,7 +88,7 @@ class SettingsPage extends StatelessWidget {
                 ),
 
                 //todo: Add section for clinic / reciept info and select reciept default printing info
-                // const RecieptSettingsSection(),
+                const RecieptSettingsSection(),
                 //todo: Manage notification sound and app logo
                 const FilesSection(),
                 SingleBtnTile(

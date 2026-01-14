@@ -5,7 +5,7 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
-import 'package:one/models/visits/_visit.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/add_remove_discount_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
@@ -132,7 +132,7 @@ class DiscountManagmentRow extends StatelessWidget {
                           return;
                         }
 
-                        if (visit.visit_status == a.notAttended) {
+                        if (visit.visit_status == a.notAttended.name_en) {
                           showIsnackbar(context.loc.visitNotAttended);
                           return;
                         }
@@ -189,7 +189,7 @@ class DiscountManagmentRow extends StatelessWidget {
                           );
                           return;
                         }
-                        if (visit.visit_status == a.notAttended) {
+                        if (visit.visit_status == a.notAttended.name_en) {
                           showIsnackbar(context.loc.visitNotAttended);
                           return;
                         }

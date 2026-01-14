@@ -12,7 +12,7 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
-import 'package:one/models/visits/visit_create_dto.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_forms_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_id_card_dialog.dart';
@@ -69,7 +69,7 @@ class PatientInfoCardActions extends StatelessWidget {
                 );
                 return;
               }
-              final _visitDto = await showDialog<VisitCreateDto?>(
+              final _visitDto = await showDialog<Visit?>(
                 context: context,
                 builder: (context) {
                   return AddNewVisitDialog(
