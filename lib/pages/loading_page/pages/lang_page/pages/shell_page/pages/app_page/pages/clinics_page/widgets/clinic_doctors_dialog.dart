@@ -54,11 +54,6 @@ class ClinicDoctorsDialog extends StatelessWidget {
                 ...d.allDoctors!.map((doc) {
                   return CheckboxListTile(
                     title: Text(l.isEnglish ? doc.name_en : doc.name_ar),
-                    subtitle: Text(
-                      l.isEnglish
-                          ? doc.speciality.name_en
-                          : doc.speciality.name_ar,
-                    ),
                     value: c.clinic!.doc_id.contains(doc.id),
                     onChanged: (val) async {
                       final _idToRemove = doc.id;

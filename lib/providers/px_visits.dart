@@ -103,7 +103,7 @@ class PxVisits extends ChangeNotifier {
     }).toList();
 
     _clinicVisits.map((v) {
-      final _shift = Shift.fromVisitSchedule(v.visitSchedule);
+      final _shift = Shift.fromVisit(v);
       _visitsPerShift!.entries.map((entry) {
         if (entry.key == _shift) {
           _visitsPerShift![_shift] = _visitsPerShift![_shift]! + 1;

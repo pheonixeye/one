@@ -7,7 +7,6 @@ class Doctor extends Equatable {
   final String name_en;
   final String name_ar;
   final String phone;
-  final Speciality speciality;
   final String email;
 
   const Doctor({
@@ -15,7 +14,6 @@ class Doctor extends Equatable {
     required this.name_en,
     required this.name_ar,
     required this.phone,
-    required this.speciality,
     required this.email,
   });
 
@@ -32,7 +30,6 @@ class Doctor extends Equatable {
       name_en: name_en ?? this.name_en,
       name_ar: name_ar ?? this.name_ar,
       phone: phone ?? this.phone,
-      speciality: speciality ?? this.speciality,
       email: email ?? this.email,
     );
   }
@@ -43,7 +40,6 @@ class Doctor extends Equatable {
       'name_en': name_en,
       'name_ar': name_ar,
       'phone': phone,
-      'speciality': speciality.toJson(),
       'email': email,
     };
   }
@@ -54,7 +50,6 @@ class Doctor extends Equatable {
       'name_en': name_en,
       'name_ar': name_ar,
       'phone': phone,
-      'speciality_id': speciality.id,
       'email': email,
     };
   }
@@ -64,11 +59,8 @@ class Doctor extends Equatable {
       id: map['id'] as String,
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
-      phone: map['phone'] as String,
-      speciality: Speciality.fromJson(
-        map['speciality'] as Map<String, dynamic>,
-      ),
       email: map['email'] as String,
+      phone: map['phone'] as String,
     );
   }
 
@@ -77,6 +69,12 @@ class Doctor extends Equatable {
 
   @override
   List<Object> get props {
-    return [id, name_en, name_ar, phone, speciality, email];
+    return [
+      id,
+      name_en,
+      name_ar,
+      phone,
+      email,
+    ];
   }
 }

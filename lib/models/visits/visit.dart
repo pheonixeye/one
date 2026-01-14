@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:one/extensions/datetime_ext.dart';
+import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
+import 'package:one/models/doctor.dart';
+import 'package:one/models/patient.dart';
 
 class Visit extends Equatable {
   final String id;
@@ -146,5 +149,36 @@ class Visit extends Equatable {
     ];
   }
 
-  bool isInSameShift(ClinicSchedule sch, ScheduleShift shift) {}
+  //HACK
+  bool isInSameShift(ClinicSchedule sch, ScheduleShift shift) {
+    return sch.shifts.contains(shift);
+  }
+}
+
+class VisitExpanded extends Visit {
+  const VisitExpanded({
+    required super.id,
+    required super.doc_id,
+    required super.clinic_id,
+    required super.patient_id,
+    required super.patient_entry_number,
+    required super.intday,
+    required super.s_m,
+    required super.s_h,
+    required super.e_m,
+    required super.e_h,
+    required super.visit_date,
+    required super.added_by,
+    required super.comments,
+    required super.visit_status,
+    required super.visit_type,
+    required super.patient_progress_status,
+    required this.clinic,
+    required this.patient,
+    required this.doctor,
+  });
+
+  final Clinic clinic;
+  final Doctor doctor;
+  final Patient patient;
 }

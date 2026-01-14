@@ -1,6 +1,6 @@
 import 'package:one/models/clinic/schedule_shift.dart';
-import 'package:one/models/visit_schedule.dart';
 import 'package:equatable/equatable.dart';
+import 'package:one/models/visits/visit.dart';
 
 class Shift extends Equatable {
   final num start_hour;
@@ -62,12 +62,12 @@ class Shift extends Equatable {
     );
   }
 
-  factory Shift.fromVisitSchedule(VisitSchedule value) {
+  factory Shift.fromVisit(Visit value) {
     return Shift(
-      start_hour: value.start_hour,
-      start_min: value.start_min,
-      end_hour: value.end_hour,
-      end_min: value.end_min,
+      start_hour: value.s_h,
+      start_min: value.s_m,
+      end_hour: value.e_h,
+      end_min: value.e_m,
     );
   }
 }
