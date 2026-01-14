@@ -6,10 +6,8 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/monthly_visits_calendar_dialog.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_notifications.dart';
-import 'package:one/providers/px_whatsapp.dart';
 import 'package:one/widgets/themed_popupmenu_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NavBarMenuBtn extends StatelessWidget {
@@ -24,88 +22,6 @@ class NavBarMenuBtn extends StatelessWidget {
           tooltip: context.loc.notifications,
           itemBuilder: (context) {
             return [
-              PopupMenuItem(
-                child: Consumer<PxWhatsapp>(
-                  builder: (context, w, _) {
-                    while (w.serverResult == null) {
-                      return const SizedBox(
-                        width: 30,
-                        height: 8,
-                        child: LinearProgressIndicator(),
-                      );
-                    }
-                    return ListTile(
-                      titleAlignment: ListTileTitleAlignment.top,
-                      onTap: () async {
-                        await shellFunction(
-                          context,
-                          toExecute: () async {
-                            await w.reconnect();
-                            await w.fetchConnectedDevices();
-                          },
-                        );
-                      },
-                      leading: Icon(
-                        w.isConnectedToServer
-                            ? FontAwesomeIcons.whatsapp
-                            : Icons.wifi_off_rounded,
-                        color: w.isConnectedToServer
-                            ? Colors.green
-                            : Colors.red,
-                      ),
-                      title: Text(context.loc.whatsappSettings),
-                      subtitle: Row(
-                        spacing: 4,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if (!w.isConnectedToServer)
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.notConntectedToWhatsappServer,
-                                children: [
-                                  TextSpan(text: '\n'),
-                                  TextSpan(
-                                    text: context.loc.noConnectedDevices,
-                                  ),
-                                ],
-                              ),
-                            )
-                          else
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.conntectedToWhatsappServer,
-                                children: w.hasConnectedDevices
-                                    ? [
-                                        TextSpan(text: '\n'),
-                                        if (w.connectedDevices != null)
-                                          ...w.connectedDevices!.results!.map((
-                                            e,
-                                          ) {
-                                            final dev = e.device.split('@');
-                                            return TextSpan(
-                                              text: dev[0],
-                                              children: [
-                                                TextSpan(text: '\n'),
-                                                TextSpan(text: dev[1]),
-                                              ],
-                                            );
-                                          }),
-                                      ]
-                                    : [
-                                        TextSpan(text: '\n'),
-                                        TextSpan(
-                                          text: context.loc.noConnectedDevices,
-                                        ),
-                                      ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              PopupMenuDivider(),
               PopupMenuItem(
                 child: ListTile(
                   leading: const Icon(Icons.calendar_month),

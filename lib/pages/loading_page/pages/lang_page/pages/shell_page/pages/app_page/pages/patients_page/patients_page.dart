@@ -1,7 +1,5 @@
-import 'package:one/core/api/patient_document_api.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/providers/px_auth.dart';
-import 'package:one/providers/px_patient_documents.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
@@ -113,12 +111,9 @@ class _PatientsPageState extends State<PatientsPage> {
                         itemBuilder: (context, index) {
                           final item = (p.data! as ApiDataResult<List<Patient>>)
                               .data[index];
-                          return ChangeNotifierProvider.value(
-                            key: ValueKey(item),
-                            value: PxPatientDocuments(
-                              api: PatientDocumentApi(patient_id: item.id),
-                            ),
-                            child: PatientInfoCard(patient: item, index: index),
+                          return PatientInfoCard(
+                            patient: item,
+                            index: index,
                           );
                         },
                       );

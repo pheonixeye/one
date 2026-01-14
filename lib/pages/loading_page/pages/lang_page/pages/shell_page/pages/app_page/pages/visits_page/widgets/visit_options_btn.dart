@@ -1,6 +1,6 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
-import 'package:one/core/api/patient_document_api.dart';
+import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/visit_data_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
@@ -13,8 +13,8 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_one_visit_bookkeeping.dart';
-import 'package:one/providers/px_patient_documents.dart';
 import 'package:one/providers/px_reciept_info.dart';
+import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
 import 'package:one/router/router.dart';
@@ -204,47 +204,44 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                     PopupMenuItem<void>(
                       onTap: null,
                       padding: const EdgeInsets.all(0),
-                      child: ChangeNotifierProvider(
-                        create: (context) => PxPatientDocuments(
-                          api: PatientDocumentApi(
-                            patient_id: widget.concisedVisit.patient.id,
-                          ),
+                      child: InkWell(
+                        child: Row(
+                          children: [
+                            const Icon(Icons.document_scanner),
+                            SizedBox(width: 4),
+                            Text(context.loc.patientDocuments),
+                          ],
                         ),
-                        child: InkWell(
-                          child: Row(
-                            children: [
-                              const Icon(Icons.document_scanner),
-                              SizedBox(width: 4),
-                              Text(context.loc.patientDocuments),
-                            ],
-                          ),
-                          onTap: () async {
-                            if (widget.concisedVisit.visit_status_id ==
-                                a.notAttended.id) {
-                              showIsnackbar(context.loc.visitNotAttended);
-                              return;
-                            }
+                        onTap: () async {
+                          if (widget.concisedVisit.visit_status_id ==
+                              a.notAttended.id) {
+                            showIsnackbar(context.loc.visitNotAttended);
+                            return;
+                          }
 
-                            await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ChangeNotifierProvider(
-                                  create: (context) => PxPatientDocuments(
-                                    api: PatientDocumentApi(
-                                      patient_id:
-                                          widget.concisedVisit.patient.id,
-                                    ),
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ChangeNotifierProvider(
+                                key: ValueKey(
+                                  '${widget.concisedVisit.patient.id}/${widget.concisedVisit.id}',
+                                ),
+                                create: (context) => PxS3PatientDocuments(
+                                  context: context,
+                                  state: S3PatientDocumentsPxState
+                                      .documents_one_visit_one_patient,
+                                  api: S3PatientDocumentApi(
+                                    patient_id: widget.concisedVisit.patient.id,
                                     visit_id: widget.concisedVisit.id,
                                   ),
-                                  child: const PatientDocumentsViewDialog(),
-                                );
-                              },
-                            );
-                            //todo: get patient documents
-                            //todo: print prescription
-                            //todo: Send patient the link VIA WHATSAPP
-                          },
-                        ),
+                                ),
+                                child: PatientDocumentsViewDialog(
+                                  patient: widget.concisedVisit.patient,
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ];

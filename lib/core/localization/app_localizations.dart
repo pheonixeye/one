@@ -2509,6 +2509,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Image Found'**
   String get noImageFound;
+
+  /// No description provided for @idCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Id Card'**
+  String get idCard;
 }
 
 class _AppLocalizationsDelegate

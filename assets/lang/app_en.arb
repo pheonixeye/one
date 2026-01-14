@@ -435,5 +435,6 @@
     "noRecieptInfoFound" : "No Selected Reciept Info Found On This Device",
     "accountType" : "Account Type",
     "documents" : "Documents",
-    "noImageFound" : "No Image Found"
+    "noImageFound" : "No Image Found",
+    "idCard" : "Id Card"
 }

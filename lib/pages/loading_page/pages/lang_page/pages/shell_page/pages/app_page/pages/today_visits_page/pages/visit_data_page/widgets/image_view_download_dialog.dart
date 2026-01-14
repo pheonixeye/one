@@ -1,12 +1,18 @@
+import 'dart:typed_data';
+
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/download_image.dart';
-import 'package:one/models/patient_document/expanded_patient_document.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:one/models/patient_document/patient_document.dart';
 
 class ImageViewDownloadDialog extends StatelessWidget {
-  const ImageViewDownloadDialog({super.key, required this.document});
-  final ExpandedPatientDocument document;
+  const ImageViewDownloadDialog({
+    super.key,
+    required this.data,
+    required this.document,
+  });
+  final Uint8List data;
+  final PatientDocument document;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -29,9 +35,9 @@ class ImageViewDownloadDialog extends StatelessWidget {
         child: Stack(
           children: [
             Hero(
-              tag: document.imageUrl,
-              child: CachedNetworkImage(
-                imageUrl: document.imageUrl,
+              tag: document.id,
+              child: Image.memory(
+                data,
                 width: MediaQuery.sizeOf(context).width,
                 height: MediaQuery.sizeOf(context).height,
               ),
@@ -41,8 +47,10 @@ class ImageViewDownloadDialog extends StatelessWidget {
               child: FloatingActionButton.extended(
                 key: UniqueKey(),
                 onPressed: () async {
-                  final _data = await document.documentUint8List();
-                  downloadUint8ListAsFile(_data, document.document);
+                  downloadUint8ListAsFile(
+                    data,
+                    document.document_url.split('/').last,
+                  );
                 },
                 label: Text(context.loc.download),
                 icon: const Icon(Icons.download),

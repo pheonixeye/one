@@ -1,11 +1,13 @@
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
+import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_s3_documents.dart';
+import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_speciality.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/auth/api_auth.dart';
@@ -67,7 +69,13 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxS3Documents(
-      context,
+      context: context,
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxS3PatientDocuments(
+      api: const S3PatientDocumentApi(),
+      context: context,
     ),
   ),
   ChangeNotifierProvider(

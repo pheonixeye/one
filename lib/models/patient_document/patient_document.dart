@@ -49,7 +49,7 @@ class PatientDocument extends Equatable {
       'related_visit_data_id': related_visit_data_id,
       'document_type_id': document_type_id,
       'document_url': document_url,
-      'created': created,
+      'created': created.toIso8601String(),
     };
   }
 
@@ -61,7 +61,7 @@ class PatientDocument extends Equatable {
       related_visit_data_id: map['related_visit_data_id'] as String,
       document_type_id: map['document_type_id'] as String,
       document_url: map['document_url'] as String,
-      created: map['created'] as DateTime,
+      created: DateTime.parse(map['created'] as String),
     );
   }
 

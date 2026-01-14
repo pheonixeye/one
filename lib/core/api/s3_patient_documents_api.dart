@@ -7,8 +7,12 @@ import 'package:pocketbase/pocketbase.dart';
 
 @PbData()
 class S3PatientDocumentApi {
-  const S3PatientDocumentApi({required this.patient_id});
-  final String patient_id;
+  const S3PatientDocumentApi({
+    this.patient_id,
+    this.visit_id,
+  });
+  final String? patient_id;
+  final String? visit_id;
 
   static const collection = 'patient__documents';
 
@@ -33,7 +37,10 @@ class S3PatientDocumentApi {
     }
   }
 
-  Future<ApiResult<List<PatientDocument>>> fetchPatientDocuments() async {
+  Future<ApiResult<List<PatientDocument>>?> fetchPatientDocuments() async {
+    if (patient_id == null) {
+      return null;
+    }
     try {
       final _result = await PocketbaseHelper.pbData
           .collection(collection)
@@ -52,9 +59,11 @@ class S3PatientDocumentApi {
     }
   }
 
-  Future<ApiResult<List<PatientDocument>>> fetchPatientDocumentsOfOneVisit(
-    String visit_id,
-  ) async {
+  Future<ApiResult<List<PatientDocument>>?>
+  fetchPatientDocumentsOfOneVisit() async {
+    if (patient_id == null || visit_id == null) {
+      return null;
+    }
     try {
       final _result = await PocketbaseHelper.pbData
           .collection(collection)

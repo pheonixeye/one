@@ -1254,4 +1254,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noImageFound => 'لم يتم العثور علي صورة';
+
+  @override
+  String get idCard => 'بطاقة تعريف';
 }

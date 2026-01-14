@@ -1,8 +1,4 @@
 import 'package:one/functions/download_image.dart';
-import 'package:one/functions/shell_function.dart';
-import 'package:one/models/whatsapp_models/whatsapp_image_request.dart';
-import 'package:one/providers/px_whatsapp.dart';
-import 'package:one/widgets/snackbar_.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +6,9 @@ import 'package:one/assets/assets.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/paient_id_card_printer_dialog.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_locale.dart';
+import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
@@ -49,87 +48,95 @@ class _PatientIdCardDialogState extends State<PatientIdCardDialog> {
       insetPadding: const EdgeInsets.all(8),
       content: Screenshot(
         controller: _controller,
-        child: SizedBox(
-          width: 360,
-          height: 220,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card.outlined(
-                elevation: 6,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text('كارت متابعة'),
-                          Text(
-                            'عيادات اليفيا',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+        child: Consumer2<PxAuth, PxLocale>(
+          builder: (context, auth, l, _) {
+            final _org = auth.organization;
+            while (_org == null) {
+              return const CentralLoading();
+            }
+            return SizedBox(
+              width: 360,
+              height: 220,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card.outlined(
+                    elevation: 6,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text(context.loc.idCard),
+                              Text(
+                                l.isEnglish ? _org.name_en : _org.name_ar,
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: QrImageView.withQr(
+                                  qr: QrCode.fromData(
+                                    data: widget.patient.id,
+                                    errorCorrectLevel: QrErrorCorrectLevel.Q,
+                                  ),
+                                  embeddedImage: AssetImage(AppAssets.icon),
+                                  dataModuleStyle: QrDataModuleStyle(
+                                    dataModuleShape: QrDataModuleShape.circle,
+                                    color: Colors.black,
+                                  ),
+                                  eyeStyle: QrEyeStyle(
+                                    eyeShape: QrEyeShape.circle,
+                                    color: Colors.blue,
+                                  ),
+                                  embeddedImageStyle: QrEmbeddedImageStyle(
+                                    size: Size(50, 50),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: QrImageView.withQr(
-                              qr: QrCode.fromData(
-                                data: widget.patient.id,
-                                errorCorrectLevel: QrErrorCorrectLevel.Q,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 4,
+                            children: [
+                              Text(
+                                context.loc.name,
+                                style: TextStyle(fontWeight: FontWeight.w700),
                               ),
-                              embeddedImage: AssetImage(AppAssets.icon),
-                              dataModuleStyle: QrDataModuleStyle(
-                                dataModuleShape: QrDataModuleShape.circle,
-                                color: Colors.black,
+                              Text(widget.patient.name),
+                              SizedBox(height: 4),
+                              Text(
+                                context.loc.dateOfBirth,
+                                style: TextStyle(fontWeight: FontWeight.w700),
                               ),
-                              eyeStyle: QrEyeStyle(
-                                eyeShape: QrEyeShape.circle,
-                                color: Colors.blue,
+                              Text(
+                                DateFormat(
+                                  'dd - MM - yyyy',
+                                  l.lang,
+                                ).format(DateTime.parse(widget.patient.dob)),
                               ),
-                              embeddedImageStyle: QrEmbeddedImageStyle(
-                                size: Size(50, 50),
+                              SizedBox(height: 4),
+                              Text(
+                                context.loc.mobileNumber,
+                                style: TextStyle(fontWeight: FontWeight.w700),
                               ),
-                            ),
+                              Text(widget.patient.phone),
+                              SizedBox(height: 4),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 4,
-                        children: [
-                          Text(
-                            'الاسم',
-                            style: TextStyle(fontWeight: FontWeight.w700),
-                          ),
-                          Text(widget.patient.name),
-                          SizedBox(height: 4),
-                          Text(
-                            'تاريخ الميلاد',
-                            style: TextStyle(fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                            DateFormat(
-                              'dd - MM - yyyy',
-                              'ar',
-                            ).format(DateTime.parse(widget.patient.dob)),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'الموبايل',
-                            style: TextStyle(fontWeight: FontWeight.w700),
-                          ),
-                          Text(widget.patient.phone),
-                          SizedBox(height: 4),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
       actionsAlignment: MainAxisAlignment.center,
@@ -160,46 +167,6 @@ class _PatientIdCardDialogState extends State<PatientIdCardDialog> {
           },
           label: Text(context.loc.download),
           icon: Icon(FontAwesomeIcons.download, color: Colors.green.shade100),
-        ),
-        Consumer<PxWhatsapp>(
-          builder: (context, w, _) {
-            return ElevatedButton.icon(
-              onPressed: () async {
-                final _data = await _controller.capture();
-                if (_data != null && context.mounted) {
-                  if (w.isConnectedToServer && w.hasConnectedDevices) {
-                    await shellFunction(
-                      context,
-                      toExecute: () async {
-                        final _imageRequest = WhatsappImageRequest(
-                          phone: widget.patient.phone,
-                          caption: 'كارت المتابعة',
-                          image: _data,
-                        );
-                        await w.sendImage(_imageRequest);
-                      },
-                    );
-                  } else {
-                    if (!w.isConnectedToServer) {
-                      showIsnackbar(context.loc.notConntectedToWhatsappServer);
-                      return;
-                    }
-                    if (!w.hasConnectedDevices) {
-                      showIsnackbar(context.loc.noConnectedDevices);
-                      return;
-                    }
-                    showIsnackbar(context.loc.error);
-                    return;
-                  }
-                }
-              },
-              label: Text(context.loc.send),
-              icon: Icon(
-                FontAwesomeIcons.whatsapp,
-                color: Colors.green.shade100,
-              ),
-            );
-          },
         ),
       ],
     );

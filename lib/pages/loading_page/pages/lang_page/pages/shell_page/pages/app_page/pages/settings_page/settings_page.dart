@@ -86,7 +86,6 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
 
-                // const WhatsappTile(),
                 //todo: Add section for clinic / reciept info and select reciept default printing info
                 // const RecieptSettingsSection(),
                 //todo: Manage notification sound and app logo

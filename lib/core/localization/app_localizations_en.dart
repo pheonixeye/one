@@ -1258,4 +1258,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noImageFound => 'No Image Found';
+
+  @override
+  String get idCard => 'Id Card';
 }

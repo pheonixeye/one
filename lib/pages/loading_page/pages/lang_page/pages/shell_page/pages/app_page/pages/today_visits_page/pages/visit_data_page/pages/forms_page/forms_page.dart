@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:one/core/api/patient_document_api.dart';
+import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/visual_sheet_dialog.dart';
+import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/floating_ax_menu_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -126,14 +127,10 @@ class _VisitFormsPageState extends State<VisitFormsPage>
           ),
           floatingActionButton: FloatingActionMenuBubble(
             animation: _animation,
-            // On pressed change animation state
             onPress: () => _animationController.isCompleted
                 ? _animationController.reverse()
                 : _animationController.forward(),
-            // Floating Action button Icon color
             iconColor: Colors.white,
-            // Flaoting Action button Icon
-            // iconData: Icons.settings,
             animatedIconData: AnimatedIcons.menu_arrow,
             backGroundColor: Theme.of(
               context,
@@ -228,19 +225,22 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                       related_visit_data_id: _data.id,
                       document_type_id: _documentTypeId,
                       document_url: '',
-                      created: DateTime.now().toUtc(),
+                      created: DateTime.now().unTimed,
                     );
                     await shellFunction(
                       context,
                       toExecute: () async {
                         //todo: save document to patient
-                        await PatientDocumentApi(
-                          patient_id: _data.patient.id,
-                        ).addPatientDocument(
-                          _document,
-                          _imageData!,
-                          '${DateFormat('dd-MM-yyyy', 'en').format(DateTime.now())}.jpg',
-                        );
+                        if (context.mounted) {
+                          await context
+                              .read<PxS3PatientDocuments>()
+                              .addPatientDocument(
+                                document: _document,
+                                payload: _imageData,
+                                objectName:
+                                    '${_data.patient.id}/${DateFormat('dd-MM-yyyy', 'en').format(DateTime.now())}.jpg',
+                              );
+                        }
                       },
                     );
                   }

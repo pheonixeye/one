@@ -1,11 +1,13 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
-import 'package:one/models/patient_document/expanded_patient_document.dart';
+import 'package:one/models/patient.dart';
+import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/document_action_btn.dart';
 import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
-import 'package:one/providers/px_patient_documents.dart';
+import 'package:one/providers/px_s3_documents.dart';
+import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/central_no_items.dart';
@@ -15,7 +17,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class PatientDocumentsViewDialog extends StatefulWidget {
-  const PatientDocumentsViewDialog({super.key});
+  const PatientDocumentsViewDialog({
+    super.key,
+    required this.patient,
+  });
+  final Patient patient;
 
   @override
   State<PatientDocumentsViewDialog> createState() =>
@@ -46,16 +52,15 @@ class _PatientDocumentsViewDialogState
   Widget build(BuildContext context) {
     return Consumer3<
       PxDoctorProfileItems<DoctorDocumentTypeItem>,
-      PxPatientDocuments,
+      PxS3PatientDocuments,
       PxLocale
     >(
       builder: (context, a, d, l, _) {
         while (a.data == null || d.documents == null) {
           return const CentralLoading();
         }
-        final _result =
-            (d.documents as ApiResult<List<ExpandedPatientDocument>>);
-        while (_result is ApiErrorResult<List<ExpandedPatientDocument>> ||
+        final _result = (d.documents as ApiResult<List<PatientDocument>>);
+        while (_result is ApiErrorResult<List<PatientDocument>> ||
             a.data is ApiErrorResult) {
           return CentralError(
             code: (_result as ApiErrorResult).errorCode,
@@ -65,8 +70,7 @@ class _PatientDocumentsViewDialogState
             },
           );
         }
-        final _data =
-            (_result as ApiDataResult<List<ExpandedPatientDocument>>).data;
+        final _data = (_result as ApiDataResult<List<PatientDocument>>).data;
         final _documentTypes =
             (a.data as ApiDataResult<List<DoctorDocumentTypeItem>>).data;
         while (_data.isEmpty) {
@@ -83,7 +87,7 @@ class _PatientDocumentsViewDialogState
                     children: [
                       TextSpan(text: '\n'),
                       TextSpan(
-                        text: '(${_data.first.patient.name})',
+                        text: '(${widget.patient.name})',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.normal,
@@ -211,8 +215,20 @@ class _PatientDocumentsViewDialogState
                                             spacing: 8,
                                             children: [
                                               ...docs.value.map((doc) {
-                                                return DocumentActionBtn(
-                                                  document: doc,
+                                                return ChangeNotifierProvider(
+                                                  key: ValueKey(doc.id),
+                                                  create: (context) =>
+                                                      PxS3Documents(
+                                                        context: context,
+                                                        objectName:
+                                                            doc.document_url,
+                                                        state:
+                                                            S3DocumentsPxState
+                                                                .fetch,
+                                                      ),
+                                                  child: DocumentActionBtn(
+                                                    document: doc,
+                                                  ),
                                                 );
                                               }),
                                             ],

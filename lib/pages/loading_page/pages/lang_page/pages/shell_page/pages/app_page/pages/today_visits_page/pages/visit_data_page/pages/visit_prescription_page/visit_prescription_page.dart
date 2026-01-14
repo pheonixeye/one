@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:one/core/api/patient_document_api.dart';
+import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/patient_document/patient_document.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:one/widgets/snackbar_.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -525,6 +527,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                       onPressed: () async {
                                         //todo: Print
                                         Uint8List? _bytesWithImage;
+                                        String? _documentTypeId;
                                         await shellFunction(
                                           context,
                                           toExecute: () async {
@@ -540,15 +543,20 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                 return;
                                               }
                                             }
-                                            //TODO:
-                                            // final _docType = a
-                                            //     .constants!
-                                            //     .documentType
-                                            //     .firstWhere(
-                                            //       (e) =>
-                                            //           e.name_en ==
-                                            //           'Prescription',
-                                            //     );
+                                            if (context.mounted) {
+                                              //todo: select document type
+                                              _documentTypeId =
+                                                  await showDialog<String?>(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return DocumentTypePickerDialog();
+                                                    },
+                                                  );
+                                            }
+                                            if (_documentTypeId == null) {
+                                              return;
+                                            }
+
                                             final _patientDocument =
                                                 PatientDocument(
                                                   id: '',
@@ -557,18 +565,21 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                   related_visit_data_id:
                                                       visit_data.id,
                                                   document_type_id:
-                                                      '_docType.id',
+                                                      _documentTypeId!,
                                                   document_url: '',
-                                                  created: DateTime.now()
-                                                      .toUtc(),
+                                                  created:
+                                                      DateTime.now().unTimed,
                                                 );
-                                            await PatientDocumentApi(
-                                              patient_id: visit.patient.id,
-                                            ).addPatientDocument(
-                                              _patientDocument,
-                                              _bytesWithImage!,
-                                              '${intl.DateFormat('dd_MM_yyyy', 'en').format(DateTime.now())}.jpg',
-                                            );
+                                            if (context.mounted) {
+                                              await context
+                                                  .read<PxS3PatientDocuments>()
+                                                  .addPatientDocument(
+                                                    document: _patientDocument,
+                                                    payload: _bytesWithImage,
+                                                    objectName:
+                                                        '${visit.patient.id}/${intl.DateFormat('dd_MM_yyyy', 'en').format(DateTime.now())}.jpg',
+                                                  );
+                                            }
                                           },
                                           duration: const Duration(
                                             milliseconds: 500,
