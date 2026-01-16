@@ -73,7 +73,7 @@ class SupplyMovementTransformer {
       supply_item_id: item.id,
       movement_type: _movment_type!,
       related_visit_id: data.visit_id,
-      added_by: PxAuth.doc_id_static_getter,
+      added_by: '${PxAuth.staticUser?.name}',
       updated_by: '',
       reason: _reason!,
       movement_amount: quantity_change * item.selling_price,

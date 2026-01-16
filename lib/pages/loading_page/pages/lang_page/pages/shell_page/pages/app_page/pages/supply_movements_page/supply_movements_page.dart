@@ -1,6 +1,8 @@
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/supply_movements_page/widgets/supply_mov_data_table.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/widgets/floating_ax_menu_bubble.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/not_permitted_template_page.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -9,11 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_dto.dart';
-import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/supply_movements_page/widgets/add_supply_movement_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/supply_movements_page/widgets/print_supply_movements_dialog.dart';
 import 'package:one/providers/px_locale.dart';
@@ -30,12 +30,16 @@ class SupplyMovementsPage extends StatefulWidget {
   State<SupplyMovementsPage> createState() => _SupplyMovementsPageState();
 }
 
-class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
+class _SupplyMovementsPageState extends State<SupplyMovementsPage>
+    with SingleTickerProviderStateMixin {
   late final TextEditingController _fromController;
   late final TextEditingController _toController;
   late final l = context.read<PxLocale>();
   late final ScrollController _verticalScroll;
   late final ScrollController _horizontalScroll;
+
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
 
   @override
   void initState() {
@@ -49,6 +53,17 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
     );
     _verticalScroll = ScrollController();
     _horizontalScroll = ScrollController();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+
+    final curvedAnimation = CurvedAnimation(
+      curve: Curves.easeInOut,
+      parent: _animationController,
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
   }
 
   @override
@@ -57,230 +72,9 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
     _toController.dispose();
     _verticalScroll.dispose();
     _horizontalScroll.dispose();
-    super.dispose();
-  }
+    _animationController.dispose();
 
-  Widget _buildDataTable(List<SupplyMovement>? _items) {
-    while (_items == null) {
-      return CentralLoading();
-    }
-    return Scrollbar(
-      thumbVisibility: true,
-      controller: _verticalScroll,
-      child: SingleChildScrollView(
-        controller: _verticalScroll,
-        restorationId: 'data-table-vertical',
-        scrollDirection: Axis.vertical,
-        child: Row(
-          children: [
-            Expanded(
-              child: Scrollbar(
-                controller: _horizontalScroll,
-                thumbVisibility: true,
-                child: SingleChildScrollView(
-                  controller: _horizontalScroll,
-                  restorationId: 'data-table-horizontal',
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    border: TableBorder.all(),
-                    dividerThickness: 2,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    headingRowColor: WidgetStatePropertyAll(
-                      Colors.amber.shade50,
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          context.loc.number,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.movementDate,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.supplyItem,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.clinic,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.movementDirection,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.movementReason,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.movementQuantity,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.movementAmount,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.relatedVisitId,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.autoAdd,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          context.loc.addedBy,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                    rows: [
-                      ..._items.map<DataRow>((x) {
-                        final _supplyItemMovementType =
-                            SupplyMovementType.fromString(x.movement_type);
-                        final _index = _items.indexOf(x);
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                '${_index + 1}'.toArabicNumber(context),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                DateFormat(
-                                  'dd - MM - yyyy',
-                                  l.lang,
-                                ).format(x.created),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                l.isEnglish
-                                    ? x.supply_item.name_en
-                                    : x.supply_item.name_ar,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                l.isEnglish
-                                    ? x.clinic.name_en
-                                    : x.clinic.name_ar,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DataCell(
-                              Center(
-                                child: Tooltip(
-                                  message: l.isEnglish
-                                      ? _supplyItemMovementType.en
-                                      : _supplyItemMovementType.ar,
-                                  child: Icon(
-                                    switch (_supplyItemMovementType) {
-                                      SupplyMovementType.OUT_IN =>
-                                        Icons.arrow_downward,
-                                      SupplyMovementType.IN_OUT =>
-                                        Icons.arrow_upward,
-                                      SupplyMovementType.IN_IN =>
-                                        Icons.compare_arrows_rounded,
-                                    },
-                                    color: switch (_supplyItemMovementType) {
-                                      SupplyMovementType.OUT_IN => Colors.red,
-                                      SupplyMovementType.IN_OUT => Colors.green,
-                                      SupplyMovementType.IN_IN => Colors.blue,
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Text(x.reason, textAlign: TextAlign.center),
-                            ),
-                            DataCell(
-                              Text(
-                                '${x.movement_quantity} ${l.isEnglish ? x.supply_item.unit_en : x.supply_item.unit_ar}',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                '${x.movement_amount} ${context.loc.egp}',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DataCell(
-                              Text.rich(
-                                TextSpan(
-                                  text: x.reason,
-                                ),
-                                style: TextStyle(
-                                  decoration:
-                                      (x.visit_id == null ||
-                                          x.visit_id!.isEmpty)
-                                      ? TextDecoration.none
-                                      : TextDecoration.underline,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Center(
-                                child: switch (x.auto_add) {
-                                  true => const Icon(
-                                    Icons.check,
-                                    color: Colors.green,
-                                  ),
-                                  false => const Icon(
-                                    Icons.close,
-                                    color: Colors.red,
-                                  ),
-                                },
-                              ),
-                            ),
-                            DataCell(
-                              Text(
-                                x.added_by,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    super.dispose();
   }
 
   @override
@@ -469,48 +263,109 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
                     final _items =
                         (s.result as ApiDataResult<List<SupplyMovement>>).data;
 
-                    return _buildDataTable(_items);
+                    return buildDataTable(
+                      context,
+                      l,
+                      items: _items,
+                      verticalScroll: _verticalScroll,
+                      horizontalScroll: _horizontalScroll,
+                    );
                   },
                 ),
               ),
             ],
           ),
-          floatingActionButton: SmBtn(
-            tooltip: context.loc.newSupplyMovement,
-            onPressed: () async {
-              //@permission
-              final _perm = context.read<PxAuth>().isActionPermitted(
-                PermissionEnum.User_SupplyMovement_Add,
-                context,
-              );
-              if (!_perm.isAllowed) {
-                await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return NotPermittedDialog(permission: _perm.permission);
-                  },
-                );
-                return;
-              }
-              final _dtos = await showDialog<List<SupplyMovementDto?>?>(
-                context: context,
-                builder: (context) {
-                  return AddSupplyMovementDialog();
-                },
-              );
-              if (_dtos == null) {
-                return;
-              }
-              if (context.mounted) {
-                await shellFunction(
+          floatingActionButton: FloatingActionMenuBubble(
+            animation: _animation,
+            // On pressed change animation state
+            onPress: () => _animationController.isCompleted
+                ? _animationController.reverse()
+                : _animationController.forward(),
+            // Floating Action button Icon color
+            iconColor: Colors.white,
+            // Flaoting Action button Icon
+            // iconData: Icons.settings,
+            animatedIconData: AnimatedIcons.menu_arrow,
+            backGroundColor: Theme.of(
+              context,
+            ).floatingActionButtonTheme.backgroundColor!,
+            items: [
+              Bubble(
+                title: context.loc.refresh,
+                iconColor: Colors.white,
+                bubbleColor: Theme.of(
                   context,
-                  toExecute: () async {
-                    await s.addSupplyMovements(_dtos);
-                  },
-                );
-              }
-            },
-            child: const Icon(Icons.add),
+                ).floatingActionButtonTheme.backgroundColor!,
+                icon: Icons.refresh,
+                titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                onPress: () async {
+                  _animationController.reverse();
+                  //@permission
+                  final _perm = context.read<PxAuth>().isActionPermitted(
+                    PermissionEnum.User_SupplyMovements_Read,
+                    context,
+                  );
+                  if (!_perm.isAllowed) {
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return NotPermittedDialog(permission: _perm.permission);
+                      },
+                    );
+                    return;
+                  }
+                  await shellFunction(
+                    context,
+                    toExecute: () async {
+                      await s.retry();
+                    },
+                  );
+                },
+              ),
+              Bubble(
+                title: context.loc.newSupplyMovement,
+                iconColor: Colors.white,
+                bubbleColor: Theme.of(
+                  context,
+                ).floatingActionButtonTheme.backgroundColor!,
+                icon: Icons.add,
+                titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+                onPress: () async {
+                  _animationController.reverse();
+                  //@permission
+                  final _perm = context.read<PxAuth>().isActionPermitted(
+                    PermissionEnum.User_SupplyMovement_Add,
+                    context,
+                  );
+                  if (!_perm.isAllowed) {
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return NotPermittedDialog(permission: _perm.permission);
+                      },
+                    );
+                    return;
+                  }
+                  final _dtos = await showDialog<List<SupplyMovementDto?>?>(
+                    context: context,
+                    builder: (context) {
+                      return AddSupplyMovementDialog();
+                    },
+                  );
+                  if (_dtos == null) {
+                    return;
+                  }
+                  if (context.mounted) {
+                    await shellFunction(
+                      context,
+                      toExecute: () async {
+                        await s.addSupplyMovements(_dtos);
+                      },
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         );
       },

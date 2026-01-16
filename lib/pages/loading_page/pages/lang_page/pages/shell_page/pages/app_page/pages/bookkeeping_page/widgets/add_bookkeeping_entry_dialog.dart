@@ -203,11 +203,11 @@ class _AddBookkeepingEntryDialogState extends State<AddBookkeepingEntryDialog> {
                 item_name: _operationController.text,
                 item_id: '',
                 collection_id: '',
-                added_by: PxAuth.doc_id_static_getter,
+                added_by: '${PxAuth.staticUser?.name}',
                 updated_by: '',
                 amount: _amount.toDouble(),
                 type: _type ?? BookkeepingDirection.NONE,
-                update_reason: '',
+                update_reason: _operationController.text,
                 auto_add: false,
                 created: DateTime.now(),
               );

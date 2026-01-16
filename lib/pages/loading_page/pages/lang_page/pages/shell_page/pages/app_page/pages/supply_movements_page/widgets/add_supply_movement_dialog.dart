@@ -15,6 +15,7 @@ import 'package:one/providers/px_clinic_inventory.dart';
 import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
 
@@ -67,6 +68,14 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
         while (c.result == null || s.data == null) {
           return const CentralLoading();
         }
+
+        while (s.data is ApiErrorResult) {
+          final _err = (s.data as ApiErrorResult);
+          return CentralError(
+            code: _err.errorCode,
+            toExecute: s.retry,
+          );
+        }
         final _data = (s.data as ApiDataResult<List<DoctorSupplyItem>>).data;
         return AlertDialog(
           title: Row(
@@ -90,142 +99,146 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
           scrollable: true,
           contentPadding: const EdgeInsets.all(8),
           insetPadding: const EdgeInsets.all(8),
-          content: SizedBox(
-            height: MediaQuery.sizeOf(context).height,
-            width: context.isMobile
-                ? MediaQuery.sizeOf(context).width
-                : MediaQuery.sizeOf(context).width / 2,
+          content: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.heightOf(context),
+              maxWidth: context.isMobile
+                  ? MediaQuery.widthOf(context)
+                  : MediaQuery.widthOf(context) / 2,
+            ),
             child: Form(
               key: formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                // shrinkWrap: true,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 150,
-
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(context.loc.pickSupplyItem),
-                      ),
-                      subtitle: SizedBox(
-                        height: 100,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButtonFormField<DoctorSupplyItem>(
-                            items: _data.map((e) {
-                              return DropdownMenuItem<DoctorSupplyItem>(
-                                alignment: Alignment.center,
-                                value: e,
-                                child: Text(
-                                  l.isEnglish ? e.name_en : e.name_ar,
-                                ),
-                              );
-                            }).toList(),
-                            alignment: Alignment.center,
-                            onChanged: (val) {
-                              setState(() {
-                                _supplyItem = val;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(context.loc.pickSupplyItem),
                   ),
-                  SizedBox(
-                    height: 150,
-
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(context.loc.movementDirection),
-                      ),
-                      subtitle: SizedBox(
-                        height: 100,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButtonFormField<String>(
-                            items: SupplyMovementType.values.map((e) {
-                              return DropdownMenuItem<String>(
-                                alignment: Alignment.center,
-                                value: e.en.toLowerCase(),
-                                child: Text(
-                                  l.isEnglish ? e.en.toUpperCase() : e.ar,
-                                ),
-                              );
-                            }).toList(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField<DoctorSupplyItem>(
+                        items: _data.map((e) {
+                          return DropdownMenuItem<DoctorSupplyItem>(
                             alignment: Alignment.center,
-                            onChanged: (val) {
-                              setState(() {
-                                _supplyMovementType = SupplyMovementType.values
-                                    .firstWhere((e) => e.en == val);
-                                if (_supplyMovementType !=
-                                    SupplyMovementType.IN_IN) {
-                                  _destinationClinic = null;
-                                }
-                                _movement_type = val;
-                                _movement_quantity = null;
-                                _movement_amount = null;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  ...[
-                    SizedBox(
-                      height: 150,
-
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-
-                        title: _supplyMovementType == SupplyMovementType.IN_IN
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(context.loc.pickSourceClinic),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(context.loc.pickClinic),
-                              ),
-                        subtitle: SizedBox(
-                          height: 100,
-
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButtonFormField<Clinic>(
-                              items: (c.result as ApiDataResult<List<Clinic>>)
-                                  .data
-                                  .map((e) {
-                                    return DropdownMenuItem<Clinic>(
-                                      alignment: Alignment.center,
-                                      value: e,
-                                      child: Text(
-                                        l.isEnglish ? e.name_en : e.name_ar,
-                                      ),
-                                    );
-                                  })
-                                  .toList(),
-                              alignment: Alignment.center,
-                              initialValue: _sourceClinic,
-                              onChanged: (val) {
-                                setState(() {
-                                  _sourceClinic = val;
-                                });
-                              },
+                            value: e,
+                            child: Text(
+                              l.isEnglish ? e.name_en : e.name_ar,
                             ),
+                          );
+                        }).toList(),
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        onChanged: (val) {
+                          setState(() {
+                            _supplyItem = val;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return context.loc.pickSupplyItem;
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(context.loc.movementDirection),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField<String>(
+                        items: SupplyMovementType.values.map((e) {
+                          return DropdownMenuItem<String>(
+                            alignment: Alignment.center,
+                            value: e.en.toLowerCase(),
+                            child: Text(
+                              l.isEnglish ? e.en.toUpperCase() : e.ar,
+                            ),
+                          );
+                        }).toList(),
+                        alignment: Alignment.center,
+                        isExpanded: true,
+                        onChanged: (val) {
+                          setState(() {
+                            _supplyMovementType = SupplyMovementType.values
+                                .firstWhere((e) => e.en == val);
+                            if (_supplyMovementType !=
+                                SupplyMovementType.IN_IN) {
+                              _destinationClinic = null;
+                            }
+                            _movement_type = val;
+                            _movement_quantity = null;
+                            _movement_amount = null;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '${context.loc.enter} ${context.loc.movementDirection}';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                  const Divider(),
+                  ...[
+                    _supplyMovementType == SupplyMovementType.IN_IN
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(context.loc.pickSourceClinic),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(context.loc.pickClinic),
                           ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButtonFormField<Clinic>(
+                          items: (c.result as ApiDataResult<List<Clinic>>).data
+                              .map((e) {
+                                return DropdownMenuItem<Clinic>(
+                                  alignment: Alignment.center,
+                                  value: e,
+                                  child: Text(
+                                    l.isEnglish ? e.name_en : e.name_ar,
+                                  ),
+                                );
+                              })
+                              .toList(),
+                          isExpanded: true,
+                          validator: (value) {
+                            if (value == null) {
+                              return context.loc.pickSourceClinic;
+                            }
+                            return null;
+                          },
+                          alignment: Alignment.center,
+                          initialValue: _sourceClinic,
+                          onChanged: (val) {
+                            setState(() {
+                              _sourceClinic = val;
+                            });
+                          },
                         ),
                       ),
                     ),
+                    const Divider(),
                     if (_sourceClinic != null)
                       ChangeNotifierProvider(
                         key: UniqueKey(),
                         create: (context) => PxClinicInventory(
-                          api: ClinicInventoryApi(clinic_id: _sourceClinic!.id),
+                          api: ClinicInventoryApi(
+                            clinic_id: _sourceClinic!.id,
+                          ),
                         ),
                         builder: (context, child) {
                           return Consumer<PxClinicInventory>(
@@ -239,93 +252,96 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                                             List<ClinicInventoryItem>
                                           >)
                                       .data;
-                              return SizedBox(
-                                height: 150,
-
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.zero,
-
-                                  title: Padding(
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       '(${l.isEnglish ? _sourceClinic?.name_en : _sourceClinic?.name_ar}) ${context.loc.availableSupplyItemsQuantities}',
                                     ),
                                   ),
-                                  subtitle: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ..._items.map((e) {
-                                        if (e.supply_item.id ==
-                                            _supplyItem?.id) {
-                                          return Row(
-                                            spacing: 16,
-                                            children: [
-                                              Text(
-                                                l.isEnglish
-                                                    ? e.supply_item.name_en
-                                                    : e.supply_item.name_ar,
-                                              ),
-                                              Text(
-                                                '- ${e.available_quantity} -',
-                                              ),
-                                              Text(
-                                                l.isEnglish
-                                                    ? e.supply_item.unit_en
-                                                    : e.supply_item.unit_ar,
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                        return const SizedBox();
-                                      }),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ..._items.map((e) {
+                                          if (e.supply_item.id ==
+                                              _supplyItem?.id) {
+                                            return Row(
+                                              spacing: 16,
+                                              children: [
+                                                Text(
+                                                  l.isEnglish
+                                                      ? e.supply_item.name_en
+                                                      : e.supply_item.name_ar,
+                                                ),
+                                                Text(
+                                                  '- ${e.available_quantity} -',
+                                                ),
+                                                Text(
+                                                  l.isEnglish
+                                                      ? e.supply_item.unit_en
+                                                      : e.supply_item.unit_ar,
+                                                ),
+                                              ],
+                                            );
+                                          }
+                                          return const SizedBox();
+                                        }),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               );
                             },
                           );
                         },
                       ),
-                    if (_supplyMovementType == SupplyMovementType.IN_IN)
-                      SizedBox(
-                        height: 150,
-
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-
-                          title: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(context.loc.pickDestinationClinic),
-                          ),
-                          subtitle: SizedBox(
-                            height: 100,
-
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButtonFormField<Clinic>(
-                                items: (c.result as ApiDataResult<List<Clinic>>)
-                                    .data
-                                    .map((e) {
-                                      return DropdownMenuItem<Clinic>(
-                                        alignment: Alignment.center,
-                                        value: e,
-                                        child: Text(
-                                          l.isEnglish ? e.name_en : e.name_ar,
-                                        ),
-                                      );
-                                    })
-                                    .toList(),
-                                alignment: Alignment.center,
-                                initialValue: _destinationClinic,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _destinationClinic = val;
-                                  });
-                                },
-                              ),
-                            ),
+                    if (_supplyMovementType == SupplyMovementType.IN_IN) ...[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(context.loc.pickDestinationClinic),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButtonFormField<Clinic>(
+                            items: (c.result as ApiDataResult<List<Clinic>>)
+                                .data
+                                .map((e) {
+                                  return DropdownMenuItem<Clinic>(
+                                    alignment: Alignment.center,
+                                    value: e,
+                                    child: Text(
+                                      l.isEnglish ? e.name_en : e.name_ar,
+                                    ),
+                                  );
+                                })
+                                .toList(),
+                            isExpanded: true,
+                            alignment: Alignment.center,
+                            initialValue: _destinationClinic,
+                            validator: (value) {
+                              if (_supplyMovementType ==
+                                      SupplyMovementType.IN_IN &&
+                                  value == null) {
+                                return context.loc.pickDestinationClinic;
+                              }
+                              return null;
+                            },
+                            onChanged: (val) {
+                              setState(() {
+                                _destinationClinic = val;
+                              });
+                            },
                           ),
                         ),
                       ),
+                      const Divider(),
+                    ],
+
                     if (_destinationClinic != null)
                       ChangeNotifierProvider(
                         key: UniqueKey(),
@@ -346,176 +362,185 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                                             List<ClinicInventoryItem>
                                           >)
                                       .data;
-                              return SizedBox(
-                                height: 150,
-
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.zero,
-
-                                  title: Padding(
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       '(${l.isEnglish ? _destinationClinic?.name_en : _destinationClinic?.name_ar}) ${context.loc.availableSupplyItemsQuantities}',
                                     ),
                                   ),
-                                  subtitle: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ..._items.map((e) {
-                                        if (e.supply_item.id ==
-                                            _supplyItem?.id) {
-                                          return Row(
-                                            spacing: 16,
-                                            children: [
-                                              Text(
-                                                l.isEnglish
-                                                    ? e.supply_item.name_en
-                                                    : e.supply_item.name_ar,
-                                              ),
-                                              Text(
-                                                '- ${e.available_quantity} -',
-                                              ),
-                                              Text(
-                                                l.isEnglish
-                                                    ? e.supply_item.unit_en
-                                                    : e.supply_item.unit_ar,
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                        return const SizedBox();
-                                      }),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ..._items.map((e) {
+                                          if (e.supply_item.id ==
+                                              _supplyItem?.id) {
+                                            return Row(
+                                              spacing: 16,
+                                              children: [
+                                                Text(
+                                                  l.isEnglish
+                                                      ? e.supply_item.name_en
+                                                      : e.supply_item.name_ar,
+                                                ),
+                                                Text(
+                                                  '- ${e.available_quantity} -',
+                                                ),
+                                                Text(
+                                                  l.isEnglish
+                                                      ? e.supply_item.unit_en
+                                                      : e.supply_item.unit_ar,
+                                                ),
+                                              ],
+                                            );
+                                          }
+                                          return const SizedBox();
+                                        }),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                  const Divider(),
+                                ],
                               );
                             },
                           );
                         },
                       ),
                   ],
-                  SizedBox(
-                    height: 150,
-
-                    child: ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(context.loc.movementReason),
-                      ),
-                      contentPadding: EdgeInsets.zero,
-                      subtitle: TextFormField(
-                        expands: true,
-                        maxLines: null,
-                        minLines: null,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          hintText: context.loc.enterMovementReason,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(context.loc.movementReason),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      expands: false,
+                      maxLines: 2,
+                      minLines: 1,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        controller: _reason_controller,
+                        hintText: context.loc.enterMovementReason,
                       ),
+                      controller: _reason_controller,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return context.loc.enterMovementReason;
+                        }
+                        return null;
+                      },
                     ),
                   ),
-                  SizedBox(
-                    height: 150,
-
-                    child: ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(context.loc.movementQuantity),
-                      ),
-                      contentPadding: EdgeInsets.zero,
-
-                      subtitle: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                hintText: context.loc.enterMovementQuantity,
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(context.loc.movementQuantity),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              onChanged: (value) {
-                                _movement_quantity = double.parse(value);
-                                if (_supplyItem != null &&
-                                    _movement_quantity != null) {
-                                  _movement_amount_controller.text =
-                                      switch (_supplyMovementType) {
-                                        SupplyMovementType.IN_IN => '0',
-                                        SupplyMovementType.IN_OUT =>
-                                          (_supplyItem!.selling_price *
-                                                  _movement_quantity!)
-                                              .toString(),
-                                        SupplyMovementType.OUT_IN =>
-                                          (-_supplyItem!.buying_price *
-                                                  _movement_quantity!)
-                                              .toString(),
-                                        _ => '',
-                                      };
-                                  _movement_amount = double.parse(
-                                    _movement_amount_controller.text,
-                                  );
-                                }
-                              },
+                              hintText: context.loc.enterMovementQuantity,
+                            ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            onChanged: (value) {
+                              _movement_quantity = double.parse(value);
+                              if (_supplyItem != null &&
+                                  _movement_quantity != null) {
+                                _movement_amount_controller.text =
+                                    switch (_supplyMovementType) {
+                                      SupplyMovementType.IN_IN => '0',
+                                      SupplyMovementType.IN_OUT =>
+                                        (_supplyItem!.selling_price *
+                                                _movement_quantity!)
+                                            .toString(),
+                                      SupplyMovementType.OUT_IN =>
+                                        (-_supplyItem!.buying_price *
+                                                _movement_quantity!)
+                                            .toString(),
+                                      _ => '',
+                                    };
+                                _movement_amount = double.parse(
+                                  _movement_amount_controller.text,
+                                );
+                              }
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return context.loc.enterMovementQuantity;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        if (_supplyItem != null)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
+                            child: Text(
+                              l.isEnglish
+                                  ? _supplyItem!.unit_en
+                                  : _supplyItem!.unit_ar,
                             ),
                           ),
-                          if (_supplyItem != null)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                              ),
-                              child: Text(
-                                l.isEnglish
-                                    ? _supplyItem!.unit_en
-                                    : _supplyItem!.unit_ar,
-                              ),
-                            ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 150,
-                    child: ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(context.loc.movementAmount),
-                      ),
-                      contentPadding: EdgeInsets.zero,
-
-                      subtitle: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _movement_amount_controller,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                hintText: context.loc.enterMovementAmount,
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(context.loc.movementAmount),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _movement_amount_controller,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              enabled: false,
+                              hintText: context.loc.enterMovementAmount,
                             ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            enabled: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return context.loc.enterMovementAmount;
+                              }
+                              return null;
+                            },
                           ),
-                          if (_supplyItem != null && _movement_quantity != null)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                              ),
-                              child: Text(context.loc.egp),
+                        ),
+                        if (_supplyItem != null && _movement_quantity != null)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
                             ),
-                        ],
-                      ),
+                            child: Text(context.loc.egp),
+                          ),
+                      ],
                     ),
                   ),
+                  const Divider(),
                 ],
               ),
             ),
@@ -545,7 +570,7 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                     movement_type: _movement_type ?? '',
                     related_visit_id: widget.supplyMovement?.visit_id ?? '',
                     reason: _src_reason,
-                    added_by: context.read<PxAuth>().doc_id,
+                    added_by: '${context.read<PxAuth>().user?.name}',
                     movement_amount: _movement_amount ?? 0.0,
                     movement_quantity: _movement_quantity ?? 0.0,
                     auto_add: false,
@@ -560,7 +585,7 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                       movement_type: _movement_type ?? '',
                       related_visit_id: widget.supplyMovement?.visit_id ?? '',
                       reason: _dest_reason,
-                      added_by: context.read<PxAuth>().doc_id,
+                      added_by: '${context.read<PxAuth>().user?.name}',
                       movement_amount: _movement_amount ?? 0.0,
                       movement_quantity: _movement_quantity ?? 0.0,
                       auto_add: false,
