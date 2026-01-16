@@ -174,7 +174,7 @@ class _PrintSupplyMovementsDialogState
                           ),
                         ),
                         pw.Text(
-                          x.added_by.email,
+                          x.added_by,
                           textAlign: pw.TextAlign.center,
                         ),
                       ],

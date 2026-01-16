@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class ImageSourceAndDocumentTypeId {
-  final String document_type_id;
+class ImageSourceAndDocumentType {
+  final DoctorDocumentTypeItem document_type;
   final ImageSource imageSource;
 
-  ImageSourceAndDocumentTypeId({
-    required this.document_type_id,
+  ImageSourceAndDocumentType({
+    required this.document_type,
     required this.imageSource,
   });
 }
@@ -31,7 +31,7 @@ class ImageSourceAndDocumentTypeDialog extends StatefulWidget {
 class _ImageSourceAndDocumentTypeDialogState
     extends State<ImageSourceAndDocumentTypeDialog> {
   ImageSource? _imageSource;
-  String? _document_type_id;
+  DoctorDocumentTypeItem? _document_type;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -144,14 +144,14 @@ class _ImageSourceAndDocumentTypeDialogState
                         padding: const EdgeInsets.all(8.0),
                         child: Text(context.loc.pickDocumentType),
                       ),
-                      subtitle: FormField<String?>(
+                      subtitle: FormField<DoctorDocumentTypeItem?>(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         builder: (field) {
-                          return RadioGroup<String>(
-                            groupValue: _document_type_id,
+                          return RadioGroup<DoctorDocumentTypeItem>(
+                            groupValue: _document_type,
                             onChanged: (val) {
                               setState(() {
-                                _document_type_id = val;
+                                _document_type = val;
                               });
                             },
                             child: Column(
@@ -159,11 +159,11 @@ class _ImageSourceAndDocumentTypeDialogState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ..._data.map((e) {
-                                  return RadioListTile(
+                                  return RadioListTile<DoctorDocumentTypeItem>(
                                     title: Text(
                                       l.isEnglish ? e.name_en : e.name_ar,
                                     ),
-                                    value: e.id,
+                                    value: e,
                                   );
                                 }),
                                 if (field.hasError)
@@ -180,8 +180,7 @@ class _ImageSourceAndDocumentTypeDialogState
                           );
                         },
                         validator: (value) {
-                          if (_document_type_id == null ||
-                              _document_type_id!.isEmpty) {
+                          if (_document_type == null) {
                             return context.loc.pickDocumentType;
                           }
                           return null;
@@ -200,8 +199,8 @@ class _ImageSourceAndDocumentTypeDialogState
             ElevatedButton.icon(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  final _d = ImageSourceAndDocumentTypeId(
-                    document_type_id: _document_type_id!,
+                  final _d = ImageSourceAndDocumentType(
+                    document_type: _document_type!,
                     imageSource: _imageSource!,
                   );
                   Navigator.pop(context, _d);

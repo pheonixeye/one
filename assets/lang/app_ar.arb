@@ -435,5 +435,6 @@
     "accountType" : "نوع الحساب",
     "documents" : "المستندات",
     "noImageFound" : "لم يتم العثور علي صورة",
-    "idCard" : "بطاقة تعريف"
+    "idCard" : "بطاقة تعريف",
+    "visitDocuments" : "مستندات الزيارة"
 }

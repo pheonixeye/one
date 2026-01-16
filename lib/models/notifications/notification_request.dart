@@ -1,3 +1,4 @@
+import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/notifications/notification_topic.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +64,7 @@ class NotificationRequest extends Equatable {
   @override
   List<Object?> get props => [topic, message, title, priority];
 
-  factory NotificationRequest.fromVisit(Visit visit) {
+  factory NotificationRequest.fromVisit(VisitExpanded visit) {
     //TODO: refactor
     final _title = 'تم اضافة حجز جديد';
     final _message =
@@ -71,7 +72,7 @@ class NotificationRequest extends Equatable {
 اسم المريض : ${visit.patient.name}
 تاريخ الحجز : ${DateFormat('dd - MM - yyyy', 'ar').format(visit.visit_date)}
 العيادة : ${visit.clinic.name_ar}
-نوع الحجز : ${visit.visit_type.name_ar}
+نوع الحجز : ${VisitTypeEnum.visitType(visit.visit_type, false)}
 الطبيب المعالج : ${visit.doctor.name_ar}
 اضافة بواسطة : ${visit.added_by}
 ''';

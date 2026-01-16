@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class VisitProgressionCard extends StatefulWidget {
   const VisitProgressionCard({super.key, required this.item});
-  final Visit item;
+  final VisitExpanded item;
 
   @override
   State<VisitProgressionCard> createState() => _VisitProgressionCardState();
@@ -59,7 +60,7 @@ class _VisitProgressionCardState extends State<VisitProgressionCard> {
                   ),
                   Text(widget.item.patient.name),
                   Text(
-                    '(${l.isEnglish ? widget.item.visit_type.name_en : widget.item.visit_type.name_ar})',
+                    '(${VisitTypeEnum.visitType(widget.item.visit_type, l.isEnglish)})',
                   ),
                 ],
               ),

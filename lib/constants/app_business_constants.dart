@@ -1,5 +1,6 @@
 class AppBusinessConstants {
   const AppBusinessConstants();
+  static const String DOCUMENT_NAME_FORMAT = 'dd-MM-yyyy-hh-mm-ss';
 
   static const int BASE_PACKAGE_MONTHLY_COST = 700;
 

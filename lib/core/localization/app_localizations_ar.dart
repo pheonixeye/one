@@ -1257,4 +1257,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idCard => 'بطاقة تعريف';
+
+  @override
+  String get visitDocuments => 'مستندات الزيارة';
 }

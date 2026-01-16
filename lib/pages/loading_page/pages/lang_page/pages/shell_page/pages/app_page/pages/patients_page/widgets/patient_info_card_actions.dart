@@ -299,7 +299,7 @@ class PatientInfoCardActions extends StatelessWidget {
               final _picker = ImagePicker();
 
               final _imgSrcDocType =
-                  await showDialog<ImageSourceAndDocumentTypeId?>(
+                  await showDialog<ImageSourceAndDocumentType?>(
                     context: context,
                     builder: (context) {
                       return ImageSourceAndDocumentTypeDialog();
@@ -326,7 +326,7 @@ class PatientInfoCardActions extends StatelessWidget {
                 patient_id: patient.id,
                 related_visit_id: '',
                 related_visit_data_id: '',
-                document_type_id: _imgSrcDocType.document_type_id,
+                document_type_id: _imgSrcDocType.document_type.id,
                 document_url: '',
                 created: DateTime.now().unTimed,
               );
@@ -335,13 +335,12 @@ class PatientInfoCardActions extends StatelessWidget {
                 await shellFunction(
                   context,
                   toExecute: () async {
-                    await context
-                        .read<PxS3PatientDocuments>()
-                        .addPatientDocument(
-                          document: _document,
-                          payload: _file_bytes,
-                          objectName: '${patient.id}/$_filename',
-                        );
+                    await context.read<PxS3PatientDocuments>().addPatientDocument(
+                      document: _document,
+                      payload: _file_bytes,
+                      objectName:
+                          '${patient.id}/${_imgSrcDocType.document_type.name_en}/$_filename',
+                    );
                   },
                 );
               }

@@ -138,7 +138,7 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
                         final _picker = ImagePicker();
 
                         final _imgSrcDocType =
-                            await showDialog<ImageSourceAndDocumentTypeId?>(
+                            await showDialog<ImageSourceAndDocumentType?>(
                               context: context,
                               builder: (context) {
                                 return ImageSourceAndDocumentTypeDialog();
@@ -165,7 +165,7 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
                           patient_id: _data.patient.id,
                           related_visit_id: _data.visit_id,
                           related_visit_data_id: _data.id,
-                          document_type_id: _imgSrcDocType.document_type_id,
+                          document_type_id: _imgSrcDocType.document_type.id,
                           document_url: '',
                           created: DateTime.now().toUtc(),
                         );
@@ -179,7 +179,8 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
                                   .addPatientDocument(
                                     document: _document,
                                     payload: _file_bytes,
-                                    objectName: '${patient.id}/$_filename',
+                                    objectName:
+                                        '${patient.id}/${_imgSrcDocType.document_type.name_en}/$_filename',
                                   );
                             },
                           );

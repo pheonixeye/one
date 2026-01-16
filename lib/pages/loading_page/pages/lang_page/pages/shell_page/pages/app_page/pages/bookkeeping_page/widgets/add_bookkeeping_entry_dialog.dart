@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
@@ -198,17 +198,18 @@ class _AddBookkeepingEntryDialogState extends State<AddBookkeepingEntryDialog> {
                 ),
                 BookkeepingDirection.NONE => 0,
               };
-              final _bkDto = BookkeepingItemDto(
+              final _bkDto = BookkeepingItem(
                 id: '',
                 item_name: _operationController.text,
                 item_id: '',
                 collection_id: '',
-                added_by_id: PxAuth.doc_id_static_getter,
-                updated_by_id: '',
+                added_by: PxAuth.doc_id_static_getter,
+                updated_by: '',
                 amount: _amount.toDouble(),
-                type: _type?.value ?? BookkeepingDirection.NONE.value,
+                type: _type ?? BookkeepingDirection.NONE,
                 update_reason: '',
                 auto_add: false,
+                created: DateTime.now(),
               );
               Navigator.pop(context, _bkDto);
             }

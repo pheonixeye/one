@@ -26,14 +26,14 @@ import 'package:provider/provider.dart';
 
 class VisitOptionsBtn extends StatefulWidget {
   const VisitOptionsBtn({super.key, required this.visit});
-  final Visit visit;
+  final VisitExpanded visit;
 
   @override
   State<VisitOptionsBtn> createState() => _VisitOptionsBtnState();
 }
 
 class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
-  Visit? _expandedVisit;
+  VisitExpanded? _expandedVisit;
   @override
   Widget build(BuildContext context) {
     return Consumer3<PxAppConstants, PxVisitFilter, PxRecieptInfo>(
@@ -55,7 +55,8 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                       toExecute: () async {
                         await v.fetchOneExpandedVisit(widget.visit.id);
                         _expandedVisit =
-                            (v.expandedSingleVisit as ApiDataResult<Visit>)
+                            (v.expandedSingleVisit
+                                    as ApiDataResult<VisitExpanded>)
                                 .data;
                       },
                     );
@@ -89,7 +90,9 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                     toExecute: () async {
                       await v.fetchOneExpandedVisit(widget.visit.id);
                       _expandedVisit =
-                          (v.expandedSingleVisit as ApiDataResult<Visit>).data;
+                          (v.expandedSingleVisit
+                                  as ApiDataResult<VisitExpanded>)
+                              .data;
                     },
                   );
                 },
@@ -208,7 +211,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                           children: [
                             const Icon(Icons.document_scanner),
                             SizedBox(width: 4),
-                            Text(context.loc.patientDocuments),
+                            Text(context.loc.visitDocuments),
                           ],
                         ),
                         onTap: () async {
@@ -236,7 +239,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                                 ),
                                 //TODO:
                                 child: PatientDocumentsViewDialog(
-                                  patient: widget.visit.patient_id,
+                                  patient: widget.visit.patient,
                                 ),
                               );
                             },

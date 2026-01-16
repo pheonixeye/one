@@ -6,8 +6,8 @@ class SupplyMovementDto extends Equatable {
   final String supply_item_id;
   final String movement_type;
   final String related_visit_id;
-  final String added_by_id;
-  final String updated_by_id;
+  final String added_by;
+  final String updated_by;
   final String reason;
   final double movement_amount;
   final double movement_quantity;
@@ -20,8 +20,8 @@ class SupplyMovementDto extends Equatable {
     required this.supply_item_id,
     required this.movement_type,
     required this.related_visit_id,
-    required this.added_by_id,
-    required this.updated_by_id,
+    required this.added_by,
+    required this.updated_by,
     required this.reason,
     required this.movement_amount,
     required this.movement_quantity,
@@ -49,8 +49,8 @@ class SupplyMovementDto extends Equatable {
       supply_item_id: supply_item_id ?? this.supply_item_id,
       movement_type: movement_type ?? this.movement_type,
       related_visit_id: related_visit_id ?? this.related_visit_id,
-      added_by_id: added_by_id ?? this.added_by_id,
-      updated_by_id: updated_by_id ?? this.updated_by_id,
+      added_by: added_by_id ?? this.added_by,
+      updated_by: updated_by_id ?? this.updated_by,
       reason: reason ?? this.reason,
       movement_amount: movement_amount ?? this.movement_amount,
       movement_quantity: movement_quantity ?? this.movement_quantity,
@@ -66,8 +66,8 @@ class SupplyMovementDto extends Equatable {
       'supply_item_id': supply_item_id,
       'movement_type': movement_type,
       'related_visit_id': related_visit_id,
-      'added_by_id': added_by_id,
-      'updated_by_id': updated_by_id,
+      'added_by': added_by,
+      'updated_by': updated_by,
       'reason': reason,
       'movement_amount': movement_amount,
       'movement_quantity': movement_quantity,
@@ -83,8 +83,8 @@ class SupplyMovementDto extends Equatable {
       supply_item_id: map['supply_item_id'] as String,
       movement_type: map['movement_type'] as String,
       related_visit_id: map['related_visit_id'] as String,
-      added_by_id: map['added_by_id'] as String,
-      updated_by_id: map['updated_by_id'] as String,
+      added_by: map['added_by'] as String,
+      updated_by: map['updated_by'] as String,
       reason: map['reason'] as String,
       movement_amount: map['movement_amount'] as double,
       movement_quantity: map['movement_quantity'] as double,
@@ -104,8 +104,8 @@ class SupplyMovementDto extends Equatable {
       supply_item_id,
       movement_type,
       related_visit_id,
-      added_by_id,
-      updated_by_id,
+      added_by,
+      updated_by,
       reason,
       movement_amount,
       movement_quantity,

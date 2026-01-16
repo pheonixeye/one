@@ -13,7 +13,9 @@ class PatientPreviousVisitsApi {
 
   static const collection = 'visits';
 
-  Future<ApiResult<List<Visit>>> fetchPatientVisits({
+  static const _expand = 'doc_id, clinic_id, patient_id';
+
+  Future<ApiResult<List<VisitExpanded>>> fetchPatientVisits({
     required int page,
     int perPage = 10,
   }) async {
@@ -26,13 +28,14 @@ class PatientPreviousVisitsApi {
             perPage: perPage,
             filter: "patient_id = '$patient_id'",
             sort: '-visit_date',
+            expand: _expand,
           );
 
       final _visits = _result.items.map((e) {
-        return Visit.fromJson(e.toJson());
+        return VisitExpanded.fromRecordModel(e);
       }).toList();
 
-      return ApiDataResult<List<Visit>>(data: _visits);
+      return ApiDataResult<List<VisitExpanded>>(data: _visits);
     } on ClientException catch (e) {
       return ApiErrorResult(
         errorCode: AppErrorCode.clientException.code,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
 
 class PxBookkeeping extends ChangeNotifier {
   final BookkeepingApi api;
@@ -40,7 +39,7 @@ class PxBookkeeping extends ChangeNotifier {
     await _fetchDetailedItems();
   }
 
-  Future<void> addBookkeepingEntry(BookkeepingItemDto dto) async {
+  Future<void> addBookkeepingEntry(BookkeepingItem dto) async {
     await api.addBookkeepingItem(dto);
     await _fetchDetailedItems();
   }

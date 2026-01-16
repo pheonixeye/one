@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class VisitDataViewDialog extends StatelessWidget {
   const VisitDataViewDialog({super.key, required this.visit});
-  final Visit visit;
+  final VisitExpanded visit;
   @override
   Widget build(BuildContext context) {
     return Consumer2<PxVisitData, PxLocale>(

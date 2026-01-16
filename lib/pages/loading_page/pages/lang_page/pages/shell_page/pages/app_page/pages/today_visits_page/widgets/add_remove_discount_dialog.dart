@@ -1,6 +1,7 @@
+import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/bookkeeping/bookkeeping_name.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visit_view_card.dart';
@@ -14,7 +15,7 @@ class AddRemoveDiscountDialog extends StatefulWidget {
     required this.visit,
     required this.direction,
   });
-  final Visit visit;
+  final VisitExpanded visit;
   final BookkeepingDirection direction;
 
   @override
@@ -65,8 +66,9 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
       contentPadding: const EdgeInsets.all(8),
       insetPadding: const EdgeInsets.all(8),
       content: SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        // height: MediaQuery.sizeOf(context).height,
+        width: context.isMobile
+            ? MediaQuery.sizeOf(context).width
+            : MediaQuery.sizeOf(context).width / 2,
         child: Form(
           key: _formKey,
           child: Column(
@@ -121,7 +123,7 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
         ElevatedButton.icon(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              final _dto = BookkeepingItemDto(
+              final _dto = BookkeepingItem(
                 id: '',
                 item_name: switch (widget.direction) {
                   BookkeepingDirection.IN =>
@@ -132,20 +134,20 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
                 },
                 item_id: widget.visit.id,
                 collection_id: 'visits',
-                added_by_id: PxAuth.doc_id_static_getter,
-                updated_by_id: '',
+                added_by: '${PxAuth.staticUser?.name}',
+                updated_by: '',
                 amount: switch (widget.direction) {
-                  BookkeepingDirection.IN => double.parse(
-                    _amountController.text,
-                  ),
-                  BookkeepingDirection.OUT => -double.parse(
+                  BookkeepingDirection.IN ||
+                  BookkeepingDirection.OUT => double.parse(
                     _amountController.text,
                   ),
                   BookkeepingDirection.NONE => throw UnimplementedError(),
                 },
-                type: widget.direction.value,
-                update_reason: '',
+                type: widget.direction,
+                update_reason:
+                    '${widget.visit.patient.name}/${widget.visit.visit_type}/${widget.direction.en}/${_amountController.text}',
                 auto_add: false,
+                created: DateTime.now(),
               );
               //pop with null to avoid an extra useless request
 

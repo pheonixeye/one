@@ -29,6 +29,17 @@ extension CalculateFees on Visit {
   }
 }
 
+extension WxColorsVisitTypeEnum on VisitTypeEnum {
+  Color get getCardColor {
+    return switch (en) {
+      'Consultation' => Colors.blue.shade50,
+      'Follow Up' => Colors.amber.shade50,
+      'Procedure' => Colors.green.shade50,
+      _ => Colors.transparent,
+    };
+  }
+}
+
 extension WxColorsVisitType on VisitType {
   Color get getCardColor {
     return switch (name_en) {
@@ -40,11 +51,34 @@ extension WxColorsVisitType on VisitType {
   }
 }
 
+extension WxColorsVisitStatusEnum on VisitStatusEnum {
+  Color get getCardColor {
+    return switch (en) {
+      'Attended' => Colors.blue.shade50,
+      'Not Attended' => Colors.red.shade50,
+      _ => Colors.transparent,
+    };
+  }
+}
+
 extension WxColorsVisitStatus on VisitStatus {
   Color get getCardColor {
     return switch (name_en) {
       'Attended' => Colors.blue.shade50,
       'Not Attended' => Colors.red.shade50,
+      _ => Colors.transparent,
+    };
+  }
+}
+
+extension WxColorsPatientProgressStatusEnum on PatientProgressStatusEnum {
+  Color get getCardColor {
+    return switch (en) {
+      'Has Not Attended Yet' => Colors.purple.shade50,
+      'Done Consultation' => Colors.blue.shade50,
+      'In Consultation' => Colors.green.shade50,
+      'In Waiting' => Colors.amber.shade50,
+      'Canceled' => Colors.red.shade50,
       _ => Colors.transparent,
     };
   }

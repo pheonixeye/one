@@ -1,6 +1,6 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:flutter/material.dart';
 
 class PxOneVisitBookkeeping extends ChangeNotifier {
@@ -10,8 +10,8 @@ class PxOneVisitBookkeeping extends ChangeNotifier {
     _init();
   }
 
-  ApiResult<List<BookkeepingItemDto>>? _result;
-  ApiResult<List<BookkeepingItemDto>>? get result => _result;
+  ApiResult<List<BookkeepingItem>>? _result;
+  ApiResult<List<BookkeepingItem>>? get result => _result;
 
   Future<void> _init() async {
     _result = await api.fetchBookkeepingOfOneVisit();
@@ -21,20 +21,20 @@ class PxOneVisitBookkeeping extends ChangeNotifier {
 
   Future<void> retry() async => await _init();
 
-  Future<void> addBookkeepingEntry(BookkeepingItemDto dto) async {
+  Future<void> addBookkeepingEntry(BookkeepingItem dto) async {
     await api.addBookkeepingItem(dto);
     await _init();
   }
 
-  List<BookkeepingItemDto>? _visitDiscounts;
-  List<BookkeepingItemDto>? get visitDiscounts => _visitDiscounts;
+  List<BookkeepingItem>? _visitDiscounts;
+  List<BookkeepingItem>? get visitDiscounts => _visitDiscounts;
 
   double? _discountTotal;
   double? get discountTotal => _discountTotal;
 
   void _filterDiscounts() {
-    if (_result != null && _result is ApiDataResult<List<BookkeepingItemDto>>) {
-      final _items = (_result as ApiDataResult<List<BookkeepingItemDto>>).data;
+    if (_result != null && _result is ApiDataResult<List<BookkeepingItem>>) {
+      final _items = (_result as ApiDataResult<List<BookkeepingItem>>).data;
       _visitDiscounts = _items
           .where((e) => e.item_name.contains('discount'))
           .toList();

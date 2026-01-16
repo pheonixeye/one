@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:one/constants/app_business_constants.dart';
 import 'package:one/extensions/datetime_ext.dart';
+import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
@@ -54,8 +56,9 @@ class VisitPrescriptionPage extends StatelessWidget {
                 return const CentralLoading();
               }
               final visit_data = (vd.result as ApiDataResult<VisitData>).data;
-              final visit = (v.monthlyVisits as ApiDataResult<List<Visit>>).data
-                  .firstWhereOrNull((x) => x.id == visit_data.visit_id);
+              final visit =
+                  (v.monthlyVisits as ApiDataResult<List<VisitExpanded>>).data
+                      .firstWhereOrNull((x) => x.id == visit_data.visit_id);
               final clinics = (c.result as ApiDataResult<List<Clinic>>).data;
               final clinic = clinics.firstWhereOrNull(
                 (e) => e.id == visit_data.clinic_id,
@@ -160,8 +163,10 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                   ),
                                                 ),
                                                 'visit_type' => Text(
-                                                  ' * '
-                                                  '${l.isEnglish ? visit!.visit_type.name_en : visit!.visit_type.name_ar}',
+                                                  ' * ${VisitTypeEnum.visitType(
+                                                    visit!.visit_type,
+                                                    l.isEnglish,
+                                                  )}',
                                                   style: TextStyle(
                                                     fontSize:
                                                         s.visitPrescriptionItemsFontSize[x
@@ -577,7 +582,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                     document: _patientDocument,
                                                     payload: _bytesWithImage,
                                                     objectName:
-                                                        '${visit.patient_id}/${intl.DateFormat('dd_MM_yyyy', 'en').format(DateTime.now())}.jpg',
+                                                        '${visit.patient_id}/${intl.DateFormat(AppBusinessConstants.DOCUMENT_NAME_FORMAT, 'en').format(DateTime.now())}.jpg',
                                                   );
                                             }
                                           },

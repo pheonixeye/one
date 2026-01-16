@@ -436,5 +436,6 @@
     "accountType" : "Account Type",
     "documents" : "Documents",
     "noImageFound" : "No Image Found",
-    "idCard" : "Id Card"
+    "idCard" : "Id Card",
+    "visitDocuments" : "Visit Documents"
 }

@@ -347,7 +347,8 @@ class _AddDoctorAccountDialogState extends State<AddDoctorAccountDialog> {
                     name_en: _nameEnController.text,
                     name_ar: _nameArController.text,
                     phone: _phoneController.text,
-                    speciality: _speciality.value!,
+                    spec_ar: _speciality.value!.name_ar,
+                    spec_en: _speciality.value!.name_en,
                     email: _emailController.text,
                   );
 

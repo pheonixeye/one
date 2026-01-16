@@ -24,15 +24,16 @@ class VisitDataApi {
   late final String forms_data_collection = 'visit__formdata';
 
   final String _expand =
-      'patient_id, labs_ids, rads_ids, procedures_ids, drugs_ids, supplies_ids, forms_data_ids, forms_data_ids.form_id';
+      'patient_id, labs_ids, rads_ids, procedures_ids, drugs_ids, supplies_ids, forms_data_ids, forms_data_ids.form_id, forms_data_ids.form_id.fields';
 
   Future<ApiResult<VisitData>> fetchVisitData() async {
     try {
       final _result = await PocketbaseHelper.pbData
           .collection(collection)
           .getFirstListItem("visit_id = '$visit_id'", expand: _expand);
-
+      // prettyPrint(_result);
       final _visitData = VisitData.fromRecordModel(_result);
+      // prettyPrint(_visitData);
 
       return ApiDataResult<VisitData>(data: _visitData);
     } on ClientException catch (e) {

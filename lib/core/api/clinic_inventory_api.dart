@@ -20,7 +20,10 @@ class ClinicInventoryApi {
     try {
       final _response = await PocketbaseHelper.pbData
           .collection(collection)
-          .getFullList(filter: "clinic_id = '$clinic_id'", expand: _expand);
+          .getFullList(
+            filter: "clinic_id = '$clinic_id'",
+            expand: _expand,
+          );
 
       final _items = _response
           .map((e) => ClinicInventoryItem.fromRecordModel(e))

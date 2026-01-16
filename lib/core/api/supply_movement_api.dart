@@ -21,14 +21,8 @@ class SupplyMovementApi {
 
   final _expandList = [
     'clinic_id',
-    'added_by_id',
-    'added_by_id.app_permissions_ids',
-    'added_by_id.account_type_id',
     'supply_item_id',
     'related_visit_id',
-    'updated_by_id',
-    'updated_by_id.app_permissions_ids',
-    'updated_by_id.account_type_id',
   ];
 
   late final String _expand = _expandList.join(',');

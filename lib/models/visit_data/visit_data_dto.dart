@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 class VisitDataDto extends Equatable {
   final String id;
   final String visit_id;
+  final String doc_id;
   final String patient_id;
   final String clinic_id;
   final List<String> labs_ids;
@@ -18,6 +19,7 @@ class VisitDataDto extends Equatable {
   const VisitDataDto({
     required this.id,
     required this.visit_id,
+    required this.doc_id,
     required this.patient_id,
     required this.clinic_id,
     required this.labs_ids,
@@ -34,6 +36,7 @@ class VisitDataDto extends Equatable {
   VisitDataDto copyWith({
     String? id,
     String? visit_id,
+    String? doc_id,
     String? patient_id,
     String? clinic_id,
     List<String>? labs_ids,
@@ -49,6 +52,7 @@ class VisitDataDto extends Equatable {
     return VisitDataDto(
       id: id ?? this.id,
       visit_id: visit_id ?? this.visit_id,
+      doc_id: doc_id ?? this.doc_id,
       patient_id: patient_id ?? this.patient_id,
       clinic_id: clinic_id ?? this.clinic_id,
       labs_ids: labs_ids ?? this.labs_ids,
@@ -65,12 +69,14 @@ class VisitDataDto extends Equatable {
 
   factory VisitDataDto.initial({
     required String visit_id,
+    required String doc_id,
     required String patient_id,
     required String clinic_id,
   }) {
     return VisitDataDto(
       id: '',
       visit_id: visit_id,
+      doc_id: doc_id,
       patient_id: patient_id,
       clinic_id: clinic_id,
       labs_ids: [],
@@ -89,6 +95,7 @@ class VisitDataDto extends Equatable {
     return <String, dynamic>{
       'id': id,
       'visit_id': visit_id,
+      'doc_id': doc_id,
       'patient_id': patient_id,
       'clinic_id': clinic_id,
       'labs_ids': labs_ids,
@@ -111,6 +118,7 @@ class VisitDataDto extends Equatable {
     return [
       id,
       visit_id,
+      doc_id,
       patient_id,
       clinic_id,
       labs_ids,

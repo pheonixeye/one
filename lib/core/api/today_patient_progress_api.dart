@@ -19,6 +19,8 @@ class TodayPatientProgressApi {
     _date.day + 1,
   );
 
+  static const String _expand = 'doc_id, clinic_id, patient_id';
+
   late final _dateOfVisitFormatted = DateFormat(
     'yyyy-MM-dd',
     'en',
@@ -48,18 +50,20 @@ class TodayPatientProgressApi {
           callback,
           filter:
               "visit_date >= '$_dateOfVisitFormatted' && visit_date <= '$_dateAfterVisitFormatted'",
+          expand: _expand,
         );
   }
 
-  Future<List<Visit>> fetchTodayVisits() async {
+  Future<List<VisitExpanded>> fetchTodayVisits() async {
     final _response = await PocketbaseHelper.pbData
         .collection(collection)
         .getFullList(
           filter:
               "visit_date >= '$_dateOfVisitFormatted' && visit_date <= '$_dateAfterVisitFormatted'",
           sort: '-patient_entry_number',
+          expand: _expand,
         );
 
-    return _response.map((e) => Visit.fromJson(e.toJson())).toList();
+    return _response.map((e) => VisitExpanded.fromRecordModel(e)).toList();
   }
 }

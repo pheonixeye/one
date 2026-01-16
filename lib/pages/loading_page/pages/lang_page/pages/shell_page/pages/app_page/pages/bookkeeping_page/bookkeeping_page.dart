@@ -9,7 +9,7 @@ import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/add_bookkeeping_entry_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/filter_header_bookkeeping.dart';
 import 'package:one/providers/px_bookkeeping.dart';
@@ -84,7 +84,7 @@ class _BookkeepingPageState extends State<BookkeepingPage> {
                 );
                 return;
               }
-              final _bookkeepingDto = await showDialog<BookkeepingItemDto?>(
+              final _bookkeepingDto = await showDialog<BookkeepingItem?>(
                 context: context,
                 builder: (context) {
                   return AddBookkeepingEntryDialog();

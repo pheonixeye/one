@@ -28,7 +28,8 @@ class PxVisitsPerClinicShift extends ChangeNotifier {
 
   Future<void> calculateVisitsPerClinicShift() async {
     final _visits =
-        await _fetchVisitsOfASpecificDate() as ApiDataResult<List<Visit>>;
+        await _fetchVisitsOfASpecificDate()
+            as ApiDataResult<List<VisitExpanded>>;
 
     final _clinicVisits = _visits.data
         .where((visit) => visit.clinic_id == clinic_id)

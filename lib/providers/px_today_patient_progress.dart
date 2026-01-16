@@ -10,8 +10,8 @@ class PxTodayPatientProgress extends ChangeNotifier {
     subscribe();
   }
 
-  List<Visit> _visits = [];
-  List<Visit> get visits => _visits;
+  List<VisitExpanded> _visits = [];
+  List<VisitExpanded> get visits => _visits;
 
   Future<void> _init() async {
     _visits = await api.fetchTodayVisits();
@@ -25,7 +25,7 @@ class PxTodayPatientProgress extends ChangeNotifier {
           toggleUpdating();
           final _data = event.record;
           if (_data != null) {
-            _visits.add(Visit.fromJson(_data.toJson()));
+            _visits.add(VisitExpanded.fromRecordModel(_data));
             _visits.sort(
               (b, a) =>
                   a.patient_entry_number.compareTo(b.patient_entry_number),
@@ -38,7 +38,7 @@ class PxTodayPatientProgress extends ChangeNotifier {
           final _data = event.record;
           if (_data != null) {
             toggleUpdating();
-            final _visit = Visit.fromJson(_data.toJson());
+            final _visit = VisitExpanded.fromRecordModel(_data);
             final _index = _visits.indexWhere((e) => e.id == _visit.id);
             _visits[_index] = _visit;
             _visits.sort(

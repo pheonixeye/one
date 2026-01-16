@@ -6,8 +6,10 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/extensions/visit_ext.dart';
+import 'package:one/models/app_constants/visit_status.dart';
+import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/blob_file.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/reciept_info.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_blobs.dart';
@@ -45,7 +47,7 @@ class RecieptPrepareDialog extends StatefulWidget {
     required this.visit,
     required this.info,
   });
-  final Visit visit;
+  final VisitExpanded visit;
   final RecieptInfo info;
 
   @override
@@ -94,7 +96,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
 
   Future<Uint8List> _build(
     PdfPageFormat format,
-    List<BookkeepingItemDto> data,
+    List<BookkeepingItem> data,
     RecieptInfo info,
   ) async {
     final doc = pw.Document();
@@ -211,9 +213,21 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
                 'د/ ${widget.visit.doctor.name_ar}',
               ),
               pw.SizedBox(height: 4),
-              _buildInfoRow('نوع الزيارة', widget.visit.visit_type.name_ar),
+              _buildInfoRow(
+                'نوع الزيارة',
+                VisitTypeEnum.visitType(
+                  widget.visit.visit_type,
+                  false,
+                ),
+              ),
               pw.SizedBox(height: 4),
-              _buildInfoRow('حالة الزيارة', widget.visit.visit_status.name_ar),
+              _buildInfoRow(
+                'حالة الزيارة',
+                VisitStatusEnum.visitStatus(
+                  widget.visit.visit_status,
+                  false,
+                ),
+              ),
               pw.SizedBox(height: 4),
               _buildInfoRow('الموعد', widget.visit.formattedShift(context)),
               pw.SizedBox(height: 4),
@@ -303,8 +317,7 @@ class _RecieptPrepareDialogState extends State<RecieptPrepareDialog> {
             toExecute: b.retry,
           );
         }
-        final _data =
-            (b.result as ApiDataResult<List<BookkeepingItemDto>>).data;
+        final _data = (b.result as ApiDataResult<List<BookkeepingItem>>).data;
         return AlertDialog(
           title: Row(
             children: [

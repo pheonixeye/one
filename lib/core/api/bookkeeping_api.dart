@@ -5,7 +5,6 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
 
 @PbData()
 class BookkeepingApi {
@@ -16,15 +15,11 @@ class BookkeepingApi {
   //TODO: CHANGE CONSTANT
   static const _batch = 5000;
 
-  Future<void> addBookkeepingItem(BookkeepingItemDto item) async {
+  Future<void> addBookkeepingItem(BookkeepingItem item) async {
     await PocketbaseHelper.pbData
         .collection(collection)
         .create(body: item.toJson());
   }
-
-  final _expandList = ['added_by_id', 'updated_by_id'];
-
-  late final _expand = _expandList.join(',');
 
   Future<ApiResult<List<BookkeepingItem>>> fetchDetailedItems({
     required DateTime from,
@@ -41,12 +36,11 @@ class BookkeepingApi {
           .getFullList(
             filter: "created >= '$formattedFrom' && created <= '$formattedTo'",
             sort: '-created',
-            expand: _expand,
             batch: _batch,
           );
 
       final _items = _response
-          .map((e) => BookkeepingItem.fromRecordModel(e))
+          .map((e) => BookkeepingItem.fromJson(e.toJson()))
           .toList();
 
       return ApiDataResult<List<BookkeepingItem>>(data: _items);
@@ -58,7 +52,7 @@ class BookkeepingApi {
     }
   }
 
-  Future<ApiResult<List<BookkeepingItemDto>>> fetchItems({
+  Future<ApiResult<List<BookkeepingItem>>> fetchItems({
     required DateTime from,
     required DateTime to,
   }) async {
@@ -76,20 +70,19 @@ class BookkeepingApi {
           );
 
       final _items = _response
-          .map((e) => BookkeepingItemDto.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromJson(e.toJson()))
           .toList();
 
-      return ApiDataResult<List<BookkeepingItemDto>>(data: _items);
+      return ApiDataResult<List<BookkeepingItem>>(data: _items);
     } on ClientException catch (e) {
-      return ApiErrorResult<List<BookkeepingItemDto>>(
+      return ApiErrorResult<List<BookkeepingItem>>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: e.toString(),
       );
     }
   }
 
-  Future<ApiResult<List<BookkeepingItemDto>>>
-  fetchBookkeepingOfOneVisit() async {
+  Future<ApiResult<List<BookkeepingItem>>> fetchBookkeepingOfOneVisit() async {
     try {
       final _response = await PocketbaseHelper.pbData
           .collection(collection)
@@ -99,20 +92,19 @@ class BookkeepingApi {
           );
 
       final _items = _response
-          .map((e) => BookkeepingItemDto.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromJson(e.toJson()))
           .toList();
 
-      return ApiDataResult<List<BookkeepingItemDto>>(data: _items);
+      return ApiDataResult<List<BookkeepingItem>>(data: _items);
     } on ClientException catch (e) {
-      return ApiErrorResult<List<BookkeepingItemDto>>(
+      return ApiErrorResult<List<BookkeepingItem>>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: e.toString(),
       );
     }
   }
 
-  Future<ApiResult<List<BookkeepingItemDto>>>
-  fetchNonZeroBookkeepingOfDuration({
+  Future<ApiResult<List<BookkeepingItem>>> fetchNonZeroBookkeepingOfDuration({
     required DateTime from,
     required DateTime to,
   }) async {
@@ -129,12 +121,12 @@ class BookkeepingApi {
           );
 
       final _items = _response
-          .map((e) => BookkeepingItemDto.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromJson(e.toJson()))
           .toList();
 
-      return ApiDataResult<List<BookkeepingItemDto>>(data: _items);
+      return ApiDataResult<List<BookkeepingItem>>(data: _items);
     } on ClientException catch (e) {
-      return ApiErrorResult<List<BookkeepingItemDto>>(
+      return ApiErrorResult<List<BookkeepingItem>>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: e.toString(),
       );

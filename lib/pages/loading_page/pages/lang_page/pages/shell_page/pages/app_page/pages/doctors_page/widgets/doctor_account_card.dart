@@ -47,7 +47,7 @@ class DoctorAccountCard extends StatelessWidget {
                   Text(l.isEnglish ? doctor.name_en : doctor.name_ar),
                   Text(' - '),
                   Text(
-                    '(${l.isEnglish ? doctor.speciality.name_en : doctor.speciality.name_ar})',
+                    '(${l.isEnglish ? doctor.spec_en : doctor.spec_ar})',
                     style: TextStyle(fontWeight: FontWeight.normal),
                   ),
                   if (!_docUser.is_active) ...[

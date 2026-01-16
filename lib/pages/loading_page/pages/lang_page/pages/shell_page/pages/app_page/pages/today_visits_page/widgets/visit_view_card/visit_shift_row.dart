@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class VisitShiftRow extends StatelessWidget {
   const VisitShiftRow({super.key, required this.visit});
-  final Visit visit;
+  final VisitExpanded visit;
   @override
   Widget build(BuildContext context) {
     return Row(

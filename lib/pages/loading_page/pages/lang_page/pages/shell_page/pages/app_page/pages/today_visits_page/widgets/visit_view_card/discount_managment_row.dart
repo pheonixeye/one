@@ -4,7 +4,7 @@ import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/add_remove_discount_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 
 class DiscountManagmentRow extends StatelessWidget {
   const DiscountManagmentRow({super.key, required this.visit});
-  final Visit visit;
+  final VisitExpanded visit;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +137,7 @@ class DiscountManagmentRow extends StatelessWidget {
                           return;
                         }
 
-                        final _dto = await showDialog<BookkeepingItemDto?>(
+                        final _dto = await showDialog<BookkeepingItem?>(
                           context: context,
                           builder: (context) {
                             return AddRemoveDiscountDialog(
@@ -199,7 +199,7 @@ class DiscountManagmentRow extends StatelessWidget {
                           return;
                         }
 
-                        final _dto = await showDialog<BookkeepingItemDto?>(
+                        final _dto = await showDialog<BookkeepingItem?>(
                           context: context,
                           builder: (context) {
                             return AddRemoveDiscountDialog(

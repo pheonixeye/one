@@ -163,7 +163,7 @@ class _DetailedViewBookKeepingState extends State<DetailedViewBookKeeping> {
                                           : Colors.red,
                                     ),
                                   ),
-                                  DataCell(Text(x.added_by.name)),
+                                  DataCell(Text(x.added_by)),
                                 ],
                               );
                             }),

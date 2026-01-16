@@ -8,11 +8,12 @@ import 'package:one/errors/code_to_error.dart';
 @PbData()
 class VisitFilterApi {
   const VisitFilterApi();
-  //TODO: add all filter params to the request
 
   static const String collection = 'visits';
 
-  Future<ApiResult<List<Visit>>> fetctVisitsOfDateRange({
+  static const String _expand = 'doc_id, clinic_id, patient_id';
+
+  Future<ApiResult<List<VisitExpanded>>> fetctVisitsOfDateRange({
     required String from,
     required String to,
   }) async {
@@ -22,13 +23,36 @@ class VisitFilterApi {
           .getFullList(
             filter: "visit_date >= '$from' && visit_date <= '$to'",
             sort: '-visit_date',
+            expand: _expand,
           );
 
       final _visits = _response.map((e) {
-        return Visit.fromJson(e.toJson());
+        return VisitExpanded.fromRecordModel(e);
       }).toList();
 
-      return ApiDataResult<List<Visit>>(data: _visits);
+      return ApiDataResult<List<VisitExpanded>>(data: _visits);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
+  Future<ApiResult<VisitExpanded>> fetchOneExpandedVisit(
+    String visit_id,
+  ) async {
+    try {
+      final _response = await PocketbaseHelper.pbData
+          .collection(collection)
+          .getOne(
+            visit_id,
+            expand: _expand,
+          );
+
+      final _visits = VisitExpanded.fromRecordModel(_response);
+
+      return ApiDataResult<VisitExpanded>(data: _visits);
     } on ClientException catch (e) {
       return ApiErrorResult(
         errorCode: AppErrorCode.clientException.code,

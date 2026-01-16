@@ -2515,6 +2515,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Id Card'**
   String get idCard;
+
+  /// No description provided for @visitDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Documents'**
+  String get visitDocuments;
 }
 
 class _AppLocalizationsDelegate

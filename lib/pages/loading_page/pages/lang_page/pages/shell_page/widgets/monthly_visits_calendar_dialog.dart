@@ -4,6 +4,7 @@ import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
+import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_clinics.dart';
@@ -163,7 +164,8 @@ class _MonthlyVisitsCalendarDialogState
                   child: Builder(
                     builder: (context) {
                       if (v.monthlyVisits != null &&
-                          (v.monthlyVisits! as ApiDataResult<List<Visit>>)
+                          (v.monthlyVisits!
+                                  as ApiDataResult<List<VisitExpanded>>)
                               .data
                               .isEmpty) {
                         return CentralNoItems(
@@ -172,7 +174,9 @@ class _MonthlyVisitsCalendarDialogState
                         );
                       }
                       final _data =
-                          (v.monthlyVisits as ApiDataResult<List<Visit>>).data;
+                          (v.monthlyVisits
+                                  as ApiDataResult<List<VisitExpanded>>)
+                              .data;
                       final _clinics =
                           (c.result as ApiDataResult<List<Clinic>>).data;
 
@@ -331,9 +335,11 @@ class _MonthlyVisitsCalendarDialogState
                                                                           .name,
                                                                     ),
                                                                     subtitle: Text(
-                                                                      l.isEnglish
-                                                                          ? visit.visit_type.name_en
-                                                                          : visit.visit_type.name_ar,
+                                                                      VisitTypeEnum.visitType(
+                                                                        visit
+                                                                            .visit_type,
+                                                                        l.isEnglish,
+                                                                      ),
                                                                     ),
                                                                   );
                                                                 }

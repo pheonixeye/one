@@ -1,4 +1,5 @@
 import 'package:one/extensions/number_translator.dart';
+import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';
@@ -15,7 +16,7 @@ class PreviousVisitViewCard extends StatelessWidget {
     this.showIndexNumber = true,
     this.showPatientName = false,
   });
-  final Visit item;
+  final VisitExpanded item;
   final int index;
   final bool showIndexNumber;
   final bool showPatientName;
@@ -105,9 +106,10 @@ class PreviousVisitViewCard extends StatelessWidget {
                       style: TextStyle(decoration: TextDecoration.underline),
                     ),
                     Text(
-                      l.isEnglish
-                          ? item.visit_type.name_en
-                          : item.visit_type.name_ar,
+                      VisitTypeEnum.visitType(
+                        item.visit_type,
+                        l.isEnglish,
+                      ),
                     ),
                     Text(
                       l.isEnglish ? 'Attendance:' : 'الحضور:',

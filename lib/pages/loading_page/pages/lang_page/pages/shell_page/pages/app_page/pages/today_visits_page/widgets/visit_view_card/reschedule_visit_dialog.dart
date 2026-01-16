@@ -1,3 +1,4 @@
+import 'package:one/extensions/clinic_schedule_shift_ext.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
@@ -12,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class RescheduleVisitDialog extends StatefulWidget {
   const RescheduleVisitDialog({super.key, required this.visit});
-  final Visit visit;
+  final VisitExpanded visit;
 
   @override
   State<RescheduleVisitDialog> createState() => _RescheduleVisitDialogState();

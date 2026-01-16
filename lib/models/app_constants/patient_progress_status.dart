@@ -79,4 +79,13 @@ enum PatientProgressStatusEnum {
     required this.en,
     required this.ar,
   });
+
+  static String progressStatus(String en, bool isEnglish) {
+    final val = values.firstWhere((e) => e.en == en);
+    return isEnglish ? val.en : val.ar;
+  }
+
+  static PatientProgressStatusEnum member(String en) {
+    return values.firstWhere((e) => e.en == en);
+  }
 }

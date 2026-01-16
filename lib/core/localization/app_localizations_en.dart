@@ -1261,4 +1261,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idCard => 'Id Card';
+
+  @override
+  String get visitDocuments => 'Visit Documents';
 }

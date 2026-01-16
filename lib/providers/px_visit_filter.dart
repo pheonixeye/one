@@ -12,14 +12,14 @@ class PxVisitFilter extends ChangeNotifier {
     _fetchConcisedVisitsOfDateRange();
   }
 
-  ApiResult<Visit>? _expandedSingleVisit;
-  ApiResult<Visit>? get expandedSingleVisit => _expandedSingleVisit;
+  ApiResult<VisitExpanded>? _expandedSingleVisit;
+  ApiResult<VisitExpanded>? get expandedSingleVisit => _expandedSingleVisit;
 
-  ApiResult<List<Visit>>? _concisedVisits;
-  ApiResult<List<Visit>>? get concisedVisits => _concisedVisits;
+  ApiResult<List<VisitExpanded>>? _concisedVisits;
+  ApiResult<List<VisitExpanded>>? get concisedVisits => _concisedVisits;
 
-  final List<Visit> _filteredConcisedVisits = [];
-  List<Visit> get filteredConcisedVisits => _filteredConcisedVisits;
+  final List<VisitExpanded> _filteredConcisedVisits = [];
+  List<VisitExpanded> get filteredConcisedVisits => _filteredConcisedVisits;
 
   final _now = DateTime.now();
 
@@ -58,7 +58,6 @@ class PxVisitFilter extends ChangeNotifier {
   }
 
   Future<void> fetchOneExpandedVisit(String visit_id) async {
-    //TODO
     _expandedSingleVisit = await api.fetchOneExpandedVisit(visit_id);
     notifyListeners();
   }
@@ -80,12 +79,12 @@ class PxVisitFilter extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Visit> _filterByDoctor(List<Visit> data, String doc_id) {
+  List<VisitExpanded> _filterByDoctor(List<VisitExpanded> data, String doc_id) {
     return data.where((e) => e.doc_id == doc_id).toList();
   }
 
-  List<Visit> _filterByClinic(
-    List<Visit> data,
+  List<VisitExpanded> _filterByClinic(
+    List<VisitExpanded> data,
     String clinic_id,
   ) {
     return data.where((e) => e.clinic_id == clinic_id).toList();
@@ -95,7 +94,7 @@ class PxVisitFilter extends ChangeNotifier {
     _setVisitsfilter(value, id);
     _filteredConcisedVisits.clear();
     notifyListeners();
-    final _data = (_concisedVisits as ApiDataResult<List<Visit>>).data;
+    final _data = (_concisedVisits as ApiDataResult<List<VisitExpanded>>).data;
     final _filtered = switch (_filter) {
       VisitsFilter.no_filter => _data,
       VisitsFilter.by_doctor => _filterByDoctor(_data, id),

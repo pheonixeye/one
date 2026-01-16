@@ -20,9 +20,11 @@ class VisitsApi {
 
   static const String visit_data_collection = 'visit__data';
 
+  static const String _expand = 'doc_id, clinic_id, patient_id';
+
   final _now = DateTime.now();
 
-  Future<ApiResult<List<Visit>>> fetctVisitsOfASpecificDate({
+  Future<ApiResult<List<VisitExpanded>>> fetctVisitsOfASpecificDate({
     required int page,
     required int perPage,
     DateTime? visit_date,
@@ -54,6 +56,7 @@ class VisitsApi {
           .getList(
             page: page,
             perPage: perPage,
+            expand: _expand,
             filter:
                 "visit_date >= '$_dateOfVisitFormatted' && visit_date <= '$_dateAfterVisitFormatted'",
             sort: '-patient_entry_number',
@@ -62,10 +65,10 @@ class VisitsApi {
       // prettyPrint(_result);
 
       final _visits = _result.items.map((e) {
-        return Visit.fromJson(e.toJson());
+        return VisitExpanded.fromRecordModel(e);
       }).toList();
 
-      return ApiDataResult<List<Visit>>(data: _visits);
+      return ApiDataResult<List<VisitExpanded>>(data: _visits);
     } on ClientException catch (e) {
       return ApiErrorResult(
         errorCode: AppErrorCode.clientException.code,
@@ -78,13 +81,17 @@ class VisitsApi {
     //create visit reference
     final _result = await PocketbaseHelper.pbData
         .collection(collection)
-        .create(body: visit.toJson());
+        .create(
+          body: visit.toJson(),
+          expand: _expand,
+        );
 
     //create visit_data reference
     await PocketbaseHelper.pbData
         .collection(visit_data_collection)
         .create(
           body: VisitDataDto.initial(
+            doc_id: visit.doc_id,
             visit_id: _result.id,
             patient_id: visit.patient_id,
             clinic_id: visit.clinic_id,
@@ -92,14 +99,7 @@ class VisitsApi {
         );
 
     //todo: parse result
-    final _visit = Visit.fromJson(_result.toJson());
-
-    //todo: send inclinic notification
-    final _notificationRequest = NotificationRequest.fromVisit(_visit);
-
-    await NotificationsApi().sendNotification(
-      request: _notificationRequest,
-    );
+    final _visit = VisitExpanded.fromRecordModel(_result);
 
     //todo: initialize transformer
     final _bk_transformer = BookkeepingTransformer(
@@ -112,16 +112,32 @@ class VisitsApi {
 
     //todo: send bookkeeping request
     await BookkeepingApi().addBookkeepingItem(_item);
+
+    //TODO: send inclinic notification
+
+    // final _notificationRequest = NotificationRequest.fromVisit(_visit);
+
+    // await NotificationsApi().sendNotification(
+    //   request: _notificationRequest,
+    // );
   }
 
-  Future<void> updateVisit(Visit visit, String key, dynamic value) async {
+  Future<void> updateVisit(
+    VisitExpanded visit,
+    String key,
+    dynamic value,
+  ) async {
     final _response = await PocketbaseHelper.pbData
         .collection(collection)
-        .update(visit.id, body: {key: value});
+        .update(
+          visit.id,
+          body: {key: value},
+          expand: _expand,
+        );
 
     //todo: parse result
     final _old_visit = visit;
-    final _updated_visit = Visit.fromJson(_response.toJson());
+    final _updated_visit = VisitExpanded.fromRecordModel(_response);
 
     //todo: initialize transformer
     final _bk_transformer = BookkeepingTransformer(
@@ -136,7 +152,7 @@ class VisitsApi {
     await BookkeepingApi().addBookkeepingItem(_item);
   }
 
-  Future<ApiResult<List<Visit>>> fetctVisitsOfOneMonth({
+  Future<ApiResult<List<VisitExpanded>>> fetctVisitsOfOneMonth({
     required int month,
     required int year,
   }) async {
@@ -158,13 +174,14 @@ class VisitsApi {
           .getFullList(
             filter:
                 "visit_date >= '$_formatted_month_date' && visit_date <= '$_formatted_month_plus_date'",
+            expand: _expand,
           );
 
       final _visits = _result.map((e) {
-        return Visit.fromJson(e.toJson());
+        return VisitExpanded.fromRecordModel(e);
       }).toList();
 
-      return ApiDataResult<List<Visit>>(data: _visits);
+      return ApiDataResult<List<VisitExpanded>>(data: _visits);
     } on ClientException catch (e) {
       return ApiErrorResult(
         errorCode: AppErrorCode.clientException.code,

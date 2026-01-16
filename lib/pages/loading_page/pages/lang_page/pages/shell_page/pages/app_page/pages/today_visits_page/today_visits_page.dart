@@ -135,7 +135,7 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                       );
                     }
                     final _items =
-                        (v.visits as ApiDataResult<List<Visit>>).data;
+                        (v.visits as ApiDataResult<List<VisitExpanded>>).data;
                     return TabBarView(
                       controller: _tabController,
                       physics: BouncingScrollPhysics(),

@@ -2,15 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/doctor_items/doctor_supply_item.dart';
-import 'package:one/models/user/user.dart';
 
 class SupplyMovement extends Equatable {
   final String id;
   final Clinic clinic;
   final DoctorSupplyItem supply_item;
   final String? visit_id;
-  final User added_by;
-  final User? updated_by;
+  final String added_by;
+  final String? updated_by;
   final String movement_type;
   final String reason;
   final double movement_quantity;
@@ -40,8 +39,8 @@ class SupplyMovement extends Equatable {
     Clinic? clinic,
     DoctorSupplyItem? supply_item,
     String? visit_id,
-    User? added_by,
-    User? updated_by,
+    String? added_by,
+    String? updated_by,
     String? movement_type,
     String? reason,
     double? movement_quantity,
@@ -73,8 +72,8 @@ class SupplyMovement extends Equatable {
       'clinic': clinic.toJson(),
       'supply_item': supply_item.toJson(),
       'related_visit_id': visit_id,
-      'added_by': added_by.toJson(),
-      'updated_by': updated_by?.toJson(),
+      'added_by': added_by,
+      'updated_by': updated_by,
       'movement_type': movement_type,
       'reason': reason,
       'movement_quantity': movement_quantity,
@@ -93,10 +92,8 @@ class SupplyMovement extends Equatable {
         map['supply_item'] as Map<String, dynamic>,
       ),
       visit_id: map['related_visit_id'] as String?,
-      updated_by: map['updated_by'] != null
-          ? User.fromJson(map['updated_by'] as Map<String, dynamic>)
-          : null,
-      added_by: User.fromJson(map['added_by'] as Map<String, dynamic>),
+      updated_by: map['updated_by'] as String?,
+      added_by: map['added_by'] as String,
       movement_type: map['movement_type'] as String,
       reason: map['reason'] as String,
       movement_quantity: map['movement_quantity'] as double,
@@ -136,40 +133,14 @@ class SupplyMovement extends Equatable {
       supply_item: DoctorSupplyItem.fromJson(
         e.get<RecordModel>('expand.supply_item_id').toJson(),
       ),
-      added_by: User.fromJson({
-        ...e.get<RecordModel>('expand.added_by_id').toJson(),
-        'account_type': e
-            .get<RecordModel>('expand.added_by_id.expand.account_type_id')
-            .toJson(),
-        'app_permissions': e
-            .get<List<RecordModel>>(
-              'expand.added_by_id.expand.app_permissions_ids',
-            )
-            .map((x) => x.toJson())
-            .toList(),
-      }),
+      added_by: e.getStringValue('added_by'),
       movement_type: e.getStringValue('movement_type'),
       reason: e.getStringValue('reason'),
       movement_quantity: e.getDoubleValue('movement_quantity'),
       movement_amount: e.getDoubleValue('movement_amount'),
       auto_add: e.getBoolValue('auto_add'),
       visit_id: e.get<String?>('related_visit_id'),
-      updated_by: e.get<RecordModel?>('expand.updated_by_id') == null
-          ? null
-          : User.fromJson({
-              ...e.get<RecordModel>('expand.updated_by_id').toJson(),
-              'account_type': e
-                  .get<RecordModel>(
-                    'expand.updated_by_id.expand.account_type_id',
-                  )
-                  .toJson(),
-              'app_permissions': e
-                  .get<List<RecordModel>>(
-                    'expand.updated_by_id.expand.app_permissions_ids',
-                  )
-                  .map((x) => x.toJson())
-                  .toList(),
-            }),
+      updated_by: e.get<String?>('updated_by'),
       number_of_updates: e.getIntValue('number_of_updates'),
       created: DateTime.parse(e.getStringValue('created')),
     );

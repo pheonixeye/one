@@ -154,7 +154,7 @@ class _PrintBookkeepingDialogState extends State<PrintBookkeepingDialog> {
                           ),
                         ),
                         pw.Text(
-                          x.added_by.email,
+                          x.added_by,
                           textAlign: pw.TextAlign.center,
                         ),
                       ],

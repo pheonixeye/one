@@ -18,7 +18,7 @@ class DocumentTypePickerDialog extends StatefulWidget {
 }
 
 class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
-  String? _document_type_id;
+  DoctorDocumentTypeItem? _document_type;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -70,14 +70,14 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(context.loc.pickDocumentType),
                       ),
-                      subtitle: FormField<String?>(
+                      subtitle: FormField<DoctorDocumentTypeItem?>(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         builder: (field) {
-                          return RadioGroup<String>(
-                            groupValue: _document_type_id,
+                          return RadioGroup<DoctorDocumentTypeItem>(
+                            groupValue: _document_type,
                             onChanged: (val) {
                               setState(() {
-                                _document_type_id = val;
+                                _document_type = val;
                               });
                             },
                             child: Column(
@@ -106,8 +106,7 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                           );
                         },
                         validator: (value) {
-                          if (_document_type_id == null ||
-                              _document_type_id!.isEmpty) {
+                          if (_document_type == null) {
                             return context.loc.pickDocumentType;
                           }
                           return null;
@@ -126,7 +125,7 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
             ElevatedButton.icon(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pop(context, _document_type_id);
+                  Navigator.pop(context, _document_type);
                 }
               },
               label: Text(context.loc.confirm),

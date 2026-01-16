@@ -58,7 +58,7 @@ class OperationDetailDialog extends StatelessWidget {
               },
             );
           }
-          final _visit = (v.result as ApiDataResult<Visit>).data;
+          final _visit = (v.result as ApiDataResult<VisitExpanded>).data;
           final _data = (b.result as ApiDataResult<List<BookkeepingItem>>).data;
           final _items = _data.where((e) => e.item_id == item_id).toList();
           return SizedBox(
@@ -164,7 +164,7 @@ class OperationDetailDialog extends StatelessWidget {
                                       TextSpan(text: ' : '),
                                       if (context.isMobile)
                                         TextSpan(text: '\n'),
-                                      TextSpan(text: bk.added_by.name),
+                                      TextSpan(text: bk.added_by),
                                     ],
                                   ),
                                 ),

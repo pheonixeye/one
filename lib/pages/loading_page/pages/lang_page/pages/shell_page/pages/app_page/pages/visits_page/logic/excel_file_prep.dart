@@ -2,14 +2,14 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
 import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/models/app_constants/_app_constants.dart';
-import 'package:one/models/bookkeeping/bookkeeping_item_dto.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/doctor.dart';
 import 'package:excel/excel.dart';
 import 'package:intl/intl.dart';
 import 'package:one/models/visits/visit.dart';
 
 class ExcelFilePrep {
-  final List<Visit> visits;
+  final List<VisitExpanded> visits;
   final DateTime from;
   final DateTime to;
   ExcelFilePrep({required this.visits, required this.from, required this.to}) {
@@ -114,7 +114,7 @@ class ExcelFilePrep {
     );
   }
 
-  Future<List<BookkeepingItemDto>> _fetchNonZeroBookKeepingOfDuration({
+  Future<List<BookkeepingItem>> _fetchNonZeroBookKeepingOfDuration({
     required DateTime from,
     required DateTime to,
   }) async {
@@ -123,12 +123,12 @@ class ExcelFilePrep {
       from: from,
       to: to,
     );
-    return (_result as ApiDataResult<List<BookkeepingItemDto>>).data;
+    return (_result as ApiDataResult<List<BookkeepingItem>>).data;
   }
 
   double _calculateVisitBookkeepingEntries(
     String visit_id,
-    List<BookkeepingItemDto> data,
+    List<BookkeepingItem> data,
   ) {
     final _visitItems = data.where((e) => e.item_id == visit_id).toList();
 

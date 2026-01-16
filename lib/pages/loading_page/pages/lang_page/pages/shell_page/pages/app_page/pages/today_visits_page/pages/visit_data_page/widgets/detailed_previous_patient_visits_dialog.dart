@@ -28,7 +28,7 @@ class _DetailedPreviousPatientVisitsDialogState
     extends State<DetailedPreviousPatientVisitsDialog>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  Visit? _selectedVisit;
+  VisitExpanded? _selectedVisit;
 
   @override
   void initState() {
@@ -56,12 +56,12 @@ class _DetailedPreviousPatientVisitsDialogState
           );
         }
         while (p.data != null &&
-            (p.data! as ApiDataResult<List<Visit>>).data.isEmpty) {
+            (p.data! as ApiDataResult<List<VisitExpanded>>).data.isEmpty) {
           return CentralNoItems(
             message: context.loc.noVisitsFoundForThisPatient,
           );
         }
-        final _data = (p.data as ApiDataResult<List<Visit>>).data;
+        final _data = (p.data as ApiDataResult<List<VisitExpanded>>).data;
         return AlertDialog(
           title: Row(
             children: [

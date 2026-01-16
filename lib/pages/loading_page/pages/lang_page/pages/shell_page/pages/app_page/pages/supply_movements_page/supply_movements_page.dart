@@ -5,7 +5,6 @@ import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/not_permitted_template_page.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -239,15 +238,7 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
                             DataCell(
                               Text.rich(
                                 TextSpan(
-                                  text:
-                                      (x.visit_id == null ||
-                                          x.visit_id!.isEmpty)
-                                      ? '----'
-                                      : x.visit_id!,
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      //TODO: navigate to visit
-                                    },
+                                  text: x.reason,
                                 ),
                                 style: TextStyle(
                                   decoration:
@@ -274,7 +265,7 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
                             ),
                             DataCell(
                               Text(
-                                x.added_by.email,
+                                x.added_by,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -327,6 +318,13 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
                             builder: (context) {
                               while (s.result == null) {
                                 return CupertinoActivityIndicator();
+                              }
+                              while (s.result is ApiErrorResult) {
+                                final _err = (s.result as ApiErrorResult);
+                                return CentralError(
+                                  toExecute: s.retry,
+                                  code: _err.errorCode,
+                                );
                               }
                               final _items =
                                   (s.result

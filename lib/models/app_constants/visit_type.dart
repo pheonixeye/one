@@ -67,4 +67,13 @@ enum VisitTypeEnum {
     required this.en,
     required this.ar,
   });
+
+  static String visitType(String en, bool isEnglish) {
+    final val = values.firstWhere((e) => e.en == en);
+    return isEnglish ? val.en : val.ar;
+  }
+
+  static VisitTypeEnum member(String en) {
+    return values.firstWhere((e) => e.en == en);
+  }
 }

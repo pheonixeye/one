@@ -21,6 +21,7 @@ class PxAuth extends ChangeNotifier {
 
   static User? _user;
   User? get user => _user;
+  static User? get staticUser => _user;
 
   static Organization? _organization;
   Organization? get organization => _organization;

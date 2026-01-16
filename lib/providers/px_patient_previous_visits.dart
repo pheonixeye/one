@@ -10,8 +10,8 @@ class PxPatientPreviousVisits extends ChangeNotifier {
     _init();
   }
 
-  ApiResult<List<Visit>>? _data;
-  ApiResult<List<Visit>>? get data => _data;
+  ApiResult<List<VisitExpanded>>? _data;
+  ApiResult<List<VisitExpanded>>? get data => _data;
 
   int _page = 1;
   int get page => _page;

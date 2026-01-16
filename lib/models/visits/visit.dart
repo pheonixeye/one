@@ -5,6 +5,7 @@ import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
 import 'package:one/models/doctor.dart';
 import 'package:one/models/patient.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class Visit extends Equatable {
   final String id;
@@ -94,7 +95,7 @@ class Visit extends Equatable {
       's_h': s_h,
       'e_m': e_m,
       'e_h': e_h,
-      'visit_date': visit_date.unTimed,
+      'visit_date': visit_date.unTimed.toIso8601String(),
       'added_by': added_by,
       'comments': comments,
       'visit_status': visit_status,
@@ -181,4 +182,36 @@ class VisitExpanded extends Visit {
   final Clinic clinic;
   final Doctor doctor;
   final Patient patient;
+
+  factory VisitExpanded.fromRecordModel(RecordModel record) {
+    final map = record.data;
+
+    return VisitExpanded(
+      id: map['id'] as String,
+      doc_id: map['doc_id'] as String,
+      clinic_id: map['clinic_id'] as String,
+      patient_id: map['patient_id'] as String,
+      patient_entry_number: map['patient_entry_number'] as num,
+      intday: map['intday'] as num,
+      s_m: map['s_m'] as num,
+      s_h: map['s_h'] as num,
+      e_m: map['e_m'] as num,
+      e_h: map['e_h'] as num,
+      visit_date: DateTime.parse(map['visit_date'] as String),
+      added_by: map['added_by'] as String,
+      comments: map['comments'] as String,
+      visit_status: map['visit_status'] as String,
+      visit_type: map['visit_type'] as String,
+      patient_progress_status: map['patient_progress_status'] as String,
+      clinic: Clinic.fromJson(
+        record.get<RecordModel>('expand.clinic_id').toJson(),
+      ),
+      patient: Patient.fromJson(
+        record.get<RecordModel>('expand.patient_id').toJson(),
+      ),
+      doctor: Doctor.fromJson(
+        record.get<RecordModel>('expand.doc_id').toJson(),
+      ),
+    );
+  }
 }

@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:one/constants/app_business_constants.dart';
 import 'package:one/extensions/datetime_ext.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/visual_sheet_dialog.dart';
@@ -195,7 +197,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                   //todo: open visual sheet dialog
                   final _data = (v.result as ApiDataResult<VisitData>).data;
                   Uint8List? _imageData;
-                  String? _documentTypeId;
+                  DoctorDocumentTypeItem? _documentType;
                   _imageData = await showDialog<Uint8List?>(
                     context: context,
                     builder: (context) {
@@ -207,14 +209,14 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                   }
                   if (context.mounted) {
                     //todo: select document type
-                    _documentTypeId = await showDialog<String?>(
+                    _documentType = await showDialog<DoctorDocumentTypeItem?>(
                       context: context,
                       builder: (context) {
                         return DocumentTypePickerDialog();
                       },
                     );
                   }
-                  if (_documentTypeId == null) {
+                  if (_documentType == null) {
                     return;
                   }
                   if (context.mounted) {
@@ -223,7 +225,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                       patient_id: _data.patient.id,
                       related_visit_id: _data.visit_id,
                       related_visit_data_id: _data.id,
-                      document_type_id: _documentTypeId,
+                      document_type_id: _documentType.id,
                       document_url: '',
                       created: DateTime.now().unTimed,
                     );
@@ -238,7 +240,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                                 document: _document,
                                 payload: _imageData,
                                 objectName:
-                                    '${_data.patient.id}/${DateFormat('dd-MM-yyyy', 'en').format(DateTime.now())}.jpg',
+                                    '${_data.patient.id}/${_documentType?.name_en}/${DateFormat(AppBusinessConstants.DOCUMENT_NAME_FORMAT, 'en').format(DateTime.now())}.jpg',
                               );
                         }
                       },

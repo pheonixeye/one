@@ -22,9 +22,13 @@ class DoctorApi {
         .collection(collection)
         .getOne(doc_id, expand: doctor_expand);
 
+    final _spec = _response.get<RecordModel>('expand.speciality_id').toJson();
+
     final doctor = Doctor.fromJson({
       ..._response.toJson(),
-      'speciality': _response.get<RecordModel>('expand.speciality_id').toJson(),
+      'speciality': _spec,
+      'spec_en': _spec['name_en'],
+      'spec_ar': _spec['name_ar'],
     });
 
     return doctor;
@@ -47,10 +51,16 @@ class DoctorApi {
 
     // prettyPrint(_response);
     final _doctors = _response.map((e) {
-      return Doctor.fromJson({
+      final _spec = e.get<RecordModel>('expand.speciality_id').toJson();
+
+      final doctor = Doctor.fromJson({
         ...e.toJson(),
-        'speciality': e.get<RecordModel>('expand.speciality_id').toJson(),
+        'speciality': _spec,
+        'spec_en': _spec['name_en'],
+        'spec_ar': _spec['name_ar'],
       });
+
+      return doctor;
     }).toList();
 
     return _doctors;

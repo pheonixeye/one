@@ -12,8 +12,8 @@ class PxVisits extends ChangeNotifier {
     fetchVisitsOfOneMonth();
   }
 
-  ApiResult<List<Visit>>? _visits;
-  ApiResult<List<Visit>>? get visits => _visits;
+  ApiResult<List<VisitExpanded>>? _visits;
+  ApiResult<List<VisitExpanded>>? get visits => _visits;
 
   static const int _page = 1;
   int get page => _page;
@@ -49,14 +49,14 @@ class PxVisits extends ChangeNotifier {
   ///fetch visits of this date and clinic
   ///formulate [entry_number] && alert if that
   ///patient already has a visit in this clinic
-  Future<List<Visit>> preCreateVisitRequest(
+  Future<List<VisitExpanded>> preCreateVisitRequest(
     DateTime visit_date,
     String clinic_id,
   ) async {
     toggleIsUpdating();
     final _result =
         (await _fetchVisitsOfASpecificDate(visit_date)
-                as ApiDataResult<List<Visit>>)
+                as ApiDataResult<List<VisitExpanded>>)
             .data;
     final _clinicVisits = _result
         .where((e) => e.clinic_id == clinic_id)
@@ -76,7 +76,7 @@ class PxVisits extends ChangeNotifier {
     toggleIsUpdating();
     final _visits =
         await _fetchVisitsOfASpecificDate(visit_date)
-            as ApiDataResult<List<Visit>>;
+            as ApiDataResult<List<VisitExpanded>>;
 
     final _clinicVisits = _visits.data
         .where((visit) => visit.clinic_id == clinic_id)
@@ -123,7 +123,7 @@ class PxVisits extends ChangeNotifier {
   }
 
   Future<void> updateVisit({
-    required Visit visit,
+    required VisitExpanded visit,
     required String key,
     required dynamic value,
   }) async {
@@ -131,8 +131,8 @@ class PxVisits extends ChangeNotifier {
     await _fetchVisitsOfToday();
   }
 
-  ApiResult<List<Visit>>? _monthlyVisits;
-  ApiResult<List<Visit>>? get monthlyVisits => _monthlyVisits;
+  ApiResult<List<VisitExpanded>>? _monthlyVisits;
+  ApiResult<List<VisitExpanded>>? get monthlyVisits => _monthlyVisits;
 
   DateTime _nowMonth = DateTime.now().copyWith(day: 1);
   DateTime get nowMonth => _nowMonth;
