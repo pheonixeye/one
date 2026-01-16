@@ -321,7 +321,7 @@ class BookkeepingTransformer {
       collection_id: collection_id,
       added_by: supplyMovement.added_by,
       updated_by: '',
-      amount: _bk_item_amount,
+      amount: -_bk_item_amount,
       type: BookkeepingDirection.fromString(_type),
       update_reason:
           '${supplyMovement.movement_type}:${supplyMovement.supply_item.name_en}',

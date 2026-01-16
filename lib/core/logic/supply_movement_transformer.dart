@@ -76,7 +76,9 @@ class SupplyMovementTransformer {
       added_by: '${PxAuth.staticUser?.name}',
       updated_by: '',
       reason: _reason!,
-      movement_amount: quantity_change * item.selling_price,
+      movement_amount: quantity_change.isNegative
+          ? (quantity_change * item.selling_price) * -1
+          : (quantity_change * item.selling_price) * 1, //money
       movement_quantity: quantity_change.abs(),
       number_of_updates: 0,
       auto_add: true,
