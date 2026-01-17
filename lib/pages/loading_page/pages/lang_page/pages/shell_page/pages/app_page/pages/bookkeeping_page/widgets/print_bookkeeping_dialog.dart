@@ -131,7 +131,9 @@ class _PrintBookkeepingDialogState extends State<PrintBookkeepingDialog> {
                           textAlign: pw.TextAlign.center,
                         ),
                         pw.Text(
-                          BookkeepingName.fromString(x.item_name).ar(),
+                          BookkeepingName.fromString(
+                            x.item_name,
+                          ).tryTranslate(),
                           textAlign: pw.TextAlign.center,
                         ),
                         pw.Text(x.type.ar, textAlign: pw.TextAlign.center),

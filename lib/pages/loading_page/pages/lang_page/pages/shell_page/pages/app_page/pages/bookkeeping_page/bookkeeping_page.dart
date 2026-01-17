@@ -1,7 +1,8 @@
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/bookkeeping_page_action_btn.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/detailed_view_bookkeeping.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/focused_view_bookkeeping.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/focused_view_bookkeeping_others.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/widgets/focused_view_bookkeeping_visits.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/widgets/not_permitted_template_page.dart';
@@ -59,7 +60,10 @@ class _BookkeepingPageState extends State<BookkeepingPage> {
               const FilterHeaderBookkeeping(),
               switch (b.viewType) {
                 BookkeepingViewType.detailed => const DetailedViewBookKeeping(),
-                BookkeepingViewType.focused => const FocusedViewBookkeeping(),
+                BookkeepingViewType.focused_visits =>
+                  const FocusedViewBookkeepingVisits(),
+                BookkeepingViewType.focused_others =>
+                  const FocusedViewBookkeepingOthers(),
               },
             ],
           ),

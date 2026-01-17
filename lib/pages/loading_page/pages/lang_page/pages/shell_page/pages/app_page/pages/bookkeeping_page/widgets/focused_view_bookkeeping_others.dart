@@ -1,9 +1,8 @@
+import 'package:intl/intl.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
-import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
-import 'package:one/models/bookkeeping/bookkeeping_name.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_bookkeeping.dart';
 import 'package:one/providers/px_locale.dart';
@@ -11,18 +10,18 @@ import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/central_no_items.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class DetailedViewBookKeeping extends StatefulWidget {
-  const DetailedViewBookKeeping({super.key});
+class FocusedViewBookkeepingOthers extends StatefulWidget {
+  const FocusedViewBookkeepingOthers({super.key});
 
   @override
-  State<DetailedViewBookKeeping> createState() =>
-      _DetailedViewBookKeepingState();
+  State<FocusedViewBookkeepingOthers> createState() =>
+      _FocusedViewBookkeepingOthersState();
 }
 
-class _DetailedViewBookKeepingState extends State<DetailedViewBookKeeping> {
+class _FocusedViewBookkeepingOthersState
+    extends State<FocusedViewBookkeepingOthers> {
   late final ScrollController _verticalScroll;
   late final ScrollController _horizontalScroll;
 
@@ -63,8 +62,7 @@ class _DetailedViewBookKeepingState extends State<DetailedViewBookKeeping> {
               message: context.loc.noBookkeepingEntriesFoundInSelectedDate,
             );
           }
-          final _items =
-              (b.result as ApiDataResult<List<BookkeepingItem>>).data;
+          final _items = b.bookkeepingOthers;
 
           return Scrollbar(
             controller: _verticalScroll,
@@ -93,17 +91,21 @@ class _DetailedViewBookKeepingState extends State<DetailedViewBookKeeping> {
                             Colors.amber.shade50,
                           ),
                           columns: [
+                            //todo: format
                             DataColumn(label: Text(context.loc.number)),
-                            DataColumn(label: Text(context.loc.date)),
-                            DataColumn(label: Text(context.loc.operation)),
-                            DataColumn(label: Text(context.loc.bkType)),
+                            DataColumn(label: Text(context.loc.operationName)),
+                            DataColumn(
+                              label: Text(context.loc.operationsDetails),
+                            ),
                             DataColumn(label: Text(context.loc.amount)),
-                            DataColumn(label: Text(context.loc.autoAdd)),
+                            DataColumn(label: Text(context.loc.date)),
                             DataColumn(label: Text(context.loc.addedBy)),
                           ],
                           rows: [
+                            //todo: format
                             ..._items.map((x) {
                               final _index = _items.indexOf(x);
+
                               return DataRow(
                                 cells: [
                                   DataCell(
@@ -112,36 +114,11 @@ class _DetailedViewBookKeepingState extends State<DetailedViewBookKeeping> {
                                     ),
                                   ),
                                   DataCell(
-                                    Text(
-                                      DateFormat(
-                                        'dd - MM - yyyy',
-                                        l.lang,
-                                      ).format(x.created),
-                                    ),
+                                    Text(x.item_name),
                                   ),
                                   DataCell(
-                                    Text(
-                                      l.isEnglish
-                                          ? x.item_name
-                                          : BookkeepingName.fromString(
-                                              x.item_name,
-                                            ).tryTranslate(x.item_name),
-                                    ),
+                                    Text(x.update_reason),
                                   ),
-                                  DataCell(switch (x.type) {
-                                    BookkeepingDirection.IN => const Icon(
-                                      Icons.arrow_downward,
-                                      color: Colors.green,
-                                    ),
-                                    BookkeepingDirection.OUT => const Icon(
-                                      Icons.arrow_upward,
-                                      color: Colors.red,
-                                    ),
-                                    BookkeepingDirection.NONE => const Icon(
-                                      Icons.mobiledata_off_rounded,
-                                      color: Colors.blue,
-                                    ),
-                                  }),
                                   DataCell(
                                     Text(
                                       '${x.amount} ${context.loc.egp}'
@@ -149,14 +126,16 @@ class _DetailedViewBookKeepingState extends State<DetailedViewBookKeeping> {
                                     ),
                                   ),
                                   DataCell(
-                                    Icon(
-                                      x.auto_add ? Icons.check : Icons.close,
-                                      color: x.auto_add
-                                          ? Colors.green
-                                          : Colors.red,
+                                    Text(
+                                      DateFormat(
+                                        'dd-MM-yyyy',
+                                        l.lang,
+                                      ).format(x.created),
                                     ),
                                   ),
-                                  DataCell(Text(x.added_by)),
+                                  DataCell(
+                                    Text(x.added_by),
+                                  ),
                                 ],
                               );
                             }),

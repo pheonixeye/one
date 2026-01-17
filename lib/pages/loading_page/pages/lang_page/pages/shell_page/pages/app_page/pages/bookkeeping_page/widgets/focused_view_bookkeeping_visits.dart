@@ -14,14 +14,16 @@ import 'package:one/widgets/central_no_items.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FocusedViewBookkeeping extends StatefulWidget {
-  const FocusedViewBookkeeping({super.key});
+class FocusedViewBookkeepingVisits extends StatefulWidget {
+  const FocusedViewBookkeepingVisits({super.key});
 
   @override
-  State<FocusedViewBookkeeping> createState() => _FocusedViewBookkeepingState();
+  State<FocusedViewBookkeepingVisits> createState() =>
+      _FocusedViewBookkeepingVisitsState();
 }
 
-class _FocusedViewBookkeepingState extends State<FocusedViewBookkeeping> {
+class _FocusedViewBookkeepingVisitsState
+    extends State<FocusedViewBookkeepingVisits> {
   late final ScrollController _verticalScroll;
   late final ScrollController _horizontalScroll;
 
@@ -62,7 +64,8 @@ class _FocusedViewBookkeepingState extends State<FocusedViewBookkeeping> {
               message: context.loc.noBookkeepingEntriesFoundInSelectedDate,
             );
           }
-          final _items = b.foldedBookkeeping;
+          final _items = b.foldedVisitsBookkeeping;
+          final _data = (b.result as ApiDataResult<List<BookkeepingItem>>).data;
 
           return Scrollbar(
             controller: _verticalScroll,
@@ -92,17 +95,24 @@ class _FocusedViewBookkeepingState extends State<FocusedViewBookkeeping> {
                           ),
                           columns: [
                             DataColumn(label: Text(context.loc.number)),
-                            DataColumn(label: Text(context.loc.link)),
+                            DataColumn(label: Text(context.loc.visits)),
+                            DataColumn(label: Text(context.loc.visitDate)),
                             DataColumn(label: Text(context.loc.amount)),
-                            DataColumn(label: Text(context.loc.operation)),
                           ],
                           rows: [
                             ..._items.entries.map((x) {
                               final _index = _items.keys.toList().indexOf(
                                 x.key,
                               );
-                              final _id = x.key.split('-').first;
-                              final _collection = x.key.split('-').last;
+                              final _patient_id = x.key.split('::')[0];
+                              final _visit_id = x.key.split('::')[1];
+                              final _visit_date = x.key.split('::')[2];
+                              final _patientName = _data
+                                  .firstWhere(
+                                    (e) => _patient_id == e.patient_id,
+                                  )
+                                  .patient
+                                  ?.name;
                               return DataRow(
                                 cells: [
                                   DataCell(
@@ -116,7 +126,7 @@ class _FocusedViewBookkeepingState extends State<FocusedViewBookkeeping> {
                                       borderRadius: BorderRadius.circular(12),
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(_id),
+                                        child: Text(_patientName ?? ''),
                                       ),
                                       onTap: () async {
                                         await showDialog(
@@ -125,10 +135,11 @@ class _FocusedViewBookkeepingState extends State<FocusedViewBookkeeping> {
                                             return ChangeNotifierProvider(
                                               create: (context) => PxOneVisit(
                                                 api: const VisitFilterApi(),
-                                                visit_id: _id,
+                                                visit_id: _visit_id,
                                               ),
+                                              //todo: need to adapt to multiple operations
                                               child: OperationDetailDialog(
-                                                item_id: _id,
+                                                item_id: _visit_id,
                                               ),
                                             );
                                           },
@@ -138,11 +149,15 @@ class _FocusedViewBookkeepingState extends State<FocusedViewBookkeeping> {
                                   ),
                                   DataCell(
                                     Text(
+                                      _visit_date.toArabicNumber(context),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Text(
                                       '${x.value} ${context.loc.egp}'
                                           .toArabicNumber(context),
                                     ),
                                   ),
-                                  DataCell(Text(_collection)),
                                 ],
                               );
                             }),

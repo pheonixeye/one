@@ -55,7 +55,11 @@ class _FilterHeaderBookkeepingState extends State<FilterHeaderBookkeeping> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Expanded(child: Text(context.loc.bookkeeping)),
+                  Expanded(
+                    child: Text(
+                      '${context.loc.bookkeeping} - (${l.isEnglish ? b.viewType.en : b.viewType.ar})',
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Builder(

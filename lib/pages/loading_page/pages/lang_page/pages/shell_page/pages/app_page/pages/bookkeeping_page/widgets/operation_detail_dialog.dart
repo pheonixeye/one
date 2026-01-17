@@ -60,7 +60,7 @@ class OperationDetailDialog extends StatelessWidget {
           }
           final _visit = (v.result as ApiDataResult<VisitExpanded>).data;
           final _data = (b.result as ApiDataResult<List<BookkeepingItem>>).data;
-          final _items = _data.where((e) => e.item_id == item_id).toList();
+          // final _items = _data.where((e) => e.item_id == item_id).toList();
           return SizedBox(
             width: context.screenWidth,
             height: context.screenHeight,
@@ -73,8 +73,8 @@ class OperationDetailDialog extends StatelessWidget {
                   showIndexNumber: false,
                 ),
                 const Divider(),
-                ..._items.map((bk) {
-                  final _index = _items.indexOf(bk);
+                ..._data.map((bk) {
+                  final _index = _data.indexOf(bk);
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card.outlined(
@@ -95,7 +95,7 @@ class OperationDetailDialog extends StatelessWidget {
                                       ? bk.item_name
                                       : BookkeepingName.fromString(
                                           bk.item_name,
-                                        ).ar(),
+                                        ).tryTranslate(),
                                 ),
                               ),
                               Expanded(

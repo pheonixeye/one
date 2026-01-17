@@ -28,8 +28,9 @@ enum BookkeepingName {
 
   factory BookkeepingName.fromString(String value) {
     try {
-      return BookkeepingName.values
-          .firstWhere((e) => value == e.name.split('.').last);
+      return BookkeepingName.values.firstWhere(
+        (e) => value == e.name.split('.').last,
+      );
     } catch (e) {
       return operation_unknown;
     }
@@ -37,9 +38,9 @@ enum BookkeepingName {
 }
 
 extension ToArabic on BookkeepingName {
-  String ar() {
+  String tryTranslate([String? value]) {
     return switch (this) {
-      BookkeepingName.operation_unknown => 'عملية غير معروفة',
+      BookkeepingName.operation_unknown => '$value',
       BookkeepingName.visit_create => 'الزيارات - اضافة',
       BookkeepingName.visit_no_update => "الزيارات - بدون تعديل",
       BookkeepingName.visit_add_discount => "الزيارات - اضافة خصم للزيارة",

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/doctor_items/doctor_supply_item.dart';
@@ -17,6 +18,7 @@ class SupplyMovement extends Equatable {
   final bool auto_add;
   final int number_of_updates;
   final DateTime created;
+  final Visit? visit;
 
   const SupplyMovement({
     required this.id,
@@ -32,6 +34,7 @@ class SupplyMovement extends Equatable {
     required this.auto_add,
     required this.number_of_updates,
     required this.created,
+    this.visit,
   });
 
   SupplyMovement copyWith({
@@ -123,6 +126,7 @@ class SupplyMovement extends Equatable {
       updated_by,
       number_of_updates,
       created,
+      visit,
     ];
   }
 
@@ -143,6 +147,9 @@ class SupplyMovement extends Equatable {
       updated_by: e.get<String?>('updated_by'),
       number_of_updates: e.getIntValue('number_of_updates'),
       created: DateTime.parse(e.getStringValue('created')),
+      visit: Visit.fromJson(
+        e.get<RecordModel>('expand.related_visit_id').toJson(),
+      ),
     );
   }
 }

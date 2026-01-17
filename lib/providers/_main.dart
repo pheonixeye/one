@@ -9,7 +9,6 @@ import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_s3_documents.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_speciality.dart';
-import 'package:flutter/material.dart';
 import 'package:one/core/api/auth/api_auth.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
 import 'package:one/core/api/clinics_api.dart';
@@ -110,7 +109,7 @@ final List<SingleChildWidget> providers = [
 
   //profile items providers
   ChangeNotifierProvider(
-    key: ValueKey(ProfileSetupItem.drugs),
+    // key: ValueKey(ProfileSetupItem.drugs),
     create: (context) => PxDoctorProfileItems<DoctorDrugItem>(
       api: DoctorProfileItemsApi<DoctorDrugItem>(
         item: ProfileSetupItem.drugs,
@@ -119,7 +118,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    key: ValueKey(ProfileSetupItem.labs),
+    // key: ValueKey(ProfileSetupItem.labs),
     create: (context) => PxDoctorProfileItems<DoctorLabItem>(
       api: DoctorProfileItemsApi<DoctorLabItem>(
         item: ProfileSetupItem.labs,
@@ -128,7 +127,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    key: ValueKey(ProfileSetupItem.rads),
+    // key: ValueKey(ProfileSetupItem.rads),
     create: (context) => PxDoctorProfileItems<DoctorRadItem>(
       api: DoctorProfileItemsApi<DoctorRadItem>(
         item: ProfileSetupItem.rads,
@@ -137,7 +136,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    key: ValueKey(ProfileSetupItem.supplies),
+    // key: ValueKey(ProfileSetupItem.supplies),
     create: (context) => PxDoctorProfileItems<DoctorSupplyItem>(
       api: DoctorProfileItemsApi<DoctorSupplyItem>(
         item: ProfileSetupItem.supplies,
@@ -146,7 +145,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    key: ValueKey(ProfileSetupItem.procedures),
+    // key: ValueKey(ProfileSetupItem.procedures),
     create: (context) => PxDoctorProfileItems<DoctorProcedureItem>(
       api: DoctorProfileItemsApi<DoctorProcedureItem>(
         item: ProfileSetupItem.procedures,
@@ -155,7 +154,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    key: ValueKey(ProfileSetupItem.documents),
+    // key: ValueKey(ProfileSetupItem.documents),
     create: (context) => PxDoctorProfileItems<DoctorDocumentTypeItem>(
       api: DoctorProfileItemsApi<DoctorDocumentTypeItem>(
         item: ProfileSetupItem.documents,

@@ -130,24 +130,32 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
                     BookkeepingName.visit_remove_discount.name,
                   BookkeepingDirection.OUT =>
                     BookkeepingName.visit_add_discount.name,
-                  BookkeepingDirection.NONE => throw UnimplementedError(),
+                  BookkeepingDirection.NONE => '',
                 },
                 item_id: widget.visit.id,
                 collection_id: 'visits',
                 added_by: '${PxAuth.staticUser?.name}',
                 updated_by: '',
                 amount: switch (widget.direction) {
-                  BookkeepingDirection.IN ||
-                  BookkeepingDirection.OUT => double.parse(
+                  BookkeepingDirection.IN => double.parse(
                     _amountController.text,
                   ),
-                  BookkeepingDirection.NONE => throw UnimplementedError(),
+                  BookkeepingDirection.OUT => -double.parse(
+                    _amountController.text,
+                  ),
+                  BookkeepingDirection.NONE => 0,
                 },
                 type: widget.direction,
                 update_reason:
-                    '${widget.visit.patient.name}/${widget.visit.visit_type}/${widget.direction.en}/${_amountController.text}',
+                    '${widget.visit.patient.name}/${widget.visit.visit_type}/${widget.direction.value}/${_amountController.text}',
                 auto_add: false,
                 created: DateTime.now(),
+                visit_id: widget.visit.id,
+                visit_date: widget.visit.visit_date,
+                visit_data_id: '',
+                patient_id: widget.visit.patient_id,
+                procedure_id: '',
+                supply_movement_id: '',
               );
               //pop with null to avoid an extra useless request
 

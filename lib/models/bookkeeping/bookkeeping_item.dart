@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
+import 'package:one/models/patient.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class BookkeepingItem extends Equatable {
   final String id;
@@ -13,6 +16,13 @@ class BookkeepingItem extends Equatable {
   final String update_reason;
   final bool auto_add;
   final DateTime created;
+  final String visit_id;
+  final DateTime? visit_date;
+  final String visit_data_id;
+  final String procedure_id;
+  final String patient_id;
+  final String supply_movement_id;
+  final Patient? patient;
 
   const BookkeepingItem({
     required this.id,
@@ -26,6 +36,13 @@ class BookkeepingItem extends Equatable {
     required this.update_reason,
     required this.auto_add,
     required this.created,
+    required this.visit_id,
+    required this.visit_date,
+    required this.visit_data_id,
+    required this.procedure_id,
+    required this.patient_id,
+    required this.supply_movement_id,
+    this.patient,
   });
 
   BookkeepingItem copyWith({
@@ -40,6 +57,12 @@ class BookkeepingItem extends Equatable {
     String? update_reason,
     bool? auto_add,
     DateTime? created,
+    String? visit_id,
+    DateTime? visit_date,
+    String? visit_data_id,
+    String? procedure_id,
+    String? patient_id,
+    String? supply_movement_id,
   }) {
     return BookkeepingItem(
       id: id ?? this.id,
@@ -53,6 +76,12 @@ class BookkeepingItem extends Equatable {
       update_reason: update_reason ?? this.update_reason,
       auto_add: auto_add ?? this.auto_add,
       created: created ?? this.created,
+      visit_id: visit_id ?? this.visit_id,
+      visit_date: visit_date ?? this.visit_date,
+      visit_data_id: visit_data_id ?? this.visit_data_id,
+      procedure_id: procedure_id ?? this.procedure_id,
+      patient_id: patient_id ?? this.patient_id,
+      supply_movement_id: supply_movement_id ?? this.supply_movement_id,
     );
   }
 
@@ -69,6 +98,13 @@ class BookkeepingItem extends Equatable {
       'update_reason': update_reason,
       'auto_add': auto_add,
       'created': created.toIso8601String(),
+      'visit_id': visit_id,
+      'visit_date': visit_date?.toIso8601String(),
+      'visit_data_id': visit_data_id,
+      'procedure_id': procedure_id,
+      'patient_id': patient_id,
+      'supply_movement_id': supply_movement_id,
+      'patient': patient?.toJson(),
     };
   }
 
@@ -85,7 +121,24 @@ class BookkeepingItem extends Equatable {
       update_reason: map['update_reason'] as String,
       auto_add: map['auto_add'] as bool,
       created: DateTime.parse(map['created'] as String),
+      visit_id: map['visit_id'] as String,
+      visit_date: DateTime.tryParse(map['visit_date'] as String),
+      visit_data_id: map['visit_data_id'] as String,
+      procedure_id: map['procedure_id'] as String,
+      patient_id: map['patient_id'] as String,
+      supply_movement_id: map['supply_movement_id'] as String,
+      patient:
+          (map['patient'] == null || map['patient'].isEmpty) //HACK
+          ? null
+          : Patient.fromJson(map['patient'] as Map<String, dynamic>),
     );
+  }
+
+  factory BookkeepingItem.fromRecordModel(RecordModel record) {
+    return BookkeepingItem.fromJson({
+      ...record.toJson(),
+      'patient': record.get<RecordModel>('expand.patient_id').toJson(),
+    });
   }
 
   @override
@@ -105,6 +158,13 @@ class BookkeepingItem extends Equatable {
       update_reason,
       auto_add,
       created,
+      visit_id,
+      visit_date,
+      visit_data_id,
+      procedure_id,
+      patient_id,
+      supply_movement_id,
+      patient,
     ];
   }
 }

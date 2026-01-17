@@ -210,6 +210,12 @@ class _AddBookkeepingEntryDialogState extends State<AddBookkeepingEntryDialog> {
                 update_reason: _operationController.text,
                 auto_add: false,
                 created: DateTime.now(),
+                visit_id: '',
+                visit_date: null,
+                visit_data_id: '',
+                patient_id: '',
+                procedure_id: '',
+                supply_movement_id: '',
               );
               Navigator.pop(context, _bkDto);
             }

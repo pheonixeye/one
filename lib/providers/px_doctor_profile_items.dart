@@ -19,6 +19,7 @@ class PxDoctorProfileItems<T extends DoctorItem> extends ChangeNotifier {
 
   Future<void> _fetchItems() async {
     _data = await api.fetchDoctorProfileItems();
+    notifyListeners();
     _filteredData = _data;
     notifyListeners();
   }

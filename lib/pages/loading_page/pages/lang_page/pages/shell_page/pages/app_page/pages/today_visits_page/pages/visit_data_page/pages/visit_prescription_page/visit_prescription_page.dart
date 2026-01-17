@@ -4,6 +4,7 @@ import 'package:one/constants/app_business_constants.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/clinic/prescription_details.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
@@ -38,6 +39,7 @@ class VisitPrescriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: restructure into smaller widgets
     return Scaffold(
       body:
           Consumer6<
@@ -532,7 +534,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                       onPressed: () async {
                                         //todo: Print
                                         Uint8List? _bytesWithImage;
-                                        String? _documentTypeId;
+                                        DoctorDocumentTypeItem? _documentType;
                                         await shellFunction(
                                           context,
                                           toExecute: () async {
@@ -550,15 +552,17 @@ class VisitPrescriptionPage extends StatelessWidget {
                                             }
                                             if (context.mounted) {
                                               //todo: select document type
-                                              _documentTypeId =
-                                                  await showDialog<String?>(
+                                              _documentType =
+                                                  await showDialog<
+                                                    DoctorDocumentTypeItem?
+                                                  >(
                                                     context: context,
                                                     builder: (context) {
                                                       return DocumentTypePickerDialog();
                                                     },
                                                   );
                                             }
-                                            if (_documentTypeId == null) {
+                                            if (_documentType == null) {
                                               return;
                                             }
 
@@ -570,7 +574,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                   related_visit_data_id:
                                                       visit_data.id,
                                                   document_type_id:
-                                                      _documentTypeId!,
+                                                      _documentType!.id,
                                                   document_url: '',
                                                   created:
                                                       DateTime.now().unTimed,
@@ -582,7 +586,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                     document: _patientDocument,
                                                     payload: _bytesWithImage,
                                                     objectName:
-                                                        '${visit.patient_id}/${intl.DateFormat(AppBusinessConstants.DOCUMENT_NAME_FORMAT, 'en').format(DateTime.now())}.jpg',
+                                                        '${visit.patient_id}/${_documentType?.name_en}/${intl.DateFormat(AppBusinessConstants.DOCUMENT_NAME_FORMAT, 'en').format(DateTime.now())}.jpg',
                                                   );
                                             }
                                           },

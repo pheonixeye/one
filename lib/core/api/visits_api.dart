@@ -78,6 +78,7 @@ class VisitsApi {
   }
 
   Future<void> addNewVisit(Visit visit) async {
+    //TODO: error handling
     //create visit reference
     final _result = await PocketbaseHelper.pbData
         .collection(collection)
@@ -127,6 +128,7 @@ class VisitsApi {
     String key,
     dynamic value,
   ) async {
+    //TODO: error handling
     final _response = await PocketbaseHelper.pbData
         .collection(collection)
         .update(
@@ -150,6 +152,8 @@ class VisitsApi {
 
     //todo: send bookkeeping request
     await BookkeepingApi().addBookkeepingItem(_item);
+
+    //TODO: send inclinic notification
   }
 
   Future<ApiResult<List<VisitExpanded>>> fetctVisitsOfOneMonth({
@@ -194,6 +198,8 @@ class VisitsApi {
     required String visit_id,
     required Shift shift,
   }) async {
+    //TODO: error handling
+
     await PocketbaseHelper.pbData
         .collection(collection)
         .update(
@@ -205,5 +211,6 @@ class VisitsApi {
             'e_m': shift.end_min,
           },
         );
+    //TODO: send inclinic notification
   }
 }

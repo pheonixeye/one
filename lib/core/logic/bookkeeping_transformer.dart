@@ -1,4 +1,5 @@
 import 'package:one/core/api/constants_api.dart';
+import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/bookkeeping/bookkeeping_name.dart';
@@ -51,6 +52,12 @@ class BookkeepingTransformer {
       update_reason: '',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: visit.id,
+      visit_date: visit.visit_date,
+      visit_data_id: '',
+      patient_id: visit.patient_id,
+      procedure_id: '',
+      supply_movement_id: '',
     );
 
     return _item;
@@ -169,9 +176,15 @@ class BookkeepingTransformer {
       amount: _bk_item_amount,
       type: BookkeepingDirection.fromString(_type),
       update_reason:
-          '${old_visit.visit_type}/${old_visit.visit_status}:${updated_visit.visit_type}/${updated_visit.visit_status}',
+          '${old_visit.visit_type}/${old_visit.visit_status}/${old_visit.patient_progress_status}:${updated_visit.visit_type}/${updated_visit.visit_status}/${updated_visit.patient_progress_status}',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: updated_visit.id,
+      visit_date: updated_visit.visit_date,
+      visit_data_id: '',
+      patient_id: updated_visit.patient_id,
+      procedure_id: '',
+      supply_movement_id: '',
     );
 
     return _item;
@@ -199,6 +212,12 @@ class BookkeepingTransformer {
       update_reason: '+${procedure.name_en}',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: visit_data.visit_id,
+      visit_date: DateTime.now().unTimed, //TODO:
+      visit_data_id: visit_data.id,
+      patient_id: visit_data.patient.id,
+      procedure_id: procedure.id,
+      supply_movement_id: '',
     );
 
     return _item;
@@ -226,6 +245,12 @@ class BookkeepingTransformer {
       update_reason: '-${procedure.name_en}',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: visit_data.visit_id,
+      visit_date: DateTime.now().unTimed, //TODO:
+      visit_data_id: visit_data.id,
+      patient_id: visit_data.patient.id,
+      procedure_id: procedure.id,
+      supply_movement_id: '',
     );
 
     return _item;
@@ -275,12 +300,20 @@ class BookkeepingTransformer {
           '${supplyMovement.movement_type}:${supplyMovement.supply_item.name_en}',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: '',
+      visit_date: null, //TODO:
+      visit_data_id: '',
+      patient_id: '',
+      procedure_id: '',
+      supply_movement_id: supplyMovement.id,
     );
 
     return _item;
   }
 
-  BookkeepingItem fromVisitAddSupplyMovement(SupplyMovement supplyMovement) {
+  BookkeepingItem fromVisitAddSupplyMovement(
+    SupplyMovement supplyMovement,
+  ) {
     final BookkeepingName _item_name = BookkeepingName.visit_supplies_add;
 
     final String _type = 'out';
@@ -300,6 +333,12 @@ class BookkeepingTransformer {
           '${supplyMovement.movement_type}:${supplyMovement.supply_item.name_en}',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: supplyMovement.visit_id ?? '',
+      visit_date: supplyMovement.visit?.visit_date,
+      visit_data_id: '',
+      patient_id: supplyMovement.visit?.patient_id ?? '',
+      procedure_id: '',
+      supply_movement_id: supplyMovement.id,
     );
 
     return _item;
@@ -327,6 +366,12 @@ class BookkeepingTransformer {
           '${supplyMovement.movement_type}:${supplyMovement.supply_item.name_en}',
       auto_add: true,
       created: DateTime.now(),
+      visit_id: supplyMovement.visit_id ?? '',
+      visit_date: supplyMovement.visit?.visit_date,
+      visit_data_id: '',
+      patient_id: supplyMovement.visit?.patient_id ?? '',
+      procedure_id: '',
+      supply_movement_id: supplyMovement.id,
     );
 
     return _item;

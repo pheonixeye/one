@@ -85,11 +85,11 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ..._data.map((e) {
-                                  return RadioListTile(
+                                  return RadioListTile<DoctorDocumentTypeItem>(
                                     title: Text(
                                       l.isEnglish ? e.name_en : e.name_ar,
                                     ),
-                                    value: e.id,
+                                    value: e,
                                   );
                                 }),
                                 if (field.hasError)

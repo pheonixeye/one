@@ -15,6 +15,8 @@ class BookkeepingApi {
   //TODO: CHANGE CONSTANT
   static const _batch = 5000;
 
+  static const _expand = 'patient_id';
+
   Future<void> addBookkeepingItem(BookkeepingItem item) async {
     await PocketbaseHelper.pbData
         .collection(collection)
@@ -37,10 +39,11 @@ class BookkeepingApi {
             filter: "created >= '$formattedFrom' && created <= '$formattedTo'",
             sort: '-created',
             batch: _batch,
+            expand: _expand,
           );
-
+      // prettyPrint(_response);
       final _items = _response
-          .map((e) => BookkeepingItem.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromRecordModel(e))
           .toList();
 
       return ApiDataResult<List<BookkeepingItem>>(data: _items);
@@ -67,10 +70,12 @@ class BookkeepingApi {
           .getFullList(
             filter: 'created >= $formattedFrom && created <= $formattedTo',
             sort: 'created-',
+            batch: _batch,
+            expand: _expand,
           );
 
       final _items = _response
-          .map((e) => BookkeepingItem.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromRecordModel(e))
           .toList();
 
       return ApiDataResult<List<BookkeepingItem>>(data: _items);
@@ -87,12 +92,13 @@ class BookkeepingApi {
       final _response = await PocketbaseHelper.pbData
           .collection(collection)
           .getFullList(
-            filter: "item_id = '$visit_id' && amount != 0",
+            filter: "visit_id = '$visit_id' && amount != 0",
             sort: 'created',
+            expand: _expand,
           );
 
       final _items = _response
-          .map((e) => BookkeepingItem.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromRecordModel(e))
           .toList();
 
       return ApiDataResult<List<BookkeepingItem>>(data: _items);
@@ -118,10 +124,11 @@ class BookkeepingApi {
                 "created >= '$formattedFrom' && created <= '$formattedTo' && amount != 0",
             sort: 'created',
             batch: _batch,
+            expand: _expand,
           );
 
       final _items = _response
-          .map((e) => BookkeepingItem.fromJson(e.toJson()))
+          .map((e) => BookkeepingItem.fromRecordModel(e))
           .toList();
 
       return ApiDataResult<List<BookkeepingItem>>(data: _items);

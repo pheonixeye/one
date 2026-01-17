@@ -158,6 +158,21 @@ class VisitData extends Equatable {
   }
 
   factory VisitData.fromRecordModel(RecordModel e) {
+    late final List<PkForm> _forms;
+    try {
+      _forms = (e.toJson()['expand']['forms_data_ids'] as List<dynamic>)
+          .map(
+            (f) => PkForm.fromJson({
+              ...f['expand']['form_id'],
+              'fields': [
+                ...f['expand']['form_id']['expand']['fields'],
+              ],
+            }),
+          )
+          .toList();
+    } catch (e) {
+      _forms = [];
+    }
     return VisitData(
       id: e.id,
       clinic_id: e.data['clinic_id'],
@@ -185,16 +200,7 @@ class VisitData extends Equatable {
           .get<List<RecordModel>>('expand.supplies_ids')
           .map((x) => DoctorSupplyItem.fromJson(x.toJson()))
           .toList(),
-      forms: (e.toJson()['expand']['forms_data_ids'] as List<dynamic>)
-          .map(
-            (f) => PkForm.fromJson({
-              ...f['expand']['form_id'],
-              'fields': [
-                ...f['expand']['form_id']['expand']['fields'],
-              ],
-            }),
-          )
-          .toList(),
+      forms: _forms,
       forms_data: e
           .get<List<RecordModel>>('expand.forms_data_ids')
           .map((x) => VisitFormItem.fromJson(x.toJson()))
