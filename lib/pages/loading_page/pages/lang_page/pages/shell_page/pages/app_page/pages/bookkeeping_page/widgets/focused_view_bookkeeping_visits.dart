@@ -139,7 +139,7 @@ class _FocusedViewBookkeepingVisitsState
                                               ),
                                               //todo: need to adapt to multiple operations
                                               child: OperationDetailDialog(
-                                                item_id: _visit_id,
+                                                visit_id: _visit_id,
                                               ),
                                             );
                                           },

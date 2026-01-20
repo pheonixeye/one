@@ -77,6 +77,7 @@ class PxBookkeeping extends ChangeNotifier {
         final bool _foldable =
             e.patient_id.isNotEmpty &&
             e.visit_date != null &&
+            e.patient != null &&
             e.visit_id.isNotEmpty;
         if (_foldable) {
           final _key =

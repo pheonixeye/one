@@ -18,8 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class OperationDetailDialog extends StatelessWidget {
-  const OperationDetailDialog({super.key, required this.item_id});
-  final String item_id;
+  const OperationDetailDialog({super.key, required this.visit_id});
+  final String visit_id;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class OperationDetailDialog extends StatelessWidget {
           }
           final _visit = (v.result as ApiDataResult<VisitExpanded>).data;
           final _data = (b.result as ApiDataResult<List<BookkeepingItem>>).data;
-          // final _items = _data.where((e) => e.item_id == item_id).toList();
+          final _bk_items = _data.where((e) => e.visit_id == visit_id).toList();
           return SizedBox(
             width: context.screenWidth,
             height: context.screenHeight,
@@ -73,7 +73,7 @@ class OperationDetailDialog extends StatelessWidget {
                   showIndexNumber: false,
                 ),
                 const Divider(),
-                ..._data.map((bk) {
+                ..._bk_items.map((bk) {
                   final _index = _data.indexOf(bk);
                   return Padding(
                     padding: const EdgeInsets.all(8.0),

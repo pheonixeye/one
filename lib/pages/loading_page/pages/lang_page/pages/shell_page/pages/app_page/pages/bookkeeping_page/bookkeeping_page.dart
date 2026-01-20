@@ -14,30 +14,8 @@ import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
 
-class BookkeepingPage extends StatefulWidget {
+class BookkeepingPage extends StatelessWidget {
   const BookkeepingPage({super.key});
-
-  @override
-  State<BookkeepingPage> createState() => _BookkeepingPageState();
-}
-
-class _BookkeepingPageState extends State<BookkeepingPage> {
-  late final ScrollController _verticalScroll;
-  late final ScrollController _horizontalScroll;
-
-  @override
-  void initState() {
-    super.initState();
-    _verticalScroll = ScrollController();
-    _horizontalScroll = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _verticalScroll.dispose();
-    _horizontalScroll.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
