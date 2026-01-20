@@ -82,6 +82,7 @@ class SavedNotification extends Equatable {
               id: e.getStringValue('id'),
               email: e.getStringValue('email'),
               name: e.getStringValue('name'),
+              org_id: e.getStringValue('org_id'),
               verified: e.getBoolValue('verified'),
               is_active: e.getBoolValue('is_active'),
               account_type: AccountType.fromJson(

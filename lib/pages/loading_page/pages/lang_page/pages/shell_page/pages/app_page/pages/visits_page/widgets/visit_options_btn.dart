@@ -1,13 +1,16 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
+import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/visit_data_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/reciept_info.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/reciept_prepare_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/select_reciept_info_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/visit_data_view_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
@@ -123,28 +126,44 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                             );
                             return;
                           }
+                          //TODO: add error dialog to add logo first
 
-                          if (r.info == null) {
-                            showIsnackbar(context.loc.noRecieptInfoFound);
-                            return;
-                          }
-
-                          await showDialog<void>(
+                          final _info = await showDialog<RecieptInfo?>(
                             context: context,
                             builder: (context) {
                               return ChangeNotifierProvider(
-                                create: (context) => PxOneVisitBookkeeping(
-                                  api: BookkeepingApi(
-                                    visit_id: widget.visit.id,
-                                  ),
+                                create: (context) => PxRecieptInfo(
+                                  api: const RecieptInfoApi(),
                                 ),
-                                child: RecieptPrepareDialog(
-                                  visit: _expandedVisit!,
-                                  info: r.info!,
-                                ),
+                                child: const SelectRecieptInfoDialog(),
                               );
                             },
                           );
+
+                          if (_info == null) {
+                            if (context.mounted) {
+                              showIsnackbar(context.loc.noRecieptInfoFound);
+                            }
+                            return;
+                          }
+                          if (context.mounted) {
+                            await showDialog<void>(
+                              context: context,
+                              builder: (context) {
+                                return ChangeNotifierProvider(
+                                  create: (context) => PxOneVisitBookkeeping(
+                                    api: BookkeepingApi(
+                                      visit_id: widget.visit.id,
+                                    ),
+                                  ),
+                                  child: RecieptPrepareDialog(
+                                    visit: _expandedVisit!,
+                                    info: _info,
+                                  ),
+                                );
+                              },
+                            );
+                          }
                         },
                         child: Row(
                           children: [
@@ -237,7 +256,6 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                                     visit_id: widget.visit.id,
                                   ),
                                 ),
-                                //TODO:
                                 child: PatientDocumentsViewDialog(
                                   patient: widget.visit.patient,
                                 ),

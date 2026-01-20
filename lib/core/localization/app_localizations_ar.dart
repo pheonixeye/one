@@ -1260,4 +1260,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get visitDocuments => 'مستندات الزيارة';
+
+  @override
+  String get selectRecieptInfo => 'اختر بيانات الايصال';
 }

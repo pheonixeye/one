@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/auth/api_auth.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/functions/dprint.dart';
@@ -93,8 +92,7 @@ class PxAuth extends ChangeNotifier {
 
   static String get doc_id_static_getter => _auth!.record.id;
 
-  static bool get isUserNotDoctor =>
-      _user?.account_type.id == AppBusinessConstants.ASSISTANT_ACCOUNT_TYPE_ID;
+  static bool get isUserNotDoctor => _user?.account_type.name_en != 'Doctor';
 
   static bool isLoggedInUserSuperAdmin(BuildContext context) {
     final _appPermissions = context

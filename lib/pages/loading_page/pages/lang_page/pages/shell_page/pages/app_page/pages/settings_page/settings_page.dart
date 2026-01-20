@@ -90,7 +90,10 @@ class SettingsPage extends StatelessWidget {
                 //todo: Add section for clinic / reciept info and select reciept default printing info
                 const RecieptSettingsSection(),
                 //todo: Manage notification sound and app logo
-                const FilesSection(),
+                if (PxAuth.isUserNotDoctor)
+                  const SizedBox()
+                else
+                  const FilesSection(),
                 SingleBtnTile(
                   title: context.loc.appLanguage,
                   btn: const LanguageBtn(),

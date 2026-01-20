@@ -436,5 +436,6 @@
     "documents" : "المستندات",
     "noImageFound" : "لم يتم العثور علي صورة",
     "idCard" : "بطاقة تعريف",
-    "visitDocuments" : "مستندات الزيارة"
+    "visitDocuments" : "مستندات الزيارة",
+    "selectRecieptInfo" : "اختر بيانات الايصال"
 }

@@ -7,6 +7,7 @@ import 'package:one/models/speciality.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/models/user/user_with_password.dart';
 import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_speciality.dart';
 import 'package:one/widgets/central_error.dart';
@@ -330,6 +331,7 @@ class _AddDoctorAccountDialogState extends State<AddDoctorAccountDialog> {
                     id: '',
                     email: _emailController.text,
                     name: _nameArController.text,
+                    org_id: '${context.read<PxAuth>().organization?.id}',
                     account_type: a.doctorAccountType,
                     app_permissions: [a.admin],
                     verified: false,

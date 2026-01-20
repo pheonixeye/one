@@ -4,10 +4,9 @@ import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/models/doctor.dart';
 
 class DoctorApi {
-  const DoctorApi({required this.doc_id, required this.assistantAccountTypeId});
+  const DoctorApi({required this.doc_id});
 
   final String doc_id;
-  final String assistantAccountTypeId;
 
   static const String collection = 'doctors';
 
@@ -70,7 +69,6 @@ class DoctorApi {
     final result = await PocketbaseHelper.pbBase
         .collection('users')
         .getList(
-          filter: "account_type_id != '$assistantAccountTypeId'",
           expand: _user_expand,
         );
 
@@ -78,10 +76,17 @@ class DoctorApi {
 
     final _users = result.items.map((e) => User.fromRecordModel(e)).toList();
 
-    return _users;
+    final _doctors = _users
+        .where((e) => e.account_type.name_en == 'Doctor')
+        .toList();
+
+    return _doctors;
   }
 
-  Future<void> toogleAccountActivation(String user_id, bool is_active) async {
+  Future<void> toogleAccountActivation(
+    String user_id,
+    bool is_active,
+  ) async {
     await PocketbaseHelper.pbBase
         .collection('users')
         .update(user_id, body: {'is_active': is_active});

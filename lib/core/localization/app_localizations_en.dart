@@ -1264,4 +1264,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visitDocuments => 'Visit Documents';
+
+  @override
+  String get selectRecieptInfo => 'Select Reciept Info';
 }

@@ -2521,6 +2521,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Visit Documents'**
   String get visitDocuments;
+
+  /// No description provided for @selectRecieptInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Reciept Info'**
+  String get selectRecieptInfo;
 }
 
 class _AppLocalizationsDelegate

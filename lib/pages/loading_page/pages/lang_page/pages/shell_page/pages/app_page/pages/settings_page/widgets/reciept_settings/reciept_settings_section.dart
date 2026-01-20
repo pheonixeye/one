@@ -15,6 +15,8 @@ class RecieptSettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: select reciept at time of printing
+    //TODO: multiple reciepts per organization
     return Consumer<PxRecieptInfo>(
       builder: (context, r, _) {
         while (r.result == null) {
@@ -81,6 +83,7 @@ class RecieptSettingsSection extends StatelessWidget {
                     Text(context.loc.noItemsFound)
                   else
                     ..._data.map((info) {
+                      //TODO: update reciept info
                       final _index = _data.indexOf(info);
                       return ListTile(
                         titleAlignment: ListTileTitleAlignment.titleHeight,
@@ -129,21 +132,6 @@ class RecieptSettingsSection extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ),
-                        trailing: Checkbox(
-                          value: r.info?.id == info.id,
-                          onChanged: (value) async {
-                            if (r.info?.id == info.id) {
-                              return;
-                            } else {
-                              await shellFunction(
-                                context,
-                                toExecute: () async {
-                                  await r.markInfoAsDefaultForDevice(info);
-                                },
-                              );
-                            }
-                          },
                         ),
                       );
                     }),

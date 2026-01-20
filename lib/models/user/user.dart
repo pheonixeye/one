@@ -7,6 +7,7 @@ class User extends Equatable {
   final String id;
   final String email;
   final String name;
+  final String org_id;
   final bool verified;
   final bool is_active;
   final AccountType account_type;
@@ -16,6 +17,7 @@ class User extends Equatable {
     required this.id,
     required this.email,
     required this.name,
+    required this.org_id,
     required this.verified,
     required this.is_active,
     required this.account_type,
@@ -26,6 +28,7 @@ class User extends Equatable {
     String? id,
     String? email,
     String? name,
+    String? org_id,
     bool? verified,
     bool? is_active,
     AccountType? account_type,
@@ -35,6 +38,7 @@ class User extends Equatable {
       id: id ?? this.id,
       email: email ?? this.email,
       name: name ?? this.name,
+      org_id: org_id ?? this.org_id,
       verified: verified ?? this.verified,
       is_active: is_active ?? this.is_active,
       account_type: account_type ?? this.account_type,
@@ -47,6 +51,7 @@ class User extends Equatable {
       'id': id,
       'email': email,
       'name': name,
+      'org_id': org_id,
       'verified': verified,
       'is_active': is_active,
       'account_type': account_type.toJson(),
@@ -54,29 +59,30 @@ class User extends Equatable {
     };
   }
 
-  factory User.fromJson(Map<String, dynamic> map) {
-    return User(
-      id: map['id'] as String,
-      email: map['email'] as String,
-      name: map['name'] as String,
-      verified: map['verified'] as bool,
-      is_active: map['is_active'] as bool,
-      account_type: AccountType.fromJson(
-        map['account_type'] as Map<String, dynamic>,
-      ),
-      app_permissions: List<AppPermission>.from(
-        (map['app_permissions'] as List<dynamic>).map<AppPermission>(
-          (x) => AppPermission.fromJson(x as Map<String, dynamic>),
-        ),
-      ),
-    );
-  }
+  // factory User.fromJson(Map<String, dynamic> map) {
+  //   return User(
+  //     id: map['id'] as String,
+  //     email: map['email'] as String,
+  //     name: map['name'] as String,
+  //     verified: map['verified'] as bool,
+  //     is_active: map['is_active'] as bool,
+  //     account_type: AccountType.fromJson(
+  //       map['account_type'] as Map<String, dynamic>,
+  //     ),
+  //     app_permissions: List<AppPermission>.from(
+  //       (map['app_permissions'] as List<dynamic>).map<AppPermission>(
+  //         (x) => AppPermission.fromJson(x as Map<String, dynamic>),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   factory User.fromRecordModel(RecordModel e) {
     return User(
       id: e.getStringValue('id'),
       email: e.getStringValue('email'),
       name: e.getStringValue('name'),
+      org_id: e.getStringValue('org_id'),
       verified: e.getBoolValue('verified'),
       is_active: e.getBoolValue('is_active'),
       account_type: AccountType.fromJson(
@@ -96,6 +102,8 @@ class User extends Equatable {
   List<Object> get props => [
     id,
     email,
+    name,
+    org_id,
     verified,
     account_type,
     app_permissions,

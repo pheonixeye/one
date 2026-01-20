@@ -1,4 +1,3 @@
-import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
@@ -88,14 +87,13 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctor(
       api: DoctorApi(
         doc_id: context.read<PxAuth>().doc_id,
-        assistantAccountTypeId: AppBusinessConstants.ASSISTANT_ACCOUNT_TYPE_ID,
       ),
     ),
   ),
   ChangeNotifierProvider(
     create: (context) => PxAssistantAccounts(
       api: AssistantAccountsApi(
-        AppBusinessConstants.ASSISTANT_ACCOUNT_TYPE_ID,
+        org_id: '${context.read<PxAuth>().organization?.id}',
       ),
     ),
   ),
@@ -172,7 +170,9 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxClinics(
-      api: ClinicsApi(doc_id: context.read<PxAuth>().doc_id),
+      api: ClinicsApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
     ),
   ),
   ChangeNotifierProvider(

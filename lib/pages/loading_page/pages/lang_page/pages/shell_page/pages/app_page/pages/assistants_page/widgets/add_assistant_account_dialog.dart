@@ -4,6 +4,7 @@ import 'package:one/models/app_constants/_app_constants.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/models/user/user_with_password.dart';
 import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:email_validator/email_validator.dart';
@@ -195,6 +196,7 @@ class _AddAssistantAccountDialogState extends State<AddAssistantAccountDialog> {
                     id: '',
                     email: _emailController.text,
                     name: _nameController.text,
+                    org_id: '${context.read<PxAuth>().organization?.id}',
                     account_type: a.assistantAccountType,
                     app_permissions: [a.user],
                     verified: false,

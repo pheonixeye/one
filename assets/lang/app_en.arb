@@ -437,5 +437,6 @@
     "documents" : "Documents",
     "noImageFound" : "No Image Found",
     "idCard" : "Id Card",
-    "visitDocuments" : "Visit Documents"
+    "visitDocuments" : "Visit Documents",
+    "selectRecieptInfo" : "Select Reciept Info"
 }

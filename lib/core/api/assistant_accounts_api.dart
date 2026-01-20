@@ -1,12 +1,14 @@
+import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/models/user/user.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+@PbBase()
 class AssistantAccountsApi {
-  const AssistantAccountsApi(this.assistantAccountTypeId);
-  final String assistantAccountTypeId;
+  const AssistantAccountsApi({required this.org_id});
+  final String org_id;
 
   static const String collection = 'users';
 
@@ -37,6 +39,15 @@ class AssistantAccountsApi {
             expand: _expand,
           );
 
+      await PocketbaseHelper.pbBase
+          .collection('organizations')
+          .update(
+            account.org_id,
+            body: {
+              'members+': result.id,
+            },
+          );
+
       final _account = User.fromRecordModel(result);
 
       return ApiDataResult(data: _account);
@@ -53,7 +64,7 @@ class AssistantAccountsApi {
       final result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
-            filter: "account_type_id = '$assistantAccountTypeId'",
+            filter: "org_id = '$org_id'",
             expand: _expand,
           );
 
@@ -63,7 +74,11 @@ class AssistantAccountsApi {
           .map((e) => User.fromRecordModel(e))
           .toList();
 
-      return ApiDataResult<List<User>>(data: _accounts);
+      final _assistants = _accounts
+          .where((e) => e.account_type.name_en != 'Doctor')
+          .toList();
+
+      return ApiDataResult<List<User>>(data: _assistants);
     } on ClientException catch (e) {
       return ApiErrorResult<List<User>>(
         errorCode: AppErrorCode.clientException.code,
