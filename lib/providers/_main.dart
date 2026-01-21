@@ -1,10 +1,12 @@
 import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
+import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
+import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_s3_documents.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_speciality.dart';
@@ -173,6 +175,11 @@ final List<SingleChildWidget> providers = [
       api: ClinicsApi(
         doc_id: context.read<PxAuth>().doc_id,
       ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxContracts(
+      api: const ContractsApi(),
     ),
   ),
   ChangeNotifierProvider(

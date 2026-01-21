@@ -437,5 +437,14 @@
     "noImageFound" : "لم يتم العثور علي صورة",
     "idCard" : "بطاقة تعريف",
     "visitDocuments" : "مستندات الزيارة",
-    "selectRecieptInfo" : "اختر بيانات الايصال"
+    "selectRecieptInfo" : "اختر بيانات الايصال",
+    "subscriptionExpiredTitle" : "الاشتراك منتهي",
+    "subscriptionExpiredSubtitle" : "انتهت صلاحية اشتراكك",
+    "subscriptionExpiredMessage" : "يرجي تجديد الاشتراك لضمان استخدام نظام بروكلينيك لادارة العيادات",
+    "subscriptionExpiredContact" : "تواصل مع الدعم اذا كنت بحاجة للمساعدة",
+    "contactSupport" : "تواصل مع الدعم",
+    "activateAccount" : "تفعيل الحساب",
+    "deactivateAccount" : "ايقاف الحساب",
+    "contracts" : "العقود",
+    "noContractsFound" : "لم يتم العثور علي عقود"
 }

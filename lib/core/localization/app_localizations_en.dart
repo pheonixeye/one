@@ -1267,4 +1267,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectRecieptInfo => 'Select Reciept Info';
+
+  @override
+  String get subscriptionExpiredTitle => 'Subscription Expired';
+
+  @override
+  String get subscriptionExpiredSubtitle => 'Your Subscription Has Ended.';
+
+  @override
+  String get subscriptionExpiredMessage =>
+      'Please Renew Your Plan To Continue Accessing ProKliniK Management System.';
+
+  @override
+  String get subscriptionExpiredContact =>
+      'Contact Support If You Need Any Help';
+
+  @override
+  String get contactSupport => 'Contact Support';
+
+  @override
+  String get activateAccount => 'Activate Account';
+
+  @override
+  String get deactivateAccount => 'Deactivate Account';
+
+  @override
+  String get contracts => 'Contracts';
+
+  @override
+  String get noContractsFound => 'No Contracts Found';
 }

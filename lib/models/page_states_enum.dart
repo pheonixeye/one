@@ -1,6 +1,1 @@
-enum PageState {
-  initial,
-  processing,
-  hasResult,
-  hasError;
-}
+enum PageState { initial, processing, hasResult, hasError }

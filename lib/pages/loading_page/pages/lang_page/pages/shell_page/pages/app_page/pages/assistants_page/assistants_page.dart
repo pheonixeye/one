@@ -110,8 +110,9 @@ class AssistantsPage extends StatelessWidget {
                                             : TextDecoration.lineThrough,
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
+                                    const Spacer(),
                                     IconButton.outlined(
+                                      tooltip: context.loc.editAccountName,
                                       onPressed: () async {
                                         //@permission
                                         final _perm = context
@@ -157,10 +158,22 @@ class AssistantsPage extends StatelessWidget {
                                       },
                                       icon: const Icon(Icons.edit),
                                     ),
-                                    const Spacer(),
-                                    Checkbox(
-                                      value: item.is_active,
-                                      onChanged: (val) async {
+                                    const SizedBox(width: 10),
+                                    ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: item.is_active
+                                            ? Colors.red.shade200
+                                            : Colors.green.shade200,
+                                      ),
+                                      label: Text(
+                                        item.is_active
+                                            ? context.loc.deactivateAccount
+                                            : context.loc.activateAccount,
+                                      ),
+                                      icon: item.is_active
+                                          ? Icon(Icons.close)
+                                          : Icon(Icons.check),
+                                      onPressed: () async {
                                         //@permission
                                         final _perm = context
                                             .read<PxAuth>()
@@ -212,12 +225,21 @@ class AssistantsPage extends StatelessWidget {
                                 ),
                                 subtitle: ListTile(
                                   leading: const SizedBox(),
-                                  title: Text(item.email),
+                                  title: Row(
+                                    spacing: 4,
+                                    children: [
+                                      Text(context.loc.email),
+                                      Text(' : '),
+                                      Text(item.email),
+                                    ],
+                                  ),
                                   subtitle: const Divider(color: Colors.grey),
                                 ),
                                 children: [
                                   ...a.constants!.appPermission.map((perm) {
                                     return CheckboxListTile(
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
                                       title: Text(
                                         l.isEnglish
                                             ? perm.name_en

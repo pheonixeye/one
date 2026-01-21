@@ -1,5 +1,6 @@
 import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/assistants_page/assistants_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
 import 'package:one/providers/px_reciept_info.dart';
@@ -91,6 +92,7 @@ class AppRouter {
   static const String notifications = "notifications";
   static const String doctors = "doctors";
   static const String settings = "settings";
+  static const String contracts = "contracts";
   static const String transaction = "transaction";
   static const String clinics_patients_movements = "clinics_patients_movements";
   static const String inventory_supplies = "inventory_supplies";
@@ -561,6 +563,15 @@ class AppRouter {
                     name: assistants,
                     builder: (context, state) {
                       return AssistantsPage(
+                        key: state.pageKey,
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: contracts,
+                    name: contracts,
+                    builder: (context, state) {
+                      return ContractsPage(
                         key: state.pageKey,
                       );
                     },

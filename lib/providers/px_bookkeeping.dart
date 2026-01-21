@@ -60,7 +60,7 @@ class PxBookkeeping extends ChangeNotifier {
   final Map<String, double> _foldedVisitsBookkeeping = {};
   Map<String, double> get foldedVisitsBookkeeping => _foldedVisitsBookkeeping;
 
-  //TODO: create another bookkeeping format
+  //todo: create another bookkeeping format
   final List<BookkeepingItem> _bookkeepingOthers = [];
   List<BookkeepingItem> get bookkeepingOthers => _bookkeepingOthers;
 
@@ -92,7 +92,7 @@ class PxBookkeeping extends ChangeNotifier {
         }
         ///other bookkeeping that is added manually
         else {
-          //TODO: separate other bookkeeping operations into their view
+          //todo: separate other bookkeeping operations into their view
           _bookkeepingOthers.add(e);
         }
       }).toList();

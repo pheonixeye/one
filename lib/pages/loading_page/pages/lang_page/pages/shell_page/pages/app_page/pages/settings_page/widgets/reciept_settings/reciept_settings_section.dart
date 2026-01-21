@@ -15,8 +15,8 @@ class RecieptSettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: select reciept at time of printing
-    //TODO: multiple reciepts per organization
+    //todo: select reciept at time of printing
+    //todo: multiple reciepts per organization
     return Consumer<PxRecieptInfo>(
       builder: (context, r, _) {
         while (r.result == null) {

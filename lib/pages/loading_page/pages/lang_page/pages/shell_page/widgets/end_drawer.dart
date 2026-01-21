@@ -96,6 +96,13 @@ class EndDrawer extends StatelessWidget {
               ),
               const ThinDivider(),
               DrawerNavBtn(
+                title: context.loc.contracts,
+                icondata: Icons.attach_money,
+                routePath: AppRouter.contracts,
+                selected: selected(AppRouter.contracts),
+              ),
+              const ThinDivider(),
+              DrawerNavBtn(
                 title: context.loc.forms,
                 icondata: Icons.edit_document,
                 routePath: AppRouter.forms,

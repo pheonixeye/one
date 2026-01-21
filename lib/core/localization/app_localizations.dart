@@ -2527,6 +2527,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Reciept Info'**
   String get selectRecieptInfo;
+
+  /// No description provided for @subscriptionExpiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Expired'**
+  String get subscriptionExpiredTitle;
+
+  /// No description provided for @subscriptionExpiredSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Subscription Has Ended.'**
+  String get subscriptionExpiredSubtitle;
+
+  /// No description provided for @subscriptionExpiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Renew Your Plan To Continue Accessing ProKliniK Management System.'**
+  String get subscriptionExpiredMessage;
+
+  /// No description provided for @subscriptionExpiredContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support If You Need Any Help'**
+  String get subscriptionExpiredContact;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contactSupport;
+
+  /// No description provided for @activateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Account'**
+  String get activateAccount;
+
+  /// No description provided for @deactivateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Account'**
+  String get deactivateAccount;
+
+  /// No description provided for @contracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts'**
+  String get contracts;
+
+  /// No description provided for @noContractsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Contracts Found'**
+  String get noContractsFound;
 }
 
 class _AppLocalizationsDelegate

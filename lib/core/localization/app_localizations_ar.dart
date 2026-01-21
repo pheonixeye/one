@@ -1263,4 +1263,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectRecieptInfo => 'اختر بيانات الايصال';
+
+  @override
+  String get subscriptionExpiredTitle => 'الاشتراك منتهي';
+
+  @override
+  String get subscriptionExpiredSubtitle => 'انتهت صلاحية اشتراكك';
+
+  @override
+  String get subscriptionExpiredMessage =>
+      'يرجي تجديد الاشتراك لضمان استخدام نظام بروكلينيك لادارة العيادات';
+
+  @override
+  String get subscriptionExpiredContact =>
+      'تواصل مع الدعم اذا كنت بحاجة للمساعدة';
+
+  @override
+  String get contactSupport => 'تواصل مع الدعم';
+
+  @override
+  String get activateAccount => 'تفعيل الحساب';
+
+  @override
+  String get deactivateAccount => 'ايقاف الحساب';
+
+  @override
+  String get contracts => 'العقود';
+
+  @override
+  String get noContractsFound => 'لم يتم العثور علي عقود';
 }

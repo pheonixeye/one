@@ -147,7 +147,7 @@ class PxVisits extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO
+  //todo
   Future<void> updateVisitScheduleShift({
     required String visit_id,
     required Shift shift,

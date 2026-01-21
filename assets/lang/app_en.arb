@@ -438,5 +438,14 @@
     "noImageFound" : "No Image Found",
     "idCard" : "Id Card",
     "visitDocuments" : "Visit Documents",
-    "selectRecieptInfo" : "Select Reciept Info"
+    "selectRecieptInfo" : "Select Reciept Info",
+    "subscriptionExpiredTitle" : "Subscription Expired",
+    "subscriptionExpiredSubtitle" : "Your Subscription Has Ended.",
+    "subscriptionExpiredMessage" : "Please Renew Your Plan To Continue Accessing ProKliniK Management System.",
+    "subscriptionExpiredContact" : "Contact Support If You Need Any Help",
+    "contactSupport" : "Contact Support",
+    "activateAccount" : "Activate Account",
+    "deactivateAccount" : "Deactivate Account",
+    "contracts" : "Contracts",
+    "noContractsFound" : "No Contracts Found"
 }

@@ -42,4 +42,8 @@ class AppAssets {
 
   ///notification sound
   static const String notification_sound = 'sounds/notification.mp3';
+
+  ///subscription_expired
+  static String subscription_expired(String lang) =>
+      'assets/images/exp_$lang.png';
 }

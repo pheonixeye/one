@@ -100,7 +100,11 @@ enum PermissionEnum {
   User_Whatsapp_Login, //done
   User_Whatsapp_Fetch_Devices, //done
   User_Whatsapp_Logout, //done
-  User_TodayVisits_Reschedule_Visit; //done
+  User_TodayVisits_Reschedule_Visit, //done
+  ///contracts_permissions
+  User_Contracts_Modify, //done
+  User_Contracts_Add, //done
+  User_Contracts_Read; //done
 
   factory PermissionEnum.fromString(String value) {
     return PermissionEnum.values.firstWhere((x) => x.name == value);
@@ -118,7 +122,7 @@ class PermissionWithPermission extends Equatable {
 
   @override
   List<Object> get props => [
-        permission,
-        isAllowed,
-      ];
+    permission,
+    isAllowed,
+  ];
 }
