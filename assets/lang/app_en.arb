@@ -465,5 +465,6 @@
     "enterFollowupCost" : "Enter Followup Cost",
     "followupCostHint" : "Followup Cost As Agreed By The Contracting Company",
     "active" : "Active",
-    "contractActivity" : "Contract Activity"
+    "contractActivity" : "Contract Activity",
+    "activateDeactivateContractPrompt" : "Change Contract Activity - Are You Sure ?"
 }

@@ -1350,4 +1350,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contractActivity => 'Contract Activity';
+
+  @override
+  String get activateDeactivateContractPrompt =>
+      'Change Contract Activity - Are You Sure ?';
 }

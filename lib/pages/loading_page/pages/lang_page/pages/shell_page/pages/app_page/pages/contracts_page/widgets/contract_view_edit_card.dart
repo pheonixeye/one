@@ -9,6 +9,7 @@ import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
+import 'package:one/widgets/prompt_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:provider/provider.dart';
 
@@ -76,18 +77,34 @@ class ContractViewEditCard extends StatelessWidget {
                             );
                             return;
                           }
-                          await shellFunction(
-                            context,
-                            toExecute: () async {
-                              final _updated = contract.copyWith(
-                                is_active: !contract.is_active,
-                              );
-                              await c.updateContract(
-                                contract.id,
-                                _updated,
+                          final _toToggle = await showDialog<bool?>(
+                            context: context,
+                            builder: (context) {
+                              return PromptDialog(
+                                message: context
+                                    .loc
+                                    .activateDeactivateContractPrompt,
                               );
                             },
                           );
+                          if (_toToggle == null || _toToggle == false) {
+                            return;
+                          }
+
+                          if (context.mounted) {
+                            await shellFunction(
+                              context,
+                              toExecute: () async {
+                                final _updated = contract.copyWith(
+                                  is_active: !contract.is_active,
+                                );
+                                await c.updateContract(
+                                  contract.id,
+                                  _updated,
+                                );
+                              },
+                            );
+                          }
                         },
                         backgroundColor: contract.is_active
                             ? Colors.red.shade200

@@ -1343,4 +1343,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get contractActivity => 'تفعيل / تعطيل العقد';
+
+  @override
+  String get activateDeactivateContractPrompt =>
+      'تعديل تفعيل العقد - هل انت متأكد ؟';
 }

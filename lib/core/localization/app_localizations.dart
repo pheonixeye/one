@@ -2683,6 +2683,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contract Activity'**
   String get contractActivity;
+
+  /// No description provided for @activateDeactivateContractPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Contract Activity - Are You Sure ?'**
+  String get activateDeactivateContractPrompt;
 }
 
 class _AppLocalizationsDelegate
