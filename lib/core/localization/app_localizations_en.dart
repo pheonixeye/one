@@ -1296,4 +1296,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noContractsFound => 'No Contracts Found';
+
+  @override
+  String get addNewContract => 'Add New Contract';
+
+  @override
+  String get editContract => 'Edit Contract';
+
+  @override
+  String get englishContractName => 'English Contract Name';
+
+  @override
+  String get arabicContractName => 'Arabic Contract Name';
+
+  @override
+  String get enterEnglishContractName => 'Enter English Contract Name';
+
+  @override
+  String get enterArabicContractName => 'Enter Arabic Contract Name';
+
+  @override
+  String get patientPercent => 'Patient Percent';
+
+  @override
+  String get enterPatientPercent => 'Enter Patient Percent';
+
+  @override
+  String get patientPercentHint =>
+      'Enter Patient Percentage, Percentage That The Patient Pays, eg: 30%, 50%,...';
+
+  @override
+  String get consultationCost => 'Consultation Cost';
+
+  @override
+  String get enterConsultationCost => 'Enter Consultation Cost';
+
+  @override
+  String get consultationCostHint =>
+      'Consultation Cost As Agreed By The Contracting Company';
+
+  @override
+  String get followupCost => 'Followup Cost';
+
+  @override
+  String get enterFollowupCost => 'Enter Followup Cost';
+
+  @override
+  String get followupCostHint =>
+      'Followup Cost As Agreed By The Contracting Company';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get contractActivity => 'Contract Activity';
 }

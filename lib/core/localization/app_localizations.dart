@@ -2581,6 +2581,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Contracts Found'**
   String get noContractsFound;
+
+  /// No description provided for @addNewContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Contract'**
+  String get addNewContract;
+
+  /// No description provided for @editContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Contract'**
+  String get editContract;
+
+  /// No description provided for @englishContractName.
+  ///
+  /// In en, this message translates to:
+  /// **'English Contract Name'**
+  String get englishContractName;
+
+  /// No description provided for @arabicContractName.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Contract Name'**
+  String get arabicContractName;
+
+  /// No description provided for @enterEnglishContractName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter English Contract Name'**
+  String get enterEnglishContractName;
+
+  /// No description provided for @enterArabicContractName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Arabic Contract Name'**
+  String get enterArabicContractName;
+
+  /// No description provided for @patientPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Patient Percent'**
+  String get patientPercent;
+
+  /// No description provided for @enterPatientPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Patient Percent'**
+  String get enterPatientPercent;
+
+  /// No description provided for @patientPercentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Patient Percentage, Percentage That The Patient Pays, eg: 30%, 50%,...'**
+  String get patientPercentHint;
+
+  /// No description provided for @consultationCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultation Cost'**
+  String get consultationCost;
+
+  /// No description provided for @enterConsultationCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Consultation Cost'**
+  String get enterConsultationCost;
+
+  /// No description provided for @consultationCostHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Consultation Cost As Agreed By The Contracting Company'**
+  String get consultationCostHint;
+
+  /// No description provided for @followupCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Followup Cost'**
+  String get followupCost;
+
+  /// No description provided for @enterFollowupCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Followup Cost'**
+  String get enterFollowupCost;
+
+  /// No description provided for @followupCostHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Followup Cost As Agreed By The Contracting Company'**
+  String get followupCostHint;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @contractActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Activity'**
+  String get contractActivity;
 }
 
 class _AppLocalizationsDelegate

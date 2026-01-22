@@ -39,7 +39,7 @@ class ContractsPage extends StatelessWidget {
             onPressed: () async {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
-                PermissionEnum.User_Forms_Add,
+                PermissionEnum.User_Contracts_Add,
                 context,
               );
               if (!_perm.isAllowed) {
@@ -99,10 +99,9 @@ class ContractsPage extends StatelessWidget {
                         toExecute: c.retry,
                       );
                     }
-                    while (c.data != null &&
-                        (c.data as ApiDataResult<List<Contract>>)
-                            .data
-                            .isEmpty) {
+                    final _data =
+                        (c.data as ApiDataResult<List<Contract>>).data;
+                    while (_data.isEmpty) {
                       return Center(
                         child: Card.outlined(
                           child: Padding(
@@ -113,12 +112,9 @@ class ContractsPage extends StatelessWidget {
                       );
                     }
                     return ListView.builder(
-                      itemCount: (c.data! as ApiDataResult<List<Contract>>)
-                          .data
-                          .length,
+                      itemCount: _data.length,
                       itemBuilder: (context, index) {
-                        final item = (c.data! as ApiDataResult<List<Contract>>)
-                            .data[index];
+                        final item = _data[index];
                         return ContractViewEditCard(
                           contract: item,
                           index: index,

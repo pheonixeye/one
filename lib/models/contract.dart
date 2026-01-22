@@ -7,7 +7,6 @@ class Contract extends Equatable {
   final String name_ar;
   final bool is_active;
   final double patient_percent;
-  final double company_percent;
   final double consultation_cost;
   final double followup_cost;
 
@@ -18,7 +17,6 @@ class Contract extends Equatable {
     required this.name_ar,
     required this.is_active,
     required this.patient_percent,
-    required this.company_percent,
     required this.consultation_cost,
     required this.followup_cost,
   });
@@ -30,7 +28,6 @@ class Contract extends Equatable {
     String? name_ar,
     bool? is_active,
     double? patient_percent,
-    double? company_percent,
     double? consultation_cost,
     double? followup_cost,
   }) {
@@ -41,7 +38,6 @@ class Contract extends Equatable {
       name_ar: name_ar ?? this.name_ar,
       is_active: is_active ?? this.is_active,
       patient_percent: patient_percent ?? this.patient_percent,
-      company_percent: company_percent ?? this.company_percent,
       consultation_cost: consultation_cost ?? this.consultation_cost,
       followup_cost: followup_cost ?? this.followup_cost,
     );
@@ -55,7 +51,6 @@ class Contract extends Equatable {
       'name_ar': name_ar,
       'is_active': is_active,
       'patient_percent': patient_percent,
-      'company_percent': company_percent,
       'consultation_cost': consultation_cost,
       'followup_cost': followup_cost,
     };
@@ -69,7 +64,6 @@ class Contract extends Equatable {
       name_ar: map['name_ar'] as String,
       is_active: map['is_active'] as bool,
       patient_percent: map['patient_percent'] as double,
-      company_percent: map['company_percent'] as double,
       consultation_cost: map['consultation_cost'] as double,
       followup_cost: map['followup_cost'] as double,
     );
@@ -87,7 +81,6 @@ class Contract extends Equatable {
       name_ar,
       is_active,
       patient_percent,
-      company_percent,
       consultation_cost,
       followup_cost,
     ];

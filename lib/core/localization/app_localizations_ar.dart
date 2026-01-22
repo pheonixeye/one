@@ -1292,4 +1292,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noContractsFound => 'لم يتم العثور علي عقود';
+
+  @override
+  String get addNewContract => 'اضافة عقد جديد';
+
+  @override
+  String get editContract => 'تعديل العقد';
+
+  @override
+  String get englishContractName => 'اسم العقد بالانجليزية';
+
+  @override
+  String get arabicContractName => 'اسم العقد بالعربية';
+
+  @override
+  String get enterEnglishContractName => 'ادخل اسم العقد بالانجليزية';
+
+  @override
+  String get enterArabicContractName => 'ادخل اسم العقد بالعربية';
+
+  @override
+  String get patientPercent => 'نسبة المريض';
+
+  @override
+  String get enterPatientPercent => 'ادخل نسبة تحمل المريض';
+
+  @override
+  String get patientPercentHint => 'النسبة التي يتحملها المريض من العقد';
+
+  @override
+  String get consultationCost => 'ثمن الكشف';
+
+  @override
+  String get enterConsultationCost => 'ادخل ثمن الكشف';
+
+  @override
+  String get consultationCostHint => 'سعر الكشف حسب العقد مع جهة التعاقد';
+
+  @override
+  String get followupCost => 'ثمن المتابعة';
+
+  @override
+  String get enterFollowupCost => 'ادخل ثمن المتابعة';
+
+  @override
+  String get followupCostHint => 'سعر المتابعة حسب العقد مع جهة التعاقد';
+
+  @override
+  String get active => 'مفعل';
+
+  @override
+  String get contractActivity => 'تفعيل / تعطيل العقد';
 }
