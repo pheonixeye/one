@@ -78,7 +78,7 @@ class _NotificationsPageState extends State<NotificationsPage>
                     final _isNotificationRead = _item.read_by
                         .map((e) => e.id)
                         .toList()
-                        .contains(PxAuth.doc_id_static_getter);
+                        .contains(context.read<PxAuth>().doc_id);
                     return Card.filled(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusGeometry.circular(0),
@@ -96,7 +96,7 @@ class _NotificationsPageState extends State<NotificationsPage>
                                   toExecute: () async {
                                     await n.readNotification(
                                       _item.id,
-                                      PxAuth.doc_id_static_getter,
+                                      context.read<PxAuth>().doc_id,
                                     );
                                   },
                                 );

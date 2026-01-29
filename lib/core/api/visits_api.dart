@@ -14,7 +14,11 @@ import 'package:one/models/visit_data/visit_data_dto.dart';
 
 @PbData()
 class VisitsApi {
-  VisitsApi();
+  VisitsApi({
+    required this.added_by,
+  });
+
+  final String added_by;
 
   static const String collection = 'visits';
 
@@ -106,6 +110,7 @@ class VisitsApi {
     final _bk_transformer = BookkeepingTransformer(
       item_id: _visit.id,
       collection_id: collection,
+      added_by: added_by,
     );
 
     //todo: initialize bk_item
@@ -145,6 +150,7 @@ class VisitsApi {
     final _bk_transformer = BookkeepingTransformer(
       item_id: visit.id,
       collection_id: collection,
+      added_by: added_by,
     );
 
     //todo: initialize bk_item

@@ -294,6 +294,8 @@ class AppRouter {
                                           create: (context) => PxVisitData(
                                             api: VisitDataApi(
                                               visit_id: _visit_id!,
+                                              added_by:
+                                                  '${context.read<PxAuth>().user?.name}',
                                             ),
                                           ),
                                           child: VisitDataPage(
@@ -591,6 +593,7 @@ class AppRouter {
                     builder: (context, state) {
                       return ChangeNotifierProvider.value(
                         value: PxClinics(
+                          context: context,
                           api: ClinicsApi(
                             doc_id: context.read<PxAuth>().doc_id,
                           ),

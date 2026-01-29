@@ -72,6 +72,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                           create: (context) => PxVisitData(
                             api: VisitDataApi(
                               visit_id: widget.visit.id,
+                              added_by: '${context.read<PxAuth>().user?.name}',
                             ),
                           ),
                           child: VisitDataViewDialog(visit: _expandedVisit!),
@@ -179,7 +180,10 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                       padding: const EdgeInsets.all(0),
                       child: ChangeNotifierProvider(
                         create: (context) => PxVisitData(
-                          api: VisitDataApi(visit_id: widget.visit.id),
+                          api: VisitDataApi(
+                            visit_id: widget.visit.id,
+                            added_by: '${context.read<PxAuth>().user?.name}',
+                          ),
                         ),
                         child: InkWell(
                           child: Row(

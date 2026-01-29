@@ -87,6 +87,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxDoctor(
+      context: context,
       api: DoctorApi(
         doc_id: context.read<PxAuth>().doc_id,
       ),
@@ -172,6 +173,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxClinics(
+      context: context,
       api: ClinicsApi(
         doc_id: context.read<PxAuth>().doc_id,
       ),
@@ -190,13 +192,17 @@ final List<SingleChildWidget> providers = [
 
   ChangeNotifierProvider(
     create: (context) => PxVisits(
-      api: VisitsApi(),
+      api: VisitsApi(
+        added_by: '${context.read<PxAuth>().user?.name}',
+      ),
     ),
   ),
 
   ChangeNotifierProvider(
     create: (context) => PxSupplyMovements(
-      api: SupplyMovementApi(),
+      api: SupplyMovementApi(
+        added_by: '${context.read<PxAuth>().user?.name}',
+      ),
     ),
   ),
 

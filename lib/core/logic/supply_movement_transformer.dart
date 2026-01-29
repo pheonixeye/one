@@ -5,10 +5,12 @@ import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_dto.dart';
 import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/models/visit_data/visit_data.dart';
-import 'package:one/providers/px_auth.dart';
 
 class SupplyMovementTransformer {
-  const SupplyMovementTransformer();
+  const SupplyMovementTransformer({
+    required this.added_by,
+  });
+  final String added_by;
 
   ClinicInventoryItem toClinicInventoryItem(
     SupplyMovement supplyMovement,
@@ -73,7 +75,7 @@ class SupplyMovementTransformer {
       supply_item_id: item.id,
       movement_type: _movment_type!,
       related_visit_id: data.visit_id,
-      added_by: '${PxAuth.staticUser?.name}',
+      added_by: added_by,
       updated_by: '',
       reason: _reason!,
       movement_amount: quantity_change.isNegative

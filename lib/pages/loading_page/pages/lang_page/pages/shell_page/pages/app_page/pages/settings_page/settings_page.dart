@@ -52,9 +52,11 @@ class SettingsPage extends StatelessWidget {
                                       child: LinearProgressIndicator(),
                                     )
                                   else ...[
-                                    if (PxAuth.isLoggedInUserSuperAdmin(
-                                      context,
-                                    ))
+                                    if (context
+                                        .read<PxAuth>()
+                                        .isLoggedInUserSuperAdmin(
+                                          context,
+                                        ))
                                       Card.outlined(
                                         elevation: 6,
                                         child: Padding(
@@ -90,7 +92,7 @@ class SettingsPage extends StatelessWidget {
                 //todo: Add section for clinic / reciept info and select reciept default printing info
                 const RecieptSettingsSection(),
                 //todo: Manage notification sound and app logo
-                if (PxAuth.isUserNotDoctor)
+                if (context.read<PxAuth>().isUserNotDoctor)
                   const SizedBox()
                 else
                   const FilesSection(),

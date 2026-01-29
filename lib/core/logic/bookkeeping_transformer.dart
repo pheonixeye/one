@@ -9,14 +9,18 @@ import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
-import 'package:one/providers/px_auth.dart';
 
 class BookkeepingTransformer {
-  BookkeepingTransformer({required this.item_id, required this.collection_id});
+  BookkeepingTransformer({
+    required this.item_id,
+    required this.collection_id,
+    required this.added_by,
+  });
 
   final _appConstants = PxAppConstants(api: ConstantsApi());
   final String item_id;
   final String collection_id;
+  final String added_by;
 
   late final _attended_id = _appConstants.attended.name_en;
   late final _not_attended_id = _appConstants.notAttended.name_en;
@@ -45,7 +49,7 @@ class BookkeepingTransformer {
       item_name: BookkeepingName.visit_create.name,
       item_id: item_id,
       collection_id: collection_id,
-      added_by: visit.added_by,
+      added_by: added_by,
       updated_by: '',
       amount: _bk_item_amount,
       type: BookkeepingDirection.fromString('in'),
@@ -171,7 +175,7 @@ class BookkeepingTransformer {
       item_name: _item_name.name,
       item_id: item_id,
       collection_id: collection_id,
-      added_by: old_visit.added_by,
+      added_by: added_by,
       updated_by: updated_visit.added_by,
       amount: _bk_item_amount,
       type: BookkeepingDirection.fromString(_type),
@@ -205,7 +209,7 @@ class BookkeepingTransformer {
       item_name: _item_name.name,
       item_id: item_id,
       collection_id: collection_id,
-      added_by: '${PxAuth.staticUser?.name}',
+      added_by: added_by,
       updated_by: '',
       amount: _bk_item_amount,
       type: BookkeepingDirection.fromString(_type),
@@ -238,7 +242,7 @@ class BookkeepingTransformer {
       item_name: _item_name.name,
       item_id: item_id,
       collection_id: collection_id,
-      added_by: '${PxAuth.staticUser?.name}',
+      added_by: added_by,
       updated_by: '',
       amount: _bk_item_amount,
       type: BookkeepingDirection.fromString(_type),

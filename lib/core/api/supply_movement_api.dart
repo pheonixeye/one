@@ -15,7 +15,10 @@ import 'package:one/models/supplies/supply_movement_dto.dart';
 
 @PbData()
 class SupplyMovementApi {
-  SupplyMovementApi();
+  SupplyMovementApi({
+    required this.added_by,
+  });
+  final String added_by;
 
   late final String collection = 'supply__movements';
 
@@ -74,8 +77,9 @@ class SupplyMovementApi {
           await _clinicInventoryApi.addNewInventoryItems([_unfoundItem]);
         } else {
           //@SUPPLY_MOVEMENT: transform the item based on the movement
-          final _transformedItem = SupplyMovementTransformer()
-              .toClinicInventoryItem(x, _item);
+          final _transformedItem = SupplyMovementTransformer(
+            added_by: added_by,
+          ).toClinicInventoryItem(x, _item);
 
           //@SUPPLY_MOVEMENT: add/update item in the collection
           await _clinicInventoryApi.updateInventoryItemAvailableQuantity(
@@ -84,6 +88,7 @@ class SupplyMovementApi {
         }
         //@SUPPLY_MOVEMENT: mutate bookkeeping with the movement
         final _bookkeepingTransformer = BookkeepingTransformer(
+          added_by: added_by,
           item_id: x.id,
           collection_id: collection,
         );

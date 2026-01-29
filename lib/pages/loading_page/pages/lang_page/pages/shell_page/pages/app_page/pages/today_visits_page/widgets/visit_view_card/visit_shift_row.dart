@@ -1,3 +1,4 @@
+import 'package:one/core/api/visits_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/visit_ext.dart';
 import 'package:one/functions/shell_function.dart';
@@ -50,6 +51,9 @@ class VisitShiftRow extends StatelessWidget {
                     create: (context) => PxVisitsPerClinicShift(
                       visit_date: visit.visit_date,
                       clinic_id: visit.clinic_id,
+                      api: VisitsApi(
+                        added_by: '${context.read<PxAuth>().user?.name}',
+                      ),
                     ),
                     child: RescheduleVisitDialog(visit: visit),
                   );

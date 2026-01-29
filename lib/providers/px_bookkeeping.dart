@@ -65,12 +65,13 @@ class PxBookkeeping extends ChangeNotifier {
   List<BookkeepingItem> get bookkeepingOthers => _bookkeepingOthers;
 
   void _foldBookKeeping() {
+    _foldedVisitsBookkeeping.clear();
+    _bookkeepingOthers.clear();
     if (_result != null && _result! is ApiDataResult) {
       final _data = (_result as ApiDataResult<List<BookkeepingItem>>).data;
       //todo: fold bookkeeping if has patient_id & visit_date & visit_id
 
       ///needed for calculations to work correctly since assigning zero negates one iteration value
-      double _initialAmount = 0;
 
       _data.map((e) {
         ///separate visit calculations from others that are added manually
@@ -80,6 +81,8 @@ class PxBookkeeping extends ChangeNotifier {
             e.patient != null &&
             e.visit_id.isNotEmpty;
         if (_foldable) {
+          double _initialAmount = 0;
+
           final _key =
               '${e.patient_id}::${e.visit_id}::${DateFormat('dd-MM-yyyy').format(e.visit_date!)}';
           _initialAmount = e.amount;

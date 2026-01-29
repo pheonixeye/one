@@ -84,7 +84,7 @@ class _ClinicsPatientsMovementsPageState
           body: ChangeNotifierProvider(
             create: (context) => PxTodayPatientProgress(
               api: TodayPatientProgressApi(
-                doc_id: PxAuth.doc_id_static_getter,
+                doc_id: context.read<PxAuth>().doc_id,
                 clinic_id: _clinic.id,
               ),
             ),

@@ -20,7 +20,7 @@ class PxAuth extends ChangeNotifier {
 
   static User? _user;
   User? get user => _user;
-  static User? get staticUser => _user;
+  // static User? get staticUser => _user;
 
   static Organization? _organization;
   Organization? get organization => _organization;
@@ -90,11 +90,12 @@ class PxAuth extends ChangeNotifier {
 
   String get doc_id => _auth!.record.id;
 
-  static String get doc_id_static_getter => _auth!.record.id;
+  // static String get doc_id_static_getter => _auth!.record.id;
 
-  static bool get isUserNotDoctor => _user?.account_type.name_en != 'Doctor';
+  bool get isUserNotDoctor =>
+      _user?.account_type.name_en != 'Doctor'; //TODO: remove later
 
-  static bool isLoggedInUserSuperAdmin(BuildContext context) {
+  bool isLoggedInUserSuperAdmin(BuildContext context) {
     final _appPermissions = context
         .read<PxAppConstants>()
         .constants

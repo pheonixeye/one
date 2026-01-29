@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
+import 'package:provider/provider.dart';
 
 class CreateEditClinicDialog extends StatefulWidget {
   const CreateEditClinicDialog({super.key, this.clinic});
@@ -279,7 +280,7 @@ class _CreateEditClinicDialogState extends State<CreateEditClinicDialog> {
                 name_en: _nameEnController.text,
                 name_ar: _nameArController.text,
                 doc_id: _doc_id.isEmpty
-                    ? [PxAuth.doc_id_static_getter]
+                    ? [context.read<PxAuth>().doc_id]
                     : _doc_id,
                 phone_number: _phoneController.text,
                 consultation_fees: int.parse(_consultationFeesController.text),

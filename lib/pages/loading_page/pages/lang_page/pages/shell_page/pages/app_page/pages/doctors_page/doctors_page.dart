@@ -19,7 +19,9 @@ class DoctorsPage extends StatelessWidget {
     return Consumer2<PxDoctor, PxLocale>(
       builder: (context, d, l, _) {
         //@permission
-        final _isSuperAdmin = PxAuth.isLoggedInUserSuperAdmin(context);
+        final _isSuperAdmin = context.read<PxAuth>().isLoggedInUserSuperAdmin(
+          context,
+        );
 
         while (!_isSuperAdmin) {
           return NotPermittedTemplatePage(title: context.loc.doctorAccounts);

@@ -6,6 +6,7 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visit_view_card.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_previous_visits.dart';
 import 'package:one/providers/px_visit_data.dart';
@@ -183,7 +184,10 @@ class _DetailedPreviousPatientVisitsDialogState
                       //visit details side
                       ChangeNotifierProvider(
                         create: (context) => PxVisitData(
-                          api: VisitDataApi(visit_id: _selectedVisit!.id),
+                          api: VisitDataApi(
+                            visit_id: _selectedVisit!.id,
+                            added_by: '${context.read<PxAuth>().user?.name}',
+                          ),
                         ),
                         child: Consumer<PxVisitData>(
                           builder: (context, v, _) {

@@ -7,16 +7,20 @@ import 'package:one/models/shift.dart';
 import 'package:one/models/visits/visit.dart';
 
 class PxVisitsPerClinicShift extends ChangeNotifier {
-  PxVisitsPerClinicShift({required this.visit_date, required this.clinic_id}) {
+  PxVisitsPerClinicShift({
+    required this.visit_date,
+    required this.clinic_id,
+    required this.api,
+  }) {
     calculateVisitsPerClinicShift();
   }
   final DateTime visit_date;
   final String clinic_id;
 
-  final _api = VisitsApi();
+  final VisitsApi api;
 
   Future<ApiResult<List<Visit>>> _fetchVisitsOfASpecificDate() async {
-    return await _api.fetctVisitsOfASpecificDate(
+    return await api.fetctVisitsOfASpecificDate(
       page: 1,
       perPage: 500,
       visit_date: visit_date,

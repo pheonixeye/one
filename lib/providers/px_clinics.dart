@@ -8,11 +8,14 @@ import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
+import 'package:provider/provider.dart';
 
 class PxClinics extends ChangeNotifier {
   final ClinicsApi api;
+  final BuildContext context;
 
   PxClinics({
+    required this.context,
     required this.api,
   }) {
     _fetchDoctorClinics();
@@ -22,7 +25,7 @@ class PxClinics extends ChangeNotifier {
   ApiResult<List<Clinic>>? get result => _result;
 
   Future<void> _fetchDoctorClinics() async {
-    if (PxAuth.isUserNotDoctor) {
+    if (context.read<PxAuth>().isUserNotDoctor) {
       _result = await api.fetchAllClinics();
       notifyListeners();
     } else {

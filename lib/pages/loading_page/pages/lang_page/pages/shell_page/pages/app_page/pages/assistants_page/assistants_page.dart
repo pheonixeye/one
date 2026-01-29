@@ -28,7 +28,7 @@ class AssistantsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer3<PxAppConstants, PxAssistantAccounts, PxLocale>(
       builder: (context, a, c, l, _) {
-        while (PxAuth.isUserNotDoctor) {
+        while (context.read<PxAuth>().isUserNotDoctor) {
           return NotPermittedTemplatePage(title: context.loc.assistantAccounts);
         }
         return Scaffold(

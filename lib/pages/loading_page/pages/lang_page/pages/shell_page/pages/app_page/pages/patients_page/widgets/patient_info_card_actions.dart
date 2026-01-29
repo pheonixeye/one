@@ -13,12 +13,13 @@ import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/add_new_visit_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_forms_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_id_card_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visits_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/image_source_and_document_type_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
+import 'package:one/providers/px_add_new_visit_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_patient_forms.dart';
@@ -72,8 +73,13 @@ class PatientInfoCardActions extends StatelessWidget {
               final _visitDto = await showDialog<Visit?>(
                 context: context,
                 builder: (context) {
-                  return AddNewVisitDialog(
-                    patient: patient,
+                  return ChangeNotifierProvider(
+                    create: (context) => PxAddNewVisitDialog(
+                      context: context,
+                    ),
+                    child: AddNewVisitDialog(
+                      patient: patient,
+                    ),
                   );
                 },
               );

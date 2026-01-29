@@ -362,8 +362,9 @@ class ClinicViewCard extends StatelessWidget {
                             ],
                           ),
                           onTap: () async {
-                            final _isSuperAdmin =
-                                PxAuth.isLoggedInUserSuperAdmin(context);
+                            final _isSuperAdmin = context
+                                .read<PxAuth>()
+                                .isLoggedInUserSuperAdmin(context);
 
                             if (!_isSuperAdmin) {
                               showIsnackbar(

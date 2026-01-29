@@ -62,7 +62,7 @@ class ClinicDoctorsDialog extends StatelessWidget {
                       );
 
                       if (_operationIsRemove) {
-                        if (PxAuth.doc_id_static_getter == _idToRemove) {
+                        if (context.read<PxAuth>().doc_id == _idToRemove) {
                           showIsnackbar(
                             context.loc.cannotRemoveSelfFromClinicWhileLoggedIn,
                           );

@@ -4,8 +4,9 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/visits/visit.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/add_new_visit_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/scan_patient_qr_dialog.dart';
+import 'package:one/providers/px_add_new_visit_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_one_visit_bookkeeping.dart';
@@ -310,7 +311,14 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                     final _visitDto = await showDialog<Visit?>(
                       context: context,
                       builder: (context) {
-                        return AddNewVisitDialog(patient: _patientFromDb!);
+                        return ChangeNotifierProvider(
+                          create: (context) => PxAddNewVisitDialog(
+                            context: context,
+                          ),
+                          child: AddNewVisitDialog(
+                            patient: _patientFromDb!,
+                          ),
+                        );
                       },
                     );
                     //todo: create new visit

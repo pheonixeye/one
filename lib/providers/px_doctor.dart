@@ -3,12 +3,17 @@ import 'package:one/providers/px_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/doctor_api.dart';
 import 'package:one/models/doctor.dart';
+import 'package:provider/provider.dart';
 
 //TODO: is this needed ??
 class PxDoctor extends ChangeNotifier {
   final DoctorApi api;
+  final BuildContext context;
 
-  PxDoctor({required this.api}) {
+  PxDoctor({
+    required this.api,
+    required this.context,
+  }) {
     _init();
   }
 
@@ -25,7 +30,7 @@ class PxDoctor extends ChangeNotifier {
   List<User>? get allDoctorsAuth => _allDoctorsAuth;
 
   Future<void> _init() async {
-    if (PxAuth.isUserNotDoctor) {
+    if (context.read<PxAuth>().isUserNotDoctor) {
       _allDoctors = await api.fetchAllDoctors();
       _allDoctorsAuth = await api.fetchAllDoctorsAuthAccounts();
       notifyListeners();

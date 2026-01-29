@@ -8,6 +8,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/providers/px_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class AddRemoveDiscountDialog extends StatefulWidget {
   const AddRemoveDiscountDialog({
@@ -134,7 +135,7 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
                 },
                 item_id: widget.visit.id,
                 collection_id: 'visits',
-                added_by: '${PxAuth.staticUser?.name}',
+                added_by: '${context.read<PxAuth>().user?.name}',
                 updated_by: '',
                 amount: switch (widget.direction) {
                   BookkeepingDirection.IN => double.parse(

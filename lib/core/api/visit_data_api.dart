@@ -16,8 +16,12 @@ import 'package:one/models/visit_data/visit_form_item.dart';
 @PbData()
 class VisitDataApi {
   final String visit_id;
+  final String added_by;
 
-  VisitDataApi({required this.visit_id});
+  VisitDataApi({
+    required this.visit_id,
+    required this.added_by,
+  });
 
   late final String collection = 'visit__data';
 
@@ -157,6 +161,7 @@ class VisitDataApi {
       final _bk_transformer = BookkeepingTransformer(
         item_id: _visit_data.id,
         collection_id: collection,
+        added_by: added_by,
       );
       //todo: get added item
       final _added_procedure = _visit_data.procedures.firstWhereOrNull(
@@ -201,6 +206,7 @@ class VisitDataApi {
       final _bk_transformer = BookkeepingTransformer(
         item_id: _visit_data.id,
         collection_id: collection,
+        added_by: added_by,
       );
       //todo: get added item
       final _removed_procedure = visit_data.procedures.firstWhereOrNull(
@@ -238,13 +244,14 @@ class VisitDataApi {
 
     final _visit_data = VisitData.fromRecordModel(_response);
 
-    final _supplyMovementApi = SupplyMovementApi();
+    final _supplyMovementApi = SupplyMovementApi(added_by: added_by);
     // dprint('quantity_change ==>> $quantity_change');
-    final _movement = SupplyMovementTransformer().fromSuppliesOfVisit(
-      _visit_data,
-      item,
-      quantity_change,
-    );
+    final _movement = SupplyMovementTransformer(added_by: added_by)
+        .fromSuppliesOfVisit(
+          _visit_data,
+          item,
+          quantity_change,
+        );
 
     await _supplyMovementApi.addSupplyMovements([_movement]);
   }
