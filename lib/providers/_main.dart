@@ -186,7 +186,8 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxPatients(
-      api: PatientsApi(),
+      context: context,
+      api: const PatientsApi(),
     ),
   ),
 

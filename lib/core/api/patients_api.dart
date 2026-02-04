@@ -12,7 +12,7 @@ class PatientsApi {
 
   final String _collection = 'patients';
 
-  Future<ApiResult> fetchPatients({
+  Future<ApiResult<List<Patient>>> fetchPatients({
     required int page,
     required int perPage,
   }) async {
@@ -34,10 +34,21 @@ class PatientsApi {
     }
   }
 
-  Future<void> createPatientProfile(Patient patient) async {
-    await PocketbaseHelper.pbData
-        .collection(_collection)
-        .create(body: patient.toJson());
+  Future<ApiResult<Patient>> createPatientProfile(Patient patient) async {
+    try {
+      final _result = await PocketbaseHelper.pbData
+          .collection(_collection)
+          .create(body: patient.toJson());
+
+      final _patient = Patient.fromJson(_result.toJson());
+
+      return ApiDataResult<Patient>(data: _patient);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
   }
 
   Future<ApiResult> searchPatientByPhone({required String query}) async {

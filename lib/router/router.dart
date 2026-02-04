@@ -1,4 +1,7 @@
 import 'package:one/core/api/reciept_info_api.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/pages/404_patient_portal_page/not_found_patient_portal_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/pages/patient_information_page/patient_information_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/assistants_page/assistants_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
@@ -121,8 +124,12 @@ class AppRouter {
   static const String supplies = "supplies";
   static const String documents = "documents";
   // patient_portal_routes
-  // static const String patient_portal = 'patient_portal';
-  // static const String patient_id = ':patient_id';
+  static const String patients_portal = 'patients_portal';
+  static const String pp_info = 'pp_info';
+  static const String org_id = ':org_id';
+  static const String patient_id = ':patient_id';
+  // 404
+  static const String _404_patients_portal = '404_pp';
 
   String? get currentRouteName =>
       router.routerDelegate.currentConfiguration.last.route.name;
@@ -218,6 +225,50 @@ class AppRouter {
                   }
                   return null;
                 },
+              ),
+              GoRoute(
+                path:
+                    '$patients_portal/$org_id/$patient_id', //:lang/patients_portal/:org_id/:patient_id
+                name: patients_portal,
+                builder: (context, state) {
+                  //TODO
+                  final _org_id = state.pathParameters['org_id'];
+                  final _patient_id = state.pathParameters['patient_id'];
+                  return PatientPortalPage(
+                    key: state.pageKey,
+                  );
+                },
+                redirect: (context, state) {
+                  final _org_id = state.pathParameters['org_id'];
+                  final _patient_id = state.pathParameters['patient_id'];
+                  if (_org_id == null ||
+                      _org_id.isEmpty ||
+                      _patient_id == null ||
+                      _patient_id.isEmpty) {
+                    return '/${state.pathParameters['lang']}/$patients_portal/$_404_patients_portal';
+                  }
+                  return null;
+                },
+                routes: [
+                  // GoRoute(
+                  //   path: '$patients_portal/$org_id/$patient_id/$pp_info',
+                  //   name: '$patients_portal/$org_id/$patient_id/$pp_info',
+                  //   builder: (context, state) {
+                  //     return PatientInformationPage(
+                  //       key: state.pageKey,
+                  //     );
+                  //   },
+                  // ),
+                  GoRoute(
+                    path: '$patients_portal/$_404_patients_portal',
+                    name: '$patients_portal/$_404_patients_portal',
+                    builder: (context, state) {
+                      return NotFoundPatientsPortalPage(
+                        key: state.pageKey,
+                      );
+                    },
+                  ),
+                ],
               ),
               ShellRoute(
                 builder: (context, state, child) {
@@ -444,6 +495,7 @@ class AppRouter {
                             builder: (context, state) {
                               return ChangeNotifierProvider.value(
                                 value: PxPatients(
+                                  context: context,
                                   api: PatientsApi(),
                                 ),
                                 child: PatientsPage(
