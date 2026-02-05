@@ -19,10 +19,7 @@ class SmsApi {
   static const String _password = String.fromEnvironment('PASSWORD');
   static const String _sendername = String.fromEnvironment('SENDERNAME');
 
-  Future<void> sendSms() async {
-    if (_baseUrl.isEmpty) {
-      return;
-    }
+  Future<bool> sendSms() async {
     final _uri =
         // ignore: lines_longer_than_80_chars
         '$_baseUrl?username=$_username&password=$_password&sendername=$_sendername&mobiles=$phone&message=$sms';
@@ -36,12 +33,11 @@ class SmsApi {
     );
 
     if (_response.statusCode != HttpStatus.ok) {
-      print('failed sending sms request.');
-      print(jsonDecode(_response.body));
+      return true;
     } else {
       final _result =
           (jsonDecode(_response.body) as List<dynamic>)[0]['type'] as String?;
-      print(_result);
+      throw http.ClientException(_result ?? '');
     }
   }
 }

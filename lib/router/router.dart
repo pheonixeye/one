@@ -139,9 +139,20 @@ class AppRouter {
     navigatorKey: UtilsKeys.navigatorKey,
     initialLocation: loading,
     errorPageBuilder: (context, state) {
+      // print(state.pageKey.value);
+      if (state.pageKey.value.contains(patients_portal)) {
+        return MaterialPage(
+          key: state.pageKey,
+          child: NotFoundPatientsPortalPage(
+            key: state.pageKey,
+          ),
+        );
+      }
       return MaterialPage(
         key: state.pageKey,
-        child: ErrorPage(key: state.pageKey),
+        child: ErrorPage(
+          key: state.pageKey,
+        ),
       );
     },
     redirect: (context, state) async {
@@ -245,30 +256,21 @@ class AppRouter {
                       _org_id.isEmpty ||
                       _patient_id == null ||
                       _patient_id.isEmpty) {
-                    return '/${state.pathParameters['lang']}/$patients_portal/$_404_patients_portal';
+                    throw Exception(
+                      ':lang/patients_portal/:org_id(XX)||:patient_id(XX)',
+                    );
                   }
                   return null;
                 },
-                routes: [
-                  // GoRoute(
-                  //   path: '$patients_portal/$org_id/$patient_id/$pp_info',
-                  //   name: '$patients_portal/$org_id/$patient_id/$pp_info',
-                  //   builder: (context, state) {
-                  //     return PatientInformationPage(
-                  //       key: state.pageKey,
-                  //     );
-                  //   },
-                  // ),
-                  GoRoute(
-                    path: '$patients_portal/$_404_patients_portal',
-                    name: '$patients_portal/$_404_patients_portal',
-                    builder: (context, state) {
-                      return NotFoundPatientsPortalPage(
-                        key: state.pageKey,
-                      );
-                    },
-                  ),
-                ],
+              ),
+              GoRoute(
+                path: _404_patients_portal,
+                name: _404_patients_portal,
+                builder: (context, state) {
+                  return NotFoundPatientsPortalPage(
+                    key: state.pageKey,
+                  );
+                },
               ),
               ShellRoute(
                 builder: (context, state, child) {

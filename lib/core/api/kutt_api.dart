@@ -6,6 +6,8 @@ class KuttApi {
   const KuttApi(this.original);
   final String original;
 
+  static const LINK_SHORTENED_SUCCESS_CODE = 201;
+
   static const _headers = {
     'X-API-KEY': String.fromEnvironment('KUTT_API_KEY'),
     'Content-Type': 'application/json',
@@ -24,11 +26,11 @@ class KuttApi {
         'target': original,
       }),
     );
-    if (_request.statusCode == 201) {
+    if (_request.statusCode == LINK_SHORTENED_SUCCESS_CODE) {
       final _resBody = jsonDecode(_request.body) as Map<String, dynamic>;
       return _resBody['link'] as String;
     } else {
-      throw http.ClientException('Link Cannot Be Shortened...');
+      throw http.ClientException('Patient Link Generation Failed...');
     }
   }
 }

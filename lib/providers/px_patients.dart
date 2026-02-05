@@ -28,7 +28,10 @@ class PxPatients extends ChangeNotifier {
   static final int perPage = 10;
 
   Future<void> fetchPatients() async {
-    _data = await api.fetchPatients(page: page, perPage: perPage);
+    _data = await api.fetchPatients(
+      page: page,
+      perPage: perPage,
+    );
     notifyListeners();
   }
 
@@ -56,19 +59,19 @@ class PxPatients extends ChangeNotifier {
     final _auth = context.read<PxAuth>();
     final _result = await api.createPatientProfile(patient);
     await fetchPatients();
-    //TODO: get link to be sent
+    //todo: get link to be sent
     final _link = _auth.patientDataUrl(
       (_result as ApiDataResult<Patient>).data.id,
     );
-    //TODO: shorten link
+    //todo: shorten link
     final _short = await KuttApi(_link).shortenLink();
-    //TODO: format sms
+    //todo: format sms
     final _sms = SmsFormatter(
       organization: _auth.organization!,
       shlink: _short,
       patient: patient,
     ).formatSms();
-    //TODO: send sms with link to patient
+    //todo: send sms with link to patient
     await SmsApi(
       phone: patient.phone,
       sms: _sms,
@@ -102,5 +105,23 @@ class PxPatients extends ChangeNotifier {
     _page = 1;
     notifyListeners();
     await fetchPatients();
+  }
+
+  Future<void> resendPatientLink(Patient patient) async {
+    final _auth = context.read<PxAuth>();
+    final _link = _auth.patientDataUrl(patient.id);
+    //todo: shorten link
+    final _short = await KuttApi(_link).shortenLink();
+    //todo: format sms
+    final _sms = SmsFormatter(
+      organization: _auth.organization!,
+      shlink: _short,
+      patient: patient,
+    ).formatSms();
+    //todo: send sms with link to patient
+    await SmsApi(
+      phone: patient.phone,
+      sms: _sms,
+    ).sendSms();
   }
 }
