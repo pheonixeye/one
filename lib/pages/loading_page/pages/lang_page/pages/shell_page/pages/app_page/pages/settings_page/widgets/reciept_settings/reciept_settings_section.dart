@@ -3,7 +3,7 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/reciept_info.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/reciept_settings/create_new_reciept_info_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/reciept_settings/create_edit_reciept_info_dialog.dart';
 import 'package:one/providers/px_reciept_info.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -60,7 +60,7 @@ class RecieptSettingsSection extends StatelessWidget {
                           final _recieptInfo = await showDialog<RecieptInfo?>(
                             context: context,
                             builder: (context) {
-                              return CreateNewRecieptInfoDialog();
+                              return CreateEditRecieptInfoDialog();
                             },
                           );
                           if (_recieptInfo == null) {
@@ -83,14 +83,59 @@ class RecieptSettingsSection extends StatelessWidget {
                     Text(context.loc.noItemsFound)
                   else
                     ..._data.map((info) {
-                      //TODO: update reciept info
                       final _index = _data.indexOf(info);
                       return ListTile(
                         titleAlignment: ListTileTitleAlignment.titleHeight,
                         leading: SmBtn(
                           child: Text('${_index + 1}'.toArabicNumber(context)),
                         ),
-                        title: Text(info.title),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                          side: BorderSide(
+                            style: BorderStyle.solid,
+                            width: 0.5,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                        title: Row(
+                          children: [
+                            SmBtn(
+                              child: Text(
+                                '${_index + 1}'.toArabicNumber(context),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(info.title),
+                            const Spacer(),
+                            SmBtn(
+                              tooltip: context.loc.editRecieptInfo,
+                              onPressed: () async {
+                                final _updatedInfo =
+                                    await showDialog<RecieptInfo?>(
+                                      context: context,
+                                      builder: (context) {
+                                        return CreateEditRecieptInfoDialog(
+                                          recieptInfo: info,
+                                        );
+                                      },
+                                    );
+                                if (_updatedInfo == null) {
+                                  return;
+                                }
+                                if (context.mounted) {
+                                  await shellFunction(
+                                    context,
+                                    toExecute: () async {
+                                      await r.updateRecieptInfo(_updatedInfo);
+                                    },
+                                  );
+                                }
+                              },
+                              child: const Icon(Icons.edit),
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: 2,

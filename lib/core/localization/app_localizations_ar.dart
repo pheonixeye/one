@@ -1347,4 +1347,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get activateDeactivateContractPrompt =>
       'تعديل تفعيل العقد - هل انت متأكد ؟';
+
+  @override
+  String get editRecieptInfo => 'تعديل بيانات الايصال';
 }

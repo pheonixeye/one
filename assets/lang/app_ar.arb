@@ -465,5 +465,6 @@
     "followupCostHint" : "سعر المتابعة حسب العقد مع جهة التعاقد",
     "active" : "مفعل",
     "contractActivity" : "تفعيل / تعطيل العقد",
-    "activateDeactivateContractPrompt" : "تعديل تفعيل العقد - هل انت متأكد ؟"
+    "activateDeactivateContractPrompt" : "تعديل تفعيل العقد - هل انت متأكد ؟",
+    "editRecieptInfo" : "تعديل بيانات الايصال"
 }

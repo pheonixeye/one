@@ -2689,6 +2689,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Contract Activity - Are You Sure ?'**
   String get activateDeactivateContractPrompt;
+
+  /// No description provided for @editRecieptInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Reciept Info'**
+  String get editRecieptInfo;
 }
 
 class _AppLocalizationsDelegate

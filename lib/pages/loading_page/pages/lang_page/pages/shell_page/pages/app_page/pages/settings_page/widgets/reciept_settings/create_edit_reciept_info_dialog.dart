@@ -1,17 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/reciept_info.dart';
-import 'package:flutter/material.dart';
 
-class CreateNewRecieptInfoDialog extends StatefulWidget {
-  const CreateNewRecieptInfoDialog({super.key});
-
+class CreateEditRecieptInfoDialog extends StatefulWidget {
+  const CreateEditRecieptInfoDialog({
+    super.key,
+    this.recieptInfo,
+  });
+  final RecieptInfo? recieptInfo;
   @override
-  State<CreateNewRecieptInfoDialog> createState() =>
-      _CreateNewRecieptInfoDialogState();
+  State<CreateEditRecieptInfoDialog> createState() =>
+      _CreateEditRecieptInfoDialogState();
 }
 
-class _CreateNewRecieptInfoDialogState
-    extends State<CreateNewRecieptInfoDialog> {
+class _CreateEditRecieptInfoDialogState
+    extends State<CreateEditRecieptInfoDialog> {
   late final formKey = GlobalKey<FormState>();
   late final TextEditingController _titleController;
   late final TextEditingController _subtitleController;
@@ -22,11 +25,21 @@ class _CreateNewRecieptInfoDialogState
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController();
-    _subtitleController = TextEditingController();
-    _addressController = TextEditingController();
-    _footerController = TextEditingController();
-    _phoneController = TextEditingController();
+    _titleController = TextEditingController(
+      text: widget.recieptInfo?.title ?? '',
+    );
+    _subtitleController = TextEditingController(
+      text: widget.recieptInfo?.subtitle ?? '',
+    );
+    _addressController = TextEditingController(
+      text: widget.recieptInfo?.address ?? '',
+    );
+    _footerController = TextEditingController(
+      text: widget.recieptInfo?.footer ?? '',
+    );
+    _phoneController = TextEditingController(
+      text: widget.recieptInfo?.phone ?? '',
+    );
   }
 
   @override
@@ -44,7 +57,13 @@ class _CreateNewRecieptInfoDialogState
     return AlertDialog(
       title: Row(
         children: [
-          Expanded(child: Text(context.loc.addNewRecieptInfo)),
+          Expanded(
+            child: Text(
+              widget.recieptInfo == null
+                  ? context.loc.addNewRecieptInfo
+                  : context.loc.editRecieptInfo,
+            ),
+          ),
           IconButton.outlined(
             onPressed: () {
               Navigator.pop(context, null);
@@ -193,7 +212,7 @@ class _CreateNewRecieptInfoDialogState
           onPressed: () {
             if (formKey.currentState!.validate()) {
               final _info = RecieptInfo(
-                id: '',
+                id: widget.recieptInfo?.id ?? '',
                 title: _titleController.text,
                 subtitle: _subtitleController.text,
                 address: _addressController.text,
@@ -204,14 +223,20 @@ class _CreateNewRecieptInfoDialogState
             }
           },
           label: Text(context.loc.confirm),
-          icon: Icon(Icons.check, color: Colors.green.shade100),
+          icon: Icon(
+            Icons.check,
+            color: Colors.green.shade100,
+          ),
         ),
         ElevatedButton.icon(
           onPressed: () {
             Navigator.pop(context, null);
           },
           label: Text(context.loc.cancel),
-          icon: const Icon(Icons.close, color: Colors.red),
+          icon: const Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
         ),
       ],
     );
