@@ -12,6 +12,7 @@ class User extends Equatable {
   final bool is_active;
   final AccountType account_type;
   final List<AppPermission> app_permissions;
+  final String? fcm_token;
 
   const User({
     required this.id,
@@ -22,6 +23,7 @@ class User extends Equatable {
     required this.is_active,
     required this.account_type,
     required this.app_permissions,
+    this.fcm_token,
   });
 
   User copyWith({
@@ -33,6 +35,7 @@ class User extends Equatable {
     bool? is_active,
     AccountType? account_type,
     List<AppPermission>? app_permissions,
+    String? fcm_token,
   }) {
     return User(
       id: id ?? this.id,
@@ -43,6 +46,7 @@ class User extends Equatable {
       is_active: is_active ?? this.is_active,
       account_type: account_type ?? this.account_type,
       app_permissions: app_permissions ?? this.app_permissions,
+      fcm_token: fcm_token ?? this.fcm_token,
     );
   }
 
@@ -56,26 +60,9 @@ class User extends Equatable {
       'is_active': is_active,
       'account_type': account_type.toJson(),
       'app_permissions': app_permissions.map((x) => x.toJson()).toList(),
+      'fcm_token': fcm_token,
     };
   }
-
-  // factory User.fromJson(Map<String, dynamic> map) {
-  //   return User(
-  //     id: map['id'] as String,
-  //     email: map['email'] as String,
-  //     name: map['name'] as String,
-  //     verified: map['verified'] as bool,
-  //     is_active: map['is_active'] as bool,
-  //     account_type: AccountType.fromJson(
-  //       map['account_type'] as Map<String, dynamic>,
-  //     ),
-  //     app_permissions: List<AppPermission>.from(
-  //       (map['app_permissions'] as List<dynamic>).map<AppPermission>(
-  //         (x) => AppPermission.fromJson(x as Map<String, dynamic>),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   factory User.fromRecordModel(RecordModel e) {
     return User(
@@ -92,6 +79,7 @@ class User extends Equatable {
           .get<List<RecordModel>>('expand.app_permissions_ids')
           .map((x) => AppPermission.fromJson(x.toJson()))
           .toList(),
+      fcm_token: e.get<String?>('fcm_token'),
     );
   }
 
@@ -99,7 +87,7 @@ class User extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     id,
     email,
     name,
@@ -107,5 +95,6 @@ class User extends Equatable {
     verified,
     account_type,
     app_permissions,
+    fcm_token,
   ];
 }

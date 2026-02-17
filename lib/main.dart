@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:one/core/localization/app_localizations.dart';
+import 'package:one/firebase_options.dart';
 import 'package:one/providers/_main.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/router/router.dart';
@@ -12,6 +14,9 @@ import 'package:provider/provider.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   initAsyncPrefs();
   await initializeDateFormatting('ar');
   await initializeDateFormatting('en');

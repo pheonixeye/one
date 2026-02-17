@@ -33,16 +33,43 @@ class NotificationOverlayCard extends StatefulWidget implements EquatableMixin {
 }
 
 class _NotificationOverlayCardState extends State<NotificationOverlayCard>
-    with AfterLayoutMixin {
+    with AfterLayoutMixin, SingleTickerProviderStateMixin {
   Timer? timer;
   static const _duration = Duration(milliseconds: 10);
   final ValueNotifier<double> _progress = ValueNotifier(0);
   late final AudioPlayer player;
 
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+
   @override
   void initState() {
     super.initState();
+    final _l = context.read<PxLocale>();
     player = AudioPlayer();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800), // Adjust duration as needed
+      vsync: this,
+    );
+
+    // Define the animation from off-screen left (Offset(-1.0, 0.0)) to visible (Offset.zero)
+    _offsetAnimation =
+        Tween<Offset>(
+          begin: Offset(
+            _l.isEnglish ? -1 : 1,
+            0.0,
+          ), // Starts one full width to the left of its normal position
+          end: Offset.zero, // Ends at its normal position
+        ).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: Curves.fastOutSlowIn, // Add a natural easing curve
+          ),
+        );
+
+    // Start the animation automatically when the screen loads
+    _controller.forward();
   }
 
   @override
@@ -52,10 +79,12 @@ class _NotificationOverlayCardState extends State<NotificationOverlayCard>
 
   @override
   void didChangeDependencies() {
-    timer = Timer.periodic(_duration, (timer) {
+    timer = Timer.periodic(_duration, (timer) async {
       _progress.value += 0.001;
       if (_progress.value >= 1.0) {
         timer.cancel();
+        _controller.reverse();
+        await Future.delayed(const Duration(milliseconds: 1000));
         PxOverlay.removeOverlay(widget.notification.id ?? '');
       }
     });
@@ -67,6 +96,7 @@ class _NotificationOverlayCardState extends State<NotificationOverlayCard>
     timer?.cancel();
     _progress.dispose();
     player.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -77,70 +107,84 @@ class _NotificationOverlayCardState extends State<NotificationOverlayCard>
         final index = PxOverlay.overlays.keys.toList().indexWhere(
           (e) => e == widget.notification.id,
         );
+        if (index == -1) {
+          return const SizedBox();
+        }
         return Padding(
           padding: EdgeInsets.only(
             top: (index * 120.0) + 12,
             left: l.isEnglish ? 12 : 0,
             right: !l.isEnglish ? 12 : 0,
+            bottom: 0,
           ),
           child: Align(
             alignment: l.isEnglish ? Alignment.topLeft : Alignment.topRight,
-            child: Container(
-              width: context.isMobile
-                  ? MediaQuery.sizeOf(context).width * 0.9
-                  : MediaQuery.sizeOf(context).width * 0.4,
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Card.outlined(
-                elevation: 6,
-                color: Colors.amber.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    titleAlignment: ListTileTitleAlignment.top,
-                    onTap: () {
-                      timer?.cancel();
-                      // SoundHelper.notificationSound.stop();
-                      PxOverlay.toggleOverlay(
-                        id: widget.notification.id ?? '',
-                        child: widget,
-                      );
-                    },
-                    leading: const CircleAvatar(child: Icon(Icons.info)),
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.notification.title ?? '',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                width: context.isMobile
+                    ? MediaQuery.sizeOf(context).width * 0.9
+                    : MediaQuery.sizeOf(context).width * 0.4,
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Card.outlined(
+                  elevation: 6,
+                  color: Colors.amber.shade50,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      titleAlignment: ListTileTitleAlignment.top,
+                      onTap: () async {
+                        timer?.cancel();
+                        // SoundHelper.notificationSound.stop();
+                        _controller.reverse();
+                        await Future.delayed(
+                          const Duration(milliseconds: 1000),
+                        );
+                        PxOverlay.toggleOverlay(
+                          id: widget.notification.id ?? '',
+                          child: widget,
+                        );
+                      },
+                      leading: const CircleAvatar(child: Icon(Icons.info)),
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.notification.title ?? '',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 4,
-                      children: [
-                        Text(widget.notification.message ?? ''),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ValueListenableBuilder(
-                            valueListenable: _progress,
-                            builder: (context, value, child) {
-                              return LinearProgressIndicator(
-                                backgroundColor: Colors.cyanAccent,
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                  Colors.red,
-                                ),
-                                value: value,
-                              );
-                            },
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 4,
+                        children: [
+                          Text(widget.notification.message ?? ''),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ValueListenableBuilder(
+                              valueListenable: _progress,
+                              builder: (context, value, child) {
+                                return LinearProgressIndicator(
+                                  backgroundColor: Colors.cyanAccent,
+                                  valueColor:
+                                      const AlwaysStoppedAnimation<Color>(
+                                        Colors.red,
+                                      ),
+                                  value: value,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

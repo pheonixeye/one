@@ -94,8 +94,27 @@ class AuthApi {
   ) async {
     final result = await PocketbaseHelper.pbBase
         .collection('users')
-        .update(user_id, body: {'is_active': is_active});
+        .update(
+          user_id,
+          body: {
+            'is_active': is_active,
+          },
+        );
 
     return result;
+  }
+
+  Future<void> updateFcmToken({
+    required String user_id,
+    required String? fcmToken,
+  }) async {
+    await PocketbaseHelper.pbBase
+        .collection('users')
+        .update(
+          user_id,
+          body: {
+            'fcm_token': fcmToken,
+          },
+        );
   }
 }

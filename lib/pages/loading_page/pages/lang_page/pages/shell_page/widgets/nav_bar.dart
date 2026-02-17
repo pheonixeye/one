@@ -105,7 +105,9 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                   },
                 ),
                 const Spacer(),
+
                 //TODO
+
                 // const NavBarMenuBtn(),
                 const SizedBox(width: 10),
               ],

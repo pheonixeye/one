@@ -7,20 +7,24 @@ import 'package:one/models/organization.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:one/providers/px_firebase_notifications.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:provider/provider.dart';
 
 class PxAuth extends ChangeNotifier {
   final AuthApi api;
+  final BuildContext context;
 
-  PxAuth({required this.api});
+  PxAuth({
+    required this.api,
+    required this.context,
+  });
 
   static RecordAuth? _auth;
   RecordAuth? get authModel => _auth;
 
   static User? _user;
   User? get user => _user;
-  // static User? get staticUser => _user;
 
   static Organization? _organization;
   Organization? get organization => _organization;
@@ -31,6 +35,9 @@ class PxAuth extends ChangeNotifier {
     bool rememberMe = false,
   ]) async {
     try {
+      String? _fcmToken = await context
+          .read<PxFirebaseNotifications>()
+          .getFcmToken;
       final result = await api.loginWithEmailAndPassword(
         email,
         password,
@@ -44,6 +51,14 @@ class PxAuth extends ChangeNotifier {
       if (_organization != null) {
         PocketbaseHelper.initialize(_organization!.pb_endpoint);
       }
+      if (_fcmToken != null) {
+        await api.updateFcmToken(
+          user_id: _user!.id,
+          fcmToken: _fcmToken,
+        );
+
+        _user = _user?.copyWith(fcm_token: _fcmToken);
+      }
       notifyListeners();
     } catch (e) {
       _auth = null;
@@ -56,6 +71,9 @@ class PxAuth extends ChangeNotifier {
 
   Future<void> loginWithToken() async {
     try {
+      String? _fcmToken = await context
+          .read<PxFirebaseNotifications>()
+          .getFcmToken;
       _auth = await api.loginWithToken();
       _user = User.fromRecordModel(_auth!.record);
       _organization = Organization.fromJson(
@@ -63,6 +81,15 @@ class PxAuth extends ChangeNotifier {
       );
       if (_organization != null) {
         PocketbaseHelper.initialize(_organization!.pb_endpoint);
+      }
+      // print(_fcmToken);
+      if (_fcmToken != null) {
+        await api.updateFcmToken(
+          user_id: _user!.id,
+          fcmToken: _fcmToken,
+        );
+
+        _user = _user?.copyWith(fcm_token: _fcmToken);
       }
       notifyListeners();
       dprint('token from api: ${_auth?.token.substring(20, 25)}');
