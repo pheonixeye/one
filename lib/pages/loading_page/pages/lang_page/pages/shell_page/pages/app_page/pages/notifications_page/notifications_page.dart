@@ -1,14 +1,11 @@
-import 'dart:async';
-
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/after_layout.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/notifications/saved_notification.dart';
+import 'package:one/models/notifications/tokenized_notification.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
-import 'package:one/providers/px_notifications.dart';
+import 'package:one/providers/px_pb_notifications.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/central_no_items.dart';
@@ -26,17 +23,22 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPageState extends State<NotificationsPage>
     with AfterLayoutMixin {
   late final ScrollController _controller;
+  late final _pxN = context.read<PxPbNotifications>();
 
   @override
   void initState() {
     super.initState();
     _controller = ScrollController();
+    _controller.addListener(() {
+      var triggerFetchMoreSize = 0.9 * _controller.position.maxScrollExtent;
+      if (_controller.position.pixels > triggerFetchMoreSize) {
+        _pxN.fetchNextBatch();
+      }
+    });
   }
 
   @override
-  FutureOr<void> afterFirstLayout(BuildContext context) async {
-    await context.read<PxNotifications>().retry();
-  }
+  void afterFirstLayout(BuildContext context) {}
 
   @override
   void dispose() {
@@ -47,163 +49,103 @@ class _NotificationsPageState extends State<NotificationsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer2<PxNotifications, PxLocale>(
+      body: Consumer2<PxPbNotifications, PxLocale>(
         builder: (context, n, l, _) {
-          while (n.notifications == null) {
+          while (n.data == null) {
             return CentralLoading();
           }
-          while (n.notifications is ApiErrorResult) {
+          while (n.data is ApiErrorResult) {
             return CentralError(
-              code: (n.notifications as ApiErrorResult).errorCode,
+              code: (n.data as ApiErrorResult).errorCode,
               toExecute: n.retry,
             );
           }
-          while (n.notifications != null &&
-              (n.notifications is ApiDataResult) &&
-              (n.notifications as ApiDataResult<List<SavedNotification>>)
+          while (n.data != null &&
+              (n.data is ApiDataResult) &&
+              (n.data as ApiDataResult<List<TokenizedNotification>>)
                   .data
                   .isEmpty) {
             return CentralNoItems(message: context.loc.noItemsFound);
           }
-          final _items =
-              (n.notifications as ApiDataResult<List<SavedNotification>>).data;
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  controller: _controller,
-                  itemCount: _items.length,
-                  itemBuilder: (context, index) {
-                    final _item = _items[index];
-                    final _isNotificationRead = _item.read_by
-                        .map((e) => e.id)
-                        .toList()
-                        .contains(context.read<PxAuth>().doc_id);
-                    return Card.filled(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(0),
-                      ),
-                      elevation: _isNotificationRead ? 0 : 6,
-                      color: _isNotificationRead
-                          ? Colors.white
-                          : _item.notification_topic.tileColor,
-                      child: InkWell(
-                        onTap: _isNotificationRead
-                            ? null
-                            : () async {
-                                await shellFunction(
-                                  context,
-                                  toExecute: () async {
-                                    await n.readNotification(
-                                      _item.id,
-                                      context.read<PxAuth>().doc_id,
-                                    );
-                                  },
-                                );
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            spacing: 4,
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+          final _items = n.notifications;
+          final _user_id = context.read<PxAuth>().user?.id;
+          return ListView.builder(
+            controller: _controller,
+            itemCount: _items.length + (n.hasMore ? 1 : 0),
+            itemBuilder: (context, index) {
+              final _item = _items[index];
+              final _isNotificationRead = _item.read_by.contains(_user_id);
+              if (index >= _items.length) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: n.isLoading
+                        ? CircularProgressIndicator()
+                        : SizedBox(),
+                  ),
+                );
+              }
+              return InkWell(
+                onTap: _isNotificationRead
+                    ? null
+                    : () async {
+                        await shellFunction(
+                          context,
+                          toExecute: () async {
+                            if (_user_id != null) {
+                              await n.markNotificationAsReadByUser(
+                                notification: _item,
+                                user_id: _user_id,
+                              );
+                            }
+                          },
+                        );
+                      },
+                child: Card.filled(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(0),
+                  ),
+                  elevation: _isNotificationRead ? 0 : 6,
+                  color: _isNotificationRead
+                      ? Colors.teal.shade50
+                      : Colors.amber.shade50,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      spacing: 4,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_item.title.isNotEmpty)
+                          Row(
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                spacing: 4,
-                                children: [
-                                  Text(
-                                    '(${index + 1})'.toArabicNumber(context),
-                                  ),
-                                  Card.outlined(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text(
-                                        l.isEnglish
-                                            ? _item.notification_topic.en
-                                            : _item.notification_topic.ar,
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  if (_isNotificationRead)
-                                    const Icon(
-                                      Icons.check,
-                                      color: Colors.green,
-                                    ),
-                                  const SizedBox(width: 10),
-                                ],
-                              ),
-                              if (_item.title.isNotEmpty)
-                                Text(
-                                  _item.title,
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                              if (_item.message.isNotEmpty) Text(_item.message),
                               Text(
-                                DateFormat(
-                                  'dd/MM/yyyy-HH:MM',
-                                  l.lang,
-                                ).format(DateTime.parse(_item.created)),
-                                style: TextStyle(fontSize: 10),
+                                _item.title,
+                                style: TextStyle(fontWeight: FontWeight.w700),
                               ),
+                              const Spacer(),
+                              if (_isNotificationRead)
+                                const Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                ),
+                              const SizedBox(width: 10),
                             ],
                           ),
+                        if (_item.body.isNotEmpty) Text(_item.body),
+                        Text(
+                          DateFormat(
+                            'dd/MM/yyyy-HH:MM',
+                            l.lang,
+                          ).format(DateTime.parse(_item.created)),
+                          style: TextStyle(fontSize: 10),
                         ),
-                      ),
-                    );
-                  },
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton.outlined(
-                      tooltip: context.loc.previous,
-                      onPressed: () async {
-                        await shellFunction(
-                          context,
-                          toExecute: () async {
-                            await n.previousPage();
-                          },
-                          duration: const Duration(milliseconds: 100),
-                        );
-                        _controller.animateTo(
-                          0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.easeIn,
-                        );
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('- ${n.page} -'),
-                    ),
-                    IconButton.outlined(
-                      tooltip: context.loc.next,
-                      onPressed: () async {
-                        await shellFunction(
-                          context,
-                          toExecute: () async {
-                            await n.nextPage();
-                          },
-                          duration: const Duration(milliseconds: 100),
-                        );
-                        _controller.animateTo(
-                          0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.easeIn,
-                        );
-                      },
-                      icon: const Icon(Icons.arrow_forward),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              );
+            },
           );
         },
       ),

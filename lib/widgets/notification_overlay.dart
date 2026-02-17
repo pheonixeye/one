@@ -95,8 +95,8 @@ class _NotificationOverlayCardState extends State<NotificationOverlayCard>
   void dispose() {
     timer?.cancel();
     _progress.dispose();
-    player.dispose();
     _controller.dispose();
+    player.dispose();
     super.dispose();
   }
 

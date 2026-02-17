@@ -4,7 +4,7 @@ import 'package:just_audio/just_audio.dart';
 
 class SoundHelper {
   SoundHelper._() {
-    _initLocalFileBytes();
+    initLocalFileBytes();
   }
 
   static final SoundHelper _instance = SoundHelper._();
@@ -15,7 +15,7 @@ class SoundHelper {
 
   static Uint8List? _assetSoundBytes;
 
-  static Future<void> _initLocalFileBytes() async {
+  static Future<void> initLocalFileBytes() async {
     if (_assetSoundBytes == null) {
       final data = await rootBundle.load(AppAssets.notification_sound);
       _assetSoundBytes = Uint8List.sublistView(data);
@@ -23,10 +23,10 @@ class SoundHelper {
   }
 
   static Future<void> playSound(AudioPlayer player, [Uint8List? bytes]) async {
-    if (_assetSoundBytes != null && bytes == null) {
+    if (bytes == null) {
       await player.setAudioSource(BytesSource(_assetSoundBytes!));
       player.play();
-    } else if (bytes != null) {
+    } else {
       await player.setAudioSource(BytesSource(bytes));
       player.play();
     }

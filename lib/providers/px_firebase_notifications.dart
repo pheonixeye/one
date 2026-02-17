@@ -62,11 +62,9 @@ class PxFirebaseNotifications extends ChangeNotifier {
   Future<String?> get getFcmToken async => _fcmToken ?? await _getFcmToken();
 
   void _handleForegroundMessage() {
-    // final _blobSound = context.read<PxBlobs>().files['notification_sound'];
     FirebaseMessaging.onMessage.listen((message) {
       if (message.notification != null) {
         final notification = message.notification;
-        // print(message.toMap());
 
         PxOverlay.toggleOverlay(
           id: '${message.messageId}',
@@ -77,9 +75,9 @@ class PxFirebaseNotifications extends ChangeNotifier {
               title: notification?.title,
               message: notification?.body,
             ),
-            // fileBlob: _blobSound,
           ),
         );
+        //TODO: Save notification to pb
       }
     });
   }

@@ -2,6 +2,7 @@ import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/fcm_notifications_api.dart';
+import 'package:one/core/api/pb_notifications_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
@@ -9,6 +10,7 @@ import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_firebase_notifications.dart';
+import 'package:one/providers/px_pb_notifications.dart';
 import 'package:one/providers/px_s3_documents.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_speciality.dart';
@@ -218,6 +220,11 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     create: (context) => PxBookkeeping(
       api: BookkeepingApi(),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxPbNotifications(
+      api: const PbNotificationsApi(),
     ),
   ),
 ];

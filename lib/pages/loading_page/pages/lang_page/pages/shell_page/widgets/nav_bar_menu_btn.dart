@@ -1,11 +1,6 @@
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/extensions/number_translator.dart';
-import 'package:one/functions/shell_function.dart';
-import 'package:one/models/notifications/notification_request.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/add_new_notification_request_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/monthly_visits_calendar_dialog.dart';
 import 'package:one/providers/px_locale.dart';
-import 'package:one/providers/px_notifications.dart';
 import 'package:one/widgets/themed_popupmenu_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +10,8 @@ class NavBarMenuBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxNotifications, PxLocale>(
-      builder: (context, n, l, _) {
+    return Consumer<PxLocale>(
+      builder: (context, l, _) {
         return ThemedPopupmenuBtn<void>(
           icon: const Icon(Icons.notification_add),
           tooltip: context.loc.notifications,
@@ -69,81 +64,10 @@ class NavBarMenuBtn extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(context.loc.addNewNotification),
                           ),
-                          onTap: () async {
-                            final _notificationRequest =
-                                await showDialog<NotificationRequest?>(
-                                  context: context,
-                                  builder: (context) {
-                                    return const AddNewNotificationRequestDialog();
-                                  },
-                                );
-                            if (_notificationRequest == null) {
-                              return;
-                            }
-                            if (context.mounted) {
-                              await shellFunction(
-                                context,
-                                toExecute: () async {
-                                  await n.saveFavoriteNotification(
-                                    _notificationRequest,
-                                  );
-                                },
-                              ).whenComplete(() {
-                                if (context.mounted) {
-                                  Navigator.pop(context);
-                                }
-                              });
-                            }
-                          },
+                          onTap: () async {},
                         ),
                       ),
                       PopupMenuDivider(),
-                      if (n.favoriteNotifications == null)
-                        PopupMenuItem(
-                          child: const SizedBox(
-                            width: 100,
-                            height: 8,
-                            child: LinearProgressIndicator(),
-                          ),
-                        )
-                      else
-                        ...n.favoriteNotifications!.map((fav) {
-                          final _index = n.favoriteNotifications!.indexOf(fav);
-                          return PopupMenuItem(
-                            child: ListTile(
-                              title: Row(
-                                children: [
-                                  Text(
-                                    '(${_index + 1})'.toArabicNumber(context),
-                                  ),
-                                  Text(fav.title ?? ''),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(fav.message ?? ''),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: const Divider(),
-                                  ),
-                                ],
-                              ),
-                              onTap: () async {
-                                await shellFunction(
-                                  context,
-                                  toExecute: () async {
-                                    await n.sendNotification(
-                                      topic: fav.topic,
-                                      request: fav,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          );
-                        }),
                     ];
                   },
                   child: ListTile(
@@ -153,29 +77,6 @@ class NavBarMenuBtn extends StatelessWidget {
                   ),
                 ),
               ),
-              // PopupMenuDivider(),
-              // PopupMenuItem(
-              //   child: ListTile(
-              //     title: Text('sendTestNotification'),
-              //     onTap: () async {
-              //       final _request = NotificationRequest(
-              //         topic: NotificationTopic.allevia_testing,
-              //         title: 'test-notification-sound',
-              //         message:
-              //             'Discover 10 groundbreaking AI-driven technologies that are reshaping how organizations perform maintenance, engage with customers, secure data, deliver healthcare, and more.',
-              //       );
-              //       await shellFunction(
-              //         context,
-              //         toExecute: () async {
-              //           await n.sendNotification(
-              //             topic: _request.topic,
-              //             request: _request,
-              //           );
-              //         },
-              //       );
-              //     },
-              //   ),
-              // ),
             ];
           },
         );

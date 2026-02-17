@@ -9,6 +9,7 @@ import 'package:one/providers/px_locale.dart';
 import 'package:one/router/router.dart';
 import 'package:one/theme/app_theme.dart';
 import 'package:one/utils/shared_prefs.dart';
+import 'package:one/utils/sound_helper.dart';
 import 'package:one/utils/utils_keys.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ void main(List<String> args) async {
   await initializeDateFormatting('ar');
   await initializeDateFormatting('en');
   await Hive.initFlutter();
+  await SoundHelper.initLocalFileBytes();
   runApp(const AppProvider());
 }
 

@@ -1,6 +1,4 @@
 import 'package:one/annotations/pb_annotations.dart';
-import 'package:one/core/api/notifications_api.dart';
-import 'package:one/models/notifications/notification_request.dart';
 import 'package:intl/intl.dart';
 import 'package:one/models/shift.dart';
 import 'package:one/models/visits/visit.dart';
