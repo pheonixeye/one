@@ -289,7 +289,37 @@ extension WxDoctorProcedureItem on DoctorProcedureItem {
 
 extension WxDoctorDocumentTypeItem on DoctorDocumentTypeItem {
   Widget viewWidgets(BuildContext context) {
-    return SizedBox();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        spacing: 8,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Divider(color: Colors.grey),
+          Text.rich(
+            TextSpan(
+              text: '• ${context.loc.isAllowedOnOprtal}',
+              children: [
+                TextSpan(text: ' : '),
+                WidgetSpan(
+                  child: is_allowed_on_portal
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        )
+                      : const Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+          ),
+          const Divider(color: Colors.grey),
+        ],
+      ),
+    );
   }
 
   Widget createEditWidget(BuildContext context) {

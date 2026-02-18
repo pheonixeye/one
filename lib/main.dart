@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/adapters.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:one/core/localization/app_localizations.dart';
 import 'package:one/firebase_options.dart';
@@ -21,7 +20,6 @@ void main(List<String> args) async {
   initAsyncPrefs();
   await initializeDateFormatting('ar');
   await initializeDateFormatting('en');
-  await Hive.initFlutter();
   await SoundHelper.initLocalFileBytes();
   runApp(const AppProvider());
 }

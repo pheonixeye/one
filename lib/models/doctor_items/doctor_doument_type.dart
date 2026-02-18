@@ -11,7 +11,10 @@ class DoctorDocumentTypeItem extends DoctorItem implements Equatable {
     required super.name_en,
     required super.name_ar,
     super.item = ProfileSetupItem.documents,
+    required this.is_allowed_on_portal,
   });
+
+  final bool is_allowed_on_portal;
 
   @override
   Map<String, dynamic> toJson() {
@@ -20,6 +23,7 @@ class DoctorDocumentTypeItem extends DoctorItem implements Equatable {
       'name_en': name_en,
       'name_ar': name_ar,
       'doc_id': doc_id,
+      'is_allowed_on_portal': is_allowed_on_portal,
     };
   }
 
@@ -29,11 +33,18 @@ class DoctorDocumentTypeItem extends DoctorItem implements Equatable {
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
       doc_id: map['doc_id'] as String,
+      is_allowed_on_portal: map['is_allowed_on_portal'] as bool,
     );
   }
 
   @override
-  List<Object> get props => [id, name_en, name_ar, doc_id];
+  List<Object> get props => [
+    id,
+    name_en,
+    name_ar,
+    doc_id,
+    is_allowed_on_portal,
+  ];
 
   @override
   bool get stringify => true;

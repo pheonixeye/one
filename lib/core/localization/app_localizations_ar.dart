@@ -1350,4 +1350,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get editRecieptInfo => 'تعديل بيانات الايصال';
+
+  @override
+  String get isAllowedOnOprtal => 'يسمح للمريض بالاطلاع علي البوابة';
 }

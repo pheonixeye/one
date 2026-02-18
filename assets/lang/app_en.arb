@@ -467,5 +467,6 @@
     "active" : "Active",
     "contractActivity" : "Contract Activity",
     "activateDeactivateContractPrompt" : "Change Contract Activity - Are You Sure ?",
-    "editRecieptInfo" : "Edit Reciept Info"
+    "editRecieptInfo" : "Edit Reciept Info",
+    "isAllowedOnOprtal" : "Is Allowed On Oprtal"
 }

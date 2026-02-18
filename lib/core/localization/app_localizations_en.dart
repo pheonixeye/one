@@ -1357,4 +1357,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editRecieptInfo => 'Edit Reciept Info';
+
+  @override
+  String get isAllowedOnOprtal => 'Is Allowed On Oprtal';
 }

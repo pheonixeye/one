@@ -2695,6 +2695,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit Reciept Info'**
   String get editRecieptInfo;
+
+  /// No description provided for @isAllowedOnOprtal.
+  ///
+  /// In en, this message translates to:
+  /// **'Is Allowed On Oprtal'**
+  String get isAllowedOnOprtal;
 }
 
 class _AppLocalizationsDelegate

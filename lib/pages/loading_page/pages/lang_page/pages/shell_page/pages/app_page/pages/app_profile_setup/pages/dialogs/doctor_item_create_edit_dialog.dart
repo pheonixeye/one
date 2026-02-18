@@ -53,6 +53,9 @@ class _DoctorItemCreateEditDialogState
   late final TextEditingController _supplySellingPriceController;
   bool? _supplyNotifyOnOrderQuantityController;
 
+  ///[DOCUMENTS]
+  bool? _is_allowed_on_portal;
+
   ///[DRUG]
   ///final double concentration;
   ///final String unit;
@@ -81,6 +84,7 @@ class _DoctorItemCreateEditDialogState
   ///[DOCUMENTS]
   ///final String name_en;
   ///final String name_ar;
+  ///final bool is_allowed_on_portal;
   ///
 
   @override
@@ -155,6 +159,10 @@ class _DoctorItemCreateEditDialogState
     _procedureDiscountController = TextEditingController(
       text: '${widget.item?['discount_percentage'] ?? '0'}',
     );
+
+    ///[DOCUMENTS]
+    ///
+    _is_allowed_on_portal = widget.item?['is_allowed_on_portal'] ?? false;
   }
 
   @override
@@ -580,7 +588,22 @@ class _DoctorItemCreateEditDialogState
                   ),
                 ),
               ],
-              ProfileSetupItem.documents => [],
+              ProfileSetupItem.documents => [
+                ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(context.loc.isAllowedOnOprtal),
+                  ),
+                  trailing: Checkbox(
+                    value: _is_allowed_on_portal,
+                    onChanged: (val) {
+                      setState(() {
+                        _is_allowed_on_portal = val;
+                      });
+                    },
+                  ),
+                ),
+              ],
             },
           ],
         ),
@@ -630,6 +653,7 @@ class _DoctorItemCreateEditDialogState
                 'discount_percentage': int.tryParse(
                   _procedureDiscountController.text,
                 ),
+                'is_allowed_on_portal': _is_allowed_on_portal,
               };
               Navigator.pop(context, _itemJson);
             }

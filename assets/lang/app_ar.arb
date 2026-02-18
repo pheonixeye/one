@@ -466,5 +466,6 @@
     "active" : "مفعل",
     "contractActivity" : "تفعيل / تعطيل العقد",
     "activateDeactivateContractPrompt" : "تعديل تفعيل العقد - هل انت متأكد ؟",
-    "editRecieptInfo" : "تعديل بيانات الايصال"
+    "editRecieptInfo" : "تعديل بيانات الايصال",
+    "isAllowedOnOprtal" : "يسمح للمريض بالاطلاع علي البوابة"
 }

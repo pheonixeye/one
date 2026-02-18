@@ -1,5 +1,4 @@
 import 'package:one/widgets/sm_btn.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -59,17 +58,10 @@ class MySubscriptionPage extends StatelessWidget {
                                           : Colors.red,
                                     ),
                                     SizedBox(width: 8),
-                                    AnimatedTextKit(
-                                      animatedTexts: [
-                                        FlickerAnimatedText(
-                                          s.hasGracePeriodSubscription
-                                              ? context.loc.inGracePeriod
-                                              : context
-                                                    .loc
-                                                    .noActiveSubscriptions,
-                                        ),
-                                      ],
-                                      repeatForever: true,
+                                    Text(
+                                      s.hasGracePeriodSubscription
+                                          ? context.loc.inGracePeriod
+                                          : context.loc.noActiveSubscriptions,
                                     ),
                                   ],
                                 ),
