@@ -1352,5 +1352,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editRecieptInfo => 'تعديل بيانات الايصال';
 
   @override
-  String get isAllowedOnOprtal => 'يسمح للمريض بالاطلاع علي البوابة';
+  String get isAllowedOnPortal => 'يسمح للمريض بالاطلاع علي البوابة';
+
+  @override
+  String get patientPortal => 'بوابة المرضي';
+
+  @override
+  String get bookNewVisit => 'زيارة جديدة ؟';
+
+  @override
+  String get bookAppointmentPrompt =>
+      'إذا كنت ترغب في تحديد موعد جديد، يرجى البدء بالنقر فوق الزر واتباع التعليمات الموضحة.';
+
+  @override
+  String get bookAppointment => 'حجز موعد';
+
+  @override
+  String get rescanQrCode => 'مسح الكود';
 }

@@ -78,6 +78,7 @@ class DoctorsPage extends StatelessWidget {
             tooltip: context.loc.addNewDoctorAccount,
             onPressed: () async {
               //TODO: show dialog to contact account manager
+
               // final _doc = await showDialog(
               //   context: context,
               //   builder: (context) {

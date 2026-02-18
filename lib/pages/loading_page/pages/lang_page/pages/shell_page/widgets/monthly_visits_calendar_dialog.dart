@@ -124,7 +124,7 @@ class _MonthlyVisitsCalendarDialogState
                         SmBtn(
                           tooltip: context.loc.pickStartingDate,
                           onPressed: () async {
-                            //TODO: change implementation to pick month and year only
+                            //TODO: change implementation to pick month and year only or allow for daily selection
                             final _date = await showDatePicker(
                               context: context,
                               initialDatePickerMode: DatePickerMode.year,

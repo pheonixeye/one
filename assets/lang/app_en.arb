@@ -468,5 +468,12 @@
     "contractActivity" : "Contract Activity",
     "activateDeactivateContractPrompt" : "Change Contract Activity - Are You Sure ?",
     "editRecieptInfo" : "Edit Reciept Info",
-    "isAllowedOnOprtal" : "Is Allowed On Oprtal"
+    "isAllowedOnPortal" : "Is Allowed On Portal",
+    "@@patient_portal_page": "",
+    "patientPortal" : "Patient Portal",
+    "bookNewVisit" : "New Visit ?",
+    "bookAppointmentPrompt" : "If you wish to schedule a new consultation, please proceed by clicking the button and following the prompts.",
+    "bookAppointment" : "Book Appointment",
+    "rescanQrCode" : "Rescan QrCode"
+
 }

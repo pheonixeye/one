@@ -21,8 +21,6 @@ class PxVisitsPerClinicShift extends ChangeNotifier {
 
   Future<ApiResult<List<Visit>>> _fetchVisitsOfASpecificDate() async {
     return await api.fetctVisitsOfASpecificDate(
-      page: 1,
-      perPage: 500,
       visit_date: visit_date,
     );
   }

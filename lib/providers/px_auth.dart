@@ -191,6 +191,6 @@ class PxAuth extends ChangeNotifier {
 extension PatientDataUrl on PxAuth {
   String patientDataUrl(String patient_id) {
     final org_id = organization?.id;
-    return '${const String.fromEnvironment('APP_URL')}/#/ar/patients_portal/$org_id/$patient_id';
+    return '${const String.fromEnvironment('APP_URL')}/#/ar/patients_portal?org_id=$org_id&patient_id=$patient_id';
   }
 }

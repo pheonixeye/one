@@ -467,5 +467,11 @@
     "contractActivity" : "تفعيل / تعطيل العقد",
     "activateDeactivateContractPrompt" : "تعديل تفعيل العقد - هل انت متأكد ؟",
     "editRecieptInfo" : "تعديل بيانات الايصال",
-    "isAllowedOnOprtal" : "يسمح للمريض بالاطلاع علي البوابة"
+    "isAllowedOnPortal" : "يسمح للمريض بالاطلاع علي البوابة",
+    "@@patient_portal_page": "",
+    "patientPortal" : "بوابة المرضي",
+    "bookNewVisit" : "زيارة جديدة ؟",
+    "bookAppointmentPrompt" : "إذا كنت ترغب في تحديد موعد جديد، يرجى البدء بالنقر فوق الزر واتباع التعليمات الموضحة.",
+    "bookAppointment" : "حجز موعد",
+    "rescanQrCode" : "مسح الكود"
 }

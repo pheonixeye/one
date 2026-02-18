@@ -15,27 +15,16 @@ class PxVisits extends ChangeNotifier {
   ApiResult<List<VisitExpanded>>? _visits;
   ApiResult<List<VisitExpanded>>? get visits => _visits;
 
-  static const int _page = 1;
-  int get page => _page;
-
-  //TODO: remove constant
-  static const perPage = 100;
-
   Future<ApiResult<List<Visit>>> _fetchVisitsOfASpecificDate(
     DateTime visit_date,
   ) async {
     return await api.fetctVisitsOfASpecificDate(
-      page: page,
-      perPage: perPage,
       visit_date: visit_date,
     );
   }
 
   Future<void> _fetchVisitsOfToday() async {
-    _visits = await api.fetctVisitsOfASpecificDate(
-      page: page,
-      perPage: perPage,
-    );
+    _visits = await api.fetctVisitsOfASpecificDate();
     notifyListeners();
   }
 
@@ -83,7 +72,7 @@ class PxVisits extends ChangeNotifier {
         .toList();
 
     if (_clinicVisits.isEmpty) {
-      //TODO
+      //TODO: recheck implementation
       _visitsPerShift = {};
       notifyListeners();
       toggleIsUpdating();

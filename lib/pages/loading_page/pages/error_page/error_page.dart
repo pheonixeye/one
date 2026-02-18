@@ -6,6 +6,7 @@ import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/router/router.dart';
 import 'package:one/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});
@@ -60,38 +61,55 @@ class ErrorPage extends StatelessWidget {
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(
-                              color: AppTheme.appBarColor,
-                              width: 0.3,
+                      child: Consumer<GoRouteInformationProvider>(
+                        builder: (context, r, _) {
+                          return TextButton(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(
+                                  color: AppTheme.appBarColor,
+                                  width: 0.3,
+                                ),
+                              ),
+                              backgroundColor: Colors.white,
                             ),
-                          ),
-                          backgroundColor: Colors.white,
-                        ),
-                        onPressed: () {
-                          //todo: go to homepage
-                          GoRouter.of(context).goNamed(
-                            AppRouter.lang,
-                            pathParameters: defaultPathParameters(context),
+                            onPressed: () {
+                              //todo: go to homepage
+                              if (r.value.uri.pathSegments.contains(
+                                AppRouter.patients_portal,
+                              )) {
+                                GoRouter.of(context).goNamed(
+                                  AppRouter.patients_portal,
+                                  pathParameters: defaultPathParameters(
+                                    context,
+                                  ),
+                                );
+                              } else {
+                                GoRouter.of(context).goNamed(
+                                  AppRouter.lang,
+                                  pathParameters: defaultPathParameters(
+                                    context,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 24,
+                              ),
+                              child: Text(
+                                context.loc.homepage,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.mainFontColor,
+                                ),
+                              ),
+                            ),
                           );
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 8.0,
-                            horizontal: 24,
-                          ),
-                          child: Text(
-                            context.loc.homepage,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.mainFontColor,
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                     const Spacer(),

@@ -592,7 +592,7 @@ class _DoctorItemCreateEditDialogState
                 ListTile(
                   title: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(context.loc.isAllowedOnOprtal),
+                    child: Text(context.loc.isAllowedOnPortal),
                   ),
                   trailing: Checkbox(
                     value: _is_allowed_on_portal,

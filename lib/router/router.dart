@@ -1,11 +1,11 @@
+import 'package:one/core/api/patient_portal_api.dart';
 import 'package:one/core/api/reciept_info_api.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/pages/404_patient_portal_page/not_found_patient_portal_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/pages/patient_information_page/patient_information_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/assistants_page/assistants_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
+import 'package:one/providers/px_patient_portal.dart';
 import 'package:one/providers/px_reciept_info.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -129,7 +129,7 @@ class AppRouter {
   static const String org_id = ':org_id';
   static const String patient_id = ':patient_id';
   // 404
-  static const String _404_patients_portal = '404_pp';
+  // static const String _404_patients_portal = '404_pp';
 
   String? get currentRouteName =>
       router.routerDelegate.currentConfiguration.last.route.name;
@@ -139,15 +139,6 @@ class AppRouter {
     navigatorKey: UtilsKeys.navigatorKey,
     initialLocation: loading,
     errorPageBuilder: (context, state) {
-      // print(state.pageKey.value);
-      if (state.pageKey.value.contains(patients_portal)) {
-        return MaterialPage(
-          key: state.pageKey,
-          child: NotFoundPatientsPortalPage(
-            key: state.pageKey,
-          ),
-        );
-      }
       return MaterialPage(
         key: state.pageKey,
         child: ErrorPage(
@@ -239,39 +230,28 @@ class AppRouter {
               ),
               GoRoute(
                 path:
-                    '$patients_portal/$org_id/$patient_id', //:lang/patients_portal/:org_id/:patient_id
+                    patients_portal, //:lang/patients_portal/?org_id=org_id&patient_id=patient_id
                 name: patients_portal,
                 builder: (context, state) {
                   //TODO
-                  final _org_id = state.pathParameters['org_id'];
-                  final _patient_id = state.pathParameters['patient_id'];
-                  return PatientPortalPage(
-                    key: state.pageKey,
-                  );
-                },
-                redirect: (context, state) {
-                  final _org_id = state.pathParameters['org_id'];
-                  final _patient_id = state.pathParameters['patient_id'];
-                  if (_org_id == null ||
-                      _org_id.isEmpty ||
-                      _patient_id == null ||
-                      _patient_id.isEmpty) {
-                    throw Exception(
-                      ':lang/patients_portal/:org_id(XX)||:patient_id(XX)',
-                    );
-                  }
-                  return null;
-                },
-              ),
-              GoRoute(
-                path: _404_patients_portal,
-                name: _404_patients_portal,
-                builder: (context, state) {
-                  return NotFoundPatientsPortalPage(
-                    key: state.pageKey,
+                  final _org_id = state.uri.queryParameters['org_id'];
+                  final _patient_id = state.uri.queryParameters['patient_id'];
+
+                  return ChangeNotifierProvider(
+                    key: ValueKey(state.uri),
+                    create: (context) => PxPatientPortal(
+                      api: PatientPortalApi(
+                        org_id: _org_id,
+                        patient_id: _patient_id,
+                      ),
+                    ),
+                    child: PatientPortalPage(
+                      key: state.pageKey,
+                    ),
                   );
                 },
               ),
+
               ShellRoute(
                 builder: (context, state, child) {
                   return ShellPage(

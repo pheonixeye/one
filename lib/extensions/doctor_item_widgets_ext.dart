@@ -298,7 +298,7 @@ extension WxDoctorDocumentTypeItem on DoctorDocumentTypeItem {
           const Divider(color: Colors.grey),
           Text.rich(
             TextSpan(
-              text: '• ${context.loc.isAllowedOnOprtal}',
+              text: '• ${context.loc.isAllowedOnPortal}',
               children: [
                 TextSpan(text: ' : '),
                 WidgetSpan(

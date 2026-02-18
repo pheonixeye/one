@@ -1359,5 +1359,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editRecieptInfo => 'Edit Reciept Info';
 
   @override
-  String get isAllowedOnOprtal => 'Is Allowed On Oprtal';
+  String get isAllowedOnPortal => 'Is Allowed On Portal';
+
+  @override
+  String get patientPortal => 'Patient Portal';
+
+  @override
+  String get bookNewVisit => 'New Visit ?';
+
+  @override
+  String get bookAppointmentPrompt =>
+      'If you wish to schedule a new consultation, please proceed by clicking the button and following the prompts.';
+
+  @override
+  String get bookAppointment => 'Book Appointment';
+
+  @override
+  String get rescanQrCode => 'Rescan QrCode';
 }

@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/app_constants/document_type.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class PatientDocument extends Equatable {
   final String id;
@@ -79,5 +81,35 @@ class PatientDocument extends Equatable {
       document_url,
       created,
     ];
+  }
+}
+
+class PatientDocumentWithDocumentType extends PatientDocument {
+  const PatientDocumentWithDocumentType({
+    required super.id,
+    required super.patient_id,
+    required super.related_visit_id,
+    required super.related_visit_data_id,
+    required super.document_type_id,
+    required super.document_url,
+    required super.created,
+    required this.documentType,
+  });
+
+  final DocumentType documentType;
+
+  factory PatientDocumentWithDocumentType.fromRecordModel(RecordModel record) {
+    return PatientDocumentWithDocumentType(
+      id: record.getStringValue('id'),
+      patient_id: record.getStringValue('patient_id'),
+      related_visit_id: record.getStringValue('related_visit_id'),
+      related_visit_data_id: record.getStringValue('related_visit_data_id'),
+      document_type_id: record.getStringValue('document_type_id'),
+      document_url: record.getStringValue('document_url'),
+      created: DateTime.parse(record.getStringValue('created')),
+      documentType: DocumentType.fromJson(
+        record.get<RecordModel>('expand.document_type_id').toJson(),
+      ),
+    );
   }
 }

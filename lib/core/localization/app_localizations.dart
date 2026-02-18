@@ -2696,11 +2696,41 @@ abstract class AppLocalizations {
   /// **'Edit Reciept Info'**
   String get editRecieptInfo;
 
-  /// No description provided for @isAllowedOnOprtal.
+  /// No description provided for @isAllowedOnPortal.
   ///
   /// In en, this message translates to:
-  /// **'Is Allowed On Oprtal'**
-  String get isAllowedOnOprtal;
+  /// **'Is Allowed On Portal'**
+  String get isAllowedOnPortal;
+
+  /// No description provided for @patientPortal.
+  ///
+  /// In en, this message translates to:
+  /// **'Patient Portal'**
+  String get patientPortal;
+
+  /// No description provided for @bookNewVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'New Visit ?'**
+  String get bookNewVisit;
+
+  /// No description provided for @bookAppointmentPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'If you wish to schedule a new consultation, please proceed by clicking the button and following the prompts.'**
+  String get bookAppointmentPrompt;
+
+  /// No description provided for @bookAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Appointment'**
+  String get bookAppointment;
+
+  /// No description provided for @rescanQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Rescan QrCode'**
+  String get rescanQrCode;
 }
 
 class _AppLocalizationsDelegate

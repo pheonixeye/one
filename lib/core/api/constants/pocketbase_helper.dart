@@ -12,4 +12,12 @@ class PocketbaseHelper {
   static void initialize(String url) {
     _pbData ??= PocketBase(url);
   }
+
+  static PocketBase? _pbPortal;
+
+  static PocketBase get pbPortal => _pbPortal!;
+
+  static void initializedPortalPb(String url) {
+    _pbPortal ??= PocketBase(url);
+  }
 }

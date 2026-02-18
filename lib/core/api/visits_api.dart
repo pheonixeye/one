@@ -27,8 +27,6 @@ class VisitsApi {
   final _now = DateTime.now();
 
   Future<ApiResult<List<VisitExpanded>>> fetctVisitsOfASpecificDate({
-    required int page,
-    required int perPage,
     DateTime? visit_date,
   }) async {
     visit_date = visit_date ?? _now;
@@ -55,9 +53,7 @@ class VisitsApi {
       // print(_todayFormatted);
       final _result = await PocketbaseHelper.pbData
           .collection(collection)
-          .getList(
-            page: page,
-            perPage: perPage,
+          .getFullList(
             expand: _expand,
             filter:
                 "visit_date >= '$_dateOfVisitFormatted' && visit_date <= '$_dateAfterVisitFormatted'",
@@ -66,7 +62,7 @@ class VisitsApi {
 
       // prettyPrint(_result);
 
-      final _visits = _result.items.map((e) {
+      final _visits = _result.map((e) {
         return VisitExpanded.fromRecordModel(e);
       }).toList();
 

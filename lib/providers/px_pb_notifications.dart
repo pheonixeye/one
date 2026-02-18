@@ -39,7 +39,7 @@ class PxPbNotifications extends ChangeNotifier {
   Future<void> fetchNextBatch() async {
     if (_data != null && _data!.data.length == _perPage) {
       _page++;
-      print('fetchNextBatch($_page)');
+      // print('fetchNextBatch($_page)');
       toggleLoading();
       await _fetchNotifications();
       toggleLoading();

@@ -77,7 +77,7 @@ class PxFirebaseNotifications extends ChangeNotifier {
             ),
           ),
         );
-        //TODO: Save notification to pb
+        //todo: Save notification to pb => deferred
       }
     });
   }

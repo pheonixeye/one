@@ -5,3 +5,7 @@ class PbData {
 class PbBase {
   const PbBase();
 }
+
+class PbPortal {
+  const PbPortal();
+}
