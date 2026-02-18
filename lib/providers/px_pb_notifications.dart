@@ -12,20 +12,24 @@ class PxPbNotifications extends ChangeNotifier {
   }
 
   int _page = 1;
-  int get page => _page;
+
+  static const _perPage = 10;
 
   ApiDataResult<List<TokenizedNotification>>? _data;
   ApiDataResult<List<TokenizedNotification>>? get data => _data;
 
-  final List<TokenizedNotification> _notifications = [];
+  List<TokenizedNotification> _notifications = [];
   List<TokenizedNotification> get notifications => _notifications;
 
   Future<void> _fetchNotifications() async {
     _data =
-        await api.fetchNotifications(page: page)
+        await api.fetchNotifications(
+              page: _page,
+              perPage: _perPage,
+            )
             as ApiDataResult<List<TokenizedNotification>>;
     if (_data != null) {
-      _notifications.addAll(_data!.data);
+      _notifications = [..._notifications, ..._data!.data];
       notifyListeners();
     }
   }
@@ -33,17 +37,13 @@ class PxPbNotifications extends ChangeNotifier {
   Future<void> retry() async => await _fetchNotifications();
 
   Future<void> fetchNextBatch() async {
-    if (_data != null && _data!.data.length == 10) {
-      print('fetchNextBatch($page)');
+    if (_data != null && _data!.data.length == _perPage) {
       _page++;
-      _isLoading = true;
-      notifyListeners();
+      print('fetchNextBatch($_page)');
+      toggleLoading();
       await _fetchNotifications();
-      _isLoading = false;
-      notifyListeners();
-      return;
+      toggleLoading();
     }
-    return;
   }
 
   Future<void> markNotificationAsReadByUser({
@@ -88,7 +88,8 @@ class PxPbNotifications extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  bool get hasMore =>
-      _data != null &&
-      (_data as ApiDataResult<List<TokenizedNotification>>).data.length == 10;
+  void toggleLoading() {
+    _isLoading = !_isLoading;
+    notifyListeners();
+  }
 }

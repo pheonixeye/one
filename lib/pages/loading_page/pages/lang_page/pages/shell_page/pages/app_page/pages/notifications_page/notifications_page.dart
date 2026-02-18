@@ -1,5 +1,4 @@
 import 'package:one/core/api/_api_result.dart';
-import 'package:one/extensions/after_layout.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/notifications/tokenized_notification.dart';
@@ -20,25 +19,23 @@ class NotificationsPage extends StatefulWidget {
   State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
-class _NotificationsPageState extends State<NotificationsPage>
-    with AfterLayoutMixin {
+class _NotificationsPageState extends State<NotificationsPage> {
   late final ScrollController _controller;
-  late final _pxN = context.read<PxPbNotifications>();
+  late final PxPbNotifications _pxN;
 
   @override
   void initState() {
     super.initState();
+    _pxN = context.read<PxPbNotifications>();
     _controller = ScrollController();
     _controller.addListener(() {
-      var triggerFetchMoreSize = 0.9 * _controller.position.maxScrollExtent;
-      if (_controller.position.pixels > triggerFetchMoreSize) {
+      if (_controller.position.pixels >=
+              _controller.position.maxScrollExtent * 0.8 &&
+          !_pxN.isLoading) {
         _pxN.fetchNextBatch();
       }
     });
   }
-
-  @override
-  void afterFirstLayout(BuildContext context) {}
 
   @override
   void dispose() {
@@ -71,11 +68,9 @@ class _NotificationsPageState extends State<NotificationsPage>
           final _user_id = context.read<PxAuth>().user?.id;
           return ListView.builder(
             controller: _controller,
-            itemCount: _items.length + (n.hasMore ? 1 : 0),
+            itemCount: _items.length + 1,
             itemBuilder: (context, index) {
-              final _item = _items[index];
-              final _isNotificationRead = _item.read_by.contains(_user_id);
-              if (index >= _items.length) {
+              if (index == _items.length) {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -85,6 +80,8 @@ class _NotificationsPageState extends State<NotificationsPage>
                   ),
                 );
               }
+              final _item = _items[index];
+              final _isNotificationRead = _item.read_by.contains(_user_id);
               return InkWell(
                 onTap: _isNotificationRead
                     ? null

@@ -9,18 +9,17 @@ import 'package:pocketbase/pocketbase.dart';
 class PbNotificationsApi {
   const PbNotificationsApi();
 
-  static const _perPage = 10;
-
   static const collection = 'notifications';
 
   Future<ApiResult<List<TokenizedNotification>>> fetchNotifications({
     required int page,
+    required int perPage,
   }) async {
     try {
       final _result = await PocketbaseHelper.pbData
           .collection(collection)
           .getList(
-            perPage: _perPage,
+            perPage: perPage,
             page: page,
             sort: '-created',
           );
