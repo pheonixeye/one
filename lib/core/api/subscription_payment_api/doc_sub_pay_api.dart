@@ -2,7 +2,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/core/api/subscription_payment_api/sub_payment_exp.dart';
 import 'package:one/functions/dprint.dart';
-import 'package:one/models/doctor_subscription.dart';
+import 'package:one/models/subscription.dart';
 import 'package:one/models/payment.dart';
 
 class DocSubPayApi {
@@ -100,7 +100,7 @@ class DocSubPayApi {
   }
 
   static Future<void> createDoctorSubscriptionAndSubscriptionPaymentRefrences({
-    required DoctorSubscription doctorSubscription,
+    required Subscription doctorSubscription,
     required double amount,
     required String x_pay_payment_id,
   }) async {

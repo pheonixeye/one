@@ -6,7 +6,7 @@ import 'package:one/core/api/x-pay/x_pay_api.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/first_where_or_null.dart';
-import 'package:one/models/doctor_subscription.dart';
+import 'package:one/models/subscription.dart';
 import 'package:one/models/page_states_enum.dart';
 import 'package:one/models/x_pay/x_pay_direct_order_request.dart';
 import 'package:one/models/x_pay/x_pay_payment_status.dart';
@@ -14,7 +14,7 @@ import 'package:one/models/x_pay/x_pay_response.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/pages/order_details_page/widgets/bottom_result_sheet.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/widgets/billing_address_input_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
-import 'package:one/providers/px_doc_subscription_info.dart';
+import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/snackbar_.dart';
@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 
 class SubscriptionDetailsCard extends StatefulWidget {
   const SubscriptionDetailsCard({super.key, required this.sub});
-  final DoctorSubscription sub;
+  final Subscription sub;
 
   @override
   State<SubscriptionDetailsCard> createState() =>
@@ -40,7 +40,7 @@ class _SubscriptionDetailsCardState extends State<SubscriptionDetailsCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<PxAppConstants, PxDocSubscriptionInfo, PxLocale>(
+    return Consumer3<PxAppConstants, PxSubscription, PxLocale>(
       builder: (context, a, s, l, _) {
         while (a.constants == null) {
           return Card.outlined(

@@ -20,7 +20,7 @@ import 'package:one/core/api/clinics_api.dart';
 import 'package:one/core/api/constants_api.dart';
 import 'package:one/core/api/doctor_api.dart';
 import 'package:one/core/api/doctor_profile_items_api.dart';
-import 'package:one/core/api/doctor_subscription_info_api.dart';
+import 'package:one/core/api/subscription_api.dart';
 import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/patients_api.dart';
 import 'package:one/core/api/supply_movement_api.dart';
@@ -35,7 +35,7 @@ import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_bookkeeping.dart';
 import 'package:one/providers/px_clinics.dart';
-import 'package:one/providers/px_doc_subscription_info.dart';
+import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_forms.dart';
@@ -78,6 +78,14 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
+    create: (context) => PxSubscription(
+      api: SubscriptionApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+
+  ChangeNotifierProvider(
     create: (context) => PxS3Documents(
       context: context,
     ),
@@ -107,13 +115,6 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxAssistantAccounts(
       api: AssistantAccountsApi(
         org_id: '${context.read<PxAuth>().organization?.id}',
-      ),
-    ),
-  ),
-  ChangeNotifierProvider(
-    create: (context) => PxDocSubscriptionInfo(
-      api: DoctorSubscriptionInfoApi(
-        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),

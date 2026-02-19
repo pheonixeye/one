@@ -5,13 +5,13 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/app_constants/subscription_plan.dart';
-import 'package:one/models/doctor_subscription.dart';
+import 'package:one/models/subscription.dart';
 import 'package:one/models/x_pay/x_pay_direct_order_request.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/widgets/billing_address_input_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/widgets/select_subscription_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/widgets/subscription_details_card.dart';
 import 'package:one/providers/px_app_constants.dart';
-import 'package:one/providers/px_doc_subscription_info.dart';
+import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/router/router.dart';
@@ -26,7 +26,7 @@ class MySubscriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<PxDocSubscriptionInfo, PxAppConstants, PxDoctor, PxLocale>(
+    return Consumer4<PxSubscription, PxAppConstants, PxDoctor, PxLocale>(
       builder: (context, s, a, d, l, _) {
         return Scaffold(
           body: Column(
@@ -150,17 +150,15 @@ class MySubscriptionPage extends StatelessWidget {
 
                     while (s.result is ApiErrorResult) {
                       return CentralError(
-                        code:
-                            (s.result
-                                    as ApiErrorResult<List<DoctorSubscription>>)
-                                .errorCode,
+                        code: (s.result as ApiErrorResult<List<Subscription>>)
+                            .errorCode,
                         toExecute: s.retry,
                       );
                     }
 
                     while (s.result != null &&
                         (s.result is ApiDataResult) &&
-                        (s.result as ApiDataResult<List<DoctorSubscription>>)
+                        (s.result as ApiDataResult<List<Subscription>>)
                             .data
                             .isEmpty) {
                       return CentralNoItems(
@@ -168,8 +166,7 @@ class MySubscriptionPage extends StatelessWidget {
                       );
                     }
                     final _items =
-                        (s.result as ApiDataResult<List<DoctorSubscription>>)
-                            .data;
+                        (s.result as ApiDataResult<List<Subscription>>).data;
                     _items.sort((a, b) => a.inGracePeriod ? 0 : 1);
                     _items.sort(
                       (a, b) => a.subscription_status == 'active' ? 0 : 1,

@@ -3,12 +3,12 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/functions/dprint.dart';
-import 'package:one/models/doctor_subscription.dart';
+import 'package:one/models/subscription.dart';
 
-class DoctorSubscriptionInfoApi {
+class SubscriptionApi {
   final String doc_id;
 
-  DoctorSubscriptionInfoApi({required this.doc_id});
+  SubscriptionApi({required this.doc_id});
 
   static const String collection = 'doctor_subscriptions';
 
@@ -25,7 +25,7 @@ class DoctorSubscriptionInfoApi {
           );
 
       final _items = _response
-          .map((e) => DoctorSubscription.fromJson(e.toJson()))
+          .map((e) => Subscription.fromJson(e.toJson()))
           .toList();
 
       _items.map((e) async {
@@ -44,8 +44,7 @@ class DoctorSubscriptionInfoApi {
     );
   }
 
-  Future<ApiResult<List<DoctorSubscription>>>
-  fetchDoctorSubscriptionInfo() async {
+  Future<ApiResult<List<Subscription>>> fetchDoctorSubscriptionInfo() async {
     await _checkDoctorSubscriptionStatus();
     try {
       final _response = await PocketbaseHelper.pbBase
@@ -57,16 +56,16 @@ class DoctorSubscriptionInfoApi {
           );
       final _result = _response
           .map(
-            (e) => DoctorSubscription.fromJson({
+            (e) => Subscription.fromJson({
               ...e.toJson(),
               'payment': e.get<RecordModel?>('expand.payment_id')?.toJson(),
             }),
           )
           .toList();
       // prettyPrint(_result);
-      return ApiDataResult<List<DoctorSubscription>>(data: _result);
+      return ApiDataResult<List<Subscription>>(data: _result);
     } catch (e) {
-      return ApiErrorResult<List<DoctorSubscription>>(
+      return ApiErrorResult<List<Subscription>>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: e.toString(),
       );

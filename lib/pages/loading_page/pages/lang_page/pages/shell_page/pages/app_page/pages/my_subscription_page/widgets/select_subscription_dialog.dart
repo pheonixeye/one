@@ -4,7 +4,7 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/extensions/subscription_plan_ext.dart';
 import 'package:one/providers/px_app_constants.dart';
-import 'package:one/providers/px_doc_subscription_info.dart';
+import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class _SelectSubscriptionDialogState extends State<SelectSubscriptionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<PxAppConstants, PxDocSubscriptionInfo, PxLocale>(
+    return Consumer3<PxAppConstants, PxSubscription, PxLocale>(
       builder: (context, a, s, l, _) {
         while (a.constants == null || s.result == null) {
           return const CentralLoading();

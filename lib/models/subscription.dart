@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:one/models/payment.dart';
 
-class DoctorSubscription extends Equatable {
+class Subscription extends Equatable {
+  //TODO: modify according to new db changes
   final String id;
   final String doc_id;
   final String plan_id;
@@ -11,7 +12,7 @@ class DoctorSubscription extends Equatable {
   final String payment_id;
   final Payment? payment;
 
-  const DoctorSubscription({
+  const Subscription({
     required this.id,
     required this.doc_id,
     required this.plan_id,
@@ -22,7 +23,7 @@ class DoctorSubscription extends Equatable {
     this.payment,
   });
 
-  DoctorSubscription copyWith({
+  Subscription copyWith({
     String? id,
     String? doc_id,
     String? plan_id,
@@ -32,7 +33,7 @@ class DoctorSubscription extends Equatable {
     String? payment_id,
     Payment? payment,
   }) {
-    return DoctorSubscription(
+    return Subscription(
       id: id ?? this.id,
       doc_id: doc_id ?? this.doc_id,
       plan_id: plan_id ?? this.plan_id,
@@ -57,8 +58,8 @@ class DoctorSubscription extends Equatable {
     };
   }
 
-  factory DoctorSubscription.fromJson(Map<String, dynamic> map) {
-    return DoctorSubscription(
+  factory Subscription.fromJson(Map<String, dynamic> map) {
+    return Subscription(
       id: map['id'] as String,
       doc_id: map['doc_id'] as String,
       plan_id: map['plan_id'] as String,
