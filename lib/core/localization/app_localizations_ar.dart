@@ -1369,4 +1369,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get rescanQrCode => 'مسح الكود';
+
+  @override
+  String get showVisits => 'اظهار الزيارات';
+
+  @override
+  String get noDocumentsFoundForThisVisit =>
+      'لم يتم العثور علي مستندات لهذه الزيارة.';
 }

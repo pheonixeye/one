@@ -71,9 +71,9 @@ class PatientPortalApi {
       final _result = await PocketbaseHelper.pbPortal
           .collection('visits')
           .getFullList(
-            filter: 'patient_id = $patient_id',
+            filter: 'patient_id = "$patient_id"',
             expand: _visitsExpand,
-            sort: 'created-',
+            sort: '-created',
           );
       final _data = _result
           .map((e) => VisitExpanded.fromRecordModel(e))
@@ -96,9 +96,10 @@ class PatientPortalApi {
       final _result = await PocketbaseHelper.pbPortal
           .collection('patient__documents')
           .getFullList(
-            filter: 'patient_id = $patient_id & related_visit_id = $visit_id',
+            filter:
+                'patient_id = "$patient_id" && related_visit_id = "$visit_id"',
             expand: 'document_type_id',
-            sort: 'created-',
+            sort: '-created',
           );
       final _data = _result
           .map((e) => PatientDocumentWithDocumentType.fromRecordModel(e))

@@ -58,7 +58,10 @@ class DocumentActionBtn extends StatelessWidget {
                   title: Text(context.loc.print),
                   onTap: () async {
                     //todo: print Document
-                    await printImageAsPdf(_data);
+                    await printImageAsPdf(
+                      _data,
+                      document.document_url.split('/').last,
+                    );
                     if (context.mounted) {
                       Navigator.pop(context);
                     }

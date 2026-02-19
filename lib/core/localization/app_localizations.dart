@@ -2731,6 +2731,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rescan QrCode'**
   String get rescanQrCode;
+
+  /// No description provided for @showVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Visits'**
+  String get showVisits;
+
+  /// No description provided for @noDocumentsFoundForThisVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'No Documents Found For This Visit.'**
+  String get noDocumentsFoundForThisVisit;
 }
 
 class _AppLocalizationsDelegate

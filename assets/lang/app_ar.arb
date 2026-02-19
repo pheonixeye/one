@@ -473,5 +473,7 @@
     "bookNewVisit" : "زيارة جديدة ؟",
     "bookAppointmentPrompt" : "إذا كنت ترغب في تحديد موعد جديد، يرجى البدء بالنقر فوق الزر واتباع التعليمات الموضحة.",
     "bookAppointment" : "حجز موعد",
-    "rescanQrCode" : "مسح الكود"
+    "rescanQrCode" : "مسح الكود",
+    "showVisits" : "اظهار الزيارات",
+    "noDocumentsFoundForThisVisit" : "لم يتم العثور علي مستندات لهذه الزيارة."
 }

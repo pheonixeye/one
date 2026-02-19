@@ -4,7 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-Future<void> printImageAsPdf(Uint8List imageBytes) async {
+Future<void> printImageAsPdf(Uint8List imageBytes, String name) async {
   final doc = pw.Document();
   doc.addPage(
     pw.Page(
@@ -17,5 +17,7 @@ Future<void> printImageAsPdf(Uint8List imageBytes) async {
   );
 
   await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => doc.save());
+    onLayout: (PdfPageFormat format) async => await doc.save(),
+    name: name,
+  );
 }

@@ -474,6 +474,8 @@
     "bookNewVisit" : "New Visit ?",
     "bookAppointmentPrompt" : "If you wish to schedule a new consultation, please proceed by clicking the button and following the prompts.",
     "bookAppointment" : "Book Appointment",
-    "rescanQrCode" : "Rescan QrCode"
+    "rescanQrCode" : "Rescan QrCode",
+    "showVisits" : "Show Visits",
+    "noDocumentsFoundForThisVisit" : "No Documents Found For This Visit."
 
 }

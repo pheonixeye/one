@@ -1376,4 +1376,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rescanQrCode => 'Rescan QrCode';
+
+  @override
+  String get showVisits => 'Show Visits';
+
+  @override
+  String get noDocumentsFoundForThisVisit =>
+      'No Documents Found For This Visit.';
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:one/models/app_constants/document_type.dart';
+import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class PatientDocument extends Equatable {
@@ -96,7 +96,7 @@ class PatientDocumentWithDocumentType extends PatientDocument {
     required this.documentType,
   });
 
-  final DocumentType documentType;
+  final DoctorDocumentTypeItem documentType;
 
   factory PatientDocumentWithDocumentType.fromRecordModel(RecordModel record) {
     return PatientDocumentWithDocumentType(
@@ -107,7 +107,7 @@ class PatientDocumentWithDocumentType extends PatientDocument {
       document_type_id: record.getStringValue('document_type_id'),
       document_url: record.getStringValue('document_url'),
       created: DateTime.parse(record.getStringValue('created')),
-      documentType: DocumentType.fromJson(
+      documentType: DoctorDocumentTypeItem.fromJson(
         record.get<RecordModel>('expand.document_type_id').toJson(),
       ),
     );

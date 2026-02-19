@@ -7,9 +7,15 @@ import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
 
 class CentralError extends StatelessWidget {
-  const CentralError({super.key, required this.code, required this.toExecute});
+  const CentralError({
+    super.key,
+    required this.code,
+    required this.toExecute,
+    this.isForQrRescan = false,
+  });
   final int? code;
   final Future<void> Function() toExecute;
+  final bool isForQrRescan;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +37,21 @@ class CentralError extends StatelessWidget {
                 },
               ),
               ElevatedButton.icon(
-                onPressed: () async {
-                  await shellFunction(
-                    context,
-                    toExecute: () async {
-                      await toExecute();
-                    },
-                  );
-                },
-                label: Text(context.loc.retry),
+                onPressed: isForQrRescan
+                    ? () {
+                        toExecute();
+                      }
+                    : () async {
+                        await shellFunction(
+                          context,
+                          toExecute: () async {
+                            await toExecute();
+                          },
+                        );
+                      },
+                label: Text(
+                  isForQrRescan ? context.loc.rescanQrCode : context.loc.retry,
+                ),
                 icon: Icon(Icons.refresh, color: Colors.green.shade100),
               ),
             ],
