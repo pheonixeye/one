@@ -4,9 +4,9 @@ import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/app_constants/_app_constants.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/app_constants/patient_progress_status.dart';
-import 'package:one/models/app_constants/subscription_plan.dart';
 import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/app_constants/visit_type.dart';
+import 'package:one/models/subscriptions/plan.dart';
 
 class PxAppConstants extends ChangeNotifier {
   final ConstantsApi api;
@@ -54,23 +54,16 @@ class PxAppConstants extends ChangeNotifier {
 
   List<VisitType> get visitTypes => [consultation, followup, procedure];
   //subscription plans
-  SubscriptionPlan? get trial =>
-      _constants?.subscriptionPlan.firstWhere((sp) => sp.name_en == 'Trial');
 
-  SubscriptionPlan? get monthly =>
-      _constants?.subscriptionPlan.firstWhere((sp) => sp.name_en == 'Monthly');
-
-  SubscriptionPlan? get halfAnnual => _constants?.subscriptionPlan.firstWhere(
+  Plan? get halfAnnual => _constants?.subscriptionPlan.firstWhere(
     (sp) => sp.name_en == 'Half Annual',
   );
 
-  SubscriptionPlan? get annual =>
+  Plan? get annual =>
       _constants?.subscriptionPlan.firstWhere((sp) => sp.name_en == 'Annual');
 
-  List<SubscriptionPlan> get validSubscriptions =>
-      _constants?.subscriptionPlan != null
-      ? [monthly!, halfAnnual!, annual!]
-      : [];
+  List<Plan> get validSubscriptions =>
+      _constants?.subscriptionPlan != null ? [halfAnnual!, annual!] : [];
   //patient progress status
   PatientProgressStatus get in_waiting => _constants!.patientProgressStatus
       .firstWhere((e) => e.name_en == 'In Waiting');

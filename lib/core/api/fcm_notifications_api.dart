@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 class FcmNotificationsApi {
   const FcmNotificationsApi();
 
+  //TODO: check CORS Issue in production
+
   Future<void> sendFcmNotification(ClientNotification n) async {
     final _uri = Uri.parse(
       const String.fromEnvironment('FCM_NOTIFICATION_URL'),

@@ -7,9 +7,9 @@ import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/app_constants/_app_constants.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/app_constants/patient_progress_status.dart';
-import 'package:one/models/app_constants/subscription_plan.dart';
 import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/app_constants/visit_type.dart';
+import 'package:one/models/subscriptions/plan.dart';
 
 @PbBase()
 class ConstantsApi {
@@ -20,7 +20,7 @@ class ConstantsApi {
   static const String account_types = 'account_types';
   static const String visit_status = 'visit_status';
   static const String visit_type = 'visit_type';
-  static const String subscription_plan = 'subscription_plans';
+  static const String subscription_plan = 'plans';
   static const String patient_progress_status = 'patient_progress_status';
   static const String app_permissions = 'app_permissions';
   // static const String document_type = 'document_type';
@@ -34,7 +34,7 @@ class ConstantsApi {
     late final List<AccountType> accountTypes;
     late final List<VisitStatus> visitStatus;
     late final List<VisitType> visitType;
-    late final List<SubscriptionPlan> subscriptionPlan;
+    late final List<Plan> subscriptionPlan;
     late final List<PatientProgressStatus> patientProgressStatus;
     late final List<AppPermission> appPermission;
     // late final List<DocumentType> documentType;
@@ -86,7 +86,7 @@ class ConstantsApi {
         .toList();
 
     subscriptionPlan = _result[3].items
-        .map((e) => SubscriptionPlan.fromJson(e.toJson()))
+        .map((e) => Plan.fromJson(e.toJson()))
         .toList();
 
     patientProgressStatus = _result[4].items

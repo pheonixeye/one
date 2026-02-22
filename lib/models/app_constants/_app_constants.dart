@@ -3,15 +3,15 @@ import 'package:equatable/equatable.dart';
 import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/app_constants/patient_progress_status.dart';
-import 'package:one/models/app_constants/subscription_plan.dart';
 import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/app_constants/visit_type.dart';
+import 'package:one/models/subscriptions/plan.dart';
 
 class AppConstants extends Equatable {
   final List<AccountType> accountTypes;
   final List<VisitStatus> visitStatus;
   final List<VisitType> visitType;
-  final List<SubscriptionPlan> subscriptionPlan;
+  final List<Plan> subscriptionPlan;
   final List<PatientProgressStatus> patientProgressStatus;
   final List<AppPermission> appPermission;
   // final List<DocumentType> documentType;
@@ -30,7 +30,7 @@ class AppConstants extends Equatable {
     List<AccountType>? accountTypes,
     List<VisitStatus>? visitStatus,
     List<VisitType>? visitType,
-    List<SubscriptionPlan>? subscriptionPlan,
+    List<Plan>? subscriptionPlan,
     List<PatientProgressStatus>? patientProgressStatus,
     List<AppPermission>? appPermission,
     // List<DocumentType>? documentType,
@@ -78,9 +78,9 @@ class AppConstants extends Equatable {
           (x) => VisitType.fromJson(x as Map<String, dynamic>),
         ),
       ),
-      subscriptionPlan: List<SubscriptionPlan>.from(
-        (map['subscriptionPlan'] as List<dynamic>).map<SubscriptionPlan>(
-          (x) => SubscriptionPlan.fromJson(x as Map<String, dynamic>),
+      subscriptionPlan: List<Plan>.from(
+        (map['subscriptionPlan'] as List<dynamic>).map<Plan>(
+          (x) => Plan.fromJson(x as Map<String, dynamic>),
         ),
       ),
       patientProgressStatus: List<PatientProgressStatus>.from(

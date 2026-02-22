@@ -14,11 +14,15 @@ import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_today_patient_progress.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/central_no_items.dart';
+import 'package:one/widgets/sm_btn.dart';
 import 'package:provider/provider.dart';
 
 class ClinicsPatientsMovementsPage extends StatefulWidget {
-  const ClinicsPatientsMovementsPage({super.key});
-
+  const ClinicsPatientsMovementsPage({
+    super.key,
+    this.showActionBtn = true,
+  });
+  final bool showActionBtn;
   @override
   State<ClinicsPatientsMovementsPage> createState() =>
       _ClinicsPatientsMovementsPageState();
@@ -111,18 +115,6 @@ class _ClinicsPatientsMovementsPageState
                     Expanded(
                       child: Builder(
                         builder: (context) {
-                          // while (t.visits == null) {
-                          //   return const CentralLoading();
-                          // }
-
-                          // while (v.visits is ApiErrorResult) {
-                          //   return CentralError(
-                          //     code: (v.visits as ApiErrorResult<List<Visit>>)
-                          //         .errorCode,
-                          //     toExecute: v.retry,
-                          //   );
-                          // }
-
                           while (t.visits.isEmpty) {
                             return CentralNoItems(
                               message: context.loc.noVisitsFoundForToday,
@@ -166,6 +158,40 @@ class _ClinicsPatientsMovementsPageState
               },
             ),
           ),
+          floatingActionButton: widget.showActionBtn
+              ? SmBtn(
+                  child: const Icon(Icons.search),
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          insetPadding: const EdgeInsets.all(0),
+                          contentPadding: const EdgeInsets.all(0),
+                          content: SizedBox(
+                            width: MediaQuery.widthOf(context),
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                ClinicsPatientsMovementsPage(
+                                  showActionBtn: false,
+                                  key: UniqueKey(),
+                                ),
+                                IconButton.outlined(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(Icons.close),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                )
+              : const SizedBox(),
         );
       },
     );

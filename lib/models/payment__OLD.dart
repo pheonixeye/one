@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class Payment extends Equatable {
+class Payment__OLD extends Equatable {
   final String id;
   final String doc_id;
   final String doctor_subscription_id;
@@ -9,7 +9,7 @@ class Payment extends Equatable {
   final String x_pay_payment_id;
   final String x_pay_transaction_status;
 
-  const Payment({
+  const Payment__OLD({
     required this.id,
     required this.doc_id,
     required this.doctor_subscription_id,
@@ -19,7 +19,7 @@ class Payment extends Equatable {
     required this.x_pay_transaction_status,
   });
 
-  Payment copyWith({
+  Payment__OLD copyWith({
     String? id,
     String? doc_id,
     String? doctor_subscription_id,
@@ -28,7 +28,7 @@ class Payment extends Equatable {
     String? x_pay_payment_id,
     String? x_pay_transaction_status,
   }) {
-    return Payment(
+    return Payment__OLD(
       id: id ?? this.id,
       doc_id: doc_id ?? this.doc_id,
       doctor_subscription_id:
@@ -53,8 +53,8 @@ class Payment extends Equatable {
     };
   }
 
-  factory Payment.fromJson(Map<String, dynamic> map) {
-    return Payment(
+  factory Payment__OLD.fromJson(Map<String, dynamic> map) {
+    return Payment__OLD(
       id: map['id'] as String,
       doc_id: map['doc_id'] as String,
       doctor_subscription_id: map['doctor_subscription_id'] as String,
@@ -81,12 +81,12 @@ class Payment extends Equatable {
     ];
   }
 
-  factory Payment.initial({
+  factory Payment__OLD.initial({
     required String doc_id,
     required String doctor_subscription_id,
     required double amount,
   }) {
-    return Payment(
+    return Payment__OLD(
       id: '',
       doc_id: doc_id,
       doctor_subscription_id: doctor_subscription_id,

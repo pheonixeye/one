@@ -80,8 +80,9 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     create: (context) => PxSubscription(
       api: SubscriptionApi(
-        doc_id: context.read<PxAuth>().doc_id,
+        org_id: '${context.read<PxAuth>().organization?.id}',
       ),
+      context: context,
     ),
   ),
 

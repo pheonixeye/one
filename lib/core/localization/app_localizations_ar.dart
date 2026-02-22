@@ -1376,4 +1376,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noDocumentsFoundForThisVisit =>
       'لم يتم العثور علي مستندات لهذه الزيارة.';
+
+  @override
+  String get paidVia => 'الدفع عن طريق';
 }

@@ -476,6 +476,6 @@
     "bookAppointment" : "Book Appointment",
     "rescanQrCode" : "Rescan QrCode",
     "showVisits" : "Show Visits",
-    "noDocumentsFoundForThisVisit" : "No Documents Found For This Visit."
-
+    "noDocumentsFoundForThisVisit" : "No Documents Found For This Visit.",
+    "paidVia" : "Paid Via"
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:one/models/payment.dart';
+import 'package:one/models/payment__OLD.dart';
 
 class Subscription extends Equatable {
   //TODO: modify according to new db changes
@@ -10,7 +10,7 @@ class Subscription extends Equatable {
   final DateTime start_date;
   final DateTime end_date;
   final String payment_id;
-  final Payment? payment;
+  final Payment__OLD? payment;
 
   const Subscription({
     required this.id,
@@ -31,7 +31,7 @@ class Subscription extends Equatable {
     DateTime? start_date,
     DateTime? end_date,
     String? payment_id,
-    Payment? payment,
+    Payment__OLD? payment,
   }) {
     return Subscription(
       id: id ?? this.id,
@@ -69,7 +69,7 @@ class Subscription extends Equatable {
       payment_id: map['payment_id'] as String,
       payment: map['payment'] == null
           ? null
-          : Payment.fromJson(map['payment'] as Map<String, dynamic>),
+          : Payment__OLD.fromJson(map['payment'] as Map<String, dynamic>),
     );
   }
   final _graceDuration = const Duration(days: 7);

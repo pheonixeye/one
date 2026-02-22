@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:one/core/api/subscription_payment_api/doc_sub_pay_api.dart';
-import 'package:one/core/api/x-pay/x_pay_api.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/app_constants/subscription_plan.dart';
 import 'package:one/models/doctor.dart';
-import 'package:one/models/subscription.dart';
 import 'package:one/models/page_states_enum.dart';
 import 'package:one/models/x_pay/x_pay_direct_order_request.dart';
 import 'package:one/models/x_pay/x_pay_response.dart';
@@ -273,34 +270,34 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                               _state == PageState.hasResult)
                           ? null
                           : () async {
-                              XPayResponse _xPayResponseTemplate;
+                              // XPayResponse _xPayResponseTemplate;
                               _updateState(PageState.processing);
                               try {
                                 //todo: Send payment link generation request
-                                _xPayResponseTemplate = await XPayApi()
-                                    .generatePaymentLink(_request);
+                                // _xPayResponseTemplate = await XPayApi()
+                                //     .generatePaymentLink(_request);
                                 //todo: add doc_sb && sub_pay references
-                                await DocSubPayApi.createDoctorSubscriptionAndSubscriptionPaymentRefrences(
-                                  doctorSubscription: Subscription(
-                                    id: '',
-                                    doc_id: _doctor.id,
-                                    plan_id: _plan.id,
-                                    subscription_status: 'inactive',
-                                    start_date: DateTime.now(),
-                                    end_date: DateTime.now().add(
-                                      Duration(days: _plan.duration_in_days),
-                                    ),
-                                    payment: null,
-                                    payment_id: '',
-                                  ),
-                                  amount: _request.amount.amount,
-                                  x_pay_payment_id:
-                                      _xPayResponseTemplate.data.payment_id,
-                                );
+                                // await DocSubPayApi.createDoctorSubscriptionAndSubscriptionPaymentRefrences(
+                                //   doctorSubscription: Subscription(
+                                //     id: '',
+                                //     doc_id: _doctor.id,
+                                //     plan_id: _plan.id,
+                                //     subscription_status: 'inactive',
+                                //     start_date: DateTime.now(),
+                                //     end_date: DateTime.now().add(
+                                //       Duration(days: _plan.duration_in_days),
+                                //     ),
+                                //     payment: null,
+                                //     payment_id: '',
+                                //   ),
+                                //   amount: _request.amount.amount,
+                                //   x_pay_payment_id:
+                                //       _xPayResponseTemplate.data.payment_id,
+                                // );
 
-                                setState(() {
-                                  _xPayResponse = _xPayResponseTemplate;
-                                });
+                                // setState(() {
+                                //   _xPayResponse = _xPayResponseTemplate;
+                                // });
                                 _updateState(PageState.hasResult);
                               } on Exception catch (e) {
                                 //todo: notify user with error

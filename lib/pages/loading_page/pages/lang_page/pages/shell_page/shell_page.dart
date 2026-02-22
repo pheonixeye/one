@@ -4,6 +4,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/nav_bar.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/organization_is_inactive.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_subscription.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
 
@@ -21,9 +22,9 @@ class ShellPage extends StatelessWidget {
           if (!context.isMobile) const Expanded(flex: 1, child: EndDrawer()),
           Expanded(
             flex: 3,
-            child: Consumer<PxAuth>(
-              builder: (context, auth, _) {
-                while (auth.organization == null) {
+            child: Consumer2<PxAuth, PxSubscription>(
+              builder: (context, auth, s, _) {
+                while (auth.organization == null || s.result == null) {
                   return const CentralLoading();
                 }
                 final _isActive = auth.organization!.activity == 'active';

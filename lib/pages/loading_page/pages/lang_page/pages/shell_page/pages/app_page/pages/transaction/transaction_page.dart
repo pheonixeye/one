@@ -5,14 +5,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:one/assets/assets.dart';
-import 'package:one/core/api/subscription_payment_api/doc_sub_pay_api.dart';
+// import 'package:one/core/api/subscription_payment_api/doc_sub_pay_api.dart';
 import 'package:one/core/api/subscription_payment_api/sub_payment_exp.dart';
 import 'package:one/extensions/after_layout.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/page_states_enum.dart';
 import 'package:one/models/x_pay/x_pay_transaction_result.dart';
-import 'package:one/providers/px_auth.dart';
+// import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/router/router.dart';
 import 'package:one/widgets/central_error.dart';
@@ -59,14 +59,14 @@ class _TransactionPageState extends State<TransactionPage>
       _updateState(PageState.hasError);
       _updateException(e);
     }
-    _proceed =
-        DocSubPayApi.updateSubscriptionPaymentsAndActivateDoctorSubscription(
-          doc_id: context.read<PxAuth>().doc_id,
-          x_pay_payment_id: _xPayTransactionResult.payment_id,
-          x_pay_transaction_id: _xPayTransactionResult.transaction_id,
-          x_pay_transaction_status: _xPayTransactionResult.transaction_status,
-          amount: _xPayTransactionResult.total_amount,
-        );
+    // _proceed =
+    //     DocSubPayApi.updateSubscriptionPaymentsAndActivateDoctorSubscription(
+    //       doc_id: context.read<PxAuth>().doc_id,
+    //       x_pay_payment_id: _xPayTransactionResult.payment_id,
+    //       x_pay_transaction_id: _xPayTransactionResult.transaction_id,
+    //       x_pay_transaction_status: _xPayTransactionResult.transaction_status,
+    //       amount: _xPayTransactionResult.total_amount,
+    //     );
   }
 
   @override

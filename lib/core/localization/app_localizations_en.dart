@@ -1383,4 +1383,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noDocumentsFoundForThisVisit =>
       'No Documents Found For This Visit.';
+
+  @override
+  String get paidVia => 'Paid Via';
 }

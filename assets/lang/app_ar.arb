@@ -475,5 +475,6 @@
     "bookAppointment" : "حجز موعد",
     "rescanQrCode" : "مسح الكود",
     "showVisits" : "اظهار الزيارات",
-    "noDocumentsFoundForThisVisit" : "لم يتم العثور علي مستندات لهذه الزيارة."
+    "noDocumentsFoundForThisVisit" : "لم يتم العثور علي مستندات لهذه الزيارة.",
+    "paidVia" : "الدفع عن طريق"
 }

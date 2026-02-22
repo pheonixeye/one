@@ -2743,6 +2743,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Documents Found For This Visit.'**
   String get noDocumentsFoundForThisVisit;
+
+  /// No description provided for @paidVia.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Via'**
+  String get paidVia;
 }
 
 class _AppLocalizationsDelegate

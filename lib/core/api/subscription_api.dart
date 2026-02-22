@@ -1,71 +1,33 @@
-import 'package:pocketbase/pocketbase.dart';
+import 'package:one/annotations/pb_annotations.dart';
+import 'package:one/models/subscriptions/subscription.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/errors/code_to_error.dart';
-import 'package:one/functions/dprint.dart';
-import 'package:one/models/subscription.dart';
 
+@PbBase()
 class SubscriptionApi {
-  final String doc_id;
+  final String org_id;
 
-  SubscriptionApi({required this.doc_id});
+  SubscriptionApi({required this.org_id});
 
-  static const String collection = 'doctor_subscriptions';
+  static const String collection = 'subscriptions';
 
-  static bool _activeSubscriptionsChecked = false;
+  static const String _expand = 'payment_id, plan_id';
 
-  static const String _expand = 'payment_id';
-
-  Future<void> _checkDoctorSubscriptionStatus() async {
-    if (_activeSubscriptionsChecked == false) {
-      final _response = await PocketbaseHelper.pbBase
-          .collection(collection)
-          .getFullList(
-            filter: "doc_id = '$doc_id' && subscription_status = 'active'",
-          );
-
-      final _items = _response
-          .map((e) => Subscription.fromJson(e.toJson()))
-          .toList();
-
-      _items.map((e) async {
-        if (e.passedExpirationTime) {
-          final _toExpire = e.copyWith(subscription_status: 'expired');
-          await PocketbaseHelper.pbBase
-              .collection(collection)
-              .update(e.id, body: _toExpire.toJson());
-        }
-      }).toList();
-    }
-
-    _activeSubscriptionsChecked = true;
-    dprint(
-      'DoctorSubscriptionInfoApi($doc_id).__checkDoctorSubscriptionStatus($_activeSubscriptionsChecked))',
-    );
-  }
-
-  Future<ApiResult<List<Subscription>>> fetchDoctorSubscriptionInfo() async {
-    await _checkDoctorSubscriptionStatus();
+  Future<ApiResult<SubscriptionExpanded>>
+  fetchOrganizationSubscriptionInfo() async {
     try {
       final _response = await PocketbaseHelper.pbBase
           .collection(collection)
-          .getFullList(
-            filter: "doc_id = '$doc_id'",
-            sort: '-created',
+          .getFirstListItem(
+            'org_id = "$org_id"',
             expand: _expand,
           );
-      final _result = _response
-          .map(
-            (e) => Subscription.fromJson({
-              ...e.toJson(),
-              'payment': e.get<RecordModel?>('expand.payment_id')?.toJson(),
-            }),
-          )
-          .toList();
+      final _result = SubscriptionExpanded.fromRecordModel(_response);
       // prettyPrint(_result);
-      return ApiDataResult<List<Subscription>>(data: _result);
+      return ApiDataResult<SubscriptionExpanded>(data: _result);
     } catch (e) {
-      return ApiErrorResult<List<Subscription>>(
+      return ApiErrorResult<SubscriptionExpanded>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: e.toString(),
       );

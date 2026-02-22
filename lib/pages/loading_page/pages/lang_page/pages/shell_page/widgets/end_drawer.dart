@@ -122,15 +122,15 @@ class EndDrawer extends StatelessWidget {
                 routePath: AppRouter.assistants,
                 selected: selected(AppRouter.assistants),
               ),
-              //HACK: LATER
 
-              // const ThinDivider(),
-              // DrawerNavBtn(
-              //   title: context.loc.mySubscription,
-              //   icondata: Icons.receipt_long,
-              //   routePath: AppRouter.mysubscription,
-              //   selected: selected(AppRouter.mysubscription),
-              // ),
+              //HACK: LATER
+              const ThinDivider(),
+              DrawerNavBtn(
+                title: context.loc.mySubscription,
+                icondata: Icons.receipt_long,
+                routePath: AppRouter.mysubscription,
+                selected: selected(AppRouter.mysubscription),
+              ),
               const ThinDivider(),
               DrawerNavBtn(
                 title: context.loc.notifications,
