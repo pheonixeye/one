@@ -46,4 +46,11 @@ class AppAssets {
   ///subscription_expired
   static String subscription_expired(String lang) =>
       'assets/images/exp_$lang.png';
+
+  //homepage assets
+  static const String hero = 'assets/images/hero.png';
+
+  static String featureImage(int index) {
+    return 'assets/images/features/feat_$index.png';
+  }
 }

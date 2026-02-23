@@ -5,6 +5,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
+import 'package:one/providers/pricing_px.dart';
 import 'package:one/providers/px_patient_portal.dart';
 import 'package:one/providers/px_reciept_info.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,7 @@ import 'package:one/providers/px_patients.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
 import 'package:one/providers/px_visit_prescription_state.dart';
+import 'package:one/providers/scroll_px.dart';
 import 'package:one/utils/shared_prefs.dart';
 import 'package:one/utils/utils_keys.dart';
 import 'package:one/widgets/central_loading.dart';
@@ -189,27 +191,37 @@ class AppRouter {
             path: lang, // /:lang
             name: lang,
             builder: (context, state) {
-              return LangPage(key: state.pageKey);
+              return MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                    create: (context) => PxPricing(),
+                  ),
+                  ChangeNotifierProvider(
+                    create: (context) => PxScroll(),
+                  ),
+                ],
+                child: LangPage(key: state.pageKey),
+              );
             },
             redirect: (context, state) async {
               final _auth = context.read<PxAuth>();
               if (_auth.isLoggedIn && state.fullPath == '/:lang') {
                 return '/${state.pathParameters['lang']}/$app';
               }
-              if (!_auth.isLoggedIn && state.fullPath == '/:lang') {
-                try {
-                  await _auth.loginWithToken();
-                  dprint(
-                    'authWithToken(LangPage-Redirect)(isLoggedIn=${_auth.isLoggedIn})',
-                  );
-                  return '/${state.pathParameters['lang']}/$app';
-                } catch (e) {
-                  return '/${state.pathParameters['lang']}/$login';
-                }
-              }
-              if (_auth.isLoggedIn && state.fullPath != '/:lang') {
-                return null;
-              }
+              // if (!_auth.isLoggedIn && state.fullPath == '/:lang') {
+              //   try {
+              //     await _auth.loginWithToken();
+              //     dprint(
+              //       'authWithToken(LangPage-Redirect)(isLoggedIn=${_auth.isLoggedIn})',
+              //     );
+              //     return '/${state.pathParameters['lang']}/$app';
+              //   } catch (e) {
+              //     return '/${state.pathParameters['lang']}/$login';
+              //   }
+              // }
+              // if (_auth.isLoggedIn && state.fullPath != '/:lang') {
+              //   return null;
+              // }
               return null;
             },
             routes: [

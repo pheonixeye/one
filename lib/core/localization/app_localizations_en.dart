@@ -45,7 +45,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Connect with Your Patients, Simplify Your Schedule, and Grow Your Practice.';
 
   @override
-  String get email => 'Email';
+  String get email => 'Email Address';
 
   @override
   String get password => 'Password';
@@ -138,7 +138,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enter Your First, Middle & Last Names in Arabic';
 
   @override
-  String get phone => 'Mobile Number';
+  String get phone => 'Phone Number';
 
   @override
   String get enterPhoneNumber => 'Enter Mobile Number';
@@ -148,7 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enter a Valid Mobile Number - 11 Digits.';
 
   @override
-  String get success => 'Success';
+  String get success => 'Your Message Got To Us Successfully.';
 
   @override
   String get myPatients => 'My Patients';
@@ -1386,4 +1386,203 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paidVia => 'Paid Via';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get features => 'Features';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get lang => 'Language';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get howItWorks => 'How It Works?';
+
+  @override
+  String get transparent => 'Transparent Pricing For All.';
+
+  @override
+  String get financing => 'Online Business Financing With No Hidden Fees.';
+
+  @override
+  String get choosePlan => 'Choose Subscription Plan';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String get title => 'Package Name';
+
+  @override
+  String get desc => 'Package Description';
+
+  @override
+  String get fees => 'Package Fees';
+
+  @override
+  String get try_ => 'Try';
+
+  @override
+  String get faq => 'Frequently Asked Questions ?';
+
+  @override
+  String get better => 'It\'s Better Than You Think.';
+
+  @override
+  String get beyond => 'It Goes Beyond Any Other Medical Software.';
+
+  @override
+  String get contact => 'Contact Us';
+
+  @override
+  String get letsTalk => 'Let\'s Talk.';
+
+  @override
+  String get haveQuestions =>
+      'If You Have Any Questions About The Subscription Or Are Not Sure Which Plan is Right For You, Contact Our Team And Let\'s Schedule A Call.';
+
+  @override
+  String get callUs => 'Call Us';
+
+  @override
+  String get emailUs => 'Email Us';
+
+  @override
+  String get visitHelpCenter => 'Visit Help Center';
+
+  @override
+  String get visitUsPersonally => 'Visit Us Personally';
+
+  @override
+  String get addressOne => 'Zahraa El Maadi';
+
+  @override
+  String get addressTwo => 'El Nada Tower';
+
+  @override
+  String get addressThree => 'First Floor';
+
+  @override
+  String get plansToPowerBus =>
+      'We Have Plans To Power Your Clinic Business. Tell Us Your Needs And We Will Contact You Shortly.';
+
+  @override
+  String get existingCustomer => 'Are You An Existing Customer ?';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get onTrial => 'On Trial';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get helpYouWith => 'What Can We Help You With ?';
+
+  @override
+  String get pricing => 'Pricing';
+
+  @override
+  String get learnMore => 'Learn More About Our Services.';
+
+  @override
+  String get legal => 'Terms & Legal';
+
+  @override
+  String get enterName => 'Kindly Enter Your Name.';
+
+  @override
+  String get enterEmail => 'Kindly Enter Your Valid Email Address.';
+
+  @override
+  String get enterPhone => 'Kindly Enter Your Mobile Phone Number.';
+
+  @override
+  String get validatePhone =>
+      'Kindly Enter a Valid Mobile Number With 11 Digits.';
+
+  @override
+  String get enterMessage => 'Kindly Enter Your Message.';
+
+  @override
+  String get failed => 'Something Went Wrong. Please Try Again Later.';
+
+  @override
+  String get annual => 'Annual';
+
+  @override
+  String get halfAnnual => 'Half Annual';
+
+  @override
+  String get bestValue => 'Best Value';
+
+  @override
+  String get pricingSubtitle => 'Everything You Need To Scale Efficiently';
+
+  @override
+  String get month => 'Month';
+
+  @override
+  String get months => 'Months';
+
+  @override
+  String get billedHalfAnually => 'Billed Half Anually';
+
+  @override
+  String get billedAnually => 'Billed Anually';
+
+  @override
+  String get feat_one_title => 'Unlimited Patient Records';
+
+  @override
+  String get feat_one_sub =>
+      'Securely manage all patient information without data caps.';
+
+  @override
+  String get feat_two_title => 'Smart Appointment Scheduling';
+
+  @override
+  String get feat_two_sub =>
+      'Intelligent booking system with multi-doctor support.';
+
+  @override
+  String get feat_three_title => 'E-Prescriptions & Lab Orders';
+
+  @override
+  String get feat_three_sub =>
+      'Digital workflows for scripts and diagnostic requests.';
+
+  @override
+  String get feat_four_title => 'Automated Patient Reminders (SMS/Email)';
+
+  @override
+  String get feat_four_sub => 'Reduce no-shows with automated follow-ups.';
+
+  @override
+  String get feat_five_title => 'Advanced Clinic Analytics';
+
+  @override
+  String get feat_five_sub =>
+      'Insights into patient volume, revenue, and clinic performance.';
+
+  @override
+  String get subscribeNow => 'Subscribe Now';
 }

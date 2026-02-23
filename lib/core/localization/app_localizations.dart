@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
-  /// **'Email'**
+  /// **'Email Address'**
   String get email;
 
   /// No description provided for @password.
@@ -335,7 +335,7 @@ abstract class AppLocalizations {
   /// No description provided for @phone.
   ///
   /// In en, this message translates to:
-  /// **'Mobile Number'**
+  /// **'Phone Number'**
   String get phone;
 
   /// No description provided for @enterPhoneNumber.
@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @success.
   ///
   /// In en, this message translates to:
-  /// **'Success'**
+  /// **'Your Message Got To Us Successfully.'**
   String get success;
 
   /// No description provided for @myPatients.
@@ -2749,6 +2749,390 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Paid Via'**
   String get paidVia;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @lang.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get lang;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @howItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How It Works?'**
+  String get howItWorks;
+
+  /// No description provided for @transparent.
+  ///
+  /// In en, this message translates to:
+  /// **'Transparent Pricing For All.'**
+  String get transparent;
+
+  /// No description provided for @financing.
+  ///
+  /// In en, this message translates to:
+  /// **'Online Business Financing With No Hidden Fees.'**
+  String get financing;
+
+  /// No description provided for @choosePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Subscription Plan'**
+  String get choosePlan;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Package Name'**
+  String get title;
+
+  /// No description provided for @desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Package Description'**
+  String get desc;
+
+  /// No description provided for @fees.
+  ///
+  /// In en, this message translates to:
+  /// **'Package Fees'**
+  String get fees;
+
+  /// No description provided for @try_.
+  ///
+  /// In en, this message translates to:
+  /// **'Try'**
+  String get try_;
+
+  /// No description provided for @faq.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently Asked Questions ?'**
+  String get faq;
+
+  /// No description provided for @better.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s Better Than You Think.'**
+  String get better;
+
+  /// No description provided for @beyond.
+  ///
+  /// In en, this message translates to:
+  /// **'It Goes Beyond Any Other Medical Software.'**
+  String get beyond;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contact;
+
+  /// No description provided for @letsTalk.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Talk.'**
+  String get letsTalk;
+
+  /// No description provided for @haveQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'If You Have Any Questions About The Subscription Or Are Not Sure Which Plan is Right For You, Contact Our Team And Let\'s Schedule A Call.'**
+  String get haveQuestions;
+
+  /// No description provided for @callUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Us'**
+  String get callUs;
+
+  /// No description provided for @emailUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Us'**
+  String get emailUs;
+
+  /// No description provided for @visitHelpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Help Center'**
+  String get visitHelpCenter;
+
+  /// No description provided for @visitUsPersonally.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Us Personally'**
+  String get visitUsPersonally;
+
+  /// No description provided for @addressOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Zahraa El Maadi'**
+  String get addressOne;
+
+  /// No description provided for @addressTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'El Nada Tower'**
+  String get addressTwo;
+
+  /// No description provided for @addressThree.
+  ///
+  /// In en, this message translates to:
+  /// **'First Floor'**
+  String get addressThree;
+
+  /// No description provided for @plansToPowerBus.
+  ///
+  /// In en, this message translates to:
+  /// **'We Have Plans To Power Your Clinic Business. Tell Us Your Needs And We Will Contact You Shortly.'**
+  String get plansToPowerBus;
+
+  /// No description provided for @existingCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Are You An Existing Customer ?'**
+  String get existingCustomer;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @onTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'On Trial'**
+  String get onTrial;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @helpYouWith.
+  ///
+  /// In en, this message translates to:
+  /// **'What Can We Help You With ?'**
+  String get helpYouWith;
+
+  /// No description provided for @pricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing'**
+  String get pricing;
+
+  /// No description provided for @learnMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn More About Our Services.'**
+  String get learnMore;
+
+  /// No description provided for @legal.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Legal'**
+  String get legal;
+
+  /// No description provided for @enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Your Name.'**
+  String get enterName;
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Your Valid Email Address.'**
+  String get enterEmail;
+
+  /// No description provided for @enterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Your Mobile Phone Number.'**
+  String get enterPhone;
+
+  /// No description provided for @validatePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter a Valid Mobile Number With 11 Digits.'**
+  String get validatePhone;
+
+  /// No description provided for @enterMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly Enter Your Message.'**
+  String get enterMessage;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something Went Wrong. Please Try Again Later.'**
+  String get failed;
+
+  /// No description provided for @annual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get annual;
+
+  /// No description provided for @halfAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Half Annual'**
+  String get halfAnnual;
+
+  /// No description provided for @bestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get bestValue;
+
+  /// No description provided for @pricingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything You Need To Scale Efficiently'**
+  String get pricingSubtitle;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @months.
+  ///
+  /// In en, this message translates to:
+  /// **'Months'**
+  String get months;
+
+  /// No description provided for @billedHalfAnually.
+  ///
+  /// In en, this message translates to:
+  /// **'Billed Half Anually'**
+  String get billedHalfAnually;
+
+  /// No description provided for @billedAnually.
+  ///
+  /// In en, this message translates to:
+  /// **'Billed Anually'**
+  String get billedAnually;
+
+  /// No description provided for @feat_one_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Patient Records'**
+  String get feat_one_title;
+
+  /// No description provided for @feat_one_sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Securely manage all patient information without data caps.'**
+  String get feat_one_sub;
+
+  /// No description provided for @feat_two_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Appointment Scheduling'**
+  String get feat_two_title;
+
+  /// No description provided for @feat_two_sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Intelligent booking system with multi-doctor support.'**
+  String get feat_two_sub;
+
+  /// No description provided for @feat_three_title.
+  ///
+  /// In en, this message translates to:
+  /// **'E-Prescriptions & Lab Orders'**
+  String get feat_three_title;
+
+  /// No description provided for @feat_three_sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital workflows for scripts and diagnostic requests.'**
+  String get feat_three_sub;
+
+  /// No description provided for @feat_four_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Automated Patient Reminders (SMS/Email)'**
+  String get feat_four_title;
+
+  /// No description provided for @feat_four_sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce no-shows with automated follow-ups.'**
+  String get feat_four_sub;
+
+  /// No description provided for @feat_five_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Clinic Analytics'**
+  String get feat_five_title;
+
+  /// No description provided for @feat_five_sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Insights into patient volume, revenue, and clinic performance.'**
+  String get feat_five_sub;
+
+  /// No description provided for @subscribeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe Now'**
+  String get subscribeNow;
 }
 
 class _AppLocalizationsDelegate

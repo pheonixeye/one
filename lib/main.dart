@@ -10,6 +10,7 @@ import 'package:one/theme/app_theme.dart';
 import 'package:one/utils/shared_prefs.dart';
 import 'package:one/utils/sound_helper.dart';
 import 'package:one/utils/utils_keys.dart';
+import 'package:one/utils/web_view_map_widget.dart';
 import 'package:provider/provider.dart';
 
 void main(List<String> args) async {
@@ -18,6 +19,7 @@ void main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   initAsyncPrefs();
+  initWebView();
   await initializeDateFormatting('ar');
   await initializeDateFormatting('en');
   await SoundHelper.initLocalFileBytes();

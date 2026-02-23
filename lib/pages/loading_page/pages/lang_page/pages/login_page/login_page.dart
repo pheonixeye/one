@@ -81,12 +81,22 @@ class _LoginPageState extends State<LoginPage> {
                                   height: 50,
                                 ),
                                 const SizedBox(width: 10),
-                                const Text(
-                                  String.fromEnvironment('APPLICATION_NAME'),
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
+                                InkWell(
+                                  onTap: () {
+                                    GoRouter.of(context).goNamed(
+                                      AppRouter.lang,
+                                      pathParameters: defaultPathParameters(
+                                        context,
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    String.fromEnvironment('APPLICATION_NAME'),
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
                                   ),
                                 ),
                               ],
