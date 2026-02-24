@@ -154,6 +154,7 @@ class DiscountManagmentRow extends StatelessWidget {
                             context,
                             toExecute: () async {
                               await b.addBookkeepingEntry(_dto);
+                              //TODO: Notify FCM to Org Members discount applied
                             },
                           );
                         }
@@ -216,6 +217,7 @@ class DiscountManagmentRow extends StatelessWidget {
                             context,
                             toExecute: () async {
                               await b.addBookkeepingEntry(_dto);
+                              //TODO: Notify FCM to Org Members discount removed
                             },
                           );
                         }

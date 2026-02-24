@@ -82,6 +82,7 @@ class VisitShiftRow extends StatelessWidget {
                       visit_id: visit.id,
                       shift: Shift.fromScheduleShift(_shift),
                     );
+                    //TODO: Notify FCM to Org Members visit Shift changed
                   },
                 );
               }

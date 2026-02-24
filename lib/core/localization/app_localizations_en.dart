@@ -1585,4 +1585,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscribeNow => 'Subscribe Now';
+
+  @override
+  String get clinicCalls => 'Clinic Calls';
 }

@@ -1577,4 +1577,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subscribeNow => 'اشترك الان';
+
+  @override
+  String get clinicCalls => 'تنبيهات العيادة';
 }

@@ -64,9 +64,10 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  //todo: add caching for pdf.min.js via cdn "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js" => no need
-  //todo: implement api cache over the whole app - done what can be done
+  //TODO: add caching for pdf.min.js via cdn "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js" => no need
   //TODO: add application error codes && messages
+  //TODO: implement fcm notifications into the app flow
+  //todo: implement api cache over the whole app - done what can be done
   //---------------------------------------------------------------------------------//
   //todo: supply movements in table form
   //todo: bookkeeping in table form

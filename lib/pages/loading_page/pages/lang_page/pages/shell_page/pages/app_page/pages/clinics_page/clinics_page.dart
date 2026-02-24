@@ -69,6 +69,7 @@ class ClinicsPage extends StatelessWidget {
                   context,
                   toExecute: () async {
                     await c.createNewClinic(_clinic);
+                    //TODO: Notify FCM to Org Members
                   },
                 );
               }

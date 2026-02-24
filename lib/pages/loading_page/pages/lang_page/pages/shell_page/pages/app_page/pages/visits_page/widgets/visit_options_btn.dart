@@ -222,6 +222,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                               pathParameters: defaultPathParameters(context)
                                 ..addAll({'visit_id': widget.visit.id}),
                             );
+                            //TODO: Notify FCM to Org Members visit accessed by who
                           },
                         ),
                       ),

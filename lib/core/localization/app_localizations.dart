@@ -3133,6 +3133,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscribe Now'**
   String get subscribeNow;
+
+  /// No description provided for @clinicCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinic Calls'**
+  String get clinicCalls;
 }
 
 class _AppLocalizationsDelegate

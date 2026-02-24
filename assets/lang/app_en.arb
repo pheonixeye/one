@@ -550,5 +550,6 @@
     "feat_four_sub" : "Reduce no-shows with automated follow-ups.",
     "feat_five_title" : "Advanced Clinic Analytics",
     "feat_five_sub" : "Insights into patient volume, revenue, and clinic performance.",
-    "subscribeNow" : "Subscribe Now"
+    "subscribeNow" : "Subscribe Now",
+    "clinicCalls" : "Clinic Calls"
 }

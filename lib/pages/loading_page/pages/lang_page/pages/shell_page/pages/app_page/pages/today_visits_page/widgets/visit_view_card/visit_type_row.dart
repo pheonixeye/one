@@ -110,6 +110,7 @@ class VisitTypeRow extends StatelessWidget {
                                 key: 'visit_type',
                                 value: e.name_en,
                               );
+                              //TODO: Notify FCM to Org Members visit Type Changed
                             },
                           );
                         },

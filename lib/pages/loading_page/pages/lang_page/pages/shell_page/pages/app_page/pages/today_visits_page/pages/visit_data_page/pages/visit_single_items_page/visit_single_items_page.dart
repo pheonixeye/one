@@ -183,11 +183,13 @@ class VisitSingleItemsPage<T extends DoctorItem> extends StatelessWidget {
                                           _item.id,
                                           setupItem,
                                         );
+                                        //TODO: Notify Fcm Org members - procedure / supply removed + return fees
                                       } else {
                                         await v.addToItemList(
                                           _item.id,
                                           setupItem,
                                         );
+                                        //TODO: Notify Fcm Org members - procedure / supply added + collect fees
                                       }
                                     },
                                   );

@@ -2,8 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 
-class BookAppointmentTile extends StatelessWidget {
+class BookAppointmentTile extends StatefulWidget {
   const BookAppointmentTile({super.key});
+
+  @override
+  State<BookAppointmentTile> createState() => _BookAppointmentTileState();
+}
+
+class _BookAppointmentTileState extends State<BookAppointmentTile> {
+  ElevatedButton get _buildButton {
+    return ElevatedButton.icon(
+      onPressed: () async {
+        //TODO: show dialog with booking info
+        //TODO: extract info from dialog
+        //TODO: add info to db
+        //TODO: send fcm notification to organization assistants
+        //TODO: send sms notification to user that appointment will be confirmed
+      },
+      label: Text(context.loc.bookAppointment),
+      icon: const Icon(Icons.calendar_month),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +44,12 @@ class BookAppointmentTile extends StatelessWidget {
                   ),
                   if (!context.isMobile) ...[
                     const Spacer(),
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        //TODO:
-                      },
-                      label: Text(context.loc.bookAppointment),
-                      icon: const Icon(Icons.calendar_month),
-                    ),
+                    _buildButton,
                   ],
                 ],
               ),
               if (context.isMobile) ...[
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    //TODO:
-                  },
-                  label: Text(context.loc.bookAppointment),
-                  icon: const Icon(Icons.calendar_month),
-                ),
+                _buildButton,
               ],
             ],
           ),
