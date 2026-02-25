@@ -148,7 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enter a Valid Mobile Number - 11 Digits.';
 
   @override
-  String get success => 'Your Message Got To Us Successfully.';
+  String get success => 'Success';
 
   @override
   String get myPatients => 'My Patients';
@@ -1521,6 +1521,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterMessage => 'Kindly Enter Your Message.';
+
+  @override
+  String get messageSuccess => 'Your Message Got To Us Successfully.';
 
   @override
   String get failed => 'Something Went Wrong. Please Try Again Later.';

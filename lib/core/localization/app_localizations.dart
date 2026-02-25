@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @success.
   ///
   /// In en, this message translates to:
-  /// **'Your Message Got To Us Successfully.'**
+  /// **'Success'**
   String get success;
 
   /// No description provided for @myPatients.
@@ -3013,6 +3013,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Kindly Enter Your Message.'**
   String get enterMessage;
+
+  /// No description provided for @messageSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Message Got To Us Successfully.'**
+  String get messageSuccess;
 
   /// No description provided for @failed.
   ///

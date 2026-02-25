@@ -530,7 +530,7 @@
     "enterPhone" : "Kindly Enter Your Mobile Phone Number.",
     "validatePhone" : "Kindly Enter a Valid Mobile Number With 11 Digits.",
     "enterMessage" : "Kindly Enter Your Message.",
-    "success" :"Your Message Got To Us Successfully.",
+    "messageSuccess" :"Your Message Got To Us Successfully.",
     "failed" : "Something Went Wrong. Please Try Again Later.",
     "annual" : "Annual",
     "halfAnnual" : "Half Annual",

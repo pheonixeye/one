@@ -21,7 +21,7 @@ class FaqCard extends StatelessWidget {
           return ExpansionTile(
             leading: const SmBtn(),
             title: Text(l.isEnglish ? faq.qEn : faq.qAr),
-            backgroundColor: Colors.amber.shade100.withOpacity(0.7),
+            backgroundColor: Colors.amber.shade100.withValues(alpha: 0.7),
             childrenPadding: const EdgeInsets.all(8),
             children: [
               Text(

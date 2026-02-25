@@ -148,7 +148,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'ادخل رقم موبايل صحيح - مكون من احد عشر رقم';
 
   @override
-  String get success => 'تم وصول رسالتك لنا بنجاح';
+  String get success => 'تم بنجاح';
 
   @override
   String get myPatients => 'المرضي';
@@ -1513,6 +1513,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enterMessage => 'برجاء كتابة رسالتك';
+
+  @override
+  String get messageSuccess => 'تم وصول رسالتك لنا بنجاح';
 
   @override
   String get failed => 'حدث خطأ في الاتصال. برجاء المحاولة في وقت لاحق.';

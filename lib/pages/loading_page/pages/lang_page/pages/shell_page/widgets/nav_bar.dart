@@ -108,8 +108,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                 const Spacer(),
 
                 //TODO: clinic calls
-                const NavBarMenuBtn(),
-                const SizedBox(width: 10),
+                if (context.read<PxAuth>().isUserNotDoctor)
+                  ...[]
+                else ...[
+                  const NavBarMenuBtn(),
+                  const SizedBox(width: 10),
+                ],
               ],
             ),
           ),

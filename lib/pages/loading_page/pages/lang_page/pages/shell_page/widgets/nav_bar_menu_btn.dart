@@ -33,7 +33,14 @@ class NavBarMenuBtn extends StatelessWidget {
                       //TODO: formulate clinic calls notifications
                       ...ClinicCall.values.map((e) {
                         return PopupMenuItem(
-                          child: Text(e.name),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            spacing: 8,
+                            children: [
+                              Icon(e.iconData),
+                              Text(l.isEnglish ? e.en : e.ar),
+                            ],
+                          ),
                         );
                       }),
                     ];
