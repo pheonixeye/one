@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/app_constants/account_type.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class UserDto extends Equatable {
   final String id;
@@ -58,10 +60,40 @@ class UserDto extends Equatable {
 
   @override
   List<Object> get props => [
-        id,
-        email,
-        name,
-        account_type_id,
-        app_permissions_ids,
-      ];
+    id,
+    email,
+    name,
+    account_type_id,
+    app_permissions_ids,
+  ];
+}
+
+class UserWithAccounttypeAndToken extends UserDto {
+  final AccountType accountType;
+  final String fcm_token;
+
+  const UserWithAccounttypeAndToken({
+    required super.id,
+    required super.email,
+    required super.name,
+    required super.account_type_id,
+    required super.app_permissions_ids,
+    required this.accountType,
+    required this.fcm_token,
+  });
+
+  factory UserWithAccounttypeAndToken.fromRecordModel(RecordModel record) {
+    final accountType = AccountType.fromJson(
+      record.get<RecordModel>('expand.account_type_id').toJson(),
+    );
+    return UserWithAccounttypeAndToken(
+      id: record.getStringValue('id'),
+      email: record.getStringValue('email'),
+      name: record.getStringValue('name'),
+      account_type_id: record.getStringValue('account_type_id'),
+      app_permissions_ids: record.getListValue<String>('app_permissions_ids'),
+      accountType: accountType,
+      fcm_token: record.getStringValue('fcm_token'),
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ClinicCall {
+enum DoctorClinicCall {
   pause_clinic(
     en: 'Pause Clinic',
     ar: 'ايقاف العيادة',
@@ -41,7 +41,7 @@ enum ClinicCall {
   final String ar;
   final IconData iconData;
 
-  const ClinicCall({
+  const DoctorClinicCall({
     required this.en,
     required this.ar,
     required this.iconData,
