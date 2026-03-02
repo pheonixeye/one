@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
+import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/account_type.dart';
-import 'package:one/models/notifications/assistant_clinic_calls.dart';
-import 'package:one/models/notifications/doctor_clinic_call.dart';
+import 'package:one/models/notifications/client_notification.dart';
+import 'package:one/models/notifications/clinic_call.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_doctor.dart';
+import 'package:one/providers/px_firebase_notifications.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/widgets/themed_popupmenu_btn.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +90,7 @@ class NavBarMenuBtn extends StatelessWidget {
                   itemBuilder: (context) {
                     return !auth.isUserNotDoctor
                         ? [
-                            ..._assistantsWithAll.map((e) {
+                            ..._assistantsWithAll.map((x) {
                               return PopupMenuItem<void>(
                                 padding: const EdgeInsets.all(0),
                                 child: PopupMenuButton(
@@ -103,7 +105,7 @@ class NavBarMenuBtn extends StatelessWidget {
                                   ),
                                   itemBuilder: (context) {
                                     return [
-                                      ...DoctorClinicCall.values.map((
+                                      ...DoctorClinicCall.calls.map((
                                         e,
                                       ) {
                                         return PopupMenuItem(
@@ -118,8 +120,38 @@ class NavBarMenuBtn extends StatelessWidget {
                                               l.isEnglish ? e.en : e.ar,
                                             ),
                                           ),
-                                          onTap: () {
+                                          onTap: () async {
                                             //TODO:
+                                            if (x.id == 'all') {
+                                              //TODO: make multiple requests to notify all users
+                                            } else {
+                                              final _notification =
+                                                  ClientNotification.fromClinicCall(
+                                                    isEnglish: l.isEnglish,
+                                                    call: e,
+                                                    client_token:
+                                                        x.fcm_token ?? '',
+                                                    server_url:
+                                                        '${auth.organization?.pb_endpoint}',
+                                                    doctor_name: l.isEnglish
+                                                        ? '${d.doctor?.name_en}'
+                                                        : '${d.doctor?.name_ar}',
+                                                  );
+                                              if (context.mounted) {
+                                                await shellFunction(
+                                                  context,
+                                                  toExecute: () async {
+                                                    await context
+                                                        .read<
+                                                          PxFirebaseNotifications
+                                                        >()
+                                                        .sendFcmNotification(
+                                                          _notification,
+                                                        );
+                                                  },
+                                                );
+                                              }
+                                            }
                                           },
                                         );
                                       }),
@@ -131,7 +163,7 @@ class NavBarMenuBtn extends StatelessWidget {
                                       Icons.notification_important_outlined,
                                       color: Colors.black,
                                     ),
-                                    title: Text(e.name),
+                                    title: Text(x.name),
                                   ),
                                 ),
                               );
@@ -139,7 +171,7 @@ class NavBarMenuBtn extends StatelessWidget {
                           ]
                         : [
                             if (_doctors != null)
-                              ..._doctorsWithAll.map((e) {
+                              ..._doctorsWithAll.map((x) {
                                 return PopupMenuItem<User>(
                                   child: PopupMenuButton(
                                     offset: l.isEnglish
@@ -156,7 +188,7 @@ class NavBarMenuBtn extends StatelessWidget {
                                     ),
                                     itemBuilder: (context) {
                                       return [
-                                        ...AssistantClinicCalls.values.map((
+                                        ...AssistantClinicCall.calls.map((
                                           e,
                                         ) {
                                           return PopupMenuItem(
@@ -173,6 +205,8 @@ class NavBarMenuBtn extends StatelessWidget {
                                             ),
                                             onTap: () {
                                               //TODO:
+                                              if (x.id == 'all') {
+                                              } else {}
                                             },
                                           );
                                         }),
@@ -185,7 +219,7 @@ class NavBarMenuBtn extends StatelessWidget {
                                         Icons.notification_important_outlined,
                                         color: Colors.black,
                                       ),
-                                      title: Text(e.name),
+                                      title: Text(x.name),
                                     ),
                                   ),
                                 );

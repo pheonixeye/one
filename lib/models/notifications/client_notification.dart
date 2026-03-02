@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/notifications/clinic_call.dart';
 
 class ClientNotification extends Equatable {
   final String client_token;
@@ -55,4 +56,40 @@ class ClientNotification extends Equatable {
     message_body,
     server_url,
   ];
+
+  factory ClientNotification.fromClinicCall({
+    required bool isEnglish,
+    required ClinicCall call,
+    required String client_token,
+    required String server_url,
+    String? doctor_name,
+    String? fees_amount,
+    String? patient_name,
+  }) {
+    String message_body = switch (call.name) {
+      CallEnum.pause_clinic =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Would Like To Pause The Clinic.
+'''
+            : '''
+يرغب دكتور $doctor_name في ايقاف العيادة.
+''',
+      //TODO
+      CallEnum.resume_clinic => throw UnimplementedError(),
+      CallEnum.next_patient => throw UnimplementedError(),
+      CallEnum.assistant_attend => throw UnimplementedError(),
+      CallEnum.collect_fees => throw UnimplementedError(),
+      CallEnum.return_fees => throw UnimplementedError(),
+      //assistant notifications
+      CallEnum.next_patient_ready => throw UnimplementedError(),
+      CallEnum.next_patient_irritated => throw UnimplementedError(),
+    };
+    return ClientNotification(
+      client_token: client_token,
+      message_title: isEnglish ? call.en : call.ar,
+      message_body: message_body,
+      server_url: server_url,
+    );
+  }
 }
