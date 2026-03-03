@@ -45,6 +45,7 @@ class _NotificationOverlayCardState extends State<NotificationOverlayCard>
   @override
   void initState() {
     super.initState();
+    print('notification_overlay(${widget.notification.id})');
     final _l = context.read<PxLocale>();
     player = AudioPlayer();
 

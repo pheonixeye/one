@@ -1,6 +1,6 @@
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/models/blob_file.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/nav_bar_menu_btn.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/clinic_calls_btn/clinic_calls_btn.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +108,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                 const Spacer(),
 
                 //TODO: clinic calls
-                const NavBarMenuBtn(),
+                const ClinicCallsBtn(),
                 const SizedBox(width: 10),
               ],
             ),

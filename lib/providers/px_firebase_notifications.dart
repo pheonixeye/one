@@ -6,8 +6,6 @@ import 'package:one/models/notifications/in_app_notification.dart';
 import 'package:one/providers/px_overlay.dart';
 import 'package:one/widgets/notification_overlay.dart';
 
-final _messaging = FirebaseMessaging.instance;
-
 class PxFirebaseNotifications extends ChangeNotifier {
   PxFirebaseNotifications({
     required this.context,
@@ -28,7 +26,7 @@ class PxFirebaseNotifications extends ChangeNotifier {
   AuthorizationStatus? get authorizationStatus => _authorizationStatus;
 
   Future<void> initializeMessaging() async {
-    await _messaging.setAutoInitEnabled(true);
+    await FirebaseMessaging.instance.setAutoInitEnabled(true);
     if (await _requestPermission()) {
       await _getFcmToken();
       _handleForegroundMessage();
@@ -38,20 +36,20 @@ class PxFirebaseNotifications extends ChangeNotifier {
   }
 
   Future<bool> _requestPermission() async {
-    _settings = await _messaging.requestPermission(
+    _settings = await FirebaseMessaging.instance.requestPermission(
       providesAppNotificationSettings: true,
       criticalAlert: true,
     );
-    // print('${_settings?.authorizationStatus.name}');
     if (_settings != null) {
       _authorizationStatus = _settings!.authorizationStatus;
     }
     notifyListeners();
+    // print('${_settings?.authorizationStatus.name}');
     return authorizationStatus == AuthorizationStatus.authorized;
   }
 
   Future<String?> _getFcmToken() async {
-    _fcmToken = await _messaging.getToken(
+    _fcmToken = await FirebaseMessaging.instance.getToken(
       vapidKey: const String.fromEnvironment('VAPID_KEY'),
     );
     // print(_fcmToken);
@@ -63,6 +61,24 @@ class PxFirebaseNotifications extends ChangeNotifier {
 
   void _handleForegroundMessage() {
     FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        final notification = message.notification;
+
+        PxOverlay.toggleOverlay(
+          id: '${message.messageId}',
+          child: NotificationOverlayCard(
+            key: ValueKey(message.messageId),
+            notification: InAppNotification(
+              id: message.messageId,
+              title: notification?.title,
+              message: notification?.body,
+            ),
+          ),
+        );
+        //todo: Save notification to pb => deferred
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
       if (message.notification != null) {
         final notification = message.notification;
 

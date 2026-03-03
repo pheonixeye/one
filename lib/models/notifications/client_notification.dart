@@ -76,14 +76,63 @@ Doctor $doctor_name Would Like To Pause The Clinic.
 يرغب دكتور $doctor_name في ايقاف العيادة.
 ''',
       //TODO
-      CallEnum.resume_clinic => throw UnimplementedError(),
-      CallEnum.next_patient => throw UnimplementedError(),
-      CallEnum.assistant_attend => throw UnimplementedError(),
-      CallEnum.collect_fees => throw UnimplementedError(),
-      CallEnum.return_fees => throw UnimplementedError(),
+      CallEnum.resume_clinic =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Would Like To Resume The Clinic.
+'''
+            : '''
+يرغب دكتور $doctor_name في استمرار العيادة.
+''',
+      CallEnum.next_patient =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Would Like To Have The Next Patient.
+'''
+            : '''
+يرغب دكتور $doctor_name في دخول المريض التالي.
+''',
+      CallEnum.assistant_attend =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Would Like The Assistant To Attend.
+'''
+            : '''
+يرغب دكتور $doctor_name في حضور المساعد.
+''',
+      CallEnum.collect_fees =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Would Like To Collect $fees_amount L.E. From Mr/Mrs $patient_name.
+'''
+            : '''
+يرغب دكتور $doctor_name في تحصيل مبلغ $fees_amount من المريض $patient_name.
+''',
+      CallEnum.return_fees =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Would Like To Return $fees_amount L.E. To Mr/Mrs $patient_name.
+'''
+            : '''
+يرغب دكتور $doctor_name في اعادة مبلغ $fees_amount للمريض $patient_name.
+''',
       //assistant notifications
-      CallEnum.next_patient_ready => throw UnimplementedError(),
-      CallEnum.next_patient_irritated => throw UnimplementedError(),
+      CallEnum.next_patient_ready =>
+        isEnglish
+            ? '''
+The Next Patient Is Ready.
+'''
+            : '''
+المريض التالي جاهز للدخول.
+''',
+      CallEnum.next_patient_irritated =>
+        isEnglish
+            ? '''
+The Next Patient Is Irritated.
+'''
+            : '''
+المريض التالي مستاء.
+''',
     };
     return ClientNotification(
       client_token: client_token,
