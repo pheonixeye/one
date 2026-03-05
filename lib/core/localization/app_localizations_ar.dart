@@ -1583,4 +1583,139 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clinicCalls => 'تنبيهات العيادة';
+
+  @override
+  String get policyTitle => 'سياسات ProKliniK';
+
+  @override
+  String get usagePolicyTitle => 'سياسة الاستخدام';
+
+  @override
+  String get privacyPolicyTitle => 'سياسة الخصوصية';
+
+  @override
+  String get usageAcceptanceTitle => 'قبول الشروط';
+
+  @override
+  String get usageAcceptanceBody =>
+      'باستخدامك نظام ProKliniK لإدارة العيادات فإنك توافق على الالتزام بسياسة الاستخدام هذه. في حال عدم الموافقة يجب عدم استخدام النظام.';
+
+  @override
+  String get usageServiceDescriptionTitle => 'وصف الخدمة';
+
+  @override
+  String get usageServiceDescriptionBody =>
+      'ProKliniK هو نظام سحابي لإدارة العيادات يساعد على إدارة المواعيد والمرضى والزيارات الطبية والعقود والفواتير والعمليات الإدارية.';
+
+  @override
+  String get usageEligibleUseTitle => 'الاستخدام المسموح';
+
+  @override
+  String get usageEligibleUseBody =>
+      'يسمح باستخدام النظام فقط للأغراض الطبية والإدارية المشروعة ووفق قوانين جمهورية مصر العربية ومن قبل جهات طبية مرخصة مخولة بالتعامل مع بيانات المرضى.';
+
+  @override
+  String get usageProhibitedUseTitle => 'الاستخدام المحظور';
+
+  @override
+  String get usageProhibitedUseBody =>
+      'يُمنع استخدام النظام في أنشطة غير قانونية أو احتيالية أو محاولة الوصول إلى بيانات عيادات أخرى أو تجاوز قيود الاشتراك أو إعادة بيع الخدمة أو إدخال برمجيات ضارة.';
+
+  @override
+  String get usageUserResponsibilitiesTitle => 'مسؤوليات المستخدم';
+
+  @override
+  String get usageUserResponsibilitiesBody =>
+      'يتحمل المستخدم مسؤولية الحفاظ على سرية بيانات الدخول وضمان صحة البيانات الطبية والمالية المدخلة والحصول على موافقة المرضى عند الحاجة والتأكد من استخدام الموظفين للنظام ضمن صلاحياتهم.';
+
+  @override
+  String get usageContractsBillingTitle => 'العقود والفوترة';
+
+  @override
+  String get usageContractsBillingBody =>
+      'يدعم النظام تسجيل زيارات تعاقدية قد تختلف أسعارها أو طريقة تحصيلها عن الزيارات العادية. تقع مسؤولية تحديد شروط العقود والفواتير والمدفوعات الجزئية على العيادة. لا يعد ProKliniK جهة تحصيل أو جهة مالية.';
+
+  @override
+  String get usageSubscriptionTitle => 'الاشتراك والوصول';
+
+  @override
+  String get usageSubscriptionBody =>
+      'يعمل النظام بنظام الاشتراك. عند انتهاء الاشتراك قد يتم تقييد الوصول أو إيقافه وقد يتم توفير وصول للقراءة فقط لفترة سماح محدودة.';
+
+  @override
+  String get usageTerminationTitle => 'إنهاء الخدمة';
+
+  @override
+  String get usageTerminationBody =>
+      'يحق لـ ProKliniK إيقاف أو إنهاء الحسابات التي تخالف هذه السياسة أو تشكل خطراً قانونياً أو أمنياً.';
+
+  @override
+  String get usageDisclaimerTitle => 'إخلاء المسؤولية الطبية';
+
+  @override
+  String get usageDisclaimerBody =>
+      'ProKliniK هو نظام إداري فقط ولا يقدم استشارات أو تشخيصاً أو علاجاً طبياً. تقع المسؤولية الطبية بالكامل على الأطباء أو الجهات الطبية المرخصة.';
+
+  @override
+  String get privacyRolesTitle => 'الأدوار القانونية';
+
+  @override
+  String get privacyRolesBody =>
+      'تعد العيادة هي المتحكم في البيانات بينما يعمل ProKliniK كمعالج للبيانات ويتم ذلك وفق تعليمات العيادة والقوانين المعمول بها.';
+
+  @override
+  String get privacyCollectedDataTitle => 'البيانات التي يتم جمعها';
+
+  @override
+  String get privacyCollectedDataBody =>
+      'قد يتم جمع بيانات العيادة وحسابات المستخدمين وسجلات المرضى الطبية والإدارية التي تدخلها العيادة بالإضافة إلى السجلات المالية وسجلات النظام لأغراض الأمان.';
+
+  @override
+  String get privacyUsageTitle => 'استخدام البيانات';
+
+  @override
+  String get privacyUsageBody =>
+      'تُستخدم البيانات لتشغيل النظام وإدارة الصلاحيات وإنشاء التقارير والفواتير وإجراء النسخ الاحتياطية وتحسين أداء النظام وأمانه.';
+
+  @override
+  String get privacySharingTitle => 'مشاركة البيانات';
+
+  @override
+  String get privacySharingBody =>
+      'لا يتم بيع بيانات المرضى. قد يتم الإفصاح عن البيانات فقط عند وجود التزام قانوني أو عند معالجتها بواسطة مزودي البنية التحتية ضمن اتفاقيات سرية.';
+
+  @override
+  String get privacySecurityTitle => 'أمان البيانات وتخزينها';
+
+  @override
+  String get privacySecurityBody =>
+      'يستخدم النظام اتصالات مشفرة وعزل منطقي لبيانات كل عيادة وصلاحيات حسب الدور بالإضافة إلى نسخ احتياطية دورية.';
+
+  @override
+  String get privacyRetentionTitle => 'الاحتفاظ بالبيانات';
+
+  @override
+  String get privacyRetentionBody =>
+      'يتم الاحتفاظ بالبيانات طوال فترة الاشتراك النشط بالإضافة إلى فترة سماح محدودة بعد انتهاء الاشتراك ويمكن طلب تصدير أو حذف البيانات حيث يسمح القانون.';
+
+  @override
+  String get privacyRightsTitle => 'حقوق البيانات';
+
+  @override
+  String get privacyRightsBody =>
+      'يمكن للعيادات طلب الوصول إلى البيانات أو تصحيحها أو حذفها أو تصديرها وفق القوانين المعمول بها.';
+
+  @override
+  String get privacyLiabilityTitle => 'توفر الخدمة والمسؤولية';
+
+  @override
+  String get privacyLiabilityBody =>
+      'يتم تقديم الخدمة كما هي دون ضمان للتوفر المستمر وتكون المسؤولية محدودة بالقدر الذي يسمح به القانون.';
+
+  @override
+  String get policyContactTitle => 'التواصل';
+
+  @override
+  String get policyContactBody =>
+      'للاستفسار حول هذه السياسات يرجى التواصل مع دعم ProKliniK عبر القنوات الرسمية.';
 }

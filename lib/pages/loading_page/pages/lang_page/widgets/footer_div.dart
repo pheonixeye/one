@@ -5,7 +5,7 @@ import 'package:one/assets/assets.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/pages/loading_page/pages/lang_page/widgets/nav_list_btns.dart';
 import 'package:one/router/router.dart';
-import 'package:one/widgets/how_it_works_dialog.dart';
+import 'package:one/widgets/privacy_policy_and_usage_dialog.dart';
 
 class FooterDiv extends StatelessWidget {
   const FooterDiv({super.key});
@@ -75,7 +75,8 @@ class FooterDiv extends StatelessWidget {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
-                        builder: (context) => const HowItWorksDialog(),
+                        builder: (context) =>
+                            const PrivacyPolicyAndUsageDialog(),
                       );
                     },
                   children: [

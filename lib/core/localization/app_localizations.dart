@@ -3145,6 +3145,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clinic Calls'**
   String get clinicCalls;
+
+  /// No description provided for @policyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK Policies'**
+  String get policyTitle;
+
+  /// No description provided for @usagePolicyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Policy (Terms of Use)'**
+  String get usagePolicyTitle;
+
+  /// No description provided for @privacyPolicyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicyTitle;
+
+  /// No description provided for @usageAcceptanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance of Terms'**
+  String get usageAcceptanceTitle;
+
+  /// No description provided for @usageAcceptanceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'By accessing or using ProKliniK, a clinic management software, you agree to be bound by this Usage Policy. If you do not agree, you must not use the Service.'**
+  String get usageAcceptanceBody;
+
+  /// No description provided for @usageServiceDescriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Description of the Service'**
+  String get usageServiceDescriptionTitle;
+
+  /// No description provided for @usageServiceDescriptionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK is a Software-as-a-Service (SaaS) platform designed to help clinics manage appointments, patients, medical visits, contracts, invoicing, bookkeeping, and administrative operations.'**
+  String get usageServiceDescriptionBody;
+
+  /// No description provided for @usageEligibleUseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Eligible Use'**
+  String get usageEligibleUseTitle;
+
+  /// No description provided for @usageEligibleUseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You may use ProKliniK only for lawful medical and administrative purposes, in compliance with the laws of the Arab Republic of Egypt, and on behalf of a licensed healthcare provider authorized to process patient data.'**
+  String get usageEligibleUseBody;
+
+  /// No description provided for @usageProhibitedUseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited Use'**
+  String get usageProhibitedUseTitle;
+
+  /// No description provided for @usageProhibitedUseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You must not use the service for illegal or fraudulent activities, access other clinics\' data, bypass subscription limits, reverse engineer the system, resell the service, or introduce malicious software.'**
+  String get usageProhibitedUseBody;
+
+  /// No description provided for @usageUserResponsibilitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'User Responsibilities'**
+  String get usageUserResponsibilitiesTitle;
+
+  /// No description provided for @usageUserResponsibilitiesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Users are responsible for protecting their login credentials, ensuring the accuracy of medical and financial data entered into the system, obtaining patient consent when required, and ensuring staff operate within assigned roles.'**
+  String get usageUserResponsibilitiesBody;
+
+  /// No description provided for @usageContractsBillingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts, Billing and Payments'**
+  String get usageContractsBillingTitle;
+
+  /// No description provided for @usageContractsBillingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK allows clinics to record contract-based visits where pricing and payment timing may differ from standard visits. Clinics are responsible for defining contract terms, invoices, and partial payments. ProKliniK records financial operations but is not a financial authority or payment processor.'**
+  String get usageContractsBillingBody;
+
+  /// No description provided for @usageSubscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription and Access'**
+  String get usageSubscriptionTitle;
+
+  /// No description provided for @usageSubscriptionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK operates on a subscription basis. If a subscription expires, system access may be restricted or suspended. Limited read-only access may be granted during a grace period.'**
+  String get usageSubscriptionBody;
+
+  /// No description provided for @usageTerminationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Termination'**
+  String get usageTerminationTitle;
+
+  /// No description provided for @usageTerminationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK reserves the right to suspend or terminate accounts that violate this policy or pose legal or security risks.'**
+  String get usageTerminationBody;
+
+  /// No description provided for @usageDisclaimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Disclaimer'**
+  String get usageDisclaimerTitle;
+
+  /// No description provided for @usageDisclaimerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK is an administrative software tool and does not provide medical advice, diagnosis, or treatment. All medical responsibility remains with licensed healthcare professionals.'**
+  String get usageDisclaimerBody;
+
+  /// No description provided for @privacyRolesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Roles'**
+  String get privacyRolesTitle;
+
+  /// No description provided for @privacyRolesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The clinic acts as the Data Controller while ProKliniK acts as the Data Processor. Data processing occurs according to clinic instructions and applicable laws.'**
+  String get privacyRolesBody;
+
+  /// No description provided for @privacyCollectedDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Information We Collect'**
+  String get privacyCollectedDataTitle;
+
+  /// No description provided for @privacyCollectedDataBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We may collect clinic information, user account details, patient administrative and medical records entered by the clinic, financial records, and system logs for security and auditing.'**
+  String get privacyCollectedDataBody;
+
+  /// No description provided for @privacyUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How We Use Data'**
+  String get privacyUsageTitle;
+
+  /// No description provided for @privacyUsageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Data is used to operate the system, manage access permissions, generate reports and invoices, maintain backups, and improve system reliability and security.'**
+  String get privacyUsageBody;
+
+  /// No description provided for @privacySharingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sharing'**
+  String get privacySharingTitle;
+
+  /// No description provided for @privacySharingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK does not sell patient data. Information may only be disclosed if legally required or processed by infrastructure providers under strict confidentiality obligations.'**
+  String get privacySharingBody;
+
+  /// No description provided for @privacySecurityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Security and Storage'**
+  String get privacySecurityTitle;
+
+  /// No description provided for @privacySecurityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ProKliniK uses encrypted connections, logical tenant isolation, role-based permissions, and periodic backups to protect stored data.'**
+  String get privacySecurityBody;
+
+  /// No description provided for @privacyRetentionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Retention'**
+  String get privacyRetentionTitle;
+
+  /// No description provided for @privacyRetentionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Data is retained during the active subscription period and for a limited grace period after expiration. Clinics may request data export or deletion where legally permitted.'**
+  String get privacyRetentionBody;
+
+  /// No description provided for @privacyRightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Rights'**
+  String get privacyRightsTitle;
+
+  /// No description provided for @privacyRightsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinics may request access, correction, deletion, or export of their stored data depending on applicable legal requirements.'**
+  String get privacyRightsBody;
+
+  /// No description provided for @privacyLiabilityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Availability and Liability'**
+  String get privacyLiabilityTitle;
+
+  /// No description provided for @privacyLiabilityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The service is provided on an as-is basis without guarantees of uninterrupted availability. Liability is limited to the maximum extent permitted by law.'**
+  String get privacyLiabilityBody;
+
+  /// No description provided for @policyContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get policyContactTitle;
+
+  /// No description provided for @policyContactBody.
+  ///
+  /// In en, this message translates to:
+  /// **'For questions regarding these policies, please contact ProKliniK support through official channels.'**
+  String get policyContactBody;
 }
 
 class _AppLocalizationsDelegate

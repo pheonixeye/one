@@ -1591,4 +1591,139 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clinicCalls => 'Clinic Calls';
+
+  @override
+  String get policyTitle => 'ProKliniK Policies';
+
+  @override
+  String get usagePolicyTitle => 'Usage Policy (Terms of Use)';
+
+  @override
+  String get privacyPolicyTitle => 'Privacy Policy';
+
+  @override
+  String get usageAcceptanceTitle => 'Acceptance of Terms';
+
+  @override
+  String get usageAcceptanceBody =>
+      'By accessing or using ProKliniK, a clinic management software, you agree to be bound by this Usage Policy. If you do not agree, you must not use the Service.';
+
+  @override
+  String get usageServiceDescriptionTitle => 'Description of the Service';
+
+  @override
+  String get usageServiceDescriptionBody =>
+      'ProKliniK is a Software-as-a-Service (SaaS) platform designed to help clinics manage appointments, patients, medical visits, contracts, invoicing, bookkeeping, and administrative operations.';
+
+  @override
+  String get usageEligibleUseTitle => 'Eligible Use';
+
+  @override
+  String get usageEligibleUseBody =>
+      'You may use ProKliniK only for lawful medical and administrative purposes, in compliance with the laws of the Arab Republic of Egypt, and on behalf of a licensed healthcare provider authorized to process patient data.';
+
+  @override
+  String get usageProhibitedUseTitle => 'Prohibited Use';
+
+  @override
+  String get usageProhibitedUseBody =>
+      'You must not use the service for illegal or fraudulent activities, access other clinics\' data, bypass subscription limits, reverse engineer the system, resell the service, or introduce malicious software.';
+
+  @override
+  String get usageUserResponsibilitiesTitle => 'User Responsibilities';
+
+  @override
+  String get usageUserResponsibilitiesBody =>
+      'Users are responsible for protecting their login credentials, ensuring the accuracy of medical and financial data entered into the system, obtaining patient consent when required, and ensuring staff operate within assigned roles.';
+
+  @override
+  String get usageContractsBillingTitle => 'Contracts, Billing and Payments';
+
+  @override
+  String get usageContractsBillingBody =>
+      'ProKliniK allows clinics to record contract-based visits where pricing and payment timing may differ from standard visits. Clinics are responsible for defining contract terms, invoices, and partial payments. ProKliniK records financial operations but is not a financial authority or payment processor.';
+
+  @override
+  String get usageSubscriptionTitle => 'Subscription and Access';
+
+  @override
+  String get usageSubscriptionBody =>
+      'ProKliniK operates on a subscription basis. If a subscription expires, system access may be restricted or suspended. Limited read-only access may be granted during a grace period.';
+
+  @override
+  String get usageTerminationTitle => 'Termination';
+
+  @override
+  String get usageTerminationBody =>
+      'ProKliniK reserves the right to suspend or terminate accounts that violate this policy or pose legal or security risks.';
+
+  @override
+  String get usageDisclaimerTitle => 'Medical Disclaimer';
+
+  @override
+  String get usageDisclaimerBody =>
+      'ProKliniK is an administrative software tool and does not provide medical advice, diagnosis, or treatment. All medical responsibility remains with licensed healthcare professionals.';
+
+  @override
+  String get privacyRolesTitle => 'Legal Roles';
+
+  @override
+  String get privacyRolesBody =>
+      'The clinic acts as the Data Controller while ProKliniK acts as the Data Processor. Data processing occurs according to clinic instructions and applicable laws.';
+
+  @override
+  String get privacyCollectedDataTitle => 'Information We Collect';
+
+  @override
+  String get privacyCollectedDataBody =>
+      'We may collect clinic information, user account details, patient administrative and medical records entered by the clinic, financial records, and system logs for security and auditing.';
+
+  @override
+  String get privacyUsageTitle => 'How We Use Data';
+
+  @override
+  String get privacyUsageBody =>
+      'Data is used to operate the system, manage access permissions, generate reports and invoices, maintain backups, and improve system reliability and security.';
+
+  @override
+  String get privacySharingTitle => 'Data Sharing';
+
+  @override
+  String get privacySharingBody =>
+      'ProKliniK does not sell patient data. Information may only be disclosed if legally required or processed by infrastructure providers under strict confidentiality obligations.';
+
+  @override
+  String get privacySecurityTitle => 'Data Security and Storage';
+
+  @override
+  String get privacySecurityBody =>
+      'ProKliniK uses encrypted connections, logical tenant isolation, role-based permissions, and periodic backups to protect stored data.';
+
+  @override
+  String get privacyRetentionTitle => 'Data Retention';
+
+  @override
+  String get privacyRetentionBody =>
+      'Data is retained during the active subscription period and for a limited grace period after expiration. Clinics may request data export or deletion where legally permitted.';
+
+  @override
+  String get privacyRightsTitle => 'Data Rights';
+
+  @override
+  String get privacyRightsBody =>
+      'Clinics may request access, correction, deletion, or export of their stored data depending on applicable legal requirements.';
+
+  @override
+  String get privacyLiabilityTitle => 'Service Availability and Liability';
+
+  @override
+  String get privacyLiabilityBody =>
+      'The service is provided on an as-is basis without guarantees of uninterrupted availability. Liability is limited to the maximum extent permitted by law.';
+
+  @override
+  String get policyContactTitle => 'Contact';
+
+  @override
+  String get policyContactBody =>
+      'For questions regarding these policies, please contact ProKliniK support through official channels.';
 }
