@@ -1726,4 +1726,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get policyContactBody =>
       'For questions regarding these policies, please contact ProKliniK support through official channels.';
+
+  @override
+  String get selectVisitAndAmount => 'Select Visit And Amount';
+
+  @override
+  String get pickVisit => 'Pick Visit';
+
+  @override
+  String get enterAmount => 'Enter Amount';
 }

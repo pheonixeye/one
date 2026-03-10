@@ -590,5 +590,8 @@
     "privacyLiabilityTitle": "توفر الخدمة والمسؤولية",
     "privacyLiabilityBody": "يتم تقديم الخدمة كما هي دون ضمان للتوفر المستمر وتكون المسؤولية محدودة بالقدر الذي يسمح به القانون.",
     "policyContactTitle": "التواصل",
-    "policyContactBody": "للاستفسار حول هذه السياسات يرجى التواصل مع دعم ProKliniK عبر القنوات الرسمية."
+    "policyContactBody": "للاستفسار حول هذه السياسات يرجى التواصل مع دعم ProKliniK عبر القنوات الرسمية.",
+    "selectVisitAndAmount" : "اختر الزيارة و الكمية",
+    "pickVisit" : "اختر الزيارة",
+    "enterAmount" : "ادخل الكمية"
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -128,21 +130,27 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Text(context.loc.email),
                               ),
-                              subtitle: TextFormField(
-                                controller: _emailController,
-                                key: emailFieldKey,
-                                decoration: const InputDecoration(
-                                  hintText: 'example@domain.com',
+                              subtitle: Semantics(
+                                textField: true,
+                                focusable: true,
+                                role: SemanticsRole.form,
+                                inputType: SemanticsInputType.email,
+                                child: TextFormField(
+                                  controller: _emailController,
+                                  key: emailFieldKey,
+                                  decoration: const InputDecoration(
+                                    hintText: 'example@domain.com',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return context.loc.enterEmailAddress;
+                                    }
+                                    if (!EmailValidator.validate(value)) {
+                                      return context.loc.invalidEmailAddress;
+                                    }
+                                    return null;
+                                  },
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return context.loc.enterEmailAddress;
-                                  }
-                                  if (!EmailValidator.validate(value)) {
-                                    return context.loc.invalidEmailAddress;
-                                  }
-                                  return null;
-                                },
                               ),
                             ),
                             ListTile(
@@ -166,18 +174,25 @@ class _LoginPageState extends State<LoginPage> {
                                   ],
                                 ),
                               ),
-                              subtitle: TextFormField(
-                                controller: _passwordController,
-                                decoration: const InputDecoration(
-                                  hintText: '********',
+                              subtitle: Semantics(
+                                textField: true,
+                                focusable: true,
+                                obscured: true,
+                                inputType: SemanticsInputType.text,
+                                role: SemanticsRole.form,
+                                child: TextFormField(
+                                  controller: _passwordController,
+                                  decoration: const InputDecoration(
+                                    hintText: '********',
+                                  ),
+                                  obscureText: _obscure,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return context.loc.enterPassword;
+                                    }
+                                    return null;
+                                  },
                                 ),
-                                obscureText: _obscure,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return context.loc.enterPassword;
-                                  }
-                                  return null;
-                                },
                               ),
                             ),
                             CheckboxListTile(

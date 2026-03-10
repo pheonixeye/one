@@ -591,5 +591,8 @@
     "privacyLiabilityTitle": "Service Availability and Liability",
     "privacyLiabilityBody": "The service is provided on an as-is basis without guarantees of uninterrupted availability. Liability is limited to the maximum extent permitted by law.",
     "policyContactTitle": "Contact",
-    "policyContactBody": "For questions regarding these policies, please contact ProKliniK support through official channels."
+    "policyContactBody": "For questions regarding these policies, please contact ProKliniK support through official channels.",
+    "selectVisitAndAmount" : "Select Visit And Amount",
+    "pickVisit" : "Pick Visit",
+    "enterAmount" : "Enter Amount"
 }

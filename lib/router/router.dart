@@ -80,7 +80,7 @@ extension GoRouterExtension on GoRouter {
 class AppRouter {
   AppRouter();
 
-  ///TODO: login register flow needs something that i don't know
+  ///todo: login register flow needs something that i don't know
   ///change logic - better implementation - rely on bloc instead of provider
   ///there is something wrong idk what that is
   static const String loading = "/";

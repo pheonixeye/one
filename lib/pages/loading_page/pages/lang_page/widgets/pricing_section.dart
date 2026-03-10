@@ -162,9 +162,24 @@ class _FeaturePricingTile extends StatelessWidget {
 }
 
 List<(String title, String subtitle)> _pricingVAlues(BuildContext context) => [
-  (context.loc.feat_one_title, context.loc.feat_one_sub),
-  (context.loc.feat_two_title, context.loc.feat_two_sub),
-  (context.loc.feat_three_title, context.loc.feat_three_sub),
-  (context.loc.feat_four_title, context.loc.feat_four_sub),
-  (context.loc.feat_five_title, context.loc.feat_five_sub),
+  (
+    context.loc.feat_one_title,
+    context.loc.feat_one_sub,
+  ),
+  (
+    context.loc.feat_two_title,
+    context.loc.feat_two_sub,
+  ),
+  (
+    context.loc.feat_three_title,
+    context.loc.feat_three_sub,
+  ),
+  (
+    context.loc.feat_four_title,
+    context.loc.feat_four_sub,
+  ),
+  (
+    context.loc.feat_five_title,
+    context.loc.feat_five_sub,
+  ),
 ];

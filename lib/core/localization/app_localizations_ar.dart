@@ -1718,4 +1718,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get policyContactBody =>
       'للاستفسار حول هذه السياسات يرجى التواصل مع دعم ProKliniK عبر القنوات الرسمية.';
+
+  @override
+  String get selectVisitAndAmount => 'اختر الزيارة و الكمية';
+
+  @override
+  String get pickVisit => 'اختر الزيارة';
+
+  @override
+  String get enterAmount => 'ادخل الكمية';
 }

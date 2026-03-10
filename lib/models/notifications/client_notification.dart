@@ -75,7 +75,7 @@ Doctor $doctor_name Would Like To Pause The Clinic.
             : '''
 يرغب دكتور $doctor_name في ايقاف العيادة.
 ''',
-      //TODO
+      //todo
       CallEnum.resume_clinic =>
         isEnglish
             ? '''

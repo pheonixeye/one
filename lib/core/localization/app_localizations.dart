@@ -3379,6 +3379,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'For questions regarding these policies, please contact ProKliniK support through official channels.'**
   String get policyContactBody;
+
+  /// No description provided for @selectVisitAndAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Visit And Amount'**
+  String get selectVisitAndAmount;
+
+  /// No description provided for @pickVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Visit'**
+  String get pickVisit;
+
+  /// No description provided for @enterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Amount'**
+  String get enterAmount;
 }
 
 class _AppLocalizationsDelegate

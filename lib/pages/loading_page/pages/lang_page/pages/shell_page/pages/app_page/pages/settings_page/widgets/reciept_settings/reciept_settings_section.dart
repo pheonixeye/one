@@ -86,9 +86,6 @@ class RecieptSettingsSection extends StatelessWidget {
                       final _index = _data.indexOf(info);
                       return ListTile(
                         titleAlignment: ListTileTitleAlignment.titleHeight,
-                        leading: SmBtn(
-                          child: Text('${_index + 1}'.toArabicNumber(context)),
-                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadiusGeometry.circular(12),
                           side: BorderSide(
@@ -98,13 +95,13 @@ class RecieptSettingsSection extends StatelessWidget {
                         ),
                         contentPadding: EdgeInsets.symmetric(horizontal: 8),
                         title: Row(
+                          spacing: 8,
                           children: [
                             SmBtn(
                               child: Text(
                                 '${_index + 1}'.toArabicNumber(context),
                               ),
                             ),
-                            const SizedBox(width: 10),
                             Text(info.title),
                             const Spacer(),
                             SmBtn(
@@ -136,47 +133,52 @@ class RecieptSettingsSection extends StatelessWidget {
                             const SizedBox(width: 10),
                           ],
                         ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 2,
-                          children: [
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.recieptSubtitle,
-                                children: [
-                                  TextSpan(text: ' : '),
-                                  TextSpan(text: info.subtitle),
-                                ],
+                        subtitle: Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            start: 50.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 2,
+                            children: [
+                              Text.rich(
+                                TextSpan(
+                                  text: context.loc.recieptSubtitle,
+                                  children: [
+                                    TextSpan(text: ' : '),
+                                    TextSpan(text: info.subtitle),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.recieptFooter,
-                                children: [
-                                  TextSpan(text: ' : '),
-                                  TextSpan(text: info.footer),
-                                ],
+                              Text.rich(
+                                TextSpan(
+                                  text: context.loc.recieptFooter,
+                                  children: [
+                                    TextSpan(text: ' : '),
+                                    TextSpan(text: info.footer),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.recieptAddress,
-                                children: [
-                                  TextSpan(text: ' : '),
-                                  TextSpan(text: info.address),
-                                ],
+                              Text.rich(
+                                TextSpan(
+                                  text: context.loc.recieptAddress,
+                                  children: [
+                                    TextSpan(text: ' : '),
+                                    TextSpan(text: info.address),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.recieptPhone,
-                                children: [
-                                  TextSpan(text: ' : '),
-                                  TextSpan(text: info.phone),
-                                ],
+                              Text.rich(
+                                TextSpan(
+                                  text: context.loc.recieptPhone,
+                                  children: [
+                                    TextSpan(text: ' : '),
+                                    TextSpan(text: info.phone),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }),

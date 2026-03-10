@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:one/core/api/visits_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/notifications/client_notification.dart';
 import 'package:one/models/notifications/clinic_call.dart';
 import 'package:one/models/user/user.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/clinic_calls_btn/visit_select_fees_amount_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_firebase_notifications.dart';
+import 'package:one/providers/px_visits.dart';
+import 'package:provider/provider.dart';
 
 class CallsLogicBtn extends StatefulWidget {
   const CallsLogicBtn({
@@ -65,6 +69,24 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                     if (call.name == CallEnum.collect_fees ||
                         call.name == CallEnum.return_fees) {
                       //TODO: create a dialog to enter fees and select patient / visit from today's visits
+                      final name_and_fees =
+                          await showDialog<Map<String, dynamic>?>(
+                            context: context,
+                            builder: (context) {
+                              return ChangeNotifierProvider.value(
+                                value: PxVisits(
+                                  api: VisitsApi(added_by: ''),
+                                ),
+                                child: VisitSelectFeesAmountDialog(),
+                              );
+                            },
+                          );
+                      if (name_and_fees != null) {
+                        _patient_name = name_and_fees['name'];
+                        _fees_amount = name_and_fees['fees'];
+                      } else {
+                        return;
+                      }
                     }
 
                     if (x.id == 'all') {
