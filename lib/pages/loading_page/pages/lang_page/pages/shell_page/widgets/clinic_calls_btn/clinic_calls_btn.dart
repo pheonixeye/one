@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/clinic_calls_btn/calls_logic_btn.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
@@ -36,23 +35,6 @@ class ClinicCallsBtn extends StatelessWidget {
         final _doctors = d.allDoctorsAuth;
         final _assistants = (a.users as ApiDataResult<List<User>>).data;
 
-        final _assistantsWithAll = <User>[
-          ..._assistants,
-          User(
-            id: 'all',
-            email: '',
-            name: l.isEnglish ? 'All Assistants' : 'كل المساعدين',
-            org_id: '',
-            verified: true,
-            is_active: true,
-            account_type: AccountType(
-              id: '',
-              name_en: '',
-              name_ar: '',
-            ),
-            app_permissions: [],
-          ),
-        ];
         return ThemedPopupmenuBtn<void>(
           icon: const Icon(Icons.notification_add),
           tooltip: context.loc.clinicCalls,
@@ -66,7 +48,7 @@ class ClinicCallsBtn extends StatelessWidget {
               PopupMenuItem(
                 child: CallsLogicBtn(
                   auth: auth,
-                  assistantsWithAll: _assistantsWithAll,
+                  assistantsWithAll: _assistants,
                   doctors: _doctors ?? <User>[],
                   isEnglish: l.isEnglish,
                   d: d,

@@ -1,6 +1,7 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/widgets/doctor_account_card.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/widgets/new_doctor_account_prompt_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_locale.dart';
@@ -10,6 +11,7 @@ import 'package:one/widgets/not_permitted_template_page.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web/web.dart' as web;
 
 class DoctorsPage extends StatelessWidget {
   const DoctorsPage({super.key});
@@ -77,14 +79,25 @@ class DoctorsPage extends StatelessWidget {
           floatingActionButton: SmBtn(
             tooltip: context.loc.addNewDoctorAccount,
             onPressed: () async {
-              //TODO: show dialog to contact account manager
+              //todo: show dialog to contact account manager
 
-              // final _doc = await showDialog(
-              //   context: context,
-              //   builder: (context) {
-              //     return const AddDoctorAccountDialog();
-              //   },
-              // );
+              final _toProceed = await showDialog<bool?>(
+                context: context,
+                builder: (context) {
+                  return const NewDoctorAccountPromptDialog();
+                },
+              );
+
+              if (_toProceed == null || _toProceed == false) {
+                return;
+              }
+              //TODO: send email that a new doctor needs to be added
+              //TODO: show snackbar that we will contact you
+              web.window.open(
+                "tel:+201555905768",
+                "Call Mobile",
+                "_blank",
+              );
             },
             child: const Icon(Icons.add),
           ),

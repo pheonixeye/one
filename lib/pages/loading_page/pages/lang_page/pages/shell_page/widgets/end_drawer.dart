@@ -123,7 +123,6 @@ class EndDrawer extends StatelessWidget {
                 selected: selected(AppRouter.assistants),
               ),
 
-              //HACK: LATER
               const ThinDivider(),
               DrawerNavBtn(
                 title: context.loc.mySubscription,

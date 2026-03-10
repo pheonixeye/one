@@ -3397,6 +3397,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter Amount'**
   String get enterAmount;
+
+  /// No description provided for @enterAmountForReturnOrCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Amount For Return Or Collection'**
+  String get enterAmountForReturnOrCollection;
+
+  /// No description provided for @addNewDoctorPromptMessageOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Kindly note that adding a new doctor user account to the system requires an additional subscription charge, as each doctor account is billed separately under the current pricing structure.'**
+  String get addNewDoctorPromptMessageOne;
+
+  /// No description provided for @addNewDoctorPromptMessageTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'Should you wish to proceed with creating the additional doctor account, please confirm and we will arrange the necessary subscription update accordingly.'**
+  String get addNewDoctorPromptMessageTwo;
 }
 
 class _AppLocalizationsDelegate

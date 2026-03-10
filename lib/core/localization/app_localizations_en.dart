@@ -1735,4 +1735,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterAmount => 'Enter Amount';
+
+  @override
+  String get enterAmountForReturnOrCollection =>
+      'Enter Amount For Return Or Collection';
+
+  @override
+  String get addNewDoctorPromptMessageOne =>
+      'Kindly note that adding a new doctor user account to the system requires an additional subscription charge, as each doctor account is billed separately under the current pricing structure.';
+
+  @override
+  String get addNewDoctorPromptMessageTwo =>
+      'Should you wish to proceed with creating the additional doctor account, please confirm and we will arrange the necessary subscription update accordingly.';
 }

@@ -245,7 +245,7 @@ class AppRouter {
                     patients_portal, //:lang/patients_portal/?org_id=org_id&patient_id=patient_id
                 name: patients_portal,
                 builder: (context, state) {
-                  //TODO
+                  //todo
                   final _org_id = state.uri.queryParameters['org_id'];
                   final _patient_id = state.uri.queryParameters['patient_id'];
 

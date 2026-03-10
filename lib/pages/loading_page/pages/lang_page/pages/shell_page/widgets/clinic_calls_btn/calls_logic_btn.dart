@@ -68,7 +68,7 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
 
                     if (call.name == CallEnum.collect_fees ||
                         call.name == CallEnum.return_fees) {
-                      //TODO: create a dialog to enter fees and select patient / visit from today's visits
+                      //todo: create a dialog to enter fees and select patient / visit from today's visits
                       final name_and_fees =
                           await showDialog<Map<String, dynamic>?>(
                             context: context,
@@ -77,7 +77,9 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                                 value: PxVisits(
                                   api: VisitsApi(added_by: ''),
                                 ),
-                                child: VisitSelectFeesAmountDialog(),
+                                child: VisitSelectFeesAmountDialog(
+                                  call: call,
+                                ),
                               );
                             },
                           );
@@ -89,25 +91,21 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                       }
                     }
 
-                    if (x.id == 'all') {
-                      //TODO: make multiple requests to notify all users
-                    } else {
-                      _notification = ClientNotification.fromClinicCall(
-                        isEnglish: widget.isEnglish,
-                        call: call,
-                        client_token: x.fcm_token ?? '',
-                        server_url: '${widget.auth.organization?.pb_endpoint}',
-                        doctor_name: widget.isEnglish
-                            ? '${widget.d.doctor?.name_en}'
-                            : '${widget.d.doctor?.name_ar}',
-                        fees_amount: _fees_amount,
-                        patient_name: _patient_name,
+                    _notification = ClientNotification.fromClinicCall(
+                      isEnglish: widget.isEnglish,
+                      call: call,
+                      client_token: x.fcm_token ?? '',
+                      server_url: '${widget.auth.organization?.pb_endpoint}',
+                      doctor_name: widget.isEnglish
+                          ? '${widget.d.doctor?.name_en}'
+                          : '${widget.d.doctor?.name_ar}',
+                      fees_amount: _fees_amount,
+                      patient_name: _patient_name,
+                    );
+                    if (context.mounted) {
+                      await widget.fcm.sendFcmNotification(
+                        _notification,
                       );
-                      if (context.mounted) {
-                        await widget.fcm.sendFcmNotification(
-                          _notification,
-                        );
-                      }
                     }
                   },
                 );

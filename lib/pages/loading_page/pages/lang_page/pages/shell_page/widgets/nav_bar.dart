@@ -107,7 +107,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 const Spacer(),
 
-                //TODO: clinic calls
+                //todo: clinic calls
                 const ClinicCallsBtn(),
                 const SizedBox(width: 10),
               ],

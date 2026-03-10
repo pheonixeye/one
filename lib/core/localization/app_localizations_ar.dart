@@ -1720,11 +1720,23 @@ class AppLocalizationsAr extends AppLocalizations {
       'للاستفسار حول هذه السياسات يرجى التواصل مع دعم ProKliniK عبر القنوات الرسمية.';
 
   @override
-  String get selectVisitAndAmount => 'اختر الزيارة و الكمية';
+  String get selectVisitAndAmount => 'اختر الزيارة و المبلغ';
 
   @override
   String get pickVisit => 'اختر الزيارة';
 
   @override
-  String get enterAmount => 'ادخل الكمية';
+  String get enterAmount => 'ادخل المبلغ';
+
+  @override
+  String get enterAmountForReturnOrCollection =>
+      'ادخل المبلغ المراد تحصيله او رده';
+
+  @override
+  String get addNewDoctorPromptMessageOne =>
+      'يرجى العلم أن إضافة حساب مستخدم جديد لطبيب داخل النظام يترتب عليها رسوم اشتراك إضافية، حيث يتم احتساب كل حساب طبيب بشكل منفصل ضمن هيكل التسعير الحالي.';
+
+  @override
+  String get addNewDoctorPromptMessageTwo =>
+      'في حال رغبتكم في المتابعة وإنشاء الحساب الجديد، يرجى تأكيد ذلك حتى نتمكن من اتخاذ الإجراءات اللازمة لتحديث الاشتراك.';
 }
