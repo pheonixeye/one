@@ -132,7 +132,6 @@ class DoctorAccountCard extends StatelessWidget {
                                 doctor.id,
                                 !_docUser.is_active,
                               );
-                              //TODO: Notify FCM to Org Members - doctor activation status
                             },
                           );
                         }

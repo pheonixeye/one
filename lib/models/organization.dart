@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/user/concised_user.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class Organization extends Equatable {
   final String id;
@@ -98,5 +100,43 @@ class Organization extends Equatable {
       s3_secret,
       s3_bucket,
     ];
+  }
+}
+
+class OrganizationExpanded extends Organization {
+  const OrganizationExpanded({
+    required super.id,
+    required super.name_en,
+    required super.name_ar,
+    required super.members,
+    required super.activity,
+    required super.pb_endpoint,
+    required super.s3_endpoint,
+    required super.s3_key,
+    required super.s3_secret,
+    required super.s3_bucket,
+    required this.orgUsers,
+  });
+
+  final List<ConcisedUserWithFcmToken> orgUsers;
+
+  factory OrganizationExpanded.fromRecordModel(RecordModel record) {
+    final orgUsers = record
+        .getListValue<RecordModel>('expand.members')
+        .map((e) => ConcisedUserWithFcmToken.fromRecordModel(e))
+        .toList();
+    return OrganizationExpanded(
+      id: record.getStringValue('id'),
+      name_en: record.getStringValue('name_en'),
+      name_ar: record.getStringValue('name_ar'),
+      members: record.getListValue<String>('members'),
+      activity: record.getStringValue('activity'),
+      pb_endpoint: record.getStringValue('pb_endpoint'),
+      s3_endpoint: record.getStringValue('s3_endpoint'),
+      s3_key: record.getStringValue('s3_key'),
+      s3_secret: record.getStringValue('s3_secret'),
+      s3_bucket: record.getStringValue('s3_bucket'),
+      orgUsers: orgUsers,
+    );
   }
 }

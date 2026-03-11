@@ -26,8 +26,8 @@ class PxAuth extends ChangeNotifier {
   static User? _user;
   User? get user => _user;
 
-  static Organization? _organization;
-  Organization? get organization => _organization;
+  static OrganizationExpanded? _organization;
+  OrganizationExpanded? get organization => _organization;
 
   Future<void> loginWithEmailAndPassword(
     String email,
@@ -43,11 +43,14 @@ class PxAuth extends ChangeNotifier {
         password,
         rememberMe,
       );
+      // prettyPrint(result);
       _auth = result;
       _user = User.fromRecordModel(_auth!.record);
-      _organization = Organization.fromJson(
-        result?.record.get<RecordModel>('expand.org_id').toJson() ?? {},
-      );
+      if (result != null) {
+        _organization = OrganizationExpanded.fromRecordModel(
+          result.record.get<RecordModel>('expand.org_id'),
+        );
+      }
       if (_organization != null) {
         PocketbaseHelper.initialize(_organization!.pb_endpoint);
       }
@@ -76,9 +79,12 @@ class PxAuth extends ChangeNotifier {
           .getFcmToken;
       _auth = await api.loginWithToken();
       _user = User.fromRecordModel(_auth!.record);
-      _organization = Organization.fromJson(
-        _auth?.record.get<RecordModel>('expand.org_id').toJson() ?? {},
-      );
+      if (_auth != null) {
+        _organization = OrganizationExpanded.fromRecordModel(
+          _auth!.record.get<RecordModel>('expand.org_id'),
+        );
+      }
+
       if (_organization != null) {
         PocketbaseHelper.initialize(_organization!.pb_endpoint);
       }

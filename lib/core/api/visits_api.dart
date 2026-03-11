@@ -1,5 +1,9 @@
 import 'package:one/annotations/pb_annotations.dart';
 import 'package:intl/intl.dart';
+import 'package:one/core/api/fcm_notifications_api.dart';
+import 'package:one/models/notifications/client_notification.dart';
+import 'package:one/models/notifications/in_app_action.dart';
+import 'package:one/models/organization.dart';
 import 'package:one/models/shift.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -75,7 +79,11 @@ class VisitsApi {
     }
   }
 
-  Future<void> addNewVisit(Visit visit) async {
+  Future<void> addNewVisit(
+    Visit visit,
+    OrganizationExpanded? org,
+    bool isEnglish,
+  ) async {
     //TODO: error handling
     //create visit reference
     final _result = await PocketbaseHelper.pbData
@@ -114,12 +122,21 @@ class VisitsApi {
     await BookkeepingApi().addBookkeepingItem(_item);
 
     //TODO: send inclinic notification
-
-    // final _notificationRequest = NotificationRequest.fromVisit(_visit);
-
-    // await NotificationsApi().sendNotification(
-    //   request: _notificationRequest,
-    // );
+    if (org != null) {
+      final _userToBeNotified = org.orgUsers.firstWhere(
+        (e) => e.id == _visit.doc_id,
+      );
+      final _token = _userToBeNotified.fcm_token;
+      if (_token != null) {
+        final _clientNotification = ClientNotification.fromInAppAction(
+          isEnglish: isEnglish,
+          client_token: _token,
+          server_url: org.pb_endpoint,
+          inAppAction: InAppAction.add_new_visit,
+        );
+        await FcmNotificationsApi().sendFcmNotification(_clientNotification);
+      }
+    }
   }
 
   Future<void> updateVisit(

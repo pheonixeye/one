@@ -1,3 +1,4 @@
+import 'package:one/models/organization.dart';
 import 'package:one/models/shift.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -30,8 +31,16 @@ class PxVisits extends ChangeNotifier {
 
   Future<void> retry() async => await _fetchVisitsOfToday();
 
-  Future<void> addNewVisit(Visit dto) async {
-    await api.addNewVisit(dto);
+  Future<void> addNewVisit(
+    Visit dto,
+    OrganizationExpanded? org,
+    bool isEnglish,
+  ) async {
+    await api.addNewVisit(
+      dto,
+      org,
+      isEnglish,
+    );
     await _fetchVisitsOfToday();
   }
 

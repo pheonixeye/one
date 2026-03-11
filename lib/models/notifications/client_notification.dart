@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:one/models/notifications/clinic_call.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 
 class ClientNotification extends Equatable {
   final String client_token;
@@ -56,6 +58,63 @@ class ClientNotification extends Equatable {
     message_body,
     server_url,
   ];
+
+  factory ClientNotification.fromInAppAction({
+    required bool isEnglish,
+    required String client_token,
+    required String server_url,
+    required InAppAction inAppAction,
+    String? patient_name,
+    DateTime? visit_date,
+    String? discount_amount,
+    String? procedure_name,
+    String? procedure_amount,
+    String? old_visit_status,
+    String? new_visit_status,
+    String? old_visit_shift,
+    String? new_visit_shift,
+    String? old_visit_type,
+    String? new_visit_type,
+  }) {
+    final message_title = switch (inAppAction) {
+      _ => isEnglish ? inAppAction.en_title : inAppAction.ar_title,
+    };
+
+    final _dateString = visit_date == null
+        ? ''
+        : DateFormat(
+            'dd / MM / yyyy',
+            isEnglish ? 'en' : 'ar',
+          ).format(visit_date);
+
+    final message_body = switch (inAppAction) {
+      //TODO: formulate notification bodies
+      InAppAction.add_new_visit => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.add_procedure_to_visit => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.remove_procedure_from_visit => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.add_discount_to_visit => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.remove_discount_from_visit => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.update_visit_status => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.update_visit_shift => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.update_visit_type => isEnglish ? ''' ''' : ''' ''',
+
+      InAppAction.visit_is_cancled_by_patient => isEnglish ? ''' ''' : ''' ''',
+    };
+
+    return ClientNotification(
+      client_token: client_token,
+      message_title: message_title,
+      message_body: message_body,
+      server_url: server_url,
+    );
+  }
 
   factory ClientNotification.fromClinicCall({
     required bool isEnglish,

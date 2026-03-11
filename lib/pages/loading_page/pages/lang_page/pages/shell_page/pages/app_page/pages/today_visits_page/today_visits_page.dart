@@ -329,7 +329,11 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                       await shellFunction(
                         context,
                         toExecute: () async {
-                          await v.addNewVisit(_visitDto);
+                          await v.addNewVisit(
+                            _visitDto,
+                            context.read<PxAuth>().organization,
+                            context.read<PxLocale>().isEnglish,
+                          );
                         },
                       );
                     }

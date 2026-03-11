@@ -13,6 +13,7 @@ class AuthApi {
     'account_type_id',
     'app_permissions_ids',
     'org_id',
+    'org_id.members',
   ];
 
   static final _expand = _expandList.join(',');

@@ -22,6 +22,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/providers/px_add_new_visit_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_forms.dart';
+import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_forms.dart';
 import 'package:one/providers/px_patient_previous_visits.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
@@ -93,6 +94,8 @@ class PatientInfoCardActions extends StatelessWidget {
                   toExecute: () async {
                     await context.read<PxVisits>().addNewVisit(
                       _visitDto,
+                      context.read<PxAuth>().organization,
+                      context.read<PxLocale>().isEnglish,
                     );
                     //todo: notify patient with visit details && entry number => manual
                     //todo: generate bookkeeping entry based on the state of the visit
