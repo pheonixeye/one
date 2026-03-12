@@ -65,15 +65,17 @@ class ClientNotification extends Equatable {
     required String server_url,
     required InAppAction inAppAction,
     String? patient_name,
+    String? clinic_name,
+    String? doctor_name,
     DateTime? visit_date,
     String? discount_amount,
     String? procedure_name,
     String? procedure_amount,
-    String? old_visit_status,
+    String? visit_status,
     String? new_visit_status,
-    String? old_visit_shift,
+    String? visit_shift,
     String? new_visit_shift,
-    String? old_visit_type,
+    String? visit_type,
     String? new_visit_type,
   }) {
     final message_title = switch (inAppAction) {
@@ -88,24 +90,113 @@ class ClientNotification extends Equatable {
           ).format(visit_date);
 
     final message_body = switch (inAppAction) {
-      //TODO: formulate notification bodies
-      InAppAction.add_new_visit => isEnglish ? ''' ''' : ''' ''',
+      // todo: formulate notification bodies
+      InAppAction.add_new_visit =>
+        isEnglish
+            ? '''
+Patient Name : $patient_name,
+Visit Date : $_dateString,
+Clinic : $clinic_name,
+Visit Type : $visit_type
+ '''
+            : '''
+اسم المريض :  $patient_name,
+تاريخ الزيارة :  $_dateString,
+العيادة : $clinic_name,
+نوع الزيارة : $visit_type
+ ''',
 
-      InAppAction.add_procedure_to_visit => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.add_procedure_to_visit =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Has Added A New Procedure To $patient_name Visit,
+Procedure : $procedure_name,
+Fees : $procedure_amount EGP,
+Kindly Note If The Procedure Fees Is Collected From The Patient.
+ '''
+            : '''
+قام الدكتور / $doctor_name باضافة اجراء طبي لزيارة المريض $patient_name,
+الاجراء : $procedure_name,
+المبلغ : $procedure_amount,
+برجاء التأكد من تحصيل المبلغ من المريض.
+ ''',
 
-      InAppAction.remove_procedure_from_visit => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.remove_procedure_from_visit =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Has Removed A Procedure From $patient_name Visit,
+Procedure : $procedure_name,
+Fees : $procedure_amount EGP,
+Kindly Note If The Procedure Fees Is Returned To The Patient.
+ '''
+            : '''
+قام الدكتور / $doctor_name باازالة اجراء طبي من زيارة المريض $patient_name,
+الاجراء : $procedure_name,
+المبلغ : $procedure_amount,
+برجاء التأكد من رد المبلغ للمريض.
+ ''',
 
-      InAppAction.add_discount_to_visit => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.add_discount_to_visit =>
+        isEnglish
+            ? '''
+A Discount Of $discount_amount EGP Was Applied To $patient_name Visit.
+Kindly Check If It Was Financially Processed.
+ '''
+            : '''
+تم اضافة خصم بقيمة $discount_amount جنيه لزيارة المريض $patient_name.
+برجاء التأكد من التحصيل / الرد للمبلغ.
+ ''',
 
-      InAppAction.remove_discount_from_visit => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.remove_discount_from_visit =>
+        isEnglish
+            ? '''
+A Discount Of $discount_amount EGP Was Removed From $patient_name Visit.
+Kindly Check If It Was Financially Processed.
+ '''
+            : '''
+تم ازالة خصم بقيمة $discount_amount جنيه من زيارة المريض $patient_name.
+برجاء التأكد من التحصيل / الرد للمبلغ.
+ ''',
 
-      InAppAction.update_visit_status => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.update_visit_status =>
+        isEnglish
+            ? '''
+Patient $patient_name Visit Status Was Updated From $visit_status To $new_visit_status.
+ '''
+            : '''
+تم تعديل حالة زيارة المريض $patient_name من الحالة $visit_status الي الحالة $new_visit_status.
+ ''',
 
-      InAppAction.update_visit_shift => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.update_visit_shift =>
+        isEnglish
+            ? '''
+Patient $patient_name Visit Shift Was Changed From $visit_shift To Be At $new_visit_shift.
+Kindly Check If The Patient Is Notified.
+ '''
+            : '''
+تم تغيير موعد زيارة المريض $patient_name من الموعد $visit_shift لتصبح $new_visit_shift.
+برجاء التاكد من تنبيه المريض بتغيير الموعد.
+ ''',
 
-      InAppAction.update_visit_type => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.update_visit_type =>
+        isEnglish
+            ? '''
+Patient $patient_name Visit Type Was Updated From $visit_type To $new_visit_type.
+Kindly Check If It Was Financially Processed.
+ '''
+            : '''
+تم تغيير نوع زيارة المرض $patient_name من $visit_status لتصبح $new_visit_status.
+برجاء التأكد منصحة المعاملات المادية من تحصيل او رد الفارق.
+ ''',
 
-      InAppAction.visit_is_cancled_by_patient => isEnglish ? ''' ''' : ''' ''',
+      InAppAction.visit_is_cancled_by_patient =>
+        isEnglish
+            ? '''
+Patient $patient_name Has Canceled The Scheduled Visit on $_dateString.
+ '''
+            : '''
+قام المريض $patient_name بالغاء الزيارة المجدولة بتاريخ $_dateString.
+ ''',
     };
 
     return ClientNotification(

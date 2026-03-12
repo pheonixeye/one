@@ -33,6 +33,7 @@ class AuthApi {
             password,
             expand: _expand,
           );
+      // prettyPrint(_result);
     } on ClientException catch (e) {
       dprint(e.toString());
       throw AuthException(e);

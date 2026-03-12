@@ -33,9 +33,11 @@ class ConcisedUserWithFcmToken extends ConcisedUser {
     required super.name,
     required super.email,
     required this.fcm_token,
+    required this.account_type_id,
   });
 
   final String? fcm_token;
+  final String account_type_id;
 
   factory ConcisedUserWithFcmToken.fromRecordModel(RecordModel record) {
     return ConcisedUserWithFcmToken(
@@ -43,6 +45,7 @@ class ConcisedUserWithFcmToken extends ConcisedUser {
       name: record.getStringValue('name'),
       email: record.getStringValue('email'),
       fcm_token: record.get<String?>('fcm_token'),
+      account_type_id: record.getStringValue('account_type_id'),
     );
   }
 }

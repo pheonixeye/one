@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/visits_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/notifications/client_notification.dart';
+import 'package:one/functions/shell_function.dart';
 import 'package:one/models/notifications/clinic_call.dart';
 import 'package:one/models/user/user.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/clinic_calls_btn/visit_select_fees_amount_dialog.dart';
@@ -62,7 +64,6 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                     ),
                   ),
                   onTap: () async {
-                    late final ClientNotification _notification;
                     String? _fees_amount;
                     String? _patient_name;
 
@@ -90,21 +91,28 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                         return;
                       }
                     }
-
-                    _notification = ClientNotification.fromClinicCall(
-                      isEnglish: widget.isEnglish,
-                      call: call,
-                      client_token: x.fcm_token ?? '',
-                      server_url: '${widget.auth.organization?.pb_endpoint}',
-                      doctor_name: widget.isEnglish
-                          ? '${widget.d.doctor?.name_en}'
-                          : '${widget.d.doctor?.name_ar}',
-                      fees_amount: _fees_amount,
-                      patient_name: _patient_name,
-                    );
-                    if (context.mounted) {
-                      await widget.fcm.sendFcmNotification(
-                        _notification,
+                    if (widget.auth.organization != null &&
+                        x.fcm_token != null &&
+                        context.mounted) {
+                      await shellFunction(
+                        context,
+                        toExecute: () {
+                          ClientNotificationFormatterSender(
+                              api: const FcmNotificationsApi(),
+                              organizationExpanded: widget.auth.organization!,
+                              isEnglish: widget.isEnglish,
+                            )
+                            ..formatFromClinicCall(
+                              call: call,
+                              client_token: x.fcm_token!,
+                              doctor_name: widget.isEnglish
+                                  ? '${widget.d.doctor?.name_en}'
+                                  : '${widget.d.doctor?.name_ar}',
+                              fees_amount: _fees_amount,
+                              patient_name: _patient_name,
+                            )
+                            ..send();
+                        },
                       );
                     }
                   },
@@ -156,17 +164,22 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                     ),
                   ),
                   onTap: () async {
-                    late final ClientNotification _notification;
-
-                    _notification = ClientNotification.fromClinicCall(
-                      isEnglish: widget.isEnglish,
-                      call: call,
-                      client_token: x.fcm_token ?? '',
-                      server_url: '${widget.auth.organization?.pb_endpoint}',
-                    );
-                    if (context.mounted) {
-                      await widget.fcm.sendFcmNotification(
-                        _notification,
+                    if (widget.auth.organization != null &&
+                        x.fcm_token != null) {
+                      await shellFunction(
+                        context,
+                        toExecute: () {
+                          ClientNotificationFormatterSender(
+                              api: const FcmNotificationsApi(),
+                              organizationExpanded: widget.auth.organization!,
+                              isEnglish: widget.isEnglish,
+                            )
+                            ..formatFromClinicCall(
+                              call: call,
+                              client_token: x.fcm_token!,
+                            )
+                            ..send();
+                        },
                       );
                     }
                   },

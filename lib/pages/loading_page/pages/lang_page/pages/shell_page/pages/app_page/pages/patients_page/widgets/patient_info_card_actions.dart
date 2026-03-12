@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:one/core/api/_api_result.dart';
+import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/patient_forms_api.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/clinic/clinic.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
@@ -20,7 +25,9 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/image_source_and_document_type_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
 import 'package:one/providers/px_add_new_visit_dialog.dart';
+import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_forms.dart';
@@ -94,9 +101,37 @@ class PatientInfoCardActions extends StatelessWidget {
                   toExecute: () async {
                     await context.read<PxVisits>().addNewVisit(
                       _visitDto,
-                      context.read<PxAuth>().organization,
-                      context.read<PxLocale>().isEnglish,
                     );
+                    if (context.mounted) {
+                      final _clinic =
+                          (context.read<PxClinics>().result
+                                  as ApiDataResult<List<Clinic>>)
+                              .data
+                              .firstWhere(
+                                (c) => c.id == _visitDto.clinic_id,
+                              );
+                      ClientNotificationFormatterSender(
+                          api: const FcmNotificationsApi(),
+                          organizationExpanded: context
+                              .read<PxAuth>()
+                              .organization!,
+                          isEnglish: context.read<PxLocale>().isEnglish,
+                        )
+                        ..formatFromInAppAction(
+                          action: InAppAction.add_new_visit,
+                          account_types: context
+                              .read<PxAppConstants>()
+                              .constants!
+                              .accountTypes,
+                          patient_name: patient.name,
+                          clinic_name: context.read<PxLocale>().isEnglish
+                              ? _clinic.name_en
+                              : _clinic.name_ar,
+                          visit_date: _visitDto.visit_date,
+                          visit_type: _visitDto.visit_type,
+                        )
+                        ..send();
+                    }
                     //todo: notify patient with visit details && entry number => manual
                     //todo: generate bookkeeping entry based on the state of the visit
                   },

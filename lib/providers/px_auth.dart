@@ -43,7 +43,6 @@ class PxAuth extends ChangeNotifier {
         password,
         rememberMe,
       );
-      // prettyPrint(result);
       _auth = result;
       _user = User.fromRecordModel(_auth!.record);
       if (result != null) {

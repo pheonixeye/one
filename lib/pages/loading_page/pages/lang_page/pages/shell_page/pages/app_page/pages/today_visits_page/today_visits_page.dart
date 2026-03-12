@@ -1,7 +1,10 @@
 import 'package:one/core/api/bookkeeping_api.dart';
+import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/patients_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/add_new_visit_dialog.dart';
@@ -331,9 +334,38 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                         toExecute: () async {
                           await v.addNewVisit(
                             _visitDto,
-                            context.read<PxAuth>().organization,
-                            context.read<PxLocale>().isEnglish,
                           );
+                          if (context.mounted) {
+                            final _clinic =
+                                (context.read<PxClinics>().result
+                                        as ApiDataResult<List<Clinic>>)
+                                    .data
+                                    .firstWhere(
+                                      (c) => c.id == _visitDto.clinic_id,
+                                    );
+                            ClientNotificationFormatterSender(
+                                api: const FcmNotificationsApi(),
+                                organizationExpanded: context
+                                    .read<PxAuth>()
+                                    .organization!,
+                                isEnglish: l.isEnglish,
+                              )
+                              ..formatFromInAppAction(
+                                action: InAppAction.add_new_visit,
+                                account_types: context
+                                    .read<PxAppConstants>()
+                                    .constants!
+                                    .accountTypes,
+
+                                patient_name: _patientFromDb!.name,
+                                clinic_name: l.isEnglish
+                                    ? _clinic.name_en
+                                    : _clinic.name_ar,
+                                visit_date: _visitDto.visit_date,
+                                visit_type: _visitDto.visit_type,
+                              )
+                              ..send();
+                          }
                         },
                       );
                     }
@@ -347,16 +379,3 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
     );
   }
 }
-
-
-// SmBtn(
-//   heroTag: 'add-new-visit-nav',
-//   tooltip: context.loc.addNewVisit,
-//   onPressed: () {
-//     GoRouter.of(context).goNamed(
-//       AppRouter.patients,
-//       pathParameters: defaultPathParameters(context),
-//     );
-//   },
-//   child: const Icon(Icons.add),
-// ),
