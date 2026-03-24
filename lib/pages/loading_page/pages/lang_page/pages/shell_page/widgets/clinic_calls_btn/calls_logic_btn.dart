@@ -67,8 +67,8 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                     String? _fees_amount;
                     String? _patient_name;
 
-                    if (call.name == CallEnum.collect_fees ||
-                        call.name == CallEnum.return_fees) {
+                    if (call.type == CallEnum.collect_fees ||
+                        call.type == CallEnum.return_fees) {
                       //todo: create a dialog to enter fees and select patient / visit from today's visits
                       final name_and_fees =
                           await showDialog<Map<String, dynamic>?>(

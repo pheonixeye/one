@@ -1,14 +1,17 @@
 import 'package:one/core/api/_api_result.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/add_remove_discount_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_one_visit_bookkeeping.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/snackbar_.dart';
@@ -154,7 +157,31 @@ class DiscountManagmentRow extends StatelessWidget {
                             context,
                             toExecute: () async {
                               await b.addBookkeepingEntry(_dto);
-                              //TODO: Notify FCM to Org Members discount applied
+                              //todo: Notify FCM to Org Members discount applied
+                              if (context.mounted) {
+                                ClientNotificationFormatterSender(
+                                    organizationExpanded: context
+                                        .read<PxAuth>()
+                                        .organization!,
+                                    isEnglish: context
+                                        .read<PxLocale>()
+                                        .isEnglish,
+                                  )
+                                  ..formatFromInAppAction(
+                                    action: InAppAction.add_discount_to_visit,
+                                    account_types:
+                                        context
+                                            .read<PxAppConstants>()
+                                            .constants
+                                            ?.accountTypes ??
+                                        [],
+                                    visit_date: visit.visit_date,
+                                    discount_amount: _dto.amount.toString(),
+                                    patient_name: visit.patient.name,
+                                    doctor_name: visit.doctor.name_en,
+                                  )
+                                  ..send();
+                              }
                             },
                           );
                         }
@@ -217,7 +244,32 @@ class DiscountManagmentRow extends StatelessWidget {
                             context,
                             toExecute: () async {
                               await b.addBookkeepingEntry(_dto);
-                              //TODO: Notify FCM to Org Members discount removed
+                              //todo: Notify FCM to Org Members discount removed
+                              if (context.mounted) {
+                                ClientNotificationFormatterSender(
+                                    organizationExpanded: context
+                                        .read<PxAuth>()
+                                        .organization!,
+                                    isEnglish: context
+                                        .read<PxLocale>()
+                                        .isEnglish,
+                                  )
+                                  ..formatFromInAppAction(
+                                    action:
+                                        InAppAction.remove_discount_from_visit,
+                                    account_types:
+                                        context
+                                            .read<PxAppConstants>()
+                                            .constants
+                                            ?.accountTypes ??
+                                        [],
+                                    visit_date: visit.visit_date,
+                                    discount_amount: _dto.amount.toString(),
+                                    patient_name: visit.patient.name,
+                                    doctor_name: visit.doctor.name_en,
+                                  )
+                                  ..send();
+                              }
                             },
                           );
                         }

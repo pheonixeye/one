@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/visit_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/app_constants/visit_status.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
@@ -95,7 +97,30 @@ class VisitStatusRow extends StatelessWidget {
                                 key: 'visit_status',
                                 value: e.name_en,
                               );
-                              //TODO: Notify FCM to Org Members visit Status changed
+                              if (context.mounted) {
+                                //todo: Notify FCM to Org Members visit Type Changed
+                                ClientNotificationFormatterSender(
+                                    organizationExpanded: context
+                                        .read<PxAuth>()
+                                        .organization!,
+                                    isEnglish: l.isEnglish,
+                                  )
+                                  ..formatFromInAppAction(
+                                    action: InAppAction.update_visit_status,
+                                    account_types:
+                                        context
+                                            .read<PxAppConstants>()
+                                            .constants
+                                            ?.accountTypes ??
+                                        [],
+                                    visit_date: visit.visit_date,
+                                    visit_status: visit.visit_status,
+                                    new_visit_status: e.name_en,
+                                    patient_name: visit.patient.name,
+                                    doctor_name: visit.doctor.name_en,
+                                  )
+                                  ..send();
+                              }
                             },
                           );
                         },

@@ -1,4 +1,12 @@
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/number_translator.dart';
+import 'package:one/functions/first_where_or_null.dart';
+import 'package:one/models/doctor_items/doctor_procedure_item.dart';
+import 'package:one/models/notifications/in_app_action.dart';
+import 'package:one/models/visits/visit.dart';
+import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_visits.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,20 +35,23 @@ class VisitSingleItemsPage<T extends DoctorItem> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer3<PxDoctorProfileItems<T>, PxVisitData, PxLocale>(
-        builder: (context, p, v, l, _) {
+      body: Consumer4<PxDoctorProfileItems<T>, PxVisits, PxVisitData, PxLocale>(
+        builder: (context, p, vs, v, l, _) {
           return Builder(
             builder: (context) {
-              while (v.result == null || p.data == null) {
+              while (v.result == null || p.data == null || vs.visits == null) {
                 return const CentralLoading();
               }
 
-              while (v.result is ApiErrorResult || p.data is ApiErrorResult) {
+              while (v.result is ApiErrorResult ||
+                  p.data is ApiErrorResult ||
+                  vs.visits is ApiErrorResult) {
                 return CentralError(
                   code: (v.result as ApiErrorResult).errorCode,
                   toExecute: () async {
                     v.retry();
                     p.retry();
+                    vs.retry();
                   },
                 );
               }
@@ -61,6 +72,11 @@ class VisitSingleItemsPage<T extends DoctorItem> extends StatelessWidget {
                 _ => [],
               };
               final _data = (v.result as ApiDataResult<VisitData>).data;
+              final _visits =
+                  (vs.visits as ApiDataResult<List<VisitExpanded>>).data;
+              final _visit = _visits.firstWhereOrNull(
+                (e) => e.id == _data.visit_id,
+              );
               return Column(
                 children: [
                   Builder(
@@ -183,13 +199,79 @@ class VisitSingleItemsPage<T extends DoctorItem> extends StatelessWidget {
                                           _item.id,
                                           setupItem,
                                         );
-                                        //TODO: Notify Fcm Org members - procedure / supply removed + return fees
+                                        //todo: Notify Fcm Org members - procedure / supply removed + return fees
+                                        if (context.mounted) {
+                                          ClientNotificationFormatterSender(
+                                              organizationExpanded: context
+                                                  .read<PxAuth>()
+                                                  .organization!,
+                                              isEnglish: context
+                                                  .read<PxLocale>()
+                                                  .isEnglish,
+                                            )
+                                            ..formatFromInAppAction(
+                                              action: InAppAction
+                                                  .remove_procedure_from_visit,
+                                              account_types:
+                                                  context
+                                                      .read<PxAppConstants>()
+                                                      .constants
+                                                      ?.accountTypes ??
+                                                  [],
+                                              patient_name:
+                                                  _visit?.patient.name,
+                                              doctor_name: l.isEnglish
+                                                  ? _visit?.doctor.name_en
+                                                  : _visit?.doctor.name_ar,
+                                              procedure_name: l.isEnglish
+                                                  ? _item.name_en
+                                                  : _item.name_ar,
+                                              procedure_amount:
+                                                  (_item as DoctorProcedureItem)
+                                                      .price
+                                                      .toString(),
+                                            )
+                                            ..send();
+                                        }
                                       } else {
                                         await v.addToItemList(
                                           _item.id,
                                           setupItem,
                                         );
-                                        //TODO: Notify Fcm Org members - procedure / supply added + collect fees
+                                        //todo: Notify Fcm Org members - procedure / supply added + collect fees
+                                        if (context.mounted) {
+                                          ClientNotificationFormatterSender(
+                                              organizationExpanded: context
+                                                  .read<PxAuth>()
+                                                  .organization!,
+                                              isEnglish: context
+                                                  .read<PxLocale>()
+                                                  .isEnglish,
+                                            )
+                                            ..formatFromInAppAction(
+                                              action: InAppAction
+                                                  .remove_procedure_from_visit,
+                                              account_types:
+                                                  context
+                                                      .read<PxAppConstants>()
+                                                      .constants
+                                                      ?.accountTypes ??
+                                                  [],
+                                              patient_name:
+                                                  _visit?.patient.name,
+                                              doctor_name: l.isEnglish
+                                                  ? _visit?.doctor.name_en
+                                                  : _visit?.doctor.name_ar,
+                                              procedure_name: l.isEnglish
+                                                  ? _item.name_en
+                                                  : _item.name_ar,
+                                              procedure_amount:
+                                                  (_item as DoctorProcedureItem)
+                                                      .price
+                                                      .toString(),
+                                            )
+                                            ..send();
+                                        }
                                       }
                                     },
                                   );

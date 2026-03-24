@@ -13,13 +13,13 @@ enum CallEnum {
 }
 
 class ClinicCall extends Equatable {
-  final CallEnum name;
+  final CallEnum type;
   final String en;
   final String ar;
   final IconData iconData;
 
   const ClinicCall({
-    required this.name,
+    required this.type,
     required this.en,
     required this.ar,
     required this.iconData,
@@ -30,7 +30,7 @@ class ClinicCall extends Equatable {
 
   @override
   List<Object> get props => [
-    name,
+    type,
     en,
     ar,
     iconData,
@@ -39,7 +39,7 @@ class ClinicCall extends Equatable {
 
 class DoctorClinicCall extends ClinicCall {
   const DoctorClinicCall({
-    required super.name,
+    required super.type,
     required super.en,
     required super.ar,
     required super.iconData,
@@ -47,37 +47,37 @@ class DoctorClinicCall extends ClinicCall {
 
   static List<ClinicCall> calls = [
     DoctorClinicCall(
-      name: CallEnum.pause_clinic,
+      type: CallEnum.pause_clinic,
       en: 'Pause Clinic',
       ar: 'ايقاف العيادة',
       iconData: Icons.pause_circle,
     ),
     DoctorClinicCall(
-      name: CallEnum.resume_clinic,
+      type: CallEnum.resume_clinic,
       en: 'Resume Clinic',
       ar: 'استمرار العيادة',
       iconData: Icons.play_circle,
     ),
     DoctorClinicCall(
-      name: CallEnum.next_patient,
+      type: CallEnum.next_patient,
       en: 'Next Patient',
       ar: 'المريض التالي',
       iconData: Icons.next_plan,
     ),
     DoctorClinicCall(
-      name: CallEnum.assistant_attend,
+      type: CallEnum.assistant_attend,
       en: 'Assistant Attend',
       ar: 'حضور المساعد',
       iconData: Icons.person_add_alt,
     ),
     DoctorClinicCall(
-      name: CallEnum.collect_fees,
+      type: CallEnum.collect_fees,
       en: 'Collect Fees',
       ar: 'تحصيل رسوم',
       iconData: Icons.monetization_on,
     ),
     DoctorClinicCall(
-      name: CallEnum.return_fees,
+      type: CallEnum.return_fees,
       en: 'Return Fees',
       ar: 'رد رسوم',
       iconData: Icons.money_off_csred,
@@ -87,7 +87,7 @@ class DoctorClinicCall extends ClinicCall {
 
 class AssistantClinicCall extends ClinicCall {
   const AssistantClinicCall({
-    required super.name,
+    required super.type,
     required super.en,
     required super.ar,
     required super.iconData,
@@ -95,13 +95,13 @@ class AssistantClinicCall extends ClinicCall {
 
   static List<ClinicCall> calls = [
     AssistantClinicCall(
-      name: CallEnum.next_patient_ready,
+      type: CallEnum.next_patient_ready,
       en: 'Next Patient Ready',
       ar: 'المريض التالي جاهز',
       iconData: Icons.pause_circle,
     ),
     AssistantClinicCall(
-      name: CallEnum.next_patient_irritated,
+      type: CallEnum.next_patient_irritated,
       en: 'Next Patient Irritated',
       ar: 'المريض التالي مستاء',
       iconData: Icons.personal_injury,

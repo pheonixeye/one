@@ -82,7 +82,7 @@ class _ClinicsPatientsMovementsPageState
         while (_clinic == null) {
           return CentralLoading();
         }
-        //TODO: add shifts in the top beside the clinics
+        //todo: add shifts in the top beside the clinics(deferred)
         //todo: change ui or make tabs animate on timer
         return Scaffold(
           body: ChangeNotifierProvider(

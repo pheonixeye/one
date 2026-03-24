@@ -216,7 +216,7 @@ Patient $patient_name Has Canceled The Scheduled Visit on $_dateString.
     String? fees_amount,
     String? patient_name,
   }) {
-    String message_body = switch (call.name) {
+    String message_body = switch (call.type) {
       CallEnum.pause_clinic =>
         isEnglish
             ? '''

@@ -83,28 +83,56 @@ class SelectRecieptInfoDialog extends StatelessWidget {
                             Row(
                               spacing: 4,
                               children: [
-                                Text(context.loc.recieptSubtitle),
+                                Text(
+                                  context.loc.recieptSubtitle,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                const Text(' : '),
                                 Text(_item.subtitle),
                               ],
                             ),
                             Row(
                               spacing: 4,
                               children: [
-                                Text(context.loc.recieptAddress),
+                                Text(
+                                  context.loc.recieptAddress,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                const Text(' : '),
                                 Text(_item.address),
                               ],
                             ),
                             Row(
                               spacing: 4,
                               children: [
-                                Text(context.loc.recieptPhone),
+                                Text(
+                                  context.loc.recieptPhone,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                const Text(' : '),
                                 Text(_item.phone),
                               ],
                             ),
                             Row(
                               spacing: 4,
                               children: [
-                                Text(context.loc.recieptFooter),
+                                Text(
+                                  context.loc.recieptFooter,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                const Text(' : '),
                                 Text(_item.footer),
                               ],
                             ),

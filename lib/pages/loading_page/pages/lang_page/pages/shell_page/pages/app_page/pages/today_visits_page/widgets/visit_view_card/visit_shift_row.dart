@@ -1,13 +1,18 @@
 import 'package:one/core/api/visits_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
+import 'package:one/extensions/clinic_schedule_shift_ext.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/visit_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/shift.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/visit_view_card/reschedule_visit_dialog.dart';
+import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visits.dart';
 import 'package:one/providers/px_visits_per_clinic_shift.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
@@ -77,12 +82,34 @@ class VisitShiftRow extends StatelessWidget {
                 await shellFunction(
                   context,
                   toExecute: () async {
-                    //todo
                     await context.read<PxVisits>().updateVisitScheduleShift(
                       visit_id: visit.id,
                       shift: Shift.fromScheduleShift(_shift),
                     );
-                    //TODO: Notify FCM to Org Members visit Shift changed
+                    //todo: Notify FCM to Org Members visit Shift changed
+                    if (context.mounted) {
+                      ClientNotificationFormatterSender(
+                          organizationExpanded: context
+                              .read<PxAuth>()
+                              .organization!,
+                          isEnglish: context.read<PxLocale>().isEnglish,
+                        )
+                        ..formatFromInAppAction(
+                          action: InAppAction.update_visit_shift,
+                          account_types:
+                              context
+                                  .read<PxAppConstants>()
+                                  .constants
+                                  ?.accountTypes ??
+                              [],
+                          visit_date: visit.visit_date,
+                          patient_name: visit.patient.name,
+                          doctor_name: visit.doctor.name_en,
+                          visit_shift: visit.formattedShift(context),
+                          new_visit_shift: _shift.formattedFromTo(context),
+                        )
+                        ..send();
+                    }
                   },
                 );
               }

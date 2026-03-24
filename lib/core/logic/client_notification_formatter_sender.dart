@@ -11,7 +11,7 @@ class ClientNotificationFormatterSender {
   final bool isEnglish;
 
   ClientNotificationFormatterSender({
-    required this.api,
+    this.api = const FcmNotificationsApi(),
     required this.organizationExpanded,
     required this.isEnglish,
   });
