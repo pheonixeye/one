@@ -1739,4 +1739,13 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get addNewDoctorPromptMessageTwo =>
       'في حال رغبتكم في المتابعة وإنشاء الحساب الجديد، يرجى تأكيد ذلك حتى نتمكن من اتخاذ الإجراءات اللازمة لتحديث الاشتراك.';
+
+  @override
+  String get referrals => 'التحويلات';
+
+  @override
+  String get pickReferral => 'اختر جهة التحويل';
+
+  @override
+  String get referredFrom => 'جهة التحويل';
 }

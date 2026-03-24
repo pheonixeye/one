@@ -14,6 +14,8 @@ extension WidgetExt on ProfileSetupItem {
       ProfileSetupItem.supplies => '${context.loc.add} ${context.loc.supplies}',
       ProfileSetupItem.documents =>
         '${context.loc.add} ${context.loc.documents}',
+      ProfileSetupItem.referrals =>
+        '${context.loc.add} ${context.loc.referrals}',
     };
   }
 
@@ -25,6 +27,7 @@ extension WidgetExt on ProfileSetupItem {
       ProfileSetupItem.procedures => context.loc.procedures,
       ProfileSetupItem.supplies => context.loc.supplies,
       ProfileSetupItem.documents => context.loc.documents,
+      ProfileSetupItem.referrals => context.loc.referrals,
     };
   }
 }

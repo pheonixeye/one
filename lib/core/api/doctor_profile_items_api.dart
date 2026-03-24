@@ -10,6 +10,7 @@ import 'package:one/models/doctor_items/_doctor_item.dart';
 import 'package:one/models/doctor_items/doctor_lab_item.dart';
 import 'package:one/models/doctor_items/doctor_procedure_item.dart';
 import 'package:one/models/doctor_items/doctor_rad_item.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/models/doctor_items/profile_setup_item.dart';
 
@@ -48,6 +49,8 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
                 DoctorSupplyItem.fromJson(e.toJson()) as T,
               ProfileSetupItem.documents =>
                 DoctorDocumentTypeItem.fromJson(e.toJson()) as T,
+              ProfileSetupItem.referrals =>
+                DoctorReferralItem.fromJson(e.toJson()) as T,
             },
           )
           .toList();
@@ -100,6 +103,9 @@ class DoctorProfileItemsApi<T extends DoctorItem> {
                 e.toJson(),
               ),
               ProfileSetupItem.documents => DoctorDocumentTypeItem.fromJson(
+                e.toJson(),
+              ),
+              ProfileSetupItem.referrals => DoctorReferralItem.fromJson(
                 e.toJson(),
               ),
             },

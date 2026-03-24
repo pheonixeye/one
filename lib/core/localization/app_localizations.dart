@@ -3415,6 +3415,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Should you wish to proceed with creating the additional doctor account, please confirm and we will arrange the necessary subscription update accordingly.'**
   String get addNewDoctorPromptMessageTwo;
+
+  /// No description provided for @referrals.
+  ///
+  /// In en, this message translates to:
+  /// **'Referrals'**
+  String get referrals;
+
+  /// No description provided for @pickReferral.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Referral'**
+  String get pickReferral;
+
+  /// No description provided for @referredFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Referred From'**
+  String get referredFrom;
 }
 
 class _AppLocalizationsDelegate

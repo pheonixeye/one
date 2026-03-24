@@ -6,6 +6,7 @@ import 'package:one/core/api/pb_notifications_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_contracts.dart';
@@ -171,6 +172,15 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxDoctorProfileItems<DoctorDocumentTypeItem>(
       api: DoctorProfileItemsApi<DoctorDocumentTypeItem>(
         item: ProfileSetupItem.documents,
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    // key: ValueKey(ProfileSetupItem.documents),
+    create: (context) => PxDoctorProfileItems<DoctorReferralItem>(
+      api: DoctorProfileItemsApi<DoctorReferralItem>(
+        item: ProfileSetupItem.referrals,
         doc_id: context.read<PxAuth>().doc_id,
       ),
     ),

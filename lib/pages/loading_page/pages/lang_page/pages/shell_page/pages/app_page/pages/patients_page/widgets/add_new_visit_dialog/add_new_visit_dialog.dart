@@ -6,6 +6,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/comments_picker.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/doctor_picker.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/progress_status_picker.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/referral_picker.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/schedule_shift_picker.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/visit_date_picker.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/visit_status_picker.dart';
@@ -119,6 +120,8 @@ class AddNewVisitDialog extends StatelessWidget {
 
                   const ProgressStatusPicker(),
 
+                  const ReferralPicker(),
+
                   const CommentsPicker(),
                 ],
               ),
@@ -168,6 +171,7 @@ class AddNewVisitDialog extends StatelessWidget {
                           ? s.doctor!.id
                           : context.read<PxAuth>().doc_id,
                       visit_date: s.visitDate!,
+                      referral_id: s.referral!.id,
                       patient_entry_number: _nextEntryNumber,
                       visit_status: s.visitStatus!.name_en,
                       visit_type: s.visitType!.name_en,

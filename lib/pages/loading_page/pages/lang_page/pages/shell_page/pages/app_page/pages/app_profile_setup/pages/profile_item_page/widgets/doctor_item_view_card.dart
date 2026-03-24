@@ -1,6 +1,7 @@
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -167,6 +168,8 @@ class DoctorItemViewCard extends StatelessWidget {
                     (item as DoctorSupplyItem).viewWidgets(context),
                   ProfileSetupItem.documents =>
                     (item as DoctorDocumentTypeItem).viewWidgets(context),
+                  ProfileSetupItem.referrals =>
+                    (item as DoctorReferralItem).viewWidgets(context),
                 },
               ],
             ),

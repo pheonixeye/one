@@ -10,6 +10,10 @@ enum VisitsFilter {
   by_clinic(
     en: 'By Clinic',
     ar: 'حسب العيادة',
+  ),
+  by_referral(
+    en: 'By Referral',
+    ar: 'حسب جهة التحويل',
   );
 
   final String en;

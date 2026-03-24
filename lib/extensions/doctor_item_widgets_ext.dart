@@ -5,6 +5,7 @@ import 'package:one/models/doctor_items/doctor_drug_item.dart';
 import 'package:one/models/doctor_items/doctor_lab_item.dart';
 import 'package:one/models/doctor_items/doctor_procedure_item.dart';
 import 'package:one/models/doctor_items/doctor_rad_item.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
@@ -320,6 +321,16 @@ extension WxDoctorDocumentTypeItem on DoctorDocumentTypeItem {
         ],
       ),
     );
+  }
+
+  Widget createEditWidget(BuildContext context) {
+    return const SizedBox();
+  }
+}
+
+extension WxDoctorReferralItem on DoctorReferralItem {
+  Widget viewWidgets(BuildContext context) {
+    return const SizedBox();
   }
 
   Widget createEditWidget(BuildContext context) {

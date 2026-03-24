@@ -1,10 +1,12 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/doctor.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/models/visits/visits_filter.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_doctor.dart';
+import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,9 @@ class _VisitsFilterHeaderState extends State<VisitsFilterHeader> {
   late final TextEditingController _toController;
   final ValueNotifier<Doctor?> _docNotifier = ValueNotifier(null);
   final ValueNotifier<Clinic?> _clinicNotifier = ValueNotifier(null);
+  final ValueNotifier<DoctorReferralItem?> _referralNotifier = ValueNotifier(
+    null,
+  );
 
   @override
   void initState() {
@@ -199,10 +204,7 @@ class _VisitsFilterHeaderState extends State<VisitsFilterHeader> {
                       runAlignment: WrapAlignment.center,
                       children: [
                         const Icon(Icons.filter_alt_rounded),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 8.0),
-                        //   child: Text(context.loc.filterVisits),
-                        // ),
+
                         ...VisitsFilter.values.map((filter) {
                           return FilterChip.elevated(
                             label: Text(l.isEnglish ? filter.en : filter.ar),
@@ -340,6 +342,88 @@ class _VisitsFilterHeaderState extends State<VisitsFilterHeader> {
                               );
                             },
                           ),
+
+                          VisitsFilter.by_referral =>
+                            Consumer<PxDoctorProfileItems<DoctorReferralItem>>(
+                              builder: (context, c, _) {
+                                while (c.data == null) {
+                                  return const SizedBox(
+                                    width: 10,
+                                    height: 10,
+                                    child: LinearProgressIndicator(),
+                                  );
+                                }
+                                final _refs =
+                                    (c.data
+                                            as ApiDataResult<
+                                              List<DoctorReferralItem>
+                                            >)
+                                        .data;
+                                final _refs_and_unknown = [
+                                  DoctorReferralItem.unknown(),
+                                  ..._refs,
+                                ];
+                                return ValueListenableBuilder<
+                                  DoctorReferralItem?
+                                >(
+                                  valueListenable: _referralNotifier,
+                                  builder: (context, value, child) {
+                                    return DropdownButtonHideUnderline(
+                                      child:
+                                          DropdownButtonFormField<
+                                            DoctorReferralItem
+                                          >(
+                                            isExpanded: true,
+                                            alignment: Alignment.center,
+                                            hint: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(context.loc.referredFrom),
+                                              ],
+                                            ),
+                                            initialValue:
+                                                _referralNotifier.value,
+                                            items: [
+                                              ..._refs_and_unknown.map((r) {
+                                                return DropdownMenuItem<
+                                                  DoctorReferralItem
+                                                >(
+                                                  alignment: Alignment.center,
+                                                  value: r,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        l.isEnglish
+                                                            ? r.name_en
+                                                            : r.name_ar,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }),
+                                            ],
+                                            onChanged: (val) {
+                                              if (val != null) {
+                                                _referralNotifier.value = val;
+                                                v.filterVisits(
+                                                  VisitsFilter.by_referral,
+                                                  val.id,
+                                                );
+                                              }
+                                            },
+                                          ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                         },
                       ],
                     ),

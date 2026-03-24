@@ -52,4 +52,9 @@ List<GridModel> gridModelList(BuildContext context) => [
     title: context.loc.documents,
     path: AppRouter.documents,
   ),
+  GridModel(
+    asset: AppAssets.referrals,
+    title: context.loc.referrals,
+    path: AppRouter.referrals,
+  ),
 ];

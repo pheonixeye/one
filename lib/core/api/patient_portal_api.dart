@@ -63,7 +63,7 @@ class PatientPortalApi {
     }
   }
 
-  static const _visitsExpand = 'doc_id, clinic_id, patient_id';
+  static const _visitsExpand = 'doc_id, clinic_id, patient_id, referral_id';
 
   @PbPortal()
   Future<ApiResult<List<VisitExpanded>>> fetchVisitsOfOnePatient() async {

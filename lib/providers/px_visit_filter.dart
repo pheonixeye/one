@@ -83,6 +83,13 @@ class PxVisitFilter extends ChangeNotifier {
     return data.where((e) => e.doc_id == doc_id).toList();
   }
 
+  List<VisitExpanded> _filterByReferral(
+    List<VisitExpanded> data,
+    String referral_id,
+  ) {
+    return data.where((e) => e.referral_id == referral_id).toList();
+  }
+
   List<VisitExpanded> _filterByClinic(
     List<VisitExpanded> data,
     String clinic_id,
@@ -99,6 +106,7 @@ class PxVisitFilter extends ChangeNotifier {
       VisitsFilter.no_filter => _data,
       VisitsFilter.by_doctor => _filterByDoctor(_data, id),
       VisitsFilter.by_clinic => _filterByClinic(_data, id),
+      VisitsFilter.by_referral => _filterByReferral(_data, id),
     };
     _filteredConcisedVisits.addAll(_filtered);
     notifyListeners();

@@ -291,6 +291,7 @@ class _DoctorItemCreateEditDialogState
               ),
             ),
             ...switch (widget.type) {
+              ProfileSetupItem.referrals => [],
               ProfileSetupItem.drugs => [
                 ListTile(
                   title: Padding(

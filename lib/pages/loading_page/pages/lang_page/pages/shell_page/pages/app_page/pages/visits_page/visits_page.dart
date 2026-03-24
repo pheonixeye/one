@@ -246,6 +246,15 @@ class _VisitsPageState extends State<VisitsPage> {
                                             DataCell(
                                               Center(
                                                 child: Text(
+                                                  l.isEnglish
+                                                      ? x.referral.name_en
+                                                      : x.referral.name_ar,
+                                                ),
+                                              ),
+                                            ),
+                                            DataCell(
+                                              Center(
+                                                child: Text(
                                                   x.formattedShift(context),
                                                 ),
                                               ),

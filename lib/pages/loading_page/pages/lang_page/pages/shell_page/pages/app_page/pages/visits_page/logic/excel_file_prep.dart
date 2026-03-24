@@ -26,6 +26,7 @@ class ExcelFilePrep {
     "الطبيب المعالج",
     "نوع الزيارة",
     "حالة الزيارة",
+    "جهة التحويل",
     "مسئول التسجيل",
     "اجمالي المدفوع",
   ];
@@ -81,8 +82,9 @@ class ExcelFilePrep {
             4 => TextCellValue(_doctor?.name_ar ?? ''),
             5 => TextCellValue(_visit_type?.name_ar ?? ''),
             6 => TextCellValue(_visit_status?.name_ar ?? ''),
-            7 => TextCellValue(visit.added_by),
-            8 => TextCellValue(_amount.toString()),
+            7 => TextCellValue(visit.referral.name_ar),
+            8 => TextCellValue(visit.added_by),
+            9 => TextCellValue(_amount.toString()),
             _ => TextCellValue(''),
           };
         }),

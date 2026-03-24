@@ -11,7 +11,7 @@ class VisitFilterApi {
 
   static const String collection = 'visits';
 
-  static const String _expand = 'doc_id, clinic_id, patient_id';
+  static const String _expand = 'doc_id, clinic_id, patient_id, referral_id';
 
   Future<ApiResult<List<VisitExpanded>>> fetctVisitsOfDateRange({
     required String from,

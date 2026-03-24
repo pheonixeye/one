@@ -125,6 +125,7 @@ class AppRouter {
   static const String procedures = "procedures";
   static const String supplies = "supplies";
   static const String documents = "documents";
+  static const String referrals = "referrals";
   // patient_portal_routes
   static const String patients_portal = 'patients_portal';
   static const String pp_info = 'pp_info';

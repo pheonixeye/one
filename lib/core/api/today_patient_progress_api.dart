@@ -19,7 +19,7 @@ class TodayPatientProgressApi {
     _date.day + 1,
   );
 
-  static const String _expand = 'doc_id, clinic_id, patient_id';
+  static const String _expand = 'doc_id, clinic_id, patient_id, referral_id';
 
   late final _dateOfVisitFormatted = DateFormat(
     'yyyy-MM-dd',

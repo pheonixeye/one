@@ -6,7 +6,8 @@ enum ProfileSetupItem {
   rads(AppRouter.rads),
   procedures(AppRouter.procedures),
   documents(AppRouter.documents),
-  supplies(AppRouter.supplies);
+  supplies(AppRouter.supplies),
+  referrals(AppRouter.referrals);
 
   final String route;
 

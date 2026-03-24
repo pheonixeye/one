@@ -4,6 +4,7 @@ import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
 import 'package:one/models/doctor.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/models/patient.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -12,6 +13,7 @@ class Visit extends Equatable {
   final String doc_id;
   final String clinic_id;
   final String patient_id;
+  final String referral_id;
   final num patient_entry_number;
   final num intday;
   final num s_m;
@@ -30,6 +32,7 @@ class Visit extends Equatable {
     required this.doc_id,
     required this.clinic_id,
     required this.patient_id,
+    required this.referral_id,
     required this.patient_entry_number,
     required this.intday,
     required this.s_m,
@@ -49,6 +52,7 @@ class Visit extends Equatable {
     String? doc_id,
     String? clinic_id,
     String? patient_id,
+    String? referral_id,
     num? patient_entry_number,
     num? intday,
     num? s_m,
@@ -67,6 +71,7 @@ class Visit extends Equatable {
       doc_id: doc_id ?? this.doc_id,
       clinic_id: clinic_id ?? this.clinic_id,
       patient_id: patient_id ?? this.patient_id,
+      referral_id: referral_id ?? this.referral_id,
       patient_entry_number: patient_entry_number ?? this.patient_entry_number,
       intday: intday ?? this.intday,
       s_m: s_m ?? this.s_m,
@@ -89,6 +94,7 @@ class Visit extends Equatable {
       'doc_id': doc_id,
       'clinic_id': clinic_id,
       'patient_id': patient_id,
+      'referral_id': referral_id,
       'patient_entry_number': patient_entry_number,
       'intday': intday,
       's_m': s_m,
@@ -110,6 +116,7 @@ class Visit extends Equatable {
       doc_id: map['doc_id'] as String,
       clinic_id: map['clinic_id'] as String,
       patient_id: map['patient_id'] as String,
+      referral_id: map['referral_id'] as String,
       patient_entry_number: map['patient_entry_number'] as num,
       intday: map['intday'] as num,
       s_m: map['s_m'] as num,
@@ -135,6 +142,7 @@ class Visit extends Equatable {
       doc_id,
       clinic_id,
       patient_id,
+      referral_id,
       patient_entry_number,
       intday,
       s_m,
@@ -162,6 +170,7 @@ class VisitExpanded extends Visit {
     required super.doc_id,
     required super.clinic_id,
     required super.patient_id,
+    required super.referral_id,
     required super.patient_entry_number,
     required super.intday,
     required super.s_m,
@@ -177,11 +186,13 @@ class VisitExpanded extends Visit {
     required this.clinic,
     required this.patient,
     required this.doctor,
+    required this.referral,
   });
 
   final Clinic clinic;
   final Doctor doctor;
   final Patient patient;
+  final DoctorReferralItem referral;
 
   factory VisitExpanded.fromRecordModel(RecordModel record) {
     final map = record.data;
@@ -191,6 +202,7 @@ class VisitExpanded extends Visit {
       doc_id: map['doc_id'] as String,
       clinic_id: map['clinic_id'] as String,
       patient_id: map['patient_id'] as String,
+      referral_id: map['referral_id'] as String,
       patient_entry_number: map['patient_entry_number'] as num,
       intday: map['intday'] as num,
       s_m: map['s_m'] as num,
@@ -211,6 +223,9 @@ class VisitExpanded extends Visit {
       ),
       doctor: Doctor.fromJson(
         record.get<RecordModel>('expand.doc_id').toJson(),
+      ),
+      referral: DoctorReferralItem.fromJson(
+        record.get<RecordModel>('expand.referral_id').toJson(),
       ),
     );
   }

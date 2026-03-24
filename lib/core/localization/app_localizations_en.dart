@@ -1747,4 +1747,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get addNewDoctorPromptMessageTwo =>
       'Should you wish to proceed with creating the additional doctor account, please confirm and we will arrange the necessary subscription update accordingly.';
+
+  @override
+  String get referrals => 'Referrals';
+
+  @override
+  String get pickReferral => 'Pick Referral';
+
+  @override
+  String get referredFrom => 'Referred From';
 }

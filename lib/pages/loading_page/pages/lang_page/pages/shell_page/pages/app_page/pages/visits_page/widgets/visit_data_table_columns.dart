@@ -10,6 +10,7 @@ List<DataColumn> buildDataColumns(BuildContext context) {
     DataColumn(label: Text(context.loc.visitDate)),
     DataColumn(label: Text(context.loc.visitType)),
     DataColumn(label: Text(context.loc.clinic)),
+    DataColumn(label: Text(context.loc.referredFrom)),
     DataColumn(label: Text(context.loc.clinicShift)),
     DataColumn(label: Text(context.loc.addedBy)),
   ];
