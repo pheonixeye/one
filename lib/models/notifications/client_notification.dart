@@ -65,6 +65,7 @@ class ClientNotification extends Equatable {
     required String server_url,
     required InAppAction inAppAction,
     String? patient_name,
+    String? patient_phone,
     String? clinic_name,
     String? doctor_name,
     DateTime? visit_date,
@@ -196,6 +197,20 @@ Patient $patient_name Has Canceled The Scheduled Visit on $_dateString.
  '''
             : '''
 قام المريض $patient_name بالغاء الزيارة المجدولة بتاريخ $_dateString.
+ ''',
+      InAppAction.portal_booking =>
+        isEnglish
+            ? '''
+Patient Name : $patient_name,
+Patient Phone : $patient_phone,
+Visit Date : $_dateString,
+Clinic : $clinic_name,
+ '''
+            : '''
+اسم المريض :  $patient_name,
+التليفون :  $patient_phone,
+تاريخ الزيارة :  $_dateString,
+العيادة : $clinic_name,
  ''',
     };
 

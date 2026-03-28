@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:one/assets/assets.dart';
 import 'package:one/extensions/loc_ext.dart';
 
-class ErrorDialog extends StatelessWidget {
-  const ErrorDialog({super.key, required this.message});
+class InfoDialog extends StatelessWidget {
+  const InfoDialog({super.key, required this.message});
   final String message;
 
   @override
@@ -11,7 +11,7 @@ class ErrorDialog extends StatelessWidget {
     return AlertDialog(
       title: Row(
         children: [
-          Expanded(child: Text(context.loc.errorDialog)),
+          Expanded(child: Text('')),
           IconButton.outlined(
             onPressed: () {
               Navigator.pop(context, false);
@@ -27,7 +27,7 @@ class ErrorDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: 10,
           children: [
-            Image.asset(AppAssets.errorIcon, width: 50, height: 50),
+            Image.asset(AppAssets.featureImage(2), width: 150, height: 150),
             Text(message, textAlign: TextAlign.center),
           ],
         ),

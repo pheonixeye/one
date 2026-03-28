@@ -3433,6 +3433,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Referred From'**
   String get referredFrom;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// No description provided for @preferredDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Date'**
+  String get preferredDate;
+
+  /// No description provided for @selectPreferredDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Preferred Date'**
+  String get selectPreferredDate;
 }
 
 class _AppLocalizationsDelegate

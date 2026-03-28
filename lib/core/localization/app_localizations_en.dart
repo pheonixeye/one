@@ -1756,4 +1756,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get referredFrom => 'Referred From';
+
+  @override
+  String get message => 'Message';
+
+  @override
+  String get preferredDate => 'Preferred Date';
+
+  @override
+  String get selectPreferredDate => 'Select Preferred Date';
 }

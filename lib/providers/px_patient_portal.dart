@@ -8,6 +8,8 @@ import 'package:one/core/api/patient_portal_api.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
+import 'package:one/models/portal_models/portal_booking_data.dart';
+import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:s3_dart_lite/s3_dart_lite.dart';
 
@@ -20,20 +22,29 @@ class PxPatientPortal extends ChangeNotifier {
 
   static S3DocumentsApi? _s3documentsApi;
 
+  static ApiResult<List<PortalClinic>>? _clinics;
+  ApiResult<List<PortalClinic>>? get clinics => _clinics;
+
   Future<void> _init() async {
     await _fetchOrganization();
     if (_organization != null && _organization is! ApiErrorResult) {
+      await _fetchClinics();
       await _fetchPatient();
     }
   }
 
-  static ApiResult<Organization>? _organization;
-  ApiResult<Organization>? get organization => _organization;
+  Future<void> _fetchClinics() async {
+    _clinics = await api.fetchClinics();
+    notifyListeners();
+  }
+
+  static ApiResult<OrganizationExpanded>? _organization;
+  ApiResult<OrganizationExpanded>? get organization => _organization;
 
   Future<void> _fetchOrganization() async {
     _organization = await api.fetchOrganization();
     if (_organization != null && _organization is! ApiErrorResult) {
-      final _org = (_organization as ApiDataResult<Organization>).data;
+      final _org = (_organization as ApiDataResult<OrganizationExpanded>).data;
       PocketbaseHelper.initializedPortalPb(_org.pb_endpoint);
       _s3documentsApi = S3DocumentsApi(
         clientOptions: ClientOptions(
@@ -87,5 +98,9 @@ class PxPatientPortal extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> bookNewVisit(PortalBookingData data) async {
+    await api.bookNewVisit(data);
   }
 }

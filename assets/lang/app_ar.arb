@@ -599,5 +599,8 @@
     "addNewDoctorPromptMessageTwo" : "في حال رغبتكم في المتابعة وإنشاء الحساب الجديد، يرجى تأكيد ذلك حتى نتمكن من اتخاذ الإجراءات اللازمة لتحديث الاشتراك.",
     "referrals" : "التحويلات",
     "pickReferral" : "اختر جهة التحويل",
-    "referredFrom" : "جهة التحويل"
+    "referredFrom" : "جهة التحويل",
+    "message" : "الرسالة / تفاصيل",
+    "preferredDate" : "التاريخ المفضل",
+    "selectPreferredDate" : "اختر التاريخ المفضل للحجز"
 }

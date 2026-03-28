@@ -13,6 +13,7 @@ import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/widgets/book_appointment_tile.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/widgets/patient_tile.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/widgets/visit_tile.dart';
+import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_portal.dart';
 import 'package:one/router/router.dart';
@@ -227,7 +228,14 @@ class PatientPortalPage extends StatelessWidget {
                   child: const SizedBox(),
                 ),
               // book new appointment
-              const BookAppointmentTile(),
+              Consumer<PxAppConstants>(
+                builder: (context, a, _) {
+                  return BookAppointmentTile(
+                    patient: (p.patient as ApiDataResult<Patient?>?)?.data,
+                    org_id: p.api.org_id ?? '',
+                  );
+                },
+              ),
             ],
           ),
         );

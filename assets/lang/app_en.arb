@@ -600,5 +600,8 @@
     "addNewDoctorPromptMessageTwo" : "Should you wish to proceed with creating the additional doctor account, please confirm and we will arrange the necessary subscription update accordingly.",
     "referrals" : "Referrals",
     "pickReferral" : "Pick Referral",
-    "referredFrom" : "Referred From"
+    "referredFrom" : "Referred From",
+    "message" : "Message",
+    "preferredDate" : "Preferred Date",
+    "selectPreferredDate" : "Select Preferred Date"
 }

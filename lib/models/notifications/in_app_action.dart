@@ -39,6 +39,11 @@ enum InAppAction {
     ar_title: 'تم تعديل نوع الزيارة',
     toNotify: 'Doctor',
   ),
+  portal_booking(
+    en_title: 'New Online Booking',
+    ar_title: 'حجز جديد اونلاين',
+    toNotify: 'All',
+  ),
   visit_is_cancled_by_patient(
     en_title: 'Visit Is Canceled By Patient',
     ar_title: 'تم الغاء زيارة بواسطة المريض',

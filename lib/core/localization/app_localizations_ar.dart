@@ -1748,4 +1748,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get referredFrom => 'جهة التحويل';
+
+  @override
+  String get message => 'الرسالة / تفاصيل';
+
+  @override
+  String get preferredDate => 'التاريخ المفضل';
+
+  @override
+  String get selectPreferredDate => 'اختر التاريخ المفضل للحجز';
 }

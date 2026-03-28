@@ -5,6 +5,8 @@ import 'package:one/errors/code_to_error.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
+import 'package:one/models/portal_models/portal_booking_data.dart';
+import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -18,9 +20,9 @@ class PatientPortalApi {
   final String? patient_id;
 
   @PbBase()
-  Future<ApiResult<Organization>> fetchOrganization() async {
+  Future<ApiResult<OrganizationExpanded>> fetchOrganization() async {
     if (org_id == null) {
-      return ApiErrorResult<Organization>(
+      return ApiErrorResult<OrganizationExpanded>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: AppErrorCode.clientException.name,
       );
@@ -28,10 +30,13 @@ class PatientPortalApi {
     try {
       final _result = await PocketbaseHelper.pbBase
           .collection('organizations')
-          .getOne(org_id!);
-      final _data = Organization.fromJson(_result.toJson());
+          .getOne(
+            org_id!,
+            expand: 'members',
+          );
+      final _data = OrganizationExpanded.fromRecordModel(_result);
 
-      return ApiDataResult<Organization>(data: _data);
+      return ApiDataResult<OrganizationExpanded>(data: _data);
     } on ClientException catch (e) {
       return ApiErrorResult(
         errorCode: AppErrorCode.clientException.code,
@@ -114,7 +119,37 @@ class PatientPortalApi {
     }
   }
 
-  Future<void> bookNewVisit() async {
-    //TODO:
+  @PbPortal()
+  Future<ApiResult<List<PortalClinic>>> fetchClinics() async {
+    try {
+      final _result = await PocketbaseHelper.pbPortal
+          .collection('clinics')
+          .getFullList(
+            expand: 'doc_id',
+            sort: '-created',
+          );
+      final _data = _result
+          .map((e) => PortalClinic.fromRecordModel(e))
+          .toList();
+      // prettyPrint(_data);
+      return ApiDataResult<List<PortalClinic>>(data: _data);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
+  Future<void> bookNewVisit(PortalBookingData data) async {
+    //todo: add booking to db
+    await PocketbaseHelper.pbPortal
+        .collection('portal_bookings')
+        .create(
+          body: data.toJson(),
+        );
+    //todo: notify organization members
+
+    //todo: notify user
   }
 }
