@@ -156,6 +156,9 @@ class PatientPortalPage extends StatelessWidget {
                       },
                     );
                   }
+                  while (p.patient == null) {
+                    return SizedBox();
+                  }
                   final _patient = (p.patient as ApiDataResult<Patient>).data;
                   return PatientTile(
                     patient: _patient,
@@ -230,8 +233,11 @@ class PatientPortalPage extends StatelessWidget {
               // book new appointment
               Consumer<PxAppConstants>(
                 builder: (context, a, _) {
+                  final _patient = (p.patient is ApiDataResult)
+                      ? (p.patient as ApiDataResult<Patient?>?)?.data
+                      : null;
                   return BookAppointmentTile(
-                    patient: (p.patient as ApiDataResult<Patient?>?)?.data,
+                    patient: _patient,
                     org_id: p.api.org_id ?? '',
                   );
                 },
