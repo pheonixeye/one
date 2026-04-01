@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/visits_api.dart';
+import 'package:one/core/api/whatsapp_api.dart';
 import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
@@ -76,7 +77,9 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                             builder: (context) {
                               return ChangeNotifierProvider.value(
                                 value: PxVisits(
+                                  context: context,
                                   api: VisitsApi(added_by: ''),
+                                  whatsappApi: const WhatsappApi(),
                                 ),
                                 child: VisitSelectFeesAmountDialog(
                                   call: call,

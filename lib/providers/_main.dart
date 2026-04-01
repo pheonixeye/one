@@ -5,6 +5,7 @@ import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/pb_notifications_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
+import 'package:one/core/api/whatsapp_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
@@ -215,9 +216,11 @@ final List<SingleChildWidget> providers = [
 
   ChangeNotifierProvider(
     create: (context) => PxVisits(
+      context: context,
       api: VisitsApi(
         added_by: '${context.read<PxAuth>().user?.name}',
       ),
+      whatsappApi: const WhatsappApi(),
     ),
   ),
 

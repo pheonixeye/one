@@ -75,7 +75,7 @@ class VisitsApi {
     }
   }
 
-  Future<void> addNewVisit(
+  Future<VisitExpanded> addNewVisit(
     Visit visit,
   ) async {
     //TODO: error handling
@@ -116,6 +116,8 @@ class VisitsApi {
     await BookkeepingApi().addBookkeepingItem(_item);
 
     //todo: send inclinic notification => deferred to separate logic transformer
+
+    return _visit;
   }
 
   Future<void> updateVisit(
