@@ -111,6 +111,7 @@ final List<SingleChildWidget> providers = [
       context: context,
       api: DoctorApi(
         doc_id: context.read<PxAuth>().doc_id,
+        org_id: '${context.read<PxAuth>().organization?.id}',
       ),
     ),
   ),

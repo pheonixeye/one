@@ -4,9 +4,13 @@ import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/models/doctor.dart';
 
 class DoctorApi {
-  const DoctorApi({required this.doc_id});
+  const DoctorApi({
+    required this.doc_id,
+    required this.org_id,
+  });
 
   final String doc_id;
+  final String org_id;
 
   static const String collection = 'doctors';
 
@@ -46,7 +50,10 @@ class DoctorApi {
   Future<List<Doctor>> fetchAllDoctors() async {
     final _response = await PocketbaseHelper.pbBase
         .collection(collection)
-        .getFullList(expand: doctor_expand);
+        .getFullList(
+          expand: doctor_expand,
+          filter: "org_id = '$org_id'",
+        );
 
     // prettyPrint(_response);
     final _doctors = _response.map((e) {
@@ -70,6 +77,7 @@ class DoctorApi {
         .collection('users')
         .getList(
           expand: _user_expand,
+          filter: "org_id = '$org_id'",
         );
 
     // prettyPrint(result);
