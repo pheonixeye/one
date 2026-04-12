@@ -1765,4 +1765,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectPreferredDate => 'Select Preferred Date';
+
+  @override
+  String get notificationsNotAllowedTitle => 'Notifications Not Permitted';
+
+  @override
+  String get notificationsNotAllowedMessage =>
+      'You Can Toggle The Notification Permission In The Application Settings To Recieve Push Notifications.';
+
+  @override
+  String get notificationSettings => 'Notification Settings';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get deactivate => 'Deactivate';
+
+  @override
+  String get activate => 'Activate';
+
+  @override
+  String get howToToggleNotifications => 'How To Toggle Notifications';
 }

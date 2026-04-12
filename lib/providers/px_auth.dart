@@ -76,8 +76,11 @@ class PxAuth extends ChangeNotifier {
       String? _fcmToken = await context
           .read<PxFirebaseNotifications>()
           .getFcmToken;
+
       _auth = await api.loginWithToken();
+
       _user = User.fromRecordModel(_auth!.record);
+
       if (_auth != null) {
         _organization = OrganizationExpanded.fromRecordModel(
           _auth!.record.get<RecordModel>('expand.org_id'),

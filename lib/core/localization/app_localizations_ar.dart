@@ -1757,4 +1757,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectPreferredDate => 'اختر التاريخ المفضل للحجز';
+
+  @override
+  String get notificationsNotAllowedTitle => 'لم يتم السماح باستقبال التنبيهات';
+
+  @override
+  String get notificationsNotAllowedMessage =>
+      'يمكن تعديل استقبال التنبيهات من اعدادات البرنامج';
+
+  @override
+  String get notificationSettings => 'خصائص التنبيهات';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get deactivate => 'تعطيل';
+
+  @override
+  String get activate => 'تفعيل';
+
+  @override
+  String get howToToggleNotifications => 'كيفية تفعيل التنبيهات';
 }

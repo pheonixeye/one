@@ -5,6 +5,7 @@ import 'package:one/models/notifications/client_notification.dart';
 import 'package:one/models/notifications/in_app_notification.dart';
 import 'package:one/providers/px_overlay.dart';
 import 'package:one/widgets/notification_overlay.dart';
+import 'package:uuid/uuid.dart';
 
 class PxFirebaseNotifications extends ChangeNotifier {
   PxFirebaseNotifications({
@@ -25,13 +26,13 @@ class PxFirebaseNotifications extends ChangeNotifier {
   static AuthorizationStatus? _authorizationStatus;
   AuthorizationStatus? get authorizationStatus => _authorizationStatus;
 
+  bool get isAuthorized =>
+      _authorizationStatus == AuthorizationStatus.authorized;
+
   Future<void> initializeMessaging() async {
-    await FirebaseMessaging.instance.setAutoInitEnabled(true);
     if (await _requestPermission()) {
       await _getFcmToken();
       _handleForegroundMessage();
-    } else {
-      return;
     }
   }
 
@@ -40,21 +41,47 @@ class PxFirebaseNotifications extends ChangeNotifier {
       providesAppNotificationSettings: true,
       criticalAlert: true,
     );
+
     if (_settings != null) {
       _authorizationStatus = _settings!.authorizationStatus;
     }
+
     notifyListeners();
-    // print('${_settings?.authorizationStatus.name}');
-    return authorizationStatus == AuthorizationStatus.authorized;
+
+    final _isAuthorized = authorizationStatus == AuthorizationStatus.authorized;
+
+    if (_isAuthorized == false && context.mounted) {
+      final _id = Uuid().v4();
+
+      final _notificationOverlayWidget = NotificationOverlayCard(
+        key: ValueKey(_id),
+        notification: InAppNotification(
+          //TODO: allow for localization
+          id: _id,
+          title: 'Notifications Not Permitted',
+          message:
+              'You Can Toggle The Notification Permission In The Application Settings To Recieve Push Notifications.',
+        ),
+      );
+      PxOverlay.toggleOverlay(
+        id: _id,
+        child: _notificationOverlayWidget,
+      );
+    }
+
+    return _isAuthorized;
   }
 
   Future<String?> _getFcmToken() async {
-    _fcmToken = await FirebaseMessaging.instance.getToken(
-      vapidKey: const String.fromEnvironment('VAPID_KEY'),
-    );
-    // print(_fcmToken);
-    notifyListeners();
-    return _fcmToken;
+    try {
+      _fcmToken = await FirebaseMessaging.instance.getToken(
+        vapidKey: const String.fromEnvironment('VAPID_KEY'),
+      );
+      notifyListeners();
+      return _fcmToken;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<String?> get getFcmToken async => _fcmToken ?? await _getFcmToken();
@@ -100,5 +127,17 @@ class PxFirebaseNotifications extends ChangeNotifier {
 
   Future<void> sendFcmNotification(ClientNotification n) async {
     await api.sendFcmNotification(n);
+  }
+}
+
+extension TxAuthorizationStatus on AuthorizationStatus {
+  String authorizationStatusTr(bool isEnglish) {
+    return switch (this) {
+      AuthorizationStatus.authorized => isEnglish ? 'Authorized' : 'مسموح',
+      AuthorizationStatus.denied => isEnglish ? 'Denied' : 'غير مسموح',
+      AuthorizationStatus.notDetermined =>
+        isEnglish ? 'Not Determined' : 'غير محدد',
+      AuthorizationStatus.provisional => isEnglish ? 'Provisional' : 'اولي',
+    };
   }
 }

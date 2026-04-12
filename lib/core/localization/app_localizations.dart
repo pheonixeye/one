@@ -3451,6 +3451,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Preferred Date'**
   String get selectPreferredDate;
+
+  /// No description provided for @notificationsNotAllowedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications Not Permitted'**
+  String get notificationsNotAllowedTitle;
+
+  /// No description provided for @notificationsNotAllowedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You Can Toggle The Notification Permission In The Application Settings To Recieve Push Notifications.'**
+  String get notificationsNotAllowedMessage;
+
+  /// No description provided for @notificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get notificationSettings;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @deactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get deactivate;
+
+  /// No description provided for @activate.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get activate;
+
+  /// No description provided for @howToToggleNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'How To Toggle Notifications'**
+  String get howToToggleNotifications;
 }
 
 class _AppLocalizationsDelegate
