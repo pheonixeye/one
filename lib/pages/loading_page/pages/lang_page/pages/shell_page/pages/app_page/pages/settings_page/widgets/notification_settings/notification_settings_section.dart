@@ -32,9 +32,7 @@ class NotificationSettingsSection extends StatelessWidget {
                       '_blank',
                     );
                   },
-                  child: f.isAuthorized
-                      ? const Icon(Icons.notifications_active)
-                      : const Icon(Icons.notifications_off),
+                  child: const Icon(Icons.notifications_active),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
