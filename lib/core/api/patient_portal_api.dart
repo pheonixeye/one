@@ -10,7 +10,6 @@ import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
-import 'package:one/models/portal_models/portal_booking_data.dart';
 import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/models/visit_data/visit_data_dto.dart';
 import 'package:one/models/visits/visit.dart';
@@ -208,18 +207,6 @@ class PatientPortalApi {
         originalErrorMessage: e.toString(),
       );
     }
-  }
-
-  Future<void> bookNewVisit(PortalBookingData data) async {
-    //todo: add booking to db
-    await PocketbaseHelper.pbPortal
-        .collection('portal_bookings')
-        .create(
-          body: data.toJson(),
-        );
-    //todo: notify organization members
-
-    //todo: notify user
   }
 
   @PbPortal()

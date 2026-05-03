@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:pocketbase/pocketbase.dart';
 
+//TODO: remove later
 class PortalClinic extends Equatable {
   final String id;
   final String name_en;

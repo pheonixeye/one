@@ -9,7 +9,6 @@ import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
-import 'package:one/models/portal_models/portal_booking_data.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:s3_dart_lite/s3_dart_lite.dart';
 
@@ -104,7 +103,7 @@ class PxPatientPortal extends ChangeNotifier {
     }
   }
 
-  Future<void> bookNewVisit(PortalBookingData data) async {
-    await api.bookNewVisit(data);
+  Future<void> bookNewVisit(Visit visit) async {
+    await api.addNewVisit(visit);
   }
 }

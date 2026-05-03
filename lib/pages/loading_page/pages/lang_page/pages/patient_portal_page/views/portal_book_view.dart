@@ -11,6 +11,7 @@ class PortalBookView extends StatefulWidget {
 class _PortalBookViewState extends State<PortalBookView> {
   late final ScrollController _controller;
   int _step = 0;
+  //TODO: handle portal query accordingly
 
   @override
   void initState() {
