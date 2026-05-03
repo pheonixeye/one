@@ -9,6 +9,7 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
+import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/models/portal_models/portal_booking_data.dart';
 import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/widgets/book_appointment_from_portal_dialog.dart';
@@ -21,10 +22,10 @@ import 'package:provider/provider.dart';
 class BookAppointmentTile extends StatefulWidget {
   const BookAppointmentTile({
     super.key,
-    required this.org_id,
+    required this.query,
     this.patient,
   });
-  final String org_id;
+  final PortalQuery query;
   final Patient? patient;
   @override
   State<BookAppointmentTile> createState() => _BookAppointmentTileState();
@@ -41,8 +42,7 @@ class _BookAppointmentTileState extends State<BookAppointmentTile> {
             return ChangeNotifierProvider.value(
               value: PxPatientPortal(
                 api: PatientPortalApi(
-                  org_id: widget.org_id,
-                  patient_id: widget.patient?.id ?? '',
+                  query: widget.query,
                 ),
               ),
               child: BookAppointmentFromPortalDialog(

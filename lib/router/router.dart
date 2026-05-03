@@ -1,5 +1,6 @@
 import 'package:one/core/api/patient_portal_api.dart';
 import 'package:one/core/api/reciept_info_api.dart';
+import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/assistants_page/assistants_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
@@ -243,19 +244,27 @@ class AppRouter {
               ),
               GoRoute(
                 path:
-                    patients_portal, //:lang/patients_portal/?org_id=org_id&patient_id=patient_id
+                    patients_portal, //:lang/patients_portal/?view=&org_id=&doc_id=&patient_id=
                 name: patients_portal,
                 builder: (context, state) {
                   //todo
+                  final _view = state.uri.queryParameters['view'];
                   final _org_id = state.uri.queryParameters['org_id'];
+                  final _doc_id = state.uri.queryParameters['doc_id'];
                   final _patient_id = state.uri.queryParameters['patient_id'];
+
+                  final _portalQuery = PortalQuery(
+                    view: PortalView.fromString(_view),
+                    org_id: _org_id,
+                    doc_id: _doc_id,
+                    patient_id: _patient_id,
+                  );
 
                   return ChangeNotifierProvider(
                     key: ValueKey(state.uri),
                     create: (context) => PxPatientPortal(
                       api: PatientPortalApi(
-                        org_id: _org_id,
-                        patient_id: _patient_id,
+                        query: _portalQuery,
                       ),
                     ),
                     child: PatientPortalPage(

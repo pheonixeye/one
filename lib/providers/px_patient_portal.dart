@@ -5,11 +5,11 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/core/api/documents/s3_documents_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
+import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/portal_models/portal_booking_data.dart';
-import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:s3_dart_lite/s3_dart_lite.dart';
 
@@ -22,8 +22,8 @@ class PxPatientPortal extends ChangeNotifier {
 
   static S3DocumentsApi? _s3documentsApi;
 
-  static ApiResult<List<PortalClinic>>? _clinics;
-  ApiResult<List<PortalClinic>>? get clinics => _clinics;
+  static ApiResult<List<Clinic>>? _clinics;
+  ApiResult<List<Clinic>>? get clinics => _clinics;
 
   Future<void> _init() async {
     await _fetchOrganization();
@@ -34,7 +34,7 @@ class PxPatientPortal extends ChangeNotifier {
   }
 
   Future<void> _fetchClinics() async {
-    _clinics = await api.fetchClinics();
+    _clinics = await api.fetchDoctorClinics();
     notifyListeners();
   }
 
@@ -71,11 +71,15 @@ class PxPatientPortal extends ChangeNotifier {
 
   Future<void> retryFetchPatient() async => await _fetchPatient();
 
-  ApiResult<List<VisitExpanded>>? _visits;
-  ApiResult<List<VisitExpanded>>? get visits => _visits;
+  ApiResult<List<VisitExpanded>>? _onePatientVisits;
+  ApiResult<List<VisitExpanded>>? get onePatientVisits => _onePatientVisits;
 
-  Future<void> fetchVisits() async {
-    _visits = await api.fetchVisitsOfOnePatient();
+  ApiResult<List<VisitExpanded>>? _oneMonthOneClinicVisits;
+  ApiResult<List<VisitExpanded>>? get oneMonthOneClinicVisits =>
+      _oneMonthOneClinicVisits;
+
+  Future<void> fetchOnePatientVisits() async {
+    _onePatientVisits = await api.fetchVisitsOfOnePatient();
     notifyListeners();
   }
 
