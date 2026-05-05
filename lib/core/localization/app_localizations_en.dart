@@ -1787,4 +1787,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get howToToggleNotifications => 'How To Toggle Notifications';
+
+  @override
+  String get enterBookingDetails => 'Enter Booking Details';
+
+  @override
+  String get noAvailableDates => 'No Available Dates';
 }

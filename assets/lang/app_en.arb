@@ -610,5 +610,7 @@
     "status" : "Status",
     "deactivate" : "Deactivate",
     "activate" : "Activate",
-    "howToToggleNotifications" : "How To Toggle Notifications"
+    "howToToggleNotifications" : "How To Toggle Notifications",
+    "enterBookingDetails" : "Enter Booking Details",
+    "noAvailableDates" : "No Available Dates"
 }

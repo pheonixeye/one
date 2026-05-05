@@ -1779,4 +1779,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get howToToggleNotifications => 'كيفية تفعيل التنبيهات';
+
+  @override
+  String get enterBookingDetails => 'ادخل بيانات الحجز';
+
+  @override
+  String get noAvailableDates => 'لا يوجد مواعيد متاحة';
 }

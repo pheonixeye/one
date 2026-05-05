@@ -10,7 +10,6 @@ import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
-import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/models/visit_data/visit_data_dto.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -60,6 +59,59 @@ class PatientPortalApi {
       final _result = await PocketbaseHelper.pbPortal
           .collection('patients')
           .getOne(query.patient_id!);
+      final _data = Patient.fromJson(_result.toJson());
+
+      return ApiDataResult<Patient>(data: _data);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
+  @PbPortal()
+  Future<ApiResult<Patient>> addNewPatientOrFetchPatientIfAlreadyExists(
+    Patient patient,
+  ) async {
+    try {
+      final _result = await PocketbaseHelper.pbPortal
+          .collection('patients')
+          .create(
+            body: patient.toJson(),
+          );
+
+      final _data = Patient.fromJson(_result.toJson());
+
+      return ApiDataResult<Patient>(data: _data);
+    } on ClientException catch (_) {
+      try {
+        final _result = await PocketbaseHelper.pbPortal
+            .collection('patients')
+            .getFirstListItem("phone = '${patient.phone}'");
+
+        final _data = Patient.fromJson(_result.toJson());
+
+        return ApiDataResult<Patient>(data: _data);
+      } on ClientException catch (e) {
+        return ApiErrorResult(
+          errorCode: AppErrorCode.clientException.code,
+          originalErrorMessage: e.toString(),
+        );
+      }
+      // return ApiErrorResult(
+      //   errorCode: AppErrorCode.clientException.code,
+      //   originalErrorMessage: e.toString(),
+      // );
+    }
+  }
+
+  @PbPortal()
+  Future<ApiResult<Patient>> fetchPatientById(String patient_id) async {
+    try {
+      final _result = await PocketbaseHelper.pbPortal
+          .collection('patients')
+          .getOne(patient_id);
       final _data = Patient.fromJson(_result.toJson());
 
       return ApiDataResult<Patient>(data: _data);
@@ -188,7 +240,7 @@ class PatientPortalApi {
   }
 
   @PbPortal()
-  Future<ApiResult<List<PortalClinic>>> fetchClinics() async {
+  Future<ApiResult<List<Clinic>>> fetchClinics() async {
     try {
       final _result = await PocketbaseHelper.pbPortal
           .collection('clinics')
@@ -196,11 +248,9 @@ class PatientPortalApi {
             expand: 'doc_id',
             sort: '-created',
           );
-      final _data = _result
-          .map((e) => PortalClinic.fromRecordModel(e))
-          .toList();
+      final _data = _result.map((e) => Clinic.fromJson(e.toJson())).toList();
       // prettyPrint(_data);
-      return ApiDataResult<List<PortalClinic>>(data: _data);
+      return ApiDataResult<List<Clinic>>(data: _data);
     } on ClientException catch (e) {
       return ApiErrorResult(
         errorCode: AppErrorCode.clientException.code,

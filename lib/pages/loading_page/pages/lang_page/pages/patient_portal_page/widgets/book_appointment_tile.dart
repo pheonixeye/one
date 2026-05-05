@@ -11,7 +11,6 @@ import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
-import 'package:one/models/portal_models/portal_clinic.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';

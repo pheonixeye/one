@@ -609,5 +609,7 @@
     "status" : "الحالة",
     "deactivate" : "تعطيل",
     "activate" : "تفعيل",
-    "howToToggleNotifications" : "كيفية تفعيل التنبيهات"
+    "howToToggleNotifications" : "كيفية تفعيل التنبيهات",
+    "enterBookingDetails" : "ادخل بيانات الحجز",
+    "noAvailableDates" : "لا يوجد مواعيد متاحة"
 }

@@ -3493,6 +3493,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How To Toggle Notifications'**
   String get howToToggleNotifications;
+
+  /// No description provided for @enterBookingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Booking Details'**
+  String get enterBookingDetails;
+
+  /// No description provided for @noAvailableDates.
+  ///
+  /// In en, this message translates to:
+  /// **'No Available Dates'**
+  String get noAvailableDates;
 }
 
 class _AppLocalizationsDelegate
