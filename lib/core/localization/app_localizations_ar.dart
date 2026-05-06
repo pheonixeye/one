@@ -1785,4 +1785,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noAvailableDates => 'لا يوجد مواعيد متاحة';
+
+  @override
+  String get entryNumber => 'دور الدخول';
+
+  @override
+  String get entryNumberMessage =>
+      ' تم حجز الفترة الزمنية التي اخترتها لمدة 10 دقائق ريثما تُكمل تأكيد الحجز.';
 }

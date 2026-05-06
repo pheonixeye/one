@@ -612,5 +612,7 @@
     "activate" : "Activate",
     "howToToggleNotifications" : "How To Toggle Notifications",
     "enterBookingDetails" : "Enter Booking Details",
-    "noAvailableDates" : "No Available Dates"
+    "noAvailableDates" : "No Available Dates",
+    "entryNumber" : "Entry Number",
+    "entryNumberMessage" : " Your selected slot is reserved for 10 minutes while you complete the booking confirmation."
 }

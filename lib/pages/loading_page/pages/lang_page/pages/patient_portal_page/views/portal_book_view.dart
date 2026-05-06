@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -99,7 +100,22 @@ class _PortalBookViewState extends State<PortalBookView> {
                 steps: [
                   Step(
                     isActive: _step == 0,
-                    title: Text(context.loc.enterBookingDetails),
+                    title: Text.rich(
+                      TextSpan(
+                        text: context.loc.enterBookingDetails,
+                        children: [
+                          if (p.patient != null) ...[
+                            TextSpan(text: ' - '),
+                            WidgetSpan(
+                              child: const Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                     content: Form(
                       key: _patientInfoFormKey,
                       child: Card.outlined(
@@ -279,7 +295,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                                   .data;
                           return RadioGroup<Clinic>(
                             groupValue: p.selectedClinic,
-                            onChanged: (value) {
+                            onChanged: (value) async {
                               p.selectClinic(value);
                               if (p.selectedClinic != null) {
                                 setState(() {
@@ -292,7 +308,9 @@ class _PortalBookViewState extends State<PortalBookView> {
                               children: [
                                 ..._clinics.map((clinic) {
                                   return RadioListTile(
+                                    selected: p.selectedClinic == clinic,
                                     titleAlignment: ListTileTitleAlignment.top,
+                                    selectedTileColor: Colors.amber.shade400,
                                     title: Text(
                                       l.isEnglish
                                           ? clinic.name_en
@@ -311,7 +329,54 @@ class _PortalBookViewState extends State<PortalBookView> {
                   ),
                   Step(
                     isActive: _step == 2 && p.selectedClinic != null,
-                    title: Text(context.loc.pickVisitDate),
+                    title: Text.rich(
+                      TextSpan(
+                        text: context.loc.pickVisitDate,
+                        children: [
+                          if (p.splitMarker != null) ...[
+                            TextSpan(text: ' '),
+                            TextSpan(
+                              text: '(',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  '${p.splitMarker?.$1} / ${p.splitMarker?.$2} / ${p.splitMarker?.$4}'
+                                      .toArabicNumber(context),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' - ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextSpan(
+                              text: l.isEnglish
+                                  ? Weekdays.getWeekday(
+                                      p.splitMarker?.$3 ?? 0,
+                                    ).en
+                                  : Weekdays.getWeekday(
+                                      p.splitMarker?.$3 ?? 0,
+                                    ).ar,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ')',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                     content: Card.outlined(
                       elevation: 6,
                       child: Column(
@@ -333,7 +398,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                                     _date!.weekday,
                                   );
                                   final _itemValue =
-                                      '${_date.day}-${_date.month}-${_weekday.id}';
+                                      '${_date.day}-${_date.month}-${_weekday.id}-${_date.year}';
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: FilterChip.elevated(
@@ -362,7 +427,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                                       selected:
                                           p.selectedScheduleUiMarker ==
                                           _itemValue,
-                                      onSelected: (value) {
+                                      onSelected: (value) async {
                                         p.setSelectedScheduleUiMarker(
                                           _itemValue,
                                         );
@@ -373,6 +438,11 @@ class _PortalBookViewState extends State<PortalBookView> {
                                               (e) => e.intday == _date.weekday,
                                             );
                                         p.selectClinicSchedule(_sch);
+                                        await p.fetchOneMonthOneClinicVisits(
+                                          month: _date.month,
+                                          year: _date.year,
+                                          clinic_id: '${p.selectedClinic?.id}',
+                                        );
                                         p.selectScheduleShift(null);
                                       },
                                     ),
@@ -398,20 +468,82 @@ class _PortalBookViewState extends State<PortalBookView> {
                               ),
                               subtitle: RadioGroup<ScheduleShift>(
                                 groupValue: p.selectedShift,
-                                onChanged: (value) {
+                                onChanged: (value) async {
                                   p.selectScheduleShift(value);
                                   //find patient entry number
+                                  await p.calculatePatientEntryNumber();
                                 },
                                 child: Column(
                                   children: [
                                     ...p.selectedSchedule!.shifts.map((shift) {
                                       return RadioListTile(
-                                        title: Text(
-                                          shift.formattedFromTo(context),
+                                        titleAlignment:
+                                            ListTileTitleAlignment.top,
+                                        selected: p.selectedShift == shift,
+                                        selectedTileColor:
+                                            Colors.amber.shade400,
+                                        title: Text.rich(
+                                          TextSpan(
+                                            text: shift.formattedFromTo(
+                                              context,
+                                            ),
+                                            children: [
+                                              TextSpan(text: '\n'),
+                                              TextSpan(
+                                                text: context.loc.entryNumber,
+                                              ),
+                                              TextSpan(text: ' : '),
+                                              if (p.patientEntryNumber == null)
+                                                WidgetSpan(
+                                                  child:
+                                                      CupertinoActivityIndicator(
+                                                        radius: 8,
+                                                      ),
+                                                )
+                                              else
+                                                TextSpan(
+                                                  text:
+                                                      '(${p.patientEntryNumber})'
+                                                          .toArabicNumber(
+                                                            context,
+                                                          ),
+                                                ),
+                                            ],
+                                          ),
                                         ),
                                         value: shift,
                                       );
                                     }),
+                                    if (p.selectedShift != null)
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          context.loc.entryNumberMessage,
+                                          style: TextStyle(fontSize: 12),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    if (p.bookingDataIsComplete)
+                                      ElevatedButton.icon(
+                                        onPressed: () async {
+                                          p.formulateVisit();
+                                          if (p.formulatedVisit != null) {
+                                            await shellFunction(
+                                              context,
+                                              toExecute: () async {
+                                                await p.bookNewVisit(
+                                                  p.formulatedVisit!,
+                                                );
+                                                setState(() {
+                                                  _step = 4;
+                                                });
+                                              },
+                                            );
+                                          }
+                                        },
+                                        label: Text(context.loc.confirm),
+                                        icon: const Icon(Icons.check),
+                                      ),
                                   ],
                                 ),
                               ),

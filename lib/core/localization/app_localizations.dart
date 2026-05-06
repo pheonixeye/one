@@ -3505,6 +3505,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Available Dates'**
   String get noAvailableDates;
+
+  /// No description provided for @entryNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry Number'**
+  String get entryNumber;
+
+  /// No description provided for @entryNumberMessage.
+  ///
+  /// In en, this message translates to:
+  /// **' Your selected slot is reserved for 10 minutes while you complete the booking confirmation.'**
+  String get entryNumberMessage;
 }
 
 class _AppLocalizationsDelegate

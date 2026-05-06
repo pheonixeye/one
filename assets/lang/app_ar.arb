@@ -611,5 +611,7 @@
     "activate" : "تفعيل",
     "howToToggleNotifications" : "كيفية تفعيل التنبيهات",
     "enterBookingDetails" : "ادخل بيانات الحجز",
-    "noAvailableDates" : "لا يوجد مواعيد متاحة"
+    "noAvailableDates" : "لا يوجد مواعيد متاحة",
+    "entryNumber" : "دور الدخول",
+    "entryNumberMessage" : " تم حجز الفترة الزمنية التي اخترتها لمدة 10 دقائق ريثما تُكمل تأكيد الحجز."
 }
