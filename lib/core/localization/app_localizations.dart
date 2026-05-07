@@ -3500,6 +3500,12 @@ abstract class AppLocalizations {
   /// **'Enter Booking Details'**
   String get enterBookingDetails;
 
+  /// No description provided for @enterPatientDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Patient Details'**
+  String get enterPatientDetails;
+
   /// No description provided for @noAvailableDates.
   ///
   /// In en, this message translates to:
@@ -3515,8 +3521,14 @@ abstract class AppLocalizations {
   /// No description provided for @entryNumberMessage.
   ///
   /// In en, this message translates to:
-  /// **' Your selected slot is reserved for 10 minutes while you complete the booking confirmation.'**
+  /// **'Your selected slot is reserved for 10 minutes while you complete the booking confirmation.'**
   String get entryNumberMessage;
+
+  /// No description provided for @bookingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookingDetails;
 }
 
 class _AppLocalizationsDelegate

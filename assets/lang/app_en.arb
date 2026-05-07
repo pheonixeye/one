@@ -612,7 +612,9 @@
     "activate" : "Activate",
     "howToToggleNotifications" : "How To Toggle Notifications",
     "enterBookingDetails" : "Enter Booking Details",
+    "enterPatientDetails" : "Enter Patient Details",
     "noAvailableDates" : "No Available Dates",
     "entryNumber" : "Entry Number",
-    "entryNumberMessage" : " Your selected slot is reserved for 10 minutes while you complete the booking confirmation."
+    "entryNumberMessage" : "Your selected slot is reserved for 10 minutes while you complete the booking confirmation.",
+    "bookingDetails" : "Booking Details"
 }

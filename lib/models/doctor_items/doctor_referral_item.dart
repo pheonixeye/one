@@ -53,4 +53,13 @@ class DoctorReferralItem extends DoctorItem implements Equatable {
       name_ar: 'غير معروف',
     );
   }
+
+  factory DoctorReferralItem.onlineBooking([String? doc_id]) {
+    return DoctorReferralItem(
+      id: '',
+      doc_id: doc_id ?? '',
+      name_en: 'Online Booking',
+      name_ar: 'حجز اونلاين',
+    );
+  }
 }

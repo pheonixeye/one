@@ -1784,6 +1784,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterBookingDetails => 'ادخل بيانات الحجز';
 
   @override
+  String get enterPatientDetails => 'ادخل بيانات المريض';
+
+  @override
   String get noAvailableDates => 'لا يوجد مواعيد متاحة';
 
   @override
@@ -1792,4 +1795,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get entryNumberMessage =>
       ' تم حجز الفترة الزمنية التي اخترتها لمدة 10 دقائق ريثما تُكمل تأكيد الحجز.';
+
+  @override
+  String get bookingDetails => 'تفاصيل الحجز';
 }

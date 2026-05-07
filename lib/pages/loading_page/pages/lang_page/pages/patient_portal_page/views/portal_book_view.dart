@@ -102,7 +102,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                     isActive: _step == 0,
                     title: Text.rich(
                       TextSpan(
-                        text: context.loc.enterBookingDetails,
+                        text: context.loc.enterPatientDetails,
                         children: [
                           if (p.patient != null) ...[
                             TextSpan(text: ' - '),
@@ -526,19 +526,33 @@ class _PortalBookViewState extends State<PortalBookView> {
                                     if (p.bookingDataIsComplete)
                                       ElevatedButton.icon(
                                         onPressed: () async {
-                                          p.formulateVisit();
+                                          await shellFunction(
+                                            context,
+                                            toExecute: () async {
+                                              await p.formulateVisit();
+                                            },
+                                            duration: const Duration(
+                                              milliseconds: 260,
+                                            ),
+                                          );
                                           if (p.formulatedVisit != null) {
-                                            await shellFunction(
-                                              context,
-                                              toExecute: () async {
-                                                await p.bookNewVisit(
-                                                  p.formulatedVisit!,
-                                                );
-                                                setState(() {
-                                                  _step = 4;
-                                                });
-                                              },
-                                            );
+                                            if (context.mounted) {
+                                              await shellFunction(
+                                                context,
+                                                toExecute: () async {
+                                                  await p.bookNewVisit(
+                                                    p.formulatedVisit!,
+                                                    l.isEnglish,
+                                                  );
+                                                  setState(() {
+                                                    _step = 3;
+                                                  });
+                                                },
+                                                duration: const Duration(
+                                                  milliseconds: 260,
+                                                ),
+                                              );
+                                            }
                                           }
                                         },
                                         label: Text(context.loc.confirm),
@@ -556,10 +570,13 @@ class _PortalBookViewState extends State<PortalBookView> {
                   Step(
                     isActive: _step == 3,
 
-                    title: Text('Confirm Booking Details'),
+                    title: Text(context.loc.bookingDetails),
                     content: Card.outlined(
                       elevation: 6,
-                      child: Text('booking confirmation step'),
+                      child: Column(
+                        spacing: 4,
+                        children: [],
+                      ),
                     ),
                   ),
                 ],

@@ -1,11 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:one/annotations/pb_annotations.dart';
 import 'package:one/core/api/_api_result.dart';
-import 'package:one/core/api/bookkeeping_api.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/core/logic/bookkeeping_transformer.dart';
 import 'package:one/errors/code_to_error.dart';
+import 'package:one/models/app_constants/account_type.dart';
+import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/clinic/clinic.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
@@ -20,6 +22,28 @@ class PatientPortalApi {
   });
 
   final PortalQuery query;
+
+  static const String account_types_collection = 'account_types';
+
+  @PbBase()
+  Future<ApiResult<List<AccountType>>> fetchAccountTypes() async {
+    try {
+      final _accountTypesRequest = await PocketbaseHelper.pbBase
+          .collection(account_types_collection)
+          .getList(perPage: 10);
+
+      final _data = _accountTypesRequest.items
+          .map((e) => AccountType.fromJson(e.toJson()))
+          .toList();
+
+      return ApiDataResult<List<AccountType>>(data: _data);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
 
   @PbBase()
   Future<ApiResult<OrganizationExpanded>> fetchOrganization() async {
@@ -99,10 +123,6 @@ class PatientPortalApi {
           originalErrorMessage: e.toString(),
         );
       }
-      // return ApiErrorResult(
-      //   errorCode: AppErrorCode.clientException.code,
-      //   originalErrorMessage: e.toString(),
-      // );
     }
   }
 
@@ -273,7 +293,7 @@ class PatientPortalApi {
         );
 
     //create visit_data reference
-    await PocketbaseHelper.pbPortal
+    final _visitDataResult = await PocketbaseHelper.pbPortal
         .collection('visit__data')
         .create(
           body: VisitDataDto.initial(
@@ -295,13 +315,67 @@ class PatientPortalApi {
     );
 
     //todo: initialize bk_item
-    final _item = _bk_transformer.fromVisitCreate(_visit);
+    final _item = _bk_transformer.fromVisitCreate(
+      _visit,
+      _visitDataResult.id,
+    );
 
     //todo: send bookkeeping request
-    await BookkeepingApi().addBookkeepingItem(_item);
+    await addBookkeepingItem(_item);
 
     //todo: send inclinic notification => deferred to separate logic transformer
 
     return ApiDataResult(data: _visit);
+  }
+
+  @PbPortal()
+  Future<ApiResult<DoctorReferralItem>> fetchOrCreatePortalBookingsReferral(
+    String? doc_id,
+  ) async {
+    if (doc_id == null || doc_id.isEmpty) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: 'Doc_Id is Undefined.',
+      );
+    }
+
+    try {
+      final _result = await PocketbaseHelper.pbPortal
+          .collection('referrals')
+          .getFirstListItem(
+            "name_en = '${DoctorReferralItem.onlineBooking(doc_id).name_en}' && doc_id = '$doc_id'",
+          );
+      final _referral = DoctorReferralItem.fromJson(
+        _result.toJson(),
+      );
+
+      return ApiDataResult<DoctorReferralItem>(data: _referral);
+    } catch (e) {
+      try {
+        final _result = await PocketbaseHelper.pbPortal
+            .collection('referrals')
+            .create(
+              body: DoctorReferralItem.onlineBooking(doc_id).toJson(),
+            );
+
+        final _referral = DoctorReferralItem.fromJson(
+          _result.toJson(),
+        );
+
+        return ApiDataResult<DoctorReferralItem>(data: _referral);
+      } on ClientException catch (e) {
+        return ApiErrorResult(
+          errorCode: AppErrorCode.clientException.code,
+          originalErrorMessage: e.toString(),
+        );
+      }
+    }
+  }
+
+  @PbPortal()
+  Future<void> addBookkeepingItem(BookkeepingItem item) async {
+    await PocketbaseHelper.pbPortal
+        .collection('bookkeeping')
+        .create(body: item.toJson());
   }
 }

@@ -1,4 +1,3 @@
-import 'package:one/core/api/constants_api.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
@@ -8,7 +7,6 @@ import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visits/visit.dart';
-import 'package:one/providers/px_app_constants.dart';
 
 class BookkeepingTransformer {
   BookkeepingTransformer({
@@ -17,18 +15,20 @@ class BookkeepingTransformer {
     required this.added_by,
   });
 
-  final _appConstants = PxAppConstants(api: ConstantsApi());
   final String item_id;
   final String collection_id;
   final String added_by;
 
-  late final _attended_id = _appConstants.attended.name_en;
-  late final _not_attended_id = _appConstants.notAttended.name_en;
-  late final _consultation_id = _appConstants.consultation.name_en;
-  late final _followup_id = _appConstants.followup.name_en;
-  late final _procedure_id = _appConstants.procedure.name_en;
+  static const _attended_id = 'Attended';
+  static const _not_attended_id = 'Not Attended';
+  static const _consultation_id = 'Consultation';
+  static const _followup_id = 'Follow Up';
+  static const _procedure_id = 'Procedure';
 
-  BookkeepingItem fromVisitCreate(VisitExpanded visit) {
+  BookkeepingItem fromVisitCreate(
+    VisitExpanded visit, [
+    String? visit_data_id,
+  ]) {
     late double _bk_item_amount;
 
     if (visit.visit_status == _not_attended_id) {
@@ -58,7 +58,7 @@ class BookkeepingTransformer {
       created: DateTime.now(),
       visit_id: visit.id,
       visit_date: visit.visit_date,
-      visit_data_id: '',
+      visit_data_id: '$visit_data_id',
       patient_id: visit.patient_id,
       procedure_id: '',
       supply_movement_id: '',

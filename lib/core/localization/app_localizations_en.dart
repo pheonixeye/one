@@ -1792,6 +1792,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterBookingDetails => 'Enter Booking Details';
 
   @override
+  String get enterPatientDetails => 'Enter Patient Details';
+
+  @override
   String get noAvailableDates => 'No Available Dates';
 
   @override
@@ -1799,5 +1802,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get entryNumberMessage =>
-      ' Your selected slot is reserved for 10 minutes while you complete the booking confirmation.';
+      'Your selected slot is reserved for 10 minutes while you complete the booking confirmation.';
+
+  @override
+  String get bookingDetails => 'Booking Details';
 }

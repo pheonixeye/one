@@ -88,7 +88,7 @@ class VisitsApi {
         );
 
     //create visit_data reference
-    await PocketbaseHelper.pbData
+    final _visitDataResult = await PocketbaseHelper.pbData
         .collection(visit_data_collection)
         .create(
           body: VisitDataDto.initial(
@@ -110,7 +110,7 @@ class VisitsApi {
     );
 
     //todo: initialize bk_item
-    final _item = _bk_transformer.fromVisitCreate(_visit);
+    final _item = _bk_transformer.fromVisitCreate(_visit, _visitDataResult.id);
 
     //todo: send bookkeeping request
     await BookkeepingApi().addBookkeepingItem(_item);

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
@@ -229,4 +230,13 @@ class VisitExpanded extends Visit {
       ),
     );
   }
+
+  String get formatSms =>
+      '''
+تم استلام طلب الحجز باسم 
+${patient.name}
+بتاريخ
+${DateFormat('dd/MM/yyyy', 'ar').format(visit_date)}
+سيتم التواصل عن طريق العيادة لتاكيد تفاصيل الحجز
+ ''';
 }

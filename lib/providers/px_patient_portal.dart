@@ -5,10 +5,15 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/core/api/documents/s3_documents_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
+import 'package:one/core/api/sms_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/datetime_ext.dart';
+import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
+import 'package:one/models/doctor_items/doctor_referral_item.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
@@ -26,6 +31,7 @@ class PxPatientPortal extends ChangeNotifier {
   static S3DocumentsApi? _s3documentsApi;
 
   Future<void> _init() async {
+    await _fetchAccountTypes();
     await _fetchOrganization();
     if (_organization != null && _organization is! ApiErrorResult) {
       switch (api.query.view) {
@@ -38,6 +44,13 @@ class PxPatientPortal extends ChangeNotifier {
           return;
       }
     }
+  }
+
+  static ApiResult<List<AccountType>>? _accountTypes;
+
+  Future<void> _fetchAccountTypes() async {
+    _accountTypes = await api.fetchAccountTypes();
+    notifyListeners();
   }
 
   static ApiResult<OrganizationExpanded>? _organization;
@@ -150,10 +163,6 @@ class PxPatientPortal extends ChangeNotifier {
     }
   }
 
-  Future<void> bookNewVisit(Visit visit) async {
-    await api.addNewVisit(visit);
-  }
-
   Clinic? _selectedClinic;
   Clinic? get selectedClinic => _selectedClinic;
 
@@ -173,6 +182,8 @@ class PxPatientPortal extends ChangeNotifier {
   void selectClinicSchedule(ClinicSchedule? value) {
     _selectedSchedule = value;
     notifyListeners();
+    selectScheduleShift(null);
+    calculatePatientEntryNumber(null);
   }
 
   ScheduleShift? _selectedShift;
@@ -181,6 +192,7 @@ class PxPatientPortal extends ChangeNotifier {
   void selectScheduleShift(ScheduleShift? value) {
     _selectedShift = value;
     notifyListeners();
+    calculatePatientEntryNumber(null);
   }
 
   final _now = DateTime(
@@ -262,7 +274,16 @@ class PxPatientPortal extends ChangeNotifier {
                 v.isInSameShift(_selectedSchedule!, _selectedShift!),
           )
           .toList();
-      _patientEntryNumber = value ?? _filteredVisits.length + 1;
+
+      _filteredVisits.sort(
+        (a, b) => a.patient_entry_number > b.patient_entry_number ? 1 : 0,
+      );
+      // print('last entry number : ${_filteredVisits.last.patient_entry_number}');
+      _patientEntryNumber =
+          value ??
+          (_filteredVisits.isEmpty
+              ? 1
+              : (_filteredVisits.last.patient_entry_number as int) + 1);
       notifyListeners();
     }
   }
@@ -279,13 +300,18 @@ class PxPatientPortal extends ChangeNotifier {
   Visit? _formulatedVisit;
   Visit? get formulatedVisit => _formulatedVisit;
 
-  void formulateVisit() {
+  Future<void> formulateVisit() async {
+    final _ref = await api.fetchOrCreatePortalBookingsReferral(
+      _selectedClinic?.doc_id.first,
+    );
+    final _refData = (_ref as ApiDataResult<DoctorReferralItem>).data;
+
     _formulatedVisit = Visit(
       id: '',
       doc_id: '${_selectedClinic?.doc_id.first}',
       clinic_id: '${_selectedClinic?.id}',
       patient_id: '${_patientData?.id}',
-      referral_id: '', //TODO
+      referral_id: _refData.id,
       patient_entry_number: _patientEntryNumber ?? 0,
       intday: _selectedSchedule?.intday ?? 0,
       s_m: _selectedShift?.start_min ?? 0,
@@ -299,5 +325,43 @@ class PxPatientPortal extends ChangeNotifier {
       visit_type: 'Consultation',
       patient_progress_status: 'Has Not Attended Yet',
     );
+  }
+
+  ApiResult<VisitExpanded>? _bookedVisit;
+  ApiResult<VisitExpanded>? get bookedVisit => _bookedVisit;
+
+  VisitExpanded get _bookedVisitData =>
+      (_bookedVisit as ApiDataResult<VisitExpanded>).data;
+
+  Future<void> bookNewVisit(Visit visit, bool isEnglish) async {
+    _bookedVisit = await api.addNewVisit(visit);
+
+    notifyListeners();
+
+    final _accountTypesData =
+        (_accountTypes as ApiDataResult<List<AccountType>>).data;
+
+    ClientNotificationFormatterSender(
+        organizationExpanded:
+            (_organization as ApiDataResult<OrganizationExpanded>).data,
+        isEnglish: isEnglish,
+      )
+      ..formatFromInAppAction(
+        action: InAppAction.portal_booking,
+        account_types: _accountTypesData,
+        patient_name: _bookedVisitData.patient.name,
+        patient_phone: _bookedVisitData.patient.phone,
+        visit_date: _bookedVisitData.visit_date,
+        clinic_name: isEnglish
+            ? _bookedVisitData.clinic.name_en
+            : _bookedVisitData.clinic.name_ar,
+      )
+      ..send();
+
+    //todo: send sms notification to user that appointment will be confirmed
+    await SmsApi(
+      phone: _bookedVisitData.patient.phone,
+      sms: _bookedVisitData.formatSms,
+    ).sendSms();
   }
 }
