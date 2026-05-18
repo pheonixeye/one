@@ -616,5 +616,6 @@
     "noAvailableDates" : "No Available Dates",
     "entryNumber" : "Entry Number",
     "entryNumberMessage" : "Your selected slot is reserved for 10 minutes while you complete the booking confirmation.",
-    "bookingDetails" : "Booking Details"
+    "bookingDetails" : "Booking Details",
+    "noBookingYet" : "No Booking Yet"
 }

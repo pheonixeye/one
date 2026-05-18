@@ -3529,6 +3529,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Booking Details'**
   String get bookingDetails;
+
+  /// No description provided for @noBookingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Booking Yet'**
+  String get noBookingYet;
 }
 
 class _AppLocalizationsDelegate

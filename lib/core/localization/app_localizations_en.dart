@@ -1806,4 +1806,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookingDetails => 'Booking Details';
+
+  @override
+  String get noBookingYet => 'No Booking Yet';
 }

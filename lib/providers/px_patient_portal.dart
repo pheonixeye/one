@@ -330,7 +330,7 @@ class PxPatientPortal extends ChangeNotifier {
   ApiResult<VisitExpanded>? _bookedVisit;
   ApiResult<VisitExpanded>? get bookedVisit => _bookedVisit;
 
-  VisitExpanded get _bookedVisitData =>
+  VisitExpanded get bookedVisitData =>
       (_bookedVisit as ApiDataResult<VisitExpanded>).data;
 
   Future<void> bookNewVisit(Visit visit, bool isEnglish) async {
@@ -338,30 +338,30 @@ class PxPatientPortal extends ChangeNotifier {
 
     notifyListeners();
 
-    final _accountTypesData =
-        (_accountTypes as ApiDataResult<List<AccountType>>).data;
+    // final _accountTypesData =
+    //     (_accountTypes as ApiDataResult<List<AccountType>>).data;
 
-    ClientNotificationFormatterSender(
-        organizationExpanded:
-            (_organization as ApiDataResult<OrganizationExpanded>).data,
-        isEnglish: isEnglish,
-      )
-      ..formatFromInAppAction(
-        action: InAppAction.portal_booking,
-        account_types: _accountTypesData,
-        patient_name: _bookedVisitData.patient.name,
-        patient_phone: _bookedVisitData.patient.phone,
-        visit_date: _bookedVisitData.visit_date,
-        clinic_name: isEnglish
-            ? _bookedVisitData.clinic.name_en
-            : _bookedVisitData.clinic.name_ar,
-      )
-      ..send();
+    // ClientNotificationFormatterSender(
+    //     organizationExpanded:
+    //         (_organization as ApiDataResult<OrganizationExpanded>).data,
+    //     isEnglish: isEnglish,
+    //   )
+    //   ..formatFromInAppAction(
+    //     action: InAppAction.portal_booking,
+    //     account_types: _accountTypesData,
+    //     patient_name: _bookedVisitData.patient.name,
+    //     patient_phone: _bookedVisitData.patient.phone,
+    //     visit_date: _bookedVisitData.visit_date,
+    //     clinic_name: isEnglish
+    //         ? _bookedVisitData.clinic.name_en
+    //         : _bookedVisitData.clinic.name_ar,
+    //   )
+    //   ..send();
 
-    //todo: send sms notification to user that appointment will be confirmed
-    await SmsApi(
-      phone: _bookedVisitData.patient.phone,
-      sms: _bookedVisitData.formatSms,
-    ).sendSms();
+    // //todo: send sms notification to user that appointment will be confirmed
+    // await SmsApi(
+    //   phone: _bookedVisitData.patient.phone,
+    //   sms: _bookedVisitData.formatSms(isEnglish),
+    // ).sendSms();
   }
 }

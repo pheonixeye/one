@@ -1798,4 +1798,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get bookingDetails => 'تفاصيل الحجز';
+
+  @override
+  String get noBookingYet => 'لم يتم الحجز بعد';
 }

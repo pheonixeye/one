@@ -231,12 +231,19 @@ class VisitExpanded extends Visit {
     );
   }
 
-  String get formatSms =>
-      '''
+  String formatSms([bool isEnglish = true]) => !isEnglish
+      ? '''
 تم استلام طلب الحجز باسم 
 ${patient.name}
 بتاريخ
 ${DateFormat('dd/MM/yyyy', 'ar').format(visit_date)}
 سيتم التواصل عن طريق العيادة لتاكيد تفاصيل الحجز
+ '''
+      : '''
+Your Booking Request For
+${patient.name}
+Dated
+${DateFormat('dd/MM/yyyy', 'en').format(visit_date)}
+Our Reception Team Will Be In Contact For Confirmation.
  ''';
 }

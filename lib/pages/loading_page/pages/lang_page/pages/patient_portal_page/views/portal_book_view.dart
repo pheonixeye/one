@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/clinic_schedule_shift_ext.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
+import 'package:one/extensions/visit_ext.dart';
+import 'package:one/functions/download_image.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
@@ -14,7 +17,10 @@ import 'package:one/models/weekdays.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/scan_patient_qr_dialog.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_portal.dart';
+import 'package:one/widgets/sm_btn.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 
 const Map<int, Icon> _stepIcons = {
   0: Icon(
@@ -54,6 +60,8 @@ class _PortalBookViewState extends State<PortalBookView> {
   late final TextEditingController _nameController;
   late final TextEditingController _phoneController;
 
+  late final ScreenshotController _screenshotController;
+
   int _step = 0;
 
   @override
@@ -62,6 +70,7 @@ class _PortalBookViewState extends State<PortalBookView> {
     _controller = ScrollController();
     _nameController = TextEditingController();
     _phoneController = TextEditingController();
+    _screenshotController = ScreenshotController();
   }
 
   @override
@@ -180,7 +189,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               spacing: 4,
                               children: [
-                                ElevatedButton.icon(
+                                SmBtn(
                                   onPressed: () async {
                                     final _patient_id =
                                         await showDialog<String?>(
@@ -220,8 +229,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                                       );
                                     }
                                   },
-                                  label: Text(context.loc.scanQrCode),
-                                  icon: const Icon(Icons.qr_code_2),
+                                  child: const Icon(Icons.qr_code_2),
                                 ),
                                 ElevatedButton.icon(
                                   onPressed: () async {
@@ -311,10 +319,12 @@ class _PortalBookViewState extends State<PortalBookView> {
                                     selected: p.selectedClinic == clinic,
                                     titleAlignment: ListTileTitleAlignment.top,
                                     selectedTileColor: Colors.amber.shade400,
-                                    title: Text(
-                                      l.isEnglish
-                                          ? clinic.name_en
-                                          : clinic.name_ar,
+                                    title: Text.rich(
+                                      TextSpan(
+                                        text: l.isEnglish
+                                            ? clinic.name_en
+                                            : clinic.name_ar,
+                                      ),
                                     ),
                                     subtitle: const Divider(),
                                     value: clinic,
@@ -569,14 +579,221 @@ class _PortalBookViewState extends State<PortalBookView> {
                   ),
                   Step(
                     isActive: _step == 3,
-
                     title: Text(context.loc.bookingDetails),
                     content: Card.outlined(
                       elevation: 6,
-                      child: Column(
-                        spacing: 4,
-                        children: [],
-                      ),
+                      child: p.bookedVisit == null
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(context.loc.noBookingYet),
+                                ],
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                //outer most column with save button
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 4,
+                                children: [
+                                  //inner column with details and screenshot
+                                  Screenshot(
+                                    controller: _screenshotController,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        spacing: 4,
+                                        children: [
+                                          Row(
+                                            spacing: 8,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    ListTile(
+                                                      titleAlignment:
+                                                          ListTileTitleAlignment
+                                                              .top,
+                                                      leading: const SmBtn(),
+                                                      title: Text.rich(
+                                                        TextSpan(
+                                                          text:
+                                                              '${context.loc.clinic} : ',
+                                                        ),
+                                                      ),
+                                                      subtitle: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              l.isEnglish
+                                                                  ? p
+                                                                        .bookedVisitData
+                                                                        .clinic
+                                                                        .name_en
+                                                                  : p
+                                                                        .bookedVisitData
+                                                                        .clinic
+                                                                        .name_ar,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    ListTile(
+                                                      titleAlignment:
+                                                          ListTileTitleAlignment
+                                                              .top,
+                                                      leading: const SmBtn(),
+                                                      title: Text.rich(
+                                                        TextSpan(
+                                                          text:
+                                                              '${context.loc.doctor} : ',
+                                                        ),
+                                                      ),
+                                                      subtitle: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              l.isEnglish
+                                                                  ? p
+                                                                        .bookedVisitData
+                                                                        .doctor
+                                                                        .name_en
+                                                                  : p
+                                                                        .bookedVisitData
+                                                                        .doctor
+                                                                        .name_ar,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    ListTile(
+                                                      titleAlignment:
+                                                          ListTileTitleAlignment
+                                                              .top,
+                                                      leading: const SmBtn(),
+                                                      title: Text.rich(
+                                                        TextSpan(
+                                                          text:
+                                                              '${context.loc.date} : ',
+                                                        ),
+                                                      ),
+                                                      subtitle: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              DateFormat(
+                                                                'dd-MM-yyyy',
+                                                                l.lang,
+                                                              ).format(
+                                                                p
+                                                                    .bookedVisitData
+                                                                    .visit_date,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: QrImageView(
+                                                  data: p.bookedVisitData.id,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          ListTile(
+                                            titleAlignment:
+                                                ListTileTitleAlignment.top,
+                                            leading: const SmBtn(),
+                                            title: Text.rich(
+                                              TextSpan(
+                                                text:
+                                                    '${context.loc.clinicShift} : ',
+                                              ),
+                                            ),
+                                            subtitle: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    p.bookedVisitData
+                                                        .formattedShift(
+                                                          context,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          ListTile(
+                                            titleAlignment:
+                                                ListTileTitleAlignment.top,
+                                            leading: const SmBtn(),
+                                            title: Text.rich(
+                                              TextSpan(
+                                                text:
+                                                    '${context.loc.entryNumber} : ',
+                                              ),
+                                            ),
+                                            subtitle: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    '(${p.bookedVisitData.patient_entry_number})'
+                                                        .toArabicNumber(
+                                                          context,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(),
+                                  Row(
+                                    spacing: 8,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        onPressed: () async {
+                                          await shellFunction(
+                                            context,
+                                            toExecute: () async {
+                                              final _png =
+                                                  await _screenshotController
+                                                      .capture();
+                                              if (_png != null) {
+                                                downloadUint8ListAsFile(
+                                                  _png,
+                                                  '${p.bookedVisitData.id}.png',
+                                                );
+                                              }
+                                            },
+                                          );
+                                        },
+                                        label: Text(context.loc.save),
+                                        icon: const Icon(Icons.save),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                     ),
                   ),
                 ],

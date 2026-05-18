@@ -615,5 +615,6 @@
     "noAvailableDates" : "لا يوجد مواعيد متاحة",
     "entryNumber" : "دور الدخول",
     "entryNumberMessage" : " تم حجز الفترة الزمنية التي اخترتها لمدة 10 دقائق ريثما تُكمل تأكيد الحجز.",
-    "bookingDetails" : "تفاصيل الحجز"
+    "bookingDetails" : "تفاصيل الحجز",
+    "noBookingYet" : "لم يتم الحجز بعد"
 }
