@@ -8,6 +8,7 @@ import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/speciality.dart';
 import 'package:http/http.dart' as http;
 import 'package:one/providers/px_locale.dart';
+import 'package:one/router/router.dart';
 import 'package:provider/provider.dart';
 
 extension Imageurl on Speciality {
@@ -35,7 +36,7 @@ extension AppBookingUrl on OrganizationExpanded {
     final _pxLocale = context.read<PxLocale>();
     final _lang = _pxLocale.lang;
     final _url =
-        '${const String.fromEnvironment('APP_BASE_URL')}/$_lang/patients_portal?view=new&org_id=$id';
+        '${const String.fromEnvironment('APP_BASE_URL')}/$_lang/${AppRouter.patients_portal}?view=new&org_id=$id';
     return _url;
   }
 }

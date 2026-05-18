@@ -71,7 +71,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     children: [
                       TextSpan(text: '\n', style: TextStyle(fontSize: 8)),
                       TextSpan(
-                        text: 'v${AppBusinessConstants.ALLEVIA_VERSION}',
+                        text: 'v${AppBusinessConstants.APP_VERSION}',
                         style: TextStyle(fontSize: 8),
                       ),
                     ],

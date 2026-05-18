@@ -124,7 +124,7 @@ class SettingsPage extends StatelessWidget {
               Text.rich(
                 TextSpan(
                   text:
-                      '${const String.fromEnvironment('APPLICATION_NAME')} v${AppBusinessConstants.ALLEVIA_VERSION}',
+                      '${const String.fromEnvironment('APPLICATION_NAME')} v${AppBusinessConstants.APP_VERSION}',
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
                       await showDialog(
