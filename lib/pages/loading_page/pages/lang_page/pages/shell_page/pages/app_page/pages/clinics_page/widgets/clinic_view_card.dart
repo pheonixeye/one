@@ -1,4 +1,7 @@
+import 'package:one/core/api/kutt_api.dart';
+import 'package:one/extensions/clinic_ext.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_page/widgets/booking_url_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_page/widgets/clinic_doctors_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
@@ -383,71 +386,37 @@ class ClinicViewCard extends StatelessWidget {
                             });
                           },
                         ),
-                        // PopupMenuDivider(),
-                        // PopupMenuItem(
-                        //   child: Row(
-                        //     children: [
-                        //       const Icon(Icons.delete_forever),
-                        //       Text(context.loc.deleteClinic),
-                        //     ],
-                        //   ),
-                        //   onTap: () async {
-                        //     //@permission
-                        //     final _perm = context
-                        //         .read<PxAuth>()
-                        //         .isActionPermitted(
-                        //           PermissionEnum.User_Clinics_Delete,
-                        //           context,
-                        //         );
-                        //     if (!_perm.isAllowed) {
-                        //       await showDialog(
-                        //         context: context,
-                        //         builder: (context) {
-                        //           return NotPermittedDialog(
-                        //             permission: _perm.permission,
-                        //           );
-                        //         },
-                        //       );
-                        //       return;
-                        //     }
-                        //     final _toDelete = await showDialog<bool?>(
-                        //       context: context,
-                        //       builder: (context) {
-                        //         return PromptDialog(
-                        //           message: context.loc.deleteClinicPrompt,
-                        //         );
-                        //       },
-                        //     );
-                        //     bool? _toDeletePrimary = false;
-                        //     if (clinic.is_main && context.mounted) {
-                        //       _toDeletePrimary = await showDialog<bool>(
-                        //         context: context,
-                        //         builder: (context) {
-                        //           return PromptDialog(
-                        //             message:
-                        //                 context.loc.deletePrimaryClinicPrompt,
-                        //           );
-                        //         },
-                        //       );
-                        //     }
-                        //     if (_toDelete == null ||
-                        //         !_toDelete ||
-                        //         (clinic.is_main &&
-                        //             (_toDeletePrimary == null ||
-                        //                 !_toDeletePrimary))) {
-                        //       return;
-                        //     }
-
-                        //     if (context.mounted) {
-                        //       await shellFunction(
-                        //         context,
-                        //         toExecute: () async {
-                        //           await c.deleteClinic(clinic);
-                        //         },
-                        //       );
-                        //     }
-                        //   },
-                        // ),
+                        PopupMenuDivider(),
+                        PopupMenuItem(
+                          child: Row(
+                            children: [
+                              const Icon(Icons.share),
+                              Text(context.loc.shareBookingLink),
+                            ],
+                          ),
+                          onTap: () async {
+                            String? _url;
+                            await shellFunction(
+                              context,
+                              toExecute: () async {
+                                _url = await KuttApi(
+                                  clinic.bookingUrlClinic(context),
+                                ).shortenLink();
+                              },
+                              duration: const Duration(milliseconds: 260),
+                            );
+                            if (_url != null && context.mounted) {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return BookingUrlDialog(
+                                    url: _url ?? '',
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        ),
                       ];
                     },
                   ),

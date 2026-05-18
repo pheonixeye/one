@@ -1801,4 +1801,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noBookingYet => 'لم يتم الحجز بعد';
+
+  @override
+  String get shareBookingLink => 'مشاركة رابط الحجز';
 }

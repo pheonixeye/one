@@ -338,30 +338,30 @@ class PxPatientPortal extends ChangeNotifier {
 
     notifyListeners();
 
-    // final _accountTypesData =
-    //     (_accountTypes as ApiDataResult<List<AccountType>>).data;
+    final _accountTypesData =
+        (_accountTypes as ApiDataResult<List<AccountType>>).data;
 
-    // ClientNotificationFormatterSender(
-    //     organizationExpanded:
-    //         (_organization as ApiDataResult<OrganizationExpanded>).data,
-    //     isEnglish: isEnglish,
-    //   )
-    //   ..formatFromInAppAction(
-    //     action: InAppAction.portal_booking,
-    //     account_types: _accountTypesData,
-    //     patient_name: _bookedVisitData.patient.name,
-    //     patient_phone: _bookedVisitData.patient.phone,
-    //     visit_date: _bookedVisitData.visit_date,
-    //     clinic_name: isEnglish
-    //         ? _bookedVisitData.clinic.name_en
-    //         : _bookedVisitData.clinic.name_ar,
-    //   )
-    //   ..send();
+    ClientNotificationFormatterSender(
+        organizationExpanded:
+            (_organization as ApiDataResult<OrganizationExpanded>).data,
+        isEnglish: isEnglish,
+      )
+      ..formatFromInAppAction(
+        action: InAppAction.portal_booking,
+        account_types: _accountTypesData,
+        patient_name: bookedVisitData.patient.name,
+        patient_phone: bookedVisitData.patient.phone,
+        visit_date: bookedVisitData.visit_date,
+        clinic_name: isEnglish
+            ? bookedVisitData.clinic.name_en
+            : bookedVisitData.clinic.name_ar,
+      )
+      ..send();
 
-    // //todo: send sms notification to user that appointment will be confirmed
-    // await SmsApi(
-    //   phone: _bookedVisitData.patient.phone,
-    //   sms: _bookedVisitData.formatSms(isEnglish),
-    // ).sendSms();
+    //todo: send sms notification to user that appointment will be confirmed
+    await SmsApi(
+      phone: bookedVisitData.patient.phone,
+      sms: bookedVisitData.formatSms(isEnglish),
+    ).sendSms();
   }
 }

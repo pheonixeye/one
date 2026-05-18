@@ -1809,4 +1809,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noBookingYet => 'No Booking Yet';
+
+  @override
+  String get shareBookingLink => 'Share Booking Link';
 }

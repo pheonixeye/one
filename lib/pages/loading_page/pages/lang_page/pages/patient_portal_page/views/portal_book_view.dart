@@ -780,7 +780,7 @@ class _PortalBookViewState extends State<PortalBookView> {
                                               if (_png != null) {
                                                 downloadUint8ListAsFile(
                                                   _png,
-                                                  '${p.bookedVisitData.id}.png',
+                                                  p.bookedVisitData.id,
                                                 );
                                               }
                                             },

@@ -4,6 +4,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/files_section.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/notification_settings/notification_settings_section.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/reciept_settings/reciept_settings_section.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/share_link_btn.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/settings_page/widgets/single_btn_tile.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
@@ -101,6 +102,10 @@ class SettingsPage extends StatelessWidget {
                 SingleBtnTile(
                   title: context.loc.appLanguage,
                   btn: const LanguageBtn(),
+                ),
+                SingleBtnTile(
+                  title: context.loc.shareBookingLink,
+                  btn: const ShareLinkBtn(),
                 ),
                 SingleBtnTile(
                   title: context.loc.changePassword,
