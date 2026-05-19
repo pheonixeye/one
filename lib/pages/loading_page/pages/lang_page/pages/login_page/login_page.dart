@@ -69,261 +69,268 @@ class _LoginPageState extends State<LoginPage> {
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                      child: Form(
-                        key: formKey,
-                        child: ListView(
-                          //# create account form
-                          children: [
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Image.asset(
-                                  AppAssets.icon,
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                const SizedBox(width: 10),
-                                InkWell(
-                                  onTap: () {
-                                    GoRouter.of(context).goNamed(
-                                      AppRouter.lang,
-                                      pathParameters: defaultPathParameters(
-                                        context,
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    String.fromEnvironment('APPLICATION_NAME'),
-                                    style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 60),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(
-                                context.loc.welcomeBack,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              subtitle: Text(
-                                context.loc.loginTag,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text(context.loc.email),
-                              ),
-                              subtitle: Semantics(
-                                textField: true,
-                                focusable: true,
-                                role: SemanticsRole.form,
-                                inputType: SemanticsInputType.email,
-                                child: TextFormField(
-                                  controller: _emailController,
-                                  key: emailFieldKey,
-                                  decoration: const InputDecoration(
-                                    hintText: 'example@domain.com',
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return context.loc.enterEmailAddress;
-                                    }
-                                    if (!EmailValidator.validate(value)) {
-                                      return context.loc.invalidEmailAddress;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(context.loc.password),
-                                    const SizedBox(width: 20),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          _obscure = !_obscure;
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.remove_red_eye_outlined,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              subtitle: Semantics(
-                                textField: true,
-                                focusable: true,
-                                obscured: true,
-                                inputType: SemanticsInputType.text,
-                                role: SemanticsRole.form,
-                                child: TextFormField(
-                                  controller: _passwordController,
-                                  decoration: const InputDecoration(
-                                    hintText: '********',
-                                  ),
-                                  obscureText: _obscure,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return context.loc.enterPassword;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            CheckboxListTile(
-                              controlAffinity: ListTileControlAffinity.leading,
-                              contentPadding: EdgeInsets.zero,
-                              value: _rememberMe,
-                              onChanged: (val) {
-                                setState(() {
-                                  if (val != null) {
-                                    _rememberMe = val;
-                                  }
-                                });
-                              },
-                              title: Row(
+                      child: AutofillGroup(
+                        child: Form(
+                          key: formKey,
+                          child: ListView(
+                            //# create account form
+                            children: [
+                              const SizedBox(height: 16),
+                              Row(
                                 children: [
-                                  Text(context.loc.rememberMe),
-                                  const Spacer(),
-                                  Text.rich(
-                                    TextSpan(
-                                      text: context.loc.forgotPassword,
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
-                                          //todo: verify that email address was entered
-                                          if (emailFieldKey.currentState!
-                                              .validate()) {
-                                            //todo: end forgot password email
-                                            await AuthApi()
-                                                .requestResetPassword(
-                                                  _emailController.text,
-                                                );
-                                            if (context.mounted) {
-                                              //todo: show snackbar that a password reset mail was sent
-                                              showIsnackbar(
-                                                context
-                                                    .loc
-                                                    .passwordResetEmailSent,
-                                              );
-                                            }
-                                          }
-                                        },
-                                      style: const TextStyle(
-                                        color: Colors.blue,
+                                  Image.asset(
+                                    AppAssets.icon,
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  InkWell(
+                                    onTap: () {
+                                      GoRouter.of(context).goNamed(
+                                        AppRouter.lang,
+                                        pathParameters: defaultPathParameters(
+                                          context,
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      String.fromEnvironment(
+                                        'APPLICATION_NAME',
+                                      ),
+                                      style: TextStyle(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              mouseCursor: SystemMouseCursors.click,
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      //todo: validate credentials
-                                      if (formKey.currentState!.validate()) {
-                                        await shellFunction(
-                                          context,
-                                          toExecute: () async {
-                                            await context
-                                                .read<PxAuth>()
-                                                .loginWithEmailAndPassword(
-                                                  _emailController.text,
-                                                  _passwordController.text,
-                                                  _rememberMe,
-                                                );
-                                            if (context.mounted) {
-                                              GoRouter.of(context).goNamed(
-                                                AppRouter.app,
-                                                pathParameters:
-                                                    defaultPathParameters(
-                                                      context,
-                                                    ),
-                                              );
-                                            }
-                                          },
-                                          onCatch: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return ErrorDialog(
-                                                  message: CodeToError(
-                                                    2,
-                                                  ).errorMessage(l.isEnglish),
-                                                );
-                                              },
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                    child: Text(context.loc.login),
+                              const SizedBox(height: 60),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Text(
+                                  context.loc.welcomeBack,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
                                   ),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            // Focus(
-                            //   canRequestFocus: true,
-                            //   child: Text.rich(
-                            //     TextSpan(
-                            //       text: '',
-                            //       children: [
-                            //         TextSpan(
-                            //           text: context.loc.notRegisteredYet,
-                            //           style: const TextStyle(
-                            //             color: Colors.black87,
-                            //           ),
-                            //         ),
-                            //         const TextSpan(text: '   '),
-                            //         TextSpan(
-                            //           text: context.loc.createAccount,
-                            //           style: const TextStyle(
-                            //             color: Colors.blue,
-                            //           ),
-                            //           recognizer: TapGestureRecognizer()
-                            //             ..onTap = () {
-                            //               GoRouter.of(context).goNamed(
-                            //                 AppRouter.register,
-                            //                 pathParameters:
-                            //                     defaultPathParameters(context),
-                            //               );
-                            //             },
-                            //         ),
-                            //       ],
-                            //     ),
-                            //     textAlign: TextAlign.center,
-                            //   ),
-                            // ),
-                          ],
+                                subtitle: Text(
+                                  context.loc.loginTag,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 40),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Text(context.loc.email),
+                                ),
+                                subtitle: Semantics(
+                                  textField: true,
+                                  focusable: true,
+                                  role: SemanticsRole.form,
+                                  inputType: SemanticsInputType.email,
+                                  child: TextFormField(
+                                    controller: _emailController,
+                                    key: emailFieldKey,
+                                    autofillHints: [AutofillHints.email],
+                                    decoration: const InputDecoration(
+                                      hintText: 'example@domain.com',
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return context.loc.enterEmailAddress;
+                                      }
+                                      if (!EmailValidator.validate(value)) {
+                                        return context.loc.invalidEmailAddress;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Text(context.loc.password),
+                                      const SizedBox(width: 20),
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            _obscure = !_obscure;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.remove_red_eye_outlined,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                subtitle: Semantics(
+                                  textField: true,
+                                  focusable: true,
+                                  obscured: true,
+                                  inputType: SemanticsInputType.text,
+                                  role: SemanticsRole.form,
+                                  child: TextFormField(
+                                    controller: _passwordController,
+                                    decoration: const InputDecoration(
+                                      hintText: '********',
+                                    ),
+                                    autofillHints: [AutofillHints.password],
+                                    obscureText: _obscure,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return context.loc.enterPassword;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                contentPadding: EdgeInsets.zero,
+                                value: _rememberMe,
+                                onChanged: (val) {
+                                  setState(() {
+                                    if (val != null) {
+                                      _rememberMe = val;
+                                    }
+                                  });
+                                },
+                                title: Row(
+                                  children: [
+                                    Text(context.loc.rememberMe),
+                                    const Spacer(),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: context.loc.forgotPassword,
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () async {
+                                            //todo: verify that email address was entered
+                                            if (emailFieldKey.currentState!
+                                                .validate()) {
+                                              //todo: end forgot password email
+                                              await AuthApi()
+                                                  .requestResetPassword(
+                                                    _emailController.text,
+                                                  );
+                                              if (context.mounted) {
+                                                //todo: show snackbar that a password reset mail was sent
+                                                showIsnackbar(
+                                                  context
+                                                      .loc
+                                                      .passwordResetEmailSent,
+                                                );
+                                              }
+                                            }
+                                          },
+                                        style: const TextStyle(
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                mouseCursor: SystemMouseCursors.click,
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        //todo: validate credentials
+                                        if (formKey.currentState!.validate()) {
+                                          await shellFunction(
+                                            context,
+                                            toExecute: () async {
+                                              await context
+                                                  .read<PxAuth>()
+                                                  .loginWithEmailAndPassword(
+                                                    _emailController.text,
+                                                    _passwordController.text,
+                                                    _rememberMe,
+                                                  );
+                                              if (context.mounted) {
+                                                GoRouter.of(context).goNamed(
+                                                  AppRouter.app,
+                                                  pathParameters:
+                                                      defaultPathParameters(
+                                                        context,
+                                                      ),
+                                                );
+                                              }
+                                            },
+                                            onCatch: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return ErrorDialog(
+                                                    message: CodeToError(
+                                                      2,
+                                                    ).errorMessage(l.isEnglish),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                      child: Text(context.loc.login),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              // Focus(
+                              //   canRequestFocus: true,
+                              //   child: Text.rich(
+                              //     TextSpan(
+                              //       text: '',
+                              //       children: [
+                              //         TextSpan(
+                              //           text: context.loc.notRegisteredYet,
+                              //           style: const TextStyle(
+                              //             color: Colors.black87,
+                              //           ),
+                              //         ),
+                              //         const TextSpan(text: '   '),
+                              //         TextSpan(
+                              //           text: context.loc.createAccount,
+                              //           style: const TextStyle(
+                              //             color: Colors.blue,
+                              //           ),
+                              //           recognizer: TapGestureRecognizer()
+                              //             ..onTap = () {
+                              //               GoRouter.of(context).goNamed(
+                              //                 AppRouter.register,
+                              //                 pathParameters:
+                              //                     defaultPathParameters(context),
+                              //               );
+                              //             },
+                              //         ),
+                              //       ],
+                              //     ),
+                              //     textAlign: TextAlign.center,
+                              //   ),
+                              // ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
