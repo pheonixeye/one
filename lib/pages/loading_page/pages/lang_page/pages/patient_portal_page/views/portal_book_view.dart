@@ -554,14 +554,14 @@ class _PortalBookViewState extends State<PortalBookView> {
                                                     p.formulatedVisit!,
                                                     l.isEnglish,
                                                   );
-                                                  setState(() {
-                                                    _step = 3;
-                                                  });
                                                 },
                                                 duration: const Duration(
                                                   milliseconds: 260,
                                                 ),
                                               );
+                                              setState(() {
+                                                _step = 3;
+                                              });
                                             }
                                           }
                                         },
@@ -771,19 +771,20 @@ class _PortalBookViewState extends State<PortalBookView> {
                                     children: [
                                       ElevatedButton.icon(
                                         onPressed: () async {
+                                          Uint8List? _png;
                                           await shellFunction(
                                             context,
                                             toExecute: () async {
-                                              final _png =
-                                                  await _screenshotController
-                                                      .capture();
-                                              if (_png != null) {
-                                                downloadUint8ListAsFile(
-                                                  _png,
-                                                  p.bookedVisitData.id,
-                                                );
-                                              }
+                                              _png = await _screenshotController
+                                                  .capture();
                                             },
+                                          );
+                                          if (_png == null) {
+                                            return;
+                                          }
+                                          downloadUint8ListAsFile(
+                                            _png!,
+                                            p.bookedVisitData.id,
                                           );
                                         },
                                         label: Text(context.loc.save),

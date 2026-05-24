@@ -335,9 +335,11 @@ class PxPatientPortal extends ChangeNotifier {
 
   Future<void> bookNewVisit(Visit visit, bool isEnglish) async {
     _bookedVisit = await api.addNewVisit(visit);
-
     notifyListeners();
+    await notifyViaSms(isEnglish);
+  }
 
+  Future<void> notifyViaSms(bool isEnglish) async {
     final _accountTypesData =
         (_accountTypes as ApiDataResult<List<AccountType>>).data;
 

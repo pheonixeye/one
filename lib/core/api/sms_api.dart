@@ -13,10 +13,10 @@ class SmsApi {
   final String sms;
   final String phone;
 
-  Future<bool> sendSms() async {
+  Future<void> sendSms() async {
     const uri = String.fromEnvironment('SMS_NOTIFICATION_URL');
 
-    final _response = await http.post(
+    await http.post(
       Uri.parse(uri),
 
       body: jsonEncode({
@@ -24,12 +24,13 @@ class SmsApi {
         'message': sms,
       }),
     );
+    //TODO: handle error correctly
 
-    final _result = jsonDecode(_response.body) as Map<String, dynamic>;
+    // final _result = jsonDecode(_response.body) as Map<String, dynamic>;
 
-    if (_result['message'] == 'success') {
-      return true;
-    }
-    throw http.ClientException(_result['message']);
+    // if (_result['message'] == 'success') {
+    //   return true;
+    // }
+    // throw http.ClientException(_result['message']);
   }
 }
