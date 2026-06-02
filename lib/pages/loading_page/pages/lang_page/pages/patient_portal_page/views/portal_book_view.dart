@@ -559,7 +559,6 @@ class _PortalBookViewState extends State<PortalBookView> {
                                                   milliseconds: 260,
                                                 ),
                                               );
-                                              await p.notifyViaSms(l.isEnglish);
                                               setState(() {
                                                 _step = 3;
                                               });
