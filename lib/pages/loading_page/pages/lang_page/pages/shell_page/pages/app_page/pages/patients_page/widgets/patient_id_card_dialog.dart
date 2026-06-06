@@ -111,17 +111,19 @@ class _PatientIdCardDialogState extends State<PatientIdCardDialog> {
                               ),
                               Text(widget.patient.name),
                               SizedBox(height: 4),
-                              Text(
-                                context.loc.dateOfBirth,
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                DateFormat(
-                                  'dd - MM - yyyy',
-                                  l.lang,
-                                ).format(DateTime.parse(widget.patient.dob)),
-                              ),
-                              SizedBox(height: 4),
+                              if (widget.patient.dob.isNotEmpty) ...[
+                                Text(
+                                  context.loc.dateOfBirth,
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  DateFormat(
+                                    'dd - MM - yyyy',
+                                    l.lang,
+                                  ).format(DateTime.parse(widget.patient.dob)),
+                                ),
+                                SizedBox(height: 4),
+                              ],
                               Text(
                                 context.loc.mobileNumber,
                                 style: TextStyle(fontWeight: FontWeight.w700),

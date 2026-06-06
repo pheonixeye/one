@@ -118,12 +118,15 @@ class PatientInfoCard extends StatelessWidget {
                               text: context.loc.dateOfBirth,
                               children: [
                                 TextSpan(text: ' : '),
-                                TextSpan(
-                                  text: DateFormat(
-                                    'dd / MM / yyyy',
-                                    context.read<PxLocale>().lang,
-                                  ).format(DateTime.parse(patient.dob)),
-                                ),
+                                if (patient.dob.isNotEmpty)
+                                  TextSpan(
+                                    text: DateFormat(
+                                      'dd / MM / yyyy',
+                                      context.read<PxLocale>().lang,
+                                    ).format(DateTime.parse(patient.dob)),
+                                  )
+                                else
+                                  TextSpan(text: '-- / -- / ----'),
                               ],
                             ),
                           ),
@@ -205,37 +208,41 @@ class PatientInfoCard extends StatelessWidget {
                                 text: context.loc.email,
                                 children: [
                                   TextSpan(text: ' : '),
-                                  TextSpan(
-                                    text: patient.email,
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        //@permission
-                                        final _perm = context
-                                            .read<PxAuth>()
-                                            .isActionPermitted(
-                                              PermissionEnum.User_Patient_Email,
-                                              context,
-                                            );
-                                        if (!_perm.isAllowed) {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return NotPermittedDialog(
-                                                permission: _perm.permission,
+                                  if (patient.email.isNotEmpty)
+                                    TextSpan(
+                                      text: patient.email,
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          //@permission
+                                          final _perm = context
+                                              .read<PxAuth>()
+                                              .isActionPermitted(
+                                                PermissionEnum
+                                                    .User_Patient_Email,
+                                                context,
                                               );
-                                            },
+                                          if (!_perm.isAllowed) {
+                                            await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return NotPermittedDialog(
+                                                  permission: _perm.permission,
+                                                );
+                                              },
+                                            );
+                                            return;
+                                          }
+                                          web.window.open(
+                                            'mailto://${patient.email}',
+                                            '_blank',
                                           );
-                                          return;
-                                        }
-                                        web.window.open(
-                                          'mailto://${patient.email}',
-                                          '_blank',
-                                        );
-                                      },
-                                  ),
+                                        },
+                                    )
+                                  else
+                                    TextSpan(text: ''),
                                 ],
                               ),
                             ),
