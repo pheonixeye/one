@@ -7,8 +7,6 @@ import 'package:one/errors/code_to_error.dart';
 
 @PbData()
 class VisitFilterApi {
-  const VisitFilterApi();
-
   static const String collection = 'visits';
 
   static const String _expand = 'doc_id, clinic_id, patient_id, referral_id';
@@ -18,7 +16,7 @@ class VisitFilterApi {
     required String to,
   }) async {
     try {
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter: "visit_date >= '$from' && visit_date <= '$to'",
@@ -43,7 +41,7 @@ class VisitFilterApi {
     String visit_id,
   ) async {
     try {
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getOne(
             visit_id,

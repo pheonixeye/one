@@ -7,12 +7,10 @@ import 'package:pocketbase/pocketbase.dart';
 
 @PbData()
 class ContractsApi {
-  const ContractsApi();
-
   static const String collection = 'contracts';
 
   Future<void> addNewContract(Contract contract) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(collection)
         .create(
           body: contract.toJson(),
@@ -21,7 +19,7 @@ class ContractsApi {
 
   Future<ApiResult<List<Contract>>> fetchAllContracts() async {
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList();
 
@@ -39,7 +37,7 @@ class ContractsApi {
   }
 
   Future<void> updateContract(String contract_id, Contract updated) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(collection)
         .update(
           contract_id,

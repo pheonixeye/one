@@ -21,7 +21,7 @@ class PxClinics extends ChangeNotifier {
     _fetchDoctorClinics();
   }
 
-  static ApiResult<List<Clinic>>? _result;
+  ApiResult<List<Clinic>>? _result;
   ApiResult<List<Clinic>>? get result => _result;
 
   Future<void> _fetchDoctorClinics() async {
@@ -56,7 +56,7 @@ class PxClinics extends ChangeNotifier {
     await _fetchDoctorClinics();
   }
 
-  static Clinic? _clinic;
+  Clinic? _clinic;
   Clinic? get clinic => _clinic;
 
   void selectClinic(Clinic? value) {

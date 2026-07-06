@@ -51,7 +51,7 @@ class VisitsApi {
     ).format(_date_after_visit);
     try {
       // print(_todayFormatted);
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             expand: _expand,
@@ -80,7 +80,7 @@ class VisitsApi {
   ) async {
     //TODO: error handling
     //create visit reference
-    final _result = await PocketbaseHelper.pbData
+    final _result = await PocketbaseHelper().pbData
         .collection(collection)
         .create(
           body: visit.toJson(),
@@ -88,7 +88,7 @@ class VisitsApi {
         );
 
     //create visit_data reference
-    final _visitDataResult = await PocketbaseHelper.pbData
+    final _visitDataResult = await PocketbaseHelper().pbData
         .collection(visit_data_collection)
         .create(
           body: VisitDataDto.initial(
@@ -126,7 +126,7 @@ class VisitsApi {
     dynamic value,
   ) async {
     //TODO: error handling
-    final _response = await PocketbaseHelper.pbData
+    final _response = await PocketbaseHelper().pbData
         .collection(collection)
         .update(
           visit.id,
@@ -171,7 +171,7 @@ class VisitsApi {
     ).format(_month_plus_date);
 
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter:
@@ -198,7 +198,7 @@ class VisitsApi {
   }) async {
     //TODO: error handling
 
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(collection)
         .update(
           visit_id,

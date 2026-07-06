@@ -13,7 +13,7 @@ class RecieptInfoApi {
 
   Future<ApiResult<List<RecieptInfo>>> fetchRecieptInfo() async {
     try {
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(_collection)
           .getList(sort: '-created');
 
@@ -31,17 +31,17 @@ class RecieptInfoApi {
   }
 
   Future<void> addRecieptInfo(RecieptInfo reciept_info) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(_collection)
         .create(body: reciept_info.toJson());
   }
 
   Future<void> deleteRecieptInfo(String id) async {
-    await PocketbaseHelper.pbData.collection(_collection).delete(id);
+    await PocketbaseHelper().pbData.collection(_collection).delete(id);
   }
 
   Future<void> updateRecieptInfo(RecieptInfo reciept_info) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(_collection)
         .update(reciept_info.id, body: {...reciept_info.toJson()});
   }

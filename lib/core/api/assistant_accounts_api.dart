@@ -64,7 +64,7 @@ class AssistantAccountsApi {
       final result = await PocketbaseHelper.pbBase
           .collection(collection)
           .getList(
-            filter: "org_id = '$org_id'",
+            filter: 'org_id = "$org_id"',
             expand: _expand,
           );
 

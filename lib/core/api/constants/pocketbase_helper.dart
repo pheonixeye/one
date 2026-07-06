@@ -1,23 +1,41 @@
 import 'package:pocketbase/pocketbase.dart';
 
 class PocketbaseHelper {
+  factory PocketbaseHelper() {
+    return _instance;
+  }
+
+  PocketbaseHelper._();
+
+  static final _instance = PocketbaseHelper._();
+
   static final _pb = PocketBase(const String.fromEnvironment('PB_URL'));
 
   static PocketBase get pbBase => _pb;
 
-  static PocketBase? _pbData;
+  PocketBase? _pbData;
 
-  static PocketBase get pbData => _pbData!;
+  PocketBase get pbData => _pbData!;
 
-  static void initialize(String url) {
-    _pbData ??= PocketBase(url);
+  void initialize(String url) {
+    nullifyData();
+    _pbData = PocketBase(url);
   }
 
-  static PocketBase? _pbPortal;
+  PocketBase? _pbPortal;
 
-  static PocketBase get pbPortal => _pbPortal!;
+  PocketBase get pbPortal => _pbPortal!;
 
-  static void initializedPortalPb(String url) {
-    _pbPortal ??= PocketBase(url);
+  void initializedPortalPb(String url) {
+    nullifyPortal();
+    _pbPortal = PocketBase(url);
+  }
+
+  void nullifyData() {
+    _pbData = null;
+  }
+
+  void nullifyPortal() {
+    _pbPortal = null;
   }
 }

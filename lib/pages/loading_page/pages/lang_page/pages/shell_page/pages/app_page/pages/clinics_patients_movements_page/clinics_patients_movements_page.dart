@@ -6,8 +6,8 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/today_patient_progress_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_patients_movements_page/widgets/rotating_clinics_tab.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_patients_movements_page/widgets/visit_progression_card.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/widgets/clinics_tab_bar.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_locale.dart';
@@ -72,7 +72,7 @@ class _ClinicsPatientsMovementsPageState
         }
 
         final _clinics = (c.result as ApiDataResult<List<Clinic>>).data;
-
+        //TODO: find a better way - remove dependency on this tabController
         _tabController = TabController(length: _clinics.length, vsync: this);
 
         final _clinic = _tabController != null
@@ -98,9 +98,8 @@ class _ClinicsPatientsMovementsPageState
                   children: [
                     Stack(
                       children: [
-                        ClinicsTabBar(
+                        RotatingClinicsTab(
                           clinics: _clinics,
-                          controller: _tabController!,
                         ),
                         if (t.isUpdating)
                           Align(

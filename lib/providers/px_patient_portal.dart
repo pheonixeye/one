@@ -53,14 +53,14 @@ class PxPatientPortal extends ChangeNotifier {
     notifyListeners();
   }
 
-  static ApiResult<OrganizationExpanded>? _organization;
+  ApiResult<OrganizationExpanded>? _organization;
   ApiResult<OrganizationExpanded>? get organization => _organization;
 
   Future<void> _fetchOrganization() async {
     _organization = await api.fetchOrganization();
     if (_organization != null && _organization is! ApiErrorResult) {
       final _org = (_organization as ApiDataResult<OrganizationExpanded>).data;
-      PocketbaseHelper.initializedPortalPb(_org.pb_endpoint);
+      PocketbaseHelper().initializedPortalPb(_org.pb_endpoint);
       _s3documentsApi = S3DocumentsApi(
         clientOptions: ClientOptions(
           endPoint: _org.s3_endpoint,
@@ -76,10 +76,10 @@ class PxPatientPortal extends ChangeNotifier {
 
   Future<void> retryFetchOrganization() async => await _fetchOrganization();
 
-  static ApiResult<List<Clinic>>? _allClinics;
+  ApiResult<List<Clinic>>? _allClinics;
   ApiResult<List<Clinic>>? get allClinics => _allClinics;
 
-  static ApiResult<List<Clinic>>? _oneDoctorClinics;
+  ApiResult<List<Clinic>>? _oneDoctorClinics;
   ApiResult<List<Clinic>>? get oneDoctorClinics => _oneDoctorClinics;
 
   Future<void> _fetchClinics() async {
@@ -94,7 +94,7 @@ class PxPatientPortal extends ChangeNotifier {
     notifyListeners();
   }
 
-  static ApiResult<Patient>? _patient;
+  ApiResult<Patient>? _patient;
   ApiResult<Patient>? get patient => _patient;
 
   Patient? get _patientData => (_patient as ApiDataResult<Patient>).data;

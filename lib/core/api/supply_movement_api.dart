@@ -38,7 +38,7 @@ class SupplyMovementApi {
 
       for (final dto in dtos) {
         if (dto != null) {
-          final _response = await PocketbaseHelper.pbData
+          final _response = await PocketbaseHelper().pbData
               .collection(collection)
               .create(body: dto.toJson(), expand: _expand);
           _responseModels.add(_response);
@@ -128,7 +128,7 @@ class SupplyMovementApi {
     ).format(to.copyWith(day: to.day + 1));
 
     try {
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             expand: _expand,

@@ -27,7 +27,7 @@ class PxSubscription extends ChangeNotifier {
     });
   }
 
-  static ApiResult<SubscriptionExpanded>? _result;
+  ApiResult<SubscriptionExpanded>? _result;
   ApiResult<SubscriptionExpanded>? get result => _result;
 
   Future<void> retry() async => await _fetchOrganizationSubscriptionInfo();

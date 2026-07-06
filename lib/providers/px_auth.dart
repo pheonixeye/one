@@ -20,13 +20,13 @@ class PxAuth extends ChangeNotifier {
     required this.context,
   });
 
-  static RecordAuth? _auth;
+  RecordAuth? _auth;
   RecordAuth? get authModel => _auth;
 
-  static User? _user;
+  User? _user;
   User? get user => _user;
 
-  static OrganizationExpanded? _organization;
+  OrganizationExpanded? _organization;
   OrganizationExpanded? get organization => _organization;
 
   Future<void> loginWithEmailAndPassword(
@@ -51,7 +51,7 @@ class PxAuth extends ChangeNotifier {
         );
       }
       if (_organization != null) {
-        PocketbaseHelper.initialize(_organization!.pb_endpoint);
+        PocketbaseHelper().initialize(_organization!.pb_endpoint);
       }
       if (_fcmToken != null) {
         await api.updateFcmToken(
@@ -67,6 +67,7 @@ class PxAuth extends ChangeNotifier {
       _user = null;
       _organization = null;
       notifyListeners();
+      PocketbaseHelper().nullifyData();
       rethrow;
     }
   }
@@ -88,7 +89,7 @@ class PxAuth extends ChangeNotifier {
       }
 
       if (_organization != null) {
-        PocketbaseHelper.initialize(_organization!.pb_endpoint);
+        PocketbaseHelper().initialize(_organization!.pb_endpoint);
       }
       // print(_fcmToken);
       if (_fcmToken != null) {
@@ -106,6 +107,7 @@ class PxAuth extends ChangeNotifier {
       _user = null;
       _organization = null;
       notifyListeners();
+      PocketbaseHelper().nullifyData();
       rethrow;
     }
   }
@@ -116,6 +118,7 @@ class PxAuth extends ChangeNotifier {
       _auth = null;
       _user = null;
       _organization = null;
+      PocketbaseHelper().nullifyData();
     } catch (e) {
       dprint(e.toString());
     }

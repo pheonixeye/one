@@ -18,7 +18,7 @@ extension Imageurl on Speciality {
 
 extension PrescriptionFileUrl on Clinic {
   String prescriptionFileUrl() =>
-      '${PocketbaseHelper.pbData.baseURL}/api/files/clinics/$id/$prescription_file';
+      '${PocketbaseHelper().pbData.baseURL}/api/files/clinics/$id/$prescription_file';
 
   Future<Uint8List> prescImageBytes() async {
     final _response = await http.get(Uri.parse(prescriptionFileUrl()));
@@ -28,7 +28,7 @@ extension PrescriptionFileUrl on Clinic {
 
 extension PatientDocumentUrl on PatientDocument {
   String patientDocumentUrl() =>
-      '${PocketbaseHelper.pbData.baseURL}/api/files/patient__documents/$id/$document_url';
+      '${PocketbaseHelper().pbData.baseURL}/api/files/patient__documents/$id/$document_url';
 }
 
 extension AppBookingUrl on OrganizationExpanded {

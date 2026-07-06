@@ -12,7 +12,7 @@ class PxForms extends ChangeNotifier {
   }
   final FormsApi api;
 
-  static ApiResult<List<PkForm>>? _result;
+  ApiResult<List<PkForm>>? _result;
   ApiResult<List<PkForm>>? get result => _result;
 
   Future<void> _fetchDoctorForms() async {

@@ -134,7 +134,7 @@ class _FocusedViewBookkeepingVisitsState
                                           builder: (context) {
                                             return ChangeNotifierProvider(
                                               create: (context) => PxOneVisit(
-                                                api: const VisitFilterApi(),
+                                                api: VisitFilterApi(),
                                                 visit_id: _visit_id,
                                               ),
                                               //todo: need to adapt to multiple operations

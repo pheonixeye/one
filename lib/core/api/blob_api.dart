@@ -19,7 +19,7 @@ class BlobApi {
 
   Future<ApiResult<List<BlobFile>>> fetchBlobs() async {
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(_collection)
           .getFullList(
             filter: "doc_id = '$doc_id'",
@@ -27,7 +27,7 @@ class BlobApi {
 
       if (_result.isEmpty) {
         BlobNames.values.map((b) async {
-          await PocketbaseHelper.pbData
+          await PocketbaseHelper().pbData
               .collection(_collection)
               .create(
                 body: {
@@ -55,7 +55,7 @@ class BlobApi {
     required String filename,
   }) async {
     try {
-      await PocketbaseHelper.pbData
+      await PocketbaseHelper().pbData
           .collection(_collection)
           .update(
             id,

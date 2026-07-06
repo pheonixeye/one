@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart' show ValueKey;
 import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/contracts_api.dart';
-import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/pb_notifications_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
@@ -57,10 +57,7 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxLocale(),
   ),
   ChangeNotifierProvider(
-    create: (context) => PxFirebaseNotifications(
-      context: context,
-      api: const FcmNotificationsApi(),
-    ),
+    create: (context) => PxFirebaseNotifications(),
   ),
   ChangeNotifierProvider(
     create: (context) => PxSpec(
@@ -75,7 +72,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxAuth(
-      api: const AuthApi(),
+      api: AuthApi(),
       context: context,
     ),
   ),
@@ -125,7 +122,7 @@ final List<SingleChildWidget> providers = [
 
   //profile items providers
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.drugs),
+    key: ValueKey(ProfileSetupItem.drugs),
     create: (context) => PxDoctorProfileItems<DoctorDrugItem>(
       api: DoctorProfileItemsApi<DoctorDrugItem>(
         item: ProfileSetupItem.drugs,
@@ -134,7 +131,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.labs),
+    key: ValueKey(ProfileSetupItem.labs),
     create: (context) => PxDoctorProfileItems<DoctorLabItem>(
       api: DoctorProfileItemsApi<DoctorLabItem>(
         item: ProfileSetupItem.labs,
@@ -143,7 +140,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.rads),
+    key: ValueKey(ProfileSetupItem.rads),
     create: (context) => PxDoctorProfileItems<DoctorRadItem>(
       api: DoctorProfileItemsApi<DoctorRadItem>(
         item: ProfileSetupItem.rads,
@@ -152,7 +149,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.supplies),
+    key: ValueKey(ProfileSetupItem.supplies),
     create: (context) => PxDoctorProfileItems<DoctorSupplyItem>(
       api: DoctorProfileItemsApi<DoctorSupplyItem>(
         item: ProfileSetupItem.supplies,
@@ -161,7 +158,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.procedures),
+    key: ValueKey(ProfileSetupItem.procedures),
     create: (context) => PxDoctorProfileItems<DoctorProcedureItem>(
       api: DoctorProfileItemsApi<DoctorProcedureItem>(
         item: ProfileSetupItem.procedures,
@@ -170,7 +167,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.documents),
+    key: ValueKey(ProfileSetupItem.documents),
     create: (context) => PxDoctorProfileItems<DoctorDocumentTypeItem>(
       api: DoctorProfileItemsApi<DoctorDocumentTypeItem>(
         item: ProfileSetupItem.documents,
@@ -179,7 +176,7 @@ final List<SingleChildWidget> providers = [
     ),
   ),
   ChangeNotifierProvider(
-    // key: ValueKey(ProfileSetupItem.documents),
+    key: ValueKey(ProfileSetupItem.documents),
     create: (context) => PxDoctorProfileItems<DoctorReferralItem>(
       api: DoctorProfileItemsApi<DoctorReferralItem>(
         item: ProfileSetupItem.referrals,
@@ -205,13 +202,13 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxContracts(
-      api: const ContractsApi(),
+      api: ContractsApi(),
     ),
   ),
   ChangeNotifierProvider(
     create: (context) => PxPatients(
       context: context,
-      api: const PatientsApi(),
+      api: PatientsApi(),
     ),
   ),
 
@@ -221,7 +218,7 @@ final List<SingleChildWidget> providers = [
       api: VisitsApi(
         added_by: '${context.read<PxAuth>().user?.name}',
       ),
-      whatsappApi: const WhatsappApi(),
+      whatsappApi: WhatsappApi(),
     ),
   ),
 
@@ -240,7 +237,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxPbNotifications(
-      api: const PbNotificationsApi(),
+      api: PbNotificationsApi(),
     ),
   ),
 ];

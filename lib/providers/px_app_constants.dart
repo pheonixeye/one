@@ -15,14 +15,12 @@ class PxAppConstants extends ChangeNotifier {
     _init();
   }
 
-  static AppConstants? _constants;
+  AppConstants? _constants;
   AppConstants? get constants => _constants;
 
   Future<void> _init() async {
-    if (_constants == null) {
-      _constants = await api.fetchConstants();
-      notifyListeners();
-    }
+    _constants = await api.fetchConstants();
+    notifyListeners();
   }
 
   Future<void> retry() async => await _init();

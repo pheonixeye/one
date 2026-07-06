@@ -17,14 +17,8 @@ class ClinicCallsBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer5<
-      PxAuth,
-      PxDoctor,
-      PxAssistantAccounts,
-      PxFirebaseNotifications,
-      PxLocale
-    >(
-      builder: (context, auth, d, a, fcm, l, _) {
+    return Consumer4<PxAuth, PxDoctor, PxAssistantAccounts, PxLocale>(
+      builder: (context, auth, d, a, l, _) {
         while (d.allDoctors == null || a.users == null) {
           return const SizedBox(
             width: 40,
@@ -52,7 +46,7 @@ class ClinicCallsBtn extends StatelessWidget {
                   doctors: _doctors ?? <User>[],
                   isEnglish: l.isEnglish,
                   d: d,
-                  fcm: fcm,
+                  fcm: context.read<PxFirebaseNotifications>(),
                 ),
               ),
             ];

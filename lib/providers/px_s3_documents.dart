@@ -18,7 +18,7 @@ class PxS3Documents extends ChangeNotifier {
   final S3DocumentsPxState state;
   final String? objectName;
 
-  static S3DocumentsApi? _api;
+  S3DocumentsApi? _api;
   S3DocumentsApi? get api => _api;
 
   Uint8List? _document;

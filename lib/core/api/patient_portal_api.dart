@@ -80,7 +80,7 @@ class PatientPortalApi {
       );
     }
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('patients')
           .getOne(query.patient_id!);
       final _data = Patient.fromJson(_result.toJson());
@@ -99,7 +99,7 @@ class PatientPortalApi {
     Patient patient,
   ) async {
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('patients')
           .create(
             body: patient.toJson(),
@@ -110,7 +110,7 @@ class PatientPortalApi {
       return ApiDataResult<Patient>(data: _data);
     } on ClientException catch (_) {
       try {
-        final _result = await PocketbaseHelper.pbPortal
+        final _result = await PocketbaseHelper().pbPortal
             .collection('patients')
             .getFirstListItem("phone = '${patient.phone}'");
 
@@ -129,7 +129,7 @@ class PatientPortalApi {
   @PbPortal()
   Future<ApiResult<Patient>> fetchPatientById(String patient_id) async {
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('patients')
           .getOne(patient_id);
       final _data = Patient.fromJson(_result.toJson());
@@ -148,7 +148,7 @@ class PatientPortalApi {
   @PbPortal()
   Future<ApiResult<List<VisitExpanded>>> fetchVisitsOfOnePatient() async {
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('visits')
           .getFullList(
             filter: 'patient_id = "${query.patient_id}"',
@@ -173,7 +173,7 @@ class PatientPortalApi {
     late List<Clinic> _clinics;
 
     try {
-      final _response = await PocketbaseHelper.pbPortal
+      final _response = await PocketbaseHelper().pbPortal
           .collection('clinics')
           .getList(filter: "doc_id ~ '${query.doc_id}'");
       try {
@@ -212,7 +212,7 @@ class PatientPortalApi {
     ).format(_month_plus_date);
 
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('visits')
           .getFullList(
             filter:
@@ -238,7 +238,7 @@ class PatientPortalApi {
     required String visit_id,
   }) async {
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('patient__documents')
           .getFullList(
             filter:
@@ -262,7 +262,7 @@ class PatientPortalApi {
   @PbPortal()
   Future<ApiResult<List<Clinic>>> fetchClinics() async {
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('clinics')
           .getFullList(
             expand: 'doc_id',
@@ -285,7 +285,7 @@ class PatientPortalApi {
   ) async {
     //TODO: error handling
     //create visit reference
-    final _result = await PocketbaseHelper.pbPortal
+    final _result = await PocketbaseHelper().pbPortal
         .collection('visits')
         .create(
           body: visit.toJson(),
@@ -293,7 +293,7 @@ class PatientPortalApi {
         );
 
     //create visit_data reference
-    final _visitDataResult = await PocketbaseHelper.pbPortal
+    final _visitDataResult = await PocketbaseHelper().pbPortal
         .collection('visit__data')
         .create(
           body: VisitDataDto.initial(
@@ -340,7 +340,7 @@ class PatientPortalApi {
     }
 
     try {
-      final _result = await PocketbaseHelper.pbPortal
+      final _result = await PocketbaseHelper().pbPortal
           .collection('referrals')
           .getFirstListItem(
             "name_en = '${DoctorReferralItem.onlineBooking(doc_id).name_en}' && doc_id = '$doc_id'",
@@ -352,7 +352,7 @@ class PatientPortalApi {
       return ApiDataResult<DoctorReferralItem>(data: _referral);
     } catch (e) {
       try {
-        final _result = await PocketbaseHelper.pbPortal
+        final _result = await PocketbaseHelper().pbPortal
             .collection('referrals')
             .create(
               body: DoctorReferralItem.onlineBooking(doc_id).toJson(),
@@ -374,7 +374,7 @@ class PatientPortalApi {
 
   @PbPortal()
   Future<void> addBookkeepingItem(BookkeepingItem item) async {
-    await PocketbaseHelper.pbPortal
+    await PocketbaseHelper().pbPortal
         .collection('bookkeeping')
         .create(body: item.toJson());
   }

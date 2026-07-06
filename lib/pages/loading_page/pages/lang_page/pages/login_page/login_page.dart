@@ -297,38 +297,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              // Focus(
-                              //   canRequestFocus: true,
-                              //   child: Text.rich(
-                              //     TextSpan(
-                              //       text: '',
-                              //       children: [
-                              //         TextSpan(
-                              //           text: context.loc.notRegisteredYet,
-                              //           style: const TextStyle(
-                              //             color: Colors.black87,
-                              //           ),
-                              //         ),
-                              //         const TextSpan(text: '   '),
-                              //         TextSpan(
-                              //           text: context.loc.createAccount,
-                              //           style: const TextStyle(
-                              //             color: Colors.blue,
-                              //           ),
-                              //           recognizer: TapGestureRecognizer()
-                              //             ..onTap = () {
-                              //               GoRouter.of(context).goNamed(
-                              //                 AppRouter.register,
-                              //                 pathParameters:
-                              //                     defaultPathParameters(context),
-                              //               );
-                              //             },
-                              //         ),
-                              //       ],
-                              //     ),
-                              //     textAlign: TextAlign.center,
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),

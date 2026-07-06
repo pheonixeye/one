@@ -52,7 +52,7 @@ class BlobFile extends Equatable {
 
 extension PocketbaseExt on BlobFile {
   String get fileUrl =>
-      '${PocketbaseHelper.pbData.baseURL}/api/files/blobs/$id/$file';
+      '${PocketbaseHelper().pbData.baseURL}/api/files/blobs/$id/$file';
 }
 
 enum BlobNames {

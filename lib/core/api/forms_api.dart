@@ -21,18 +21,18 @@ class FormsApi {
   static final _expand = _expandList.join(',');
 
   Future<void> createPcForm(PkForm form) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(forms_collection)
         .create(body: form.toJson());
   }
 
   Future<void> deletePcForm(String id) async {
-    await PocketbaseHelper.pbData.collection(forms_collection).delete(id);
+    await PocketbaseHelper().pbData.collection(forms_collection).delete(id);
   }
 
   Future<ApiResult<List<PkForm>>> fetchDoctorForms() async {
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(forms_collection)
           .getFullList(
             filter: "doc_id = '$doc_id'",
@@ -51,13 +51,13 @@ class FormsApi {
   }
 
   Future<void> updatePcForm(PkForm form) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(forms_collection)
         .update(form.id, body: form.toJson());
   }
 
   Future<void> addNewFieldToForm(PkField newField) async {
-    final _fieldAddRequest = await PocketbaseHelper.pbData
+    final _fieldAddRequest = await PocketbaseHelper().pbData
         .collection(fields_collection)
         .create(
           body: {
@@ -67,7 +67,7 @@ class FormsApi {
 
     final _field = PkField.fromJson(_fieldAddRequest.toJson());
 
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(forms_collection)
         .update(
           _field.form_id,
@@ -78,7 +78,7 @@ class FormsApi {
   }
 
   Future<void> updateFieldValue(PkField toUpdate) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(fields_collection)
         .update(
           toUpdate.id,
@@ -89,11 +89,11 @@ class FormsApi {
   }
 
   Future<void> removeFieldFromForm(PkField toRemove) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(fields_collection)
         .delete(toRemove.id);
 
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(forms_collection)
         .update(
           toRemove.form_id,

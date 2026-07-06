@@ -20,7 +20,7 @@ class S3PatientDocumentApi {
     PatientDocument document,
   ) async {
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .create(
             body: document.toJson(),
@@ -42,7 +42,7 @@ class S3PatientDocumentApi {
       return null;
     }
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(filter: "patient_id = '$patient_id'");
 
@@ -65,7 +65,7 @@ class S3PatientDocumentApi {
       return null;
     }
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter:

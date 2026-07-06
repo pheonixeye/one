@@ -5,7 +5,6 @@ import 'package:one/core/api/doctor_api.dart';
 import 'package:one/models/doctor.dart';
 import 'package:provider/provider.dart';
 
-//TODO: is this needed ??
 class PxDoctor extends ChangeNotifier {
   final DoctorApi api;
   final BuildContext context;
@@ -17,16 +16,16 @@ class PxDoctor extends ChangeNotifier {
     _init();
   }
 
-  static Doctor? _doctor;
+  Doctor? _doctor;
   Doctor? get doctor => _doctor;
 
-  static User? _docAuth;
+  User? _docAuth;
   User? get docAuth => _docAuth;
 
-  static List<Doctor>? _allDoctors;
+  List<Doctor>? _allDoctors;
   List<Doctor>? get allDoctors => _allDoctors;
 
-  static List<User>? _allDoctorsAuth;
+  List<User>? _allDoctorsAuth;
   List<User>? get allDoctorsAuth => _allDoctorsAuth;
 
   Future<void> _init() async {
@@ -34,12 +33,14 @@ class PxDoctor extends ChangeNotifier {
       _allDoctors = await api.fetchAllDoctors();
       _allDoctorsAuth = await api.fetchAllDoctorsAuthAccounts();
       notifyListeners();
+      print('fired isUserNotDoctor');
     } else {
       _allDoctors = await api.fetchAllDoctors();
       _allDoctorsAuth = await api.fetchAllDoctorsAuthAccounts();
       _doctor = await api.fetchDoctorProfile();
       _docAuth = await api.fetchDoctorAuthUser();
       notifyListeners();
+      print('fired other');
     }
   }
 

@@ -19,10 +19,10 @@ class PxPatients extends ChangeNotifier {
     fetchPatients();
   }
 
-  static ApiResult? _data;
+  ApiResult? _data;
   ApiResult? get data => _data;
 
-  static int _page = 1;
+  int _page = 1;
   int get page => _page;
 
   static final int perPage = 10;

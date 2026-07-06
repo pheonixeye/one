@@ -1,14 +1,16 @@
+import 'package:one/annotations/pb_annotations.dart';
+// import 'package:one/functions/dprint.dart';
 import 'package:one/models/user/user.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/models/doctor.dart';
 
+@PbBase()
 class DoctorApi {
-  const DoctorApi({
+  DoctorApi({
     required this.doc_id,
     required this.org_id,
   });
-
   final String doc_id;
   final String org_id;
 
@@ -52,10 +54,8 @@ class DoctorApi {
         .collection(collection)
         .getFullList(
           expand: doctor_expand,
-          filter: "org_id = '$org_id'",
+          filter: 'org_id = "$org_id"',
         );
-
-    // prettyPrint(_response);
     final _doctors = _response.map((e) {
       final _spec = e.get<RecordModel>('expand.speciality_id').toJson();
 
@@ -69,6 +69,9 @@ class DoctorApi {
       return doctor;
     }).toList();
 
+    // //TODO
+    // prettyPrint(_doctors);
+
     return _doctors;
   }
 
@@ -77,17 +80,16 @@ class DoctorApi {
         .collection('users')
         .getList(
           expand: _user_expand,
-          filter: "org_id = '$org_id'",
+          filter: 'org_id = "$org_id"',
         );
-
-    // prettyPrint(result);
 
     final _users = result.items.map((e) => User.fromRecordModel(e)).toList();
 
     final _doctors = _users
         .where((e) => e.account_type.name_en == 'Doctor')
         .toList();
-
+    // print('the doctors:');
+    // prettyPrint(_doctors);
     return _doctors;
   }
 

@@ -18,7 +18,7 @@ class BookkeepingApi {
   static const _expand = 'patient_id';
 
   Future<void> addBookkeepingItem(BookkeepingItem item) async {
-    await PocketbaseHelper.pbData
+    await PocketbaseHelper().pbData
         .collection(collection)
         .create(body: item.toJson());
   }
@@ -33,7 +33,7 @@ class BookkeepingApi {
         'yyyy-MM-dd',
         'en',
       ).format(to.copyWith(day: to.day + 1));
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter: "created >= '$formattedFrom' && created <= '$formattedTo'",
@@ -65,7 +65,7 @@ class BookkeepingApi {
         'yyyy-MM-dd',
         'en',
       ).format(to.copyWith(day: to.day + 1));
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter: 'created >= $formattedFrom && created <= $formattedTo',
@@ -89,7 +89,7 @@ class BookkeepingApi {
 
   Future<ApiResult<List<BookkeepingItem>>> fetchBookkeepingOfOneVisit() async {
     try {
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter: "visit_id = '$visit_id' && amount != 0",
@@ -117,7 +117,7 @@ class BookkeepingApi {
     final formattedFrom = DateFormat('yyyy-MM-dd', 'en').format(from);
     final formattedTo = DateFormat('yyyy-MM-dd', 'en').format(to);
     try {
-      final _response = await PocketbaseHelper.pbData
+      final _response = await PocketbaseHelper().pbData
           .collection(collection)
           .getFullList(
             filter:

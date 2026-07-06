@@ -16,7 +16,7 @@ class PbNotificationsApi {
     required int perPage,
   }) async {
     try {
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .getList(
             perPage: perPage,
@@ -46,7 +46,7 @@ class PbNotificationsApi {
     }
     try {
       final _update = [...notification.read_by, user_id];
-      final _result = await PocketbaseHelper.pbData
+      final _result = await PocketbaseHelper().pbData
           .collection(collection)
           .update(
             notification.id,
@@ -69,7 +69,7 @@ class PbNotificationsApi {
   Future<UnsubscribeFunc> notificationsSubscription(
     void Function(RecordSubscriptionEvent) callback,
   ) async {
-    final sub = await PocketbaseHelper.pbData
+    final sub = await PocketbaseHelper().pbData
         .collection(collection)
         .subscribe(
           '*',

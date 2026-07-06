@@ -43,7 +43,7 @@ class TodayPatientProgressApi {
   Future<UnsubscribeFunc> listenToVisitsCollectionStream(
     void Function(RecordSubscriptionEvent) callback,
   ) async {
-    return await PocketbaseHelper.pbData
+    return await PocketbaseHelper().pbData
         .collection(collection)
         .subscribe(
           '*',
@@ -55,7 +55,7 @@ class TodayPatientProgressApi {
   }
 
   Future<List<VisitExpanded>> fetchTodayVisits() async {
-    final _response = await PocketbaseHelper.pbData
+    final _response = await PocketbaseHelper().pbData
         .collection(collection)
         .getFullList(
           filter:

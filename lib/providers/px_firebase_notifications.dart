@@ -8,22 +8,18 @@ import 'package:one/widgets/notification_overlay.dart';
 import 'package:uuid/uuid.dart';
 
 class PxFirebaseNotifications extends ChangeNotifier {
-  PxFirebaseNotifications({
-    required this.context,
-    required this.api,
-  }) {
+  PxFirebaseNotifications() : api = FcmNotificationsApi() {
     initializeMessaging();
   }
 
-  final BuildContext context;
   final FcmNotificationsApi api;
 
-  static String? _fcmToken;
+  String? _fcmToken;
   String? get fcmToken => _fcmToken;
 
-  static NotificationSettings? _settings;
+  NotificationSettings? _settings;
 
-  static AuthorizationStatus? _authorizationStatus;
+  AuthorizationStatus? _authorizationStatus;
   AuthorizationStatus? get authorizationStatus => _authorizationStatus;
 
   bool get isAuthorized =>
@@ -46,11 +42,11 @@ class PxFirebaseNotifications extends ChangeNotifier {
       _authorizationStatus = _settings!.authorizationStatus;
     }
 
-    notifyListeners();
+    // notifyListeners();
 
     final _isAuthorized = authorizationStatus == AuthorizationStatus.authorized;
 
-    if (_isAuthorized == false && context.mounted) {
+    if (_isAuthorized == false) {
       final _id = Uuid().v4();
 
       final _notificationOverlayWidget = NotificationOverlayCard(
@@ -77,7 +73,7 @@ class PxFirebaseNotifications extends ChangeNotifier {
       _fcmToken = await FirebaseMessaging.instance.getToken(
         vapidKey: const String.fromEnvironment('VAPID_KEY'),
       );
-      notifyListeners();
+      // notifyListeners();
       return _fcmToken;
     } catch (e) {
       return null;
