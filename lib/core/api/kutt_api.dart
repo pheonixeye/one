@@ -26,11 +26,11 @@ class KuttApi {
         'target': original,
       }),
     );
-    if (_request.statusCode == LINK_SHORTENED_SUCCESS_CODE) {
-      final _resBody = jsonDecode(_request.body) as Map<String, dynamic>;
-      return _resBody['link'] as String;
-    } else {
-      throw http.ClientException('Patient Link Generation Failed...');
+    final _response = jsonDecode(_request.body) as Map<String, dynamic>;
+
+    if (_response['link'] != null) {
+      return _response['link'];
     }
+    return _response['error'];
   }
 }
