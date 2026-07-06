@@ -10,9 +10,9 @@ class KuttApi {
 
   static const _headers = {
     'X-API-KEY': String.fromEnvironment('KUTT_API_KEY'),
-    // 'Content-Type': 'application/json',
-    // "access-control-allow-origin": "*",
-    // "access-control-allow-headers": "*",
+    'Content-Type': 'application/json; charset=UTF-8',
+    'access-control-allow-origin': '*',
+    'access-control-allow-headers': '*',
   };
 
   Future<String> shortenLink() async {
