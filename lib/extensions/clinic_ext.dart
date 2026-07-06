@@ -12,7 +12,7 @@ extension BookingUrl on Clinic {
     final _pxAuth = context.read<PxAuth>();
     final _org_id = _pxAuth.organization?.id;
     final _url =
-        '${const String.fromEnvironment('APP_BASE_URL')}/$_lang/${AppRouter.patients_portal}?view=new&org_id=$_org_id&doc_id=${doc_id.first}';
+        '${const String.fromEnvironment('APP_URL')}/#/$_lang/${AppRouter.patients_portal}?view=new&org_id=$_org_id&doc_id=${doc_id.first}';
     return _url;
   }
 }

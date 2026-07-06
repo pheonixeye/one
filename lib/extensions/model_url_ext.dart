@@ -36,7 +36,7 @@ extension AppBookingUrl on OrganizationExpanded {
     final _pxLocale = context.read<PxLocale>();
     final _lang = _pxLocale.lang;
     final _url =
-        '${const String.fromEnvironment('APP_BASE_URL')}/$_lang/${AppRouter.patients_portal}?view=new&org_id=$id';
+        '${const String.fromEnvironment('APP_URL')}/#/$_lang/${AppRouter.patients_portal}?view=new&org_id=$id';
     return _url;
   }
 }
