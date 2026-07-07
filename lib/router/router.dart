@@ -4,12 +4,14 @@ import 'package:one/core/api/bookkeeping_api.dart';
 import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/doctor_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
+import 'package:one/core/api/profile_items_api/pi_drugs_api.dart';
 import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/subscription_api.dart';
 import 'package:one/core/api/visits_api.dart';
 import 'package:one/core/api/whatsapp_api.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_drugs_page/pi_drug_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/assistants_page/assistants_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
@@ -21,6 +23,7 @@ import 'package:one/providers/px_bookkeeping.dart';
 import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_patient_portal.dart';
+import 'package:one/providers/px_profile_items/px_pi_drugs.dart';
 import 'package:one/providers/px_reciept_info.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -632,21 +635,43 @@ class AppRouter {
                                   path: e.route,
                                   name: e.route,
                                   builder: (context, state) {
-                                    return ChangeNotifierProvider(
-                                      key: ValueKey(
-                                        e.getByStringValue(e.route),
-                                      ),
-                                      create: (context) => PxDoctorProfileItems(
-                                        api: DoctorProfileItemsApi(
-                                          item: e,
-                                          doc_id: context.read<PxAuth>().doc_id,
+                                    return switch (e) {
+                                      ProfileSetupItem.drugs =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiDrugs(
+                                            api: PiDrugsApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
+                                            ),
+                                          ),
+                                          child: PiDrugsPage(
+                                            key: state.pageKey,
+                                          ),
+                                        ),
+                                      //TODO
+                                      _ => ChangeNotifierProvider(
+                                        key: ValueKey(
+                                          e.getByStringValue(e.route),
+                                        ),
+                                        create: (context) =>
+                                            PxDoctorProfileItems(
+                                              api: DoctorProfileItemsApi(
+                                                item: e,
+                                                doc_id: context
+                                                    .read<PxAuth>()
+                                                    .doc_id,
+                                              ),
+                                            ),
+                                        child: ProfileItemPage(
+                                          key: state.pageKey,
+                                          profileSetupItem: e,
                                         ),
                                       ),
-                                      child: ProfileItemPage(
-                                        key: state.pageKey,
-                                        profileSetupItem: e,
-                                      ),
-                                    );
+                                    };
                                   },
                                 );
                               }),
