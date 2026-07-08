@@ -3,7 +3,13 @@ import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/pb_notifications_api.dart';
+import 'package:one/core/api/profile_items_api/pi_document_types_api.dart';
 import 'package:one/core/api/profile_items_api/pi_drugs_api.dart';
+import 'package:one/core/api/profile_items_api/pi_labs_api.dart';
+import 'package:one/core/api/profile_items_api/pi_procedures_api.dart';
+import 'package:one/core/api/profile_items_api/pi_rads_api.dart';
+import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
+import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
 import 'package:one/core/api/whatsapp_api.dart';
@@ -14,7 +20,13 @@ import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_firebase_notifications.dart';
 import 'package:one/providers/px_pb_notifications.dart';
+import 'package:one/providers/px_profile_items/px_pi_documents.dart';
 import 'package:one/providers/px_profile_items/px_pi_drugs.dart';
+import 'package:one/providers/px_profile_items/px_pi_labs.dart';
+import 'package:one/providers/px_profile_items/px_pi_procedures.dart';
+import 'package:one/providers/px_profile_items/px_pi_rads.dart';
+import 'package:one/providers/px_profile_items/px_pi_referrals.dart';
+import 'package:one/providers/px_profile_items/px_pi_supplies.dart';
 import 'package:one/providers/px_s3_documents.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_speciality.dart';
@@ -127,6 +139,54 @@ final List<SingleChildWidget> providers = [
     key: ValueKey(ProfileSetupItem.drugs),
     create: (context) => PxPiDrugs(
       api: PiDrugsApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.labs),
+    create: (context) => PxPiLabs(
+      api: PiLabsApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.rads),
+    create: (context) => PxPiRads(
+      api: PiRadsApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.procedures),
+    create: (context) => PxPiProcedures(
+      api: PiProceduresApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.supplies),
+    create: (context) => PxPiSupplies(
+      api: PiSupplyItemsApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.documents),
+    create: (context) => PxPiDocuments(
+      api: PiDocumentTypesApi(
+        doc_id: context.read<PxAuth>().doc_id,
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    key: ValueKey(ProfileSetupItem.referrals),
+    create: (context) => PxPiReferrals(
+      api: PiReferralsApi(
         doc_id: context.read<PxAuth>().doc_id,
       ),
     ),

@@ -4,10 +4,10 @@ import 'package:one/core/api/profile_items_api/pi_api.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/models/doctor_items/pi_procedure.dart';
 
-class PiRadsApi extends PiApi<PiProcedure> {
+class PiProceduresApi extends PiApi<PiProcedure> {
   final String doc_id;
 
-  PiRadsApi({required this.doc_id});
+  PiProceduresApi({required this.doc_id});
 
   static const String collection = 'procedures';
 

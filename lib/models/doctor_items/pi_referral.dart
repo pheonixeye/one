@@ -13,7 +13,7 @@ class PiReferral extends Equatable {
     required this.name_ar,
   });
 
-  final ProfileSetupItem item = ProfileSetupItem.referrals;
+  static final ProfileSetupItem item = ProfileSetupItem.referrals;
 
   PiReferral copyWith({
     String? id,

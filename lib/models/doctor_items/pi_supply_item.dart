@@ -28,7 +28,7 @@ class PiSupplyItem extends Equatable {
     required this.selling_price,
     required this.notify_on_reorder_quantity,
   });
-  final ProfileSetupItem item = ProfileSetupItem.supplies;
+  static final ProfileSetupItem item = ProfileSetupItem.supplies;
 
   PiSupplyItem copyWith({
     String? id,

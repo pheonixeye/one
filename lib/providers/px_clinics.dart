@@ -56,7 +56,7 @@ class PxClinics extends ChangeNotifier {
     await _fetchDoctorClinics();
   }
 
-  Clinic? _clinic;
+  static Clinic? _clinic;
   Clinic? get clinic => _clinic;
 
   void selectClinic(Clinic? value) {

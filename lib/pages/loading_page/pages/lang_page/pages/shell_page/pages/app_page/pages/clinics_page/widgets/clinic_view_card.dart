@@ -1,9 +1,12 @@
+import 'package:one/core/api/clinics_api.dart';
+import 'package:one/core/api/doctor_api.dart';
 import 'package:one/core/api/kutt_api.dart';
 import 'package:one/extensions/clinic_ext.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_page/widgets/booking_url_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_page/widgets/clinic_doctors_dialog.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_doctor.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:one/widgets/snackbar_.dart';
@@ -379,7 +382,30 @@ class ClinicViewCard extends StatelessWidget {
                             await showDialog(
                               context: context,
                               builder: (context) {
-                                return const ClinicDoctorsDialog();
+                                return MultiProvider(
+                                  providers: [
+                                    ChangeNotifierProvider(
+                                      create: (context) => PxDoctor(
+                                        api: DoctorApi(
+                                          doc_id: context.read<PxAuth>().doc_id,
+                                          org_id:
+                                              '${context.read<PxAuth>().organization?.id}',
+                                        ),
+                                        context: context,
+                                      ),
+                                    ),
+                                    ChangeNotifierProvider(
+                                      create: (context) => PxClinics(
+                                        api: ClinicsApi(
+                                          doc_id: context.read<PxAuth>().doc_id,
+                                        ),
+                                        context: context,
+                                      ),
+                                    ),
+                                  ],
+
+                                  child: ClinicDoctorsDialog(),
+                                );
                               },
                             ).whenComplete(() {
                               c.selectClinic(null);

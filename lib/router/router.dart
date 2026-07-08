@@ -4,14 +4,26 @@ import 'package:one/core/api/bookkeeping_api.dart';
 import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/doctor_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
+import 'package:one/core/api/profile_items_api/pi_document_types_api.dart';
 import 'package:one/core/api/profile_items_api/pi_drugs_api.dart';
+import 'package:one/core/api/profile_items_api/pi_labs_api.dart';
+import 'package:one/core/api/profile_items_api/pi_procedures_api.dart';
+import 'package:one/core/api/profile_items_api/pi_rads_api.dart';
+import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
+import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
 import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/subscription_api.dart';
 import 'package:one/core/api/visits_api.dart';
 import 'package:one/core/api/whatsapp_api.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_drugs_page/pi_drug_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_document_types_page/pi_document_types_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_drugs_page/pi_drugs_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_labs_page/pi_labs_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_procedures_page/pi_procedures_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_rads_page/pi_rads_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_referrals_page/pi_referrals_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_supply_items_page/pi_supply_items_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/assistants_page/assistants_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
@@ -23,12 +35,17 @@ import 'package:one/providers/px_bookkeeping.dart';
 import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_patient_portal.dart';
+import 'package:one/providers/px_profile_items/px_pi_documents.dart';
 import 'package:one/providers/px_profile_items/px_pi_drugs.dart';
+import 'package:one/providers/px_profile_items/px_pi_labs.dart';
+import 'package:one/providers/px_profile_items/px_pi_procedures.dart';
+import 'package:one/providers/px_profile_items/px_pi_rads.dart';
+import 'package:one/providers/px_profile_items/px_pi_referrals.dart';
+import 'package:one/providers/px_profile_items/px_pi_supplies.dart';
 import 'package:one/providers/px_reciept_info.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:one/core/api/clinics_api.dart';
-import 'package:one/core/api/doctor_profile_items_api.dart';
 import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/patients_api.dart';
 import 'package:one/core/api/visit_data_api.dart';
@@ -45,7 +62,6 @@ import 'package:one/pages/loading_page/loading_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/login_page/login_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/app_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/app_profile_setup.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/profile_item_page/profile_item_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_page/clinics_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/bookkeeping_page/bookkeeping_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/clinics_patients_movements_page/clinics_patients_movements_page.dart';
@@ -66,7 +82,6 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/shell_page.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_clinics.dart';
-import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patients.dart';
@@ -652,25 +667,123 @@ class AppRouter {
                                             key: state.pageKey,
                                           ),
                                         ),
-                                      //TODO
-                                      _ => ChangeNotifierProvider(
-                                        key: ValueKey(
-                                          e.getByStringValue(e.route),
-                                        ),
-                                        create: (context) =>
-                                            PxDoctorProfileItems(
-                                              api: DoctorProfileItemsApi(
-                                                item: e,
-                                                doc_id: context
-                                                    .read<PxAuth>()
-                                                    .doc_id,
-                                              ),
+
+                                      ProfileSetupItem.labs =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiLabs(
+                                            api: PiLabsApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
                                             ),
-                                        child: ProfileItemPage(
-                                          key: state.pageKey,
-                                          profileSetupItem: e,
+                                          ),
+                                          child: PiLabsPage(
+                                            key: state.pageKey,
+                                          ),
                                         ),
-                                      ),
+                                      ProfileSetupItem.rads =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiRads(
+                                            api: PiRadsApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
+                                            ),
+                                          ),
+                                          child: PiRadsPage(
+                                            key: state.pageKey,
+                                          ),
+                                        ),
+                                      ProfileSetupItem.procedures =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiProcedures(
+                                            api: PiProceduresApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
+                                            ),
+                                          ),
+                                          child: PiProceduresPage(
+                                            key: state.pageKey,
+                                          ),
+                                        ),
+                                      ProfileSetupItem.supplies =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiSupplies(
+                                            api: PiSupplyItemsApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
+                                            ),
+                                          ),
+                                          child: PiSupplyItemsPage(
+                                            key: state.pageKey,
+                                          ),
+                                        ),
+                                      ProfileSetupItem.documents =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiDocuments(
+                                            api: PiDocumentTypesApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
+                                            ),
+                                          ),
+                                          child: PiDocumentTypesPage(
+                                            key: state.pageKey,
+                                          ),
+                                        ),
+                                      ProfileSetupItem.referrals =>
+                                        ChangeNotifierProvider(
+                                          key: ValueKey(
+                                            e.getByStringValue(e.route),
+                                          ),
+                                          create: (context) => PxPiReferrals(
+                                            api: PiReferralsApi(
+                                              doc_id: context
+                                                  .read<PxAuth>()
+                                                  .doc_id,
+                                            ),
+                                          ),
+                                          child: PiReferralsPage(
+                                            key: state.pageKey,
+                                          ),
+                                        ),
+
+                                      //TODO
+                                      // _ => ChangeNotifierProvider(
+                                      //   key: ValueKey(
+                                      //     e.getByStringValue(e.route),
+                                      //   ),
+                                      //   create: (context) =>
+                                      //       PxDoctorProfileItems(
+                                      //         api: DoctorProfileItemsApi(
+                                      //           item: e,
+                                      //           doc_id: context
+                                      //               .read<PxAuth>()
+                                      //               .doc_id,
+                                      //         ),
+                                      //       ),
+                                      //   child: ProfileItemPage(
+                                      //     key: state.pageKey,
+                                      //     profileSetupItem: e,
+                                      //   ),
+                                      // ),
                                     };
                                   },
                                 );

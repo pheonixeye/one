@@ -16,7 +16,7 @@ class PiLab extends Equatable {
     required this.name_ar,
     required this.special_instructions,
   });
-  final ProfileSetupItem item = ProfileSetupItem.labs;
+  static final ProfileSetupItem item = ProfileSetupItem.labs;
 
   PiLab copyWith({
     String? id,

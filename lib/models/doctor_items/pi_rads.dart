@@ -57,6 +57,12 @@ enum RadiologyType {
   }
 }
 
+extension LocalizedString on RadiologyType {
+  String localizedString(bool isEnglish) {
+    return isEnglish ? type_en : type_ar;
+  }
+}
+
 class PiRad extends Equatable {
   final String id;
   final String doc_id;
@@ -64,7 +70,7 @@ class PiRad extends Equatable {
   final String name_ar;
   final String special_instructions;
   final RadiologyType type;
-  final ProfileSetupItem item = ProfileSetupItem.labs;
+  static final ProfileSetupItem item = ProfileSetupItem.labs;
 
   const PiRad({
     required this.id,

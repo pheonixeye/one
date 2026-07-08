@@ -18,7 +18,7 @@ class PiProcedure extends Equatable {
     required this.price,
     required this.discount_percentage,
   });
-  final ProfileSetupItem item = ProfileSetupItem.procedures;
+  static final ProfileSetupItem item = ProfileSetupItem.procedures;
 
   PiProcedure copyWith({
     String? id,
