@@ -411,7 +411,7 @@ class AppRouter {
                                       state.pathParameters['visit_id'];
                                   if (state.fullPath ==
                                       '/:lang/app/data/:visit_id') {
-                                    return '/$_lang/app/data/$_visit_id/visit_forms';
+                                    return '/$_lang/app/data/$_visit_id/$visit_clinical_notes';
                                   }
                                   return null;
                                 },
