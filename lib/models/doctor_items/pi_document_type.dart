@@ -16,7 +16,7 @@ class PiDocumentType extends Equatable {
     required this.is_allowed_on_portal,
   });
 
-  final ProfileSetupItem item = ProfileSetupItem.documents;
+  static final ProfileSetupItem item = ProfileSetupItem.documents;
 
   PiDocumentType copyWith({
     String? id,

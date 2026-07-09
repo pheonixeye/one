@@ -48,6 +48,7 @@ app.*.map.json
 .fvm/
 .env
 /test
+*.env
 
 # firebase data
 /lib/firebase_options.dart
