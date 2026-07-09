@@ -365,6 +365,7 @@ class AppRouter {
                               return MultiProvider(
                                 providers: [
                                   ChangeNotifierProvider(
+                                    key: state.pageKey,
                                     create: (context) => PxClinics(
                                       context: context,
                                       api: ClinicsApi(
@@ -373,22 +374,25 @@ class AppRouter {
                                     ),
                                   ),
                                   ChangeNotifierProvider(
+                                    key: state.pageKey,
                                     create: (context) => PxVisits(
-                                      api: VisitsApi(added_by: ''),
-                                      // whatsappApi: WhatsappApi(),
-                                      context: context,
-                                    ),
-                                  ),
-                                  ChangeNotifierProvider(
-                                    create: (context) => PxTodayPatientProgress(
-                                      api: TodayPatientProgressApi(
-                                        doc_id: context.read<PxAuth>().doc_id,
-
-                                        ///TODO:
-                                        clinic_id: '',
+                                      api: VisitsApi(
+                                        added_by:
+                                            '${context.read<PxAuth>().user?.name}',
                                       ),
                                     ),
                                   ),
+                                  // ChangeNotifierProvider(
+                                  //   key: state.pageKey,
+                                  //   create: (context) => PxTodayPatientProgress(
+                                  //     api: TodayPatientProgressApi(
+                                  //       doc_id: context.read<PxAuth>().doc_id,
+
+                                  //       ///TODO:
+                                  //       clinic_id: '',
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                                 child: TodayVisitsPage(
                                   key: state.pageKey,

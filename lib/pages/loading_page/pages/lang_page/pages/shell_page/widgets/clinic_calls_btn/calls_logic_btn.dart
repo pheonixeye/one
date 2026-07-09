@@ -77,7 +77,6 @@ class _CallsLogicBtnState extends State<CallsLogicBtn> {
                             builder: (context) {
                               return ChangeNotifierProvider.value(
                                 value: PxVisits(
-                                  context: context,
                                   api: VisitsApi(added_by: ''),
                                   // whatsappApi: const WhatsappApi(),
                                 ),

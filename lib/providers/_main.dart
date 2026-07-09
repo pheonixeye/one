@@ -284,11 +284,9 @@ final List<SingleChildWidget> providers = [
 
   ChangeNotifierProvider(
     create: (context) => PxVisits(
-      context: context,
       api: VisitsApi(
         added_by: '${context.read<PxAuth>().user?.name}',
       ),
-      // whatsappApi: WhatsappApi(),
     ),
   ),
 

@@ -6,19 +6,15 @@ import 'package:one/models/visits/visit.dart';
 
 class PxVisits extends ChangeNotifier {
   final VisitsApi api;
-  // final WhatsappApi whatsappApi;
-  final BuildContext context;
 
   PxVisits({
     required this.api,
-    // required this.whatsappApi,
-    required this.context,
   }) {
     _fetchVisitsOfToday();
     fetchVisitsOfOneMonth();
   }
 
-  ApiResult<List<VisitExpanded>>? _visits;
+  static ApiResult<List<VisitExpanded>>? _visits;
   ApiResult<List<VisitExpanded>>? get visits => _visits;
 
   Future<ApiResult<List<Visit>>> _fetchVisitsOfASpecificDate(
@@ -37,20 +33,11 @@ class PxVisits extends ChangeNotifier {
   Future<void> retry() async => await _fetchVisitsOfToday();
 
   Future<void> addNewVisit(Visit dto) async {
-    // final _auth = context.read<PxAuth>();
-    // final _visit =
     await api.addNewVisit(dto);
     await _fetchVisitsOfToday();
 
     ///TODO:
     //notify patient via whatsapp
-    // await whatsappApi.sendTextMessage(
-    //   OrgVisitInfo(
-    //     visit_id: _visit.id,
-    //     org_id: _auth.organization?.id ?? '',
-    //     type: NotificationType.create,
-    //   ),
-    // );
   }
 
   ///fetch visits of this date and clinic
@@ -159,8 +146,6 @@ class PxVisits extends ChangeNotifier {
     required String visit_id,
     required Shift shift,
   }) async {
-    // final _auth = context.read<PxAuth>();
-
     await api.updateVisitScheduleShift(
       visit_id: visit_id,
       shift: shift,
@@ -168,12 +153,5 @@ class PxVisits extends ChangeNotifier {
     await _fetchVisitsOfToday();
 
     //notify patient via whatsapp
-    // await whatsappApi.sendTextMessage(
-    //   OrgVisitInfo(
-    //     visit_id: visit_id,
-    //     org_id: _auth.organization?.id ?? '',
-    //     type: NotificationType.create,
-    //   ),
-    // );
   }
 }

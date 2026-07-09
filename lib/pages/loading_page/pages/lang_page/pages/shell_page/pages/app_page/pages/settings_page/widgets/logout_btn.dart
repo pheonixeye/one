@@ -6,6 +6,7 @@ import 'package:one/providers/px_auth.dart';
 import 'package:one/router/router.dart';
 import 'package:one/widgets/prompt_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:web/web.dart' as web;
 
 class LogoutBtn extends StatelessWidget {
   const LogoutBtn({super.key});
@@ -33,6 +34,8 @@ class LogoutBtn extends StatelessWidget {
                 pathParameters: defaultPathParameters(context),
               );
             }
+            await Future.delayed(const Duration(seconds: 1));
+            web.window.location.reload();
           },
           child: const Icon(Icons.logout),
         );
