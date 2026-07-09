@@ -6,7 +6,7 @@ import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
 import 'package:one/models/doctor.dart';
-import 'package:one/models/doctor_items/doctor_referral_item.dart';
+import 'package:one/models/doctor_items/pi_referral.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:provider/provider.dart';
 
@@ -77,8 +77,8 @@ class PxAddNewVisitDialog extends ChangeNotifier {
   Doctor? _doctor;
   Doctor? get doctor => _doctor;
 
-  DoctorReferralItem? _referral;
-  DoctorReferralItem? get referral => _referral;
+  PiReferral? _referral;
+  PiReferral? get referral => _referral;
 
   late VisitType? _visitType = context.read<PxAppConstants>().consultation;
   VisitType? get visitType => _visitType;
@@ -131,7 +131,7 @@ class PxAddNewVisitDialog extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectReferral(DoctorReferralItem? value) {
+  void selectReferral(PiReferral? value) {
     _referral = value;
     notifyListeners();
   }

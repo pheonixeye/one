@@ -3541,6 +3541,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share Booking Link'**
   String get shareBookingLink;
+
+  /// No description provided for @clinicalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinical Notes'**
+  String get clinicalNotes;
 }
 
 class _AppLocalizationsDelegate

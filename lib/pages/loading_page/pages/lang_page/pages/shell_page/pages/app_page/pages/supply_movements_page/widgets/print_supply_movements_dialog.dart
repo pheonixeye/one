@@ -1,31 +1,33 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:one/utils/g_fonts_loader.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:one/assets/assets.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_type.dart';
 
-final Map<String, ByteData> _fontBytesCache = {};
+// final Map<String, ByteData> _fontBytesCache = {};
 
-Future<ByteData> _getFontBytes(String key) async {
-  if (_fontBytesCache[key] == null) {
-    final _bytes = switch (key) {
-      'base' => await rootBundle.load(AppAssets.ibm_base),
-      'bold' => await rootBundle.load(AppAssets.ibm_bold),
-      _ => throw UnimplementedError(),
-    };
-    _fontBytesCache[key] = _bytes;
-    return _bytes;
-  } else {
-    return _fontBytesCache[key]!;
-  }
-}
+// Future<ByteData> _getFontBytes(String key) async {
+//   if (_fontBytesCache[key] == null) {
+//     final _bytes = switch (key) {
+//       'base' => await rootBundle.load(AppAssets.ibm_base),
+//       'bold' => await rootBundle.load(AppAssets.ibm_bold),
+//       _ => throw UnimplementedError(),
+//     };
+//     _fontBytesCache[key] = _bytes;
+//     return _bytes;
+//   } else {
+//     return _fontBytesCache[key]!;
+//   }
+// }
 
 class PrintSupplyMovementsDialog extends StatefulWidget {
   const PrintSupplyMovementsDialog({
@@ -45,10 +47,8 @@ class PrintSupplyMovementsDialog extends StatefulWidget {
 
 class _PrintSupplyMovementsDialogState
     extends State<PrintSupplyMovementsDialog> {
-  Future<Uint8List> _build(PdfPageFormat format) async {
+  FutureOr<Uint8List> _build(PdfPageFormat format) {
     final doc = pw.Document();
-    final _font_base = await _getFontBytes('base');
-    final _font_bold = await _getFontBytes('bold');
     final _perPage = 15;
 
     Map<int, List<SupplyMovement>> _splitted = {};
@@ -74,8 +74,8 @@ class _PrintSupplyMovementsDialogState
     pw.Page _buildPage(List<SupplyMovement> _splitted, int page) => pw.Page(
       pageTheme: pw.PageTheme(
         theme: pw.ThemeData.withFont(
-          base: pw.Font.ttf(_font_base),
-          bold: pw.Font.ttf(_font_bold),
+          base: GFontsLoader.baseFont,
+          bold: GFontsLoader.boldFont,
           icons: pw.Font.zapfDingbats(),
         ),
         orientation: pw.PageOrientation.landscape,

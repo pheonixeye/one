@@ -250,7 +250,7 @@ class VisitSingleItemsPage<T extends DoctorItem> extends StatelessWidget {
                                             )
                                             ..formatFromInAppAction(
                                               action: InAppAction
-                                                  .remove_procedure_from_visit,
+                                                  .add_procedure_to_visit,
                                               account_types:
                                                   context
                                                       .read<PxAppConstants>()

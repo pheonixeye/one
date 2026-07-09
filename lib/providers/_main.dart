@@ -12,7 +12,6 @@ import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
 import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
-import 'package:one/core/api/whatsapp_api.dart';
 import 'package:one/models/doctor_items/doctor_doument_type.dart';
 import 'package:one/models/doctor_items/doctor_referral_item.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
@@ -289,7 +288,7 @@ final List<SingleChildWidget> providers = [
       api: VisitsApi(
         added_by: '${context.read<PxAuth>().user?.name}',
       ),
-      whatsappApi: WhatsappApi(),
+      // whatsappApi: WhatsappApi(),
     ),
   ),
 

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:one/core/api/_api_result.dart';
+import 'package:one/core/api/clinics_api.dart';
 import 'package:one/core/api/fcm_notifications_api.dart';
 import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/patient_forms_api.dart';
@@ -82,11 +83,21 @@ class PatientInfoCardActions extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                    create: (context) => PxAddNewVisitDialog(
+                    create: (context) => PxClinics(
                       context: context,
+                      api: ClinicsApi(
+                        doc_id: context.read<PxAuth>().isUserNotDoctor
+                            ? ''
+                            : context.read<PxAuth>().doc_id,
+                      ),
                     ),
-                    child: AddNewVisitDialog(
-                      patient: patient,
+                    child: ChangeNotifierProvider(
+                      create: (context) => PxAddNewVisitDialog(
+                        context: context,
+                      ),
+                      child: AddNewVisitDialog(
+                        patient: patient,
+                      ),
                     ),
                   );
                 },

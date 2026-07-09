@@ -1804,4 +1804,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shareBookingLink => 'مشاركة رابط الحجز';
+
+  @override
+  String get clinicalNotes => 'الملاحظات الاكلينيكية';
 }

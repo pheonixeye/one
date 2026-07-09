@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:one/utils/g_fonts_loader.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:one/assets/assets.dart';
 import 'package:one/extensions/model_url_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/prescription_details.dart';
@@ -17,7 +17,7 @@ class PrescriptionPdfBuilder {
 
   static final Map<String, Uint8List> _imageBytesCache = {};
 
-  static final Map<String, ByteData> _fontBytesCache = {};
+  // static final Map<String, ByteData> _fontBytesCache = {};
 
   static final Map<String, PdfPageFormat> formats = {
     PrescriptionPaperSize.a5.name: PdfPageFormat.a5,
@@ -39,19 +39,19 @@ class PrescriptionPdfBuilder {
 
   bool get isEnglish => app_locale.toLowerCase() == 'en';
 
-  Future<ByteData> _getFontBytes(String key) async {
-    if (_fontBytesCache[key] == null) {
-      final _bytes = switch (key) {
-        'base' => await rootBundle.load(AppAssets.ibm_base),
-        'bold' => await rootBundle.load(AppAssets.ibm_bold),
-        _ => throw UnimplementedError(),
-      };
-      _fontBytesCache[key] = _bytes;
-      return _bytes;
-    } else {
-      return _fontBytesCache[key]!;
-    }
-  }
+  // Future<ByteData> _getFontBytes(String key) async {
+  //   if (_fontBytesCache[key] == null) {
+  //     final _bytes = switch (key) {
+  //       'base' => await rootBundle.load(AppAssets.ibm_base),
+  //       'bold' => await rootBundle.load(AppAssets.ibm_bold),
+  //       _ => throw UnimplementedError(),
+  //     };
+  //     _fontBytesCache[key] = _bytes;
+  //     return _bytes;
+  //   } else {
+  //     return _fontBytesCache[key]!;
+  //   }
+  // }
 
   Future<Uint8List> _getImageBytes() async {
     if (_imageBytesCache[clinic.prescription_file] == null) {
@@ -65,17 +65,15 @@ class PrescriptionPdfBuilder {
 
   FutureOr<Uint8List> build(PdfPageFormat format) async {
     final _bytes = await _getImageBytes();
-    final _font_base = await _getFontBytes('base');
-    final _font_bold = await _getFontBytes('bold');
     final _doc = pw.Document();
 
     final _page = pw.Page(
       pageTheme: pw.PageTheme(
         textDirection: _textDirection,
         theme: pw.ThemeData.withFont(
-          base: pw.Font.ttf(_font_base),
-          bold: pw.Font.ttf(_font_bold),
-          icons: pw.Font.ttf(_font_base),
+          base: GFontsLoader.baseFont,
+          bold: GFontsLoader.boldFont,
+          icons: pw.Font.zapfDingbats(),
         ),
         clip: true,
         margin: pw.EdgeInsets.all(0),

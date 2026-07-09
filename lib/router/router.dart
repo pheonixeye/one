@@ -13,8 +13,9 @@ import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
 import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
 import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/subscription_api.dart';
+import 'package:one/core/api/today_patient_progress_api.dart';
 import 'package:one/core/api/visits_api.dart';
-import 'package:one/core/api/whatsapp_api.dart';
+// import 'package:one/core/api/whatsapp_api.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_document_types_page/pi_document_types_page.dart';
@@ -28,6 +29,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_clinical_notes_page/clinical_notes_page.dart';
 import 'package:one/providers/pricing_px.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
@@ -86,6 +88,7 @@ import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patients.dart';
 import 'package:one/providers/px_subscription.dart';
+import 'package:one/providers/px_today_patient_progress.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
 import 'package:one/providers/px_visit_prescription_state.dart';
@@ -140,6 +143,7 @@ class AppRouter {
   static const String app = "app";
   //visit_data
   static const String visit_data = "data/:visit_id";
+  static const String visit_clinical_notes = "visit_clinical_notes";
   static const String visit_forms = "visit_forms";
   static const String visit_drugs = "visit_drugs";
   static const String visit_labs = "visit_labs";
@@ -371,8 +375,18 @@ class AppRouter {
                                   ChangeNotifierProvider(
                                     create: (context) => PxVisits(
                                       api: VisitsApi(added_by: ''),
-                                      whatsappApi: WhatsappApi(),
+                                      // whatsappApi: WhatsappApi(),
                                       context: context,
+                                    ),
+                                  ),
+                                  ChangeNotifierProvider(
+                                    create: (context) => PxTodayPatientProgress(
+                                      api: TodayPatientProgressApi(
+                                        doc_id: context.read<PxAuth>().doc_id,
+
+                                        ///TODO:
+                                        clinic_id: '',
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -424,6 +438,19 @@ class AppRouter {
                                       }
                                     },
                                     branches: [
+                                      StatefulShellBranch(
+                                        routes: [
+                                          GoRoute(
+                                            path: '/$visit_clinical_notes',
+                                            name: visit_clinical_notes,
+                                            builder: (context, state) {
+                                              return VisitClinicalNotesPage(
+                                                key: state.pageKey,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                       StatefulShellBranch(
                                         routes: [
                                           GoRoute(

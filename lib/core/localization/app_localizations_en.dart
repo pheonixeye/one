@@ -1812,4 +1812,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareBookingLink => 'Share Booking Link';
+
+  @override
+  String get clinicalNotes => 'Clinical Notes';
 }

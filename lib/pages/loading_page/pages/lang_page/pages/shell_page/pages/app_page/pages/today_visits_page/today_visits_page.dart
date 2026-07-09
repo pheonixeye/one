@@ -45,6 +45,7 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> _animation;
+  TabController? _tabController;
 
   @override
   void initState() {
@@ -65,6 +66,7 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
   @override
   void dispose() {
     _animationController.dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 
@@ -99,12 +101,21 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
 
         final _clinics = (c.result as ApiDataResult<List<Clinic>>).data;
 
+        _tabController = TabController(
+          length: _clinics.length,
+          vsync: this,
+        );
+
         return Scaffold(
           body: Column(
             children: [
               Stack(
                 children: [
-                  ClinicsTabBar(clinics: _clinics),
+                  if (_tabController != null)
+                    ClinicsTabBar(
+                      clinics: _clinics,
+                      tabController: _tabController!,
+                    ),
                   if (v.isUpdating)
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
@@ -139,46 +150,51 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                     }
                     final _items =
                         (v.visits as ApiDataResult<List<VisitExpanded>>).data;
-                    return DefaultTabController(
-                      length: _clinics.length,
-                      child: TabBarView(
-                        physics: BouncingScrollPhysics(),
-                        children: [
-                          ...(c.result as ApiDataResult<List<Clinic>>).data.map(
-                            (
-                              x,
-                            ) {
-                              final _clinicItems = _items
-                                  .where((e) => e.clinic_id == x.id)
-                                  .toList();
+                    return _tabController != null
+                        ? TabBarView(
+                            controller: _tabController,
+                            physics: BouncingScrollPhysics(),
+                            children: [
+                              ...(c.result as ApiDataResult<List<Clinic>>).data
+                                  .map(
+                                    (
+                                      x,
+                                    ) {
+                                      final _clinicVisits = _items
+                                          .where((e) => e.clinic_id == x.id)
+                                          .toList();
 
-                              while (_clinicItems.isEmpty) {
-                                return CentralNoItems(
-                                  message: context.loc.noVisitsFoundForToday,
-                                );
-                              }
+                                      while (_clinicVisits.isEmpty) {
+                                        return CentralNoItems(
+                                          message:
+                                              context.loc.noVisitsFoundForToday,
+                                        );
+                                      }
 
-                              return ListView.builder(
-                                itemCount: _clinicItems.length,
-                                cacheExtent: 3000,
-                                itemBuilder: (context, index) {
-                                  final _item = _clinicItems[index];
-                                  return ChangeNotifierProvider(
-                                    create: (context) => PxOneVisitBookkeeping(
-                                      api: BookkeepingApi(visit_id: _item.id),
-                                    ),
-                                    child: VisitViewCard(
-                                      visit: _item,
-                                      index: index,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                                      return ListView.builder(
+                                        itemCount: _clinicVisits.length,
+                                        cacheExtent: 3000,
+                                        itemBuilder: (context, index) {
+                                          final _visit = _clinicVisits[index];
+                                          return ChangeNotifierProvider(
+                                            create: (context) =>
+                                                PxOneVisitBookkeeping(
+                                                  api: BookkeepingApi(
+                                                    visit_id: _visit.id,
+                                                  ),
+                                                ),
+                                            child: VisitViewCard(
+                                              visit: _visit,
+                                              index: index,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                            ],
+                          )
+                        : const CentralLoading();
                   },
                 ),
               ),

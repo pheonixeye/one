@@ -1,3 +1,4 @@
+import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/doctor.dart';
 import 'package:one/models/visits/visit.dart';
@@ -13,6 +14,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/widgets/visit_type_picker.dart';
 import 'package:one/providers/px_add_new_visit_dialog.dart';
 import 'package:one/providers/px_doctor.dart';
+import 'package:one/providers/px_profile_items/px_pi_referrals.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/prompt_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -120,7 +122,28 @@ class AddNewVisitDialog extends StatelessWidget {
 
                   const ProgressStatusPicker(),
 
-                  const ReferralPicker(),
+                  if (context.read<PxAuth>().isUserNotDoctor &&
+                      s.doctor == null)
+                    SizedBox(
+                      height: 40,
+                      child: Text(context.loc.pickDoctor),
+                    )
+                  else
+                    ChangeNotifierProvider(
+                      key: ValueKey(
+                        context.read<PxAuth>().isUserNotDoctor
+                            ? s.doctor!.id
+                            : context.read<PxAuth>().doc_id,
+                      ),
+                      create: (context) => PxPiReferrals(
+                        api: PiReferralsApi(
+                          doc_id: context.read<PxAuth>().isUserNotDoctor
+                              ? s.doctor!.id
+                              : context.read<PxAuth>().doc_id,
+                        ),
+                      ),
+                      child: const ReferralPicker(),
+                    ),
 
                   const CommentsPicker(),
                 ],

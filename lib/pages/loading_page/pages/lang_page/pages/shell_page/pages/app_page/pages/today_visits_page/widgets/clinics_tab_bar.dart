@@ -3,35 +3,14 @@ import 'package:one/models/clinic/clinic.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:provider/provider.dart';
 
-class ClinicsTabBar extends StatefulWidget implements PreferredSizeWidget {
+class ClinicsTabBar extends StatelessWidget implements PreferredSizeWidget {
   const ClinicsTabBar({
     super.key,
     required this.clinics,
+    required this.tabController,
   });
   final List<Clinic> clinics;
-
-  @override
-  State<ClinicsTabBar> createState() => _ClinicsTabBarState();
-
-  @override
-  Size get preferredSize => Size.fromHeight(80);
-}
-
-class _ClinicsTabBarState extends State<ClinicsTabBar>
-    with SingleTickerProviderStateMixin {
-  late final TabController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TabController(length: widget.clinics.length, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +19,10 @@ class _ClinicsTabBarState extends State<ClinicsTabBar>
         return TabBar(
           physics: BouncingScrollPhysics(),
           isScrollable: true,
-          controller: _controller,
+          controller: tabController,
           tabAlignment: TabAlignment.center,
           tabs: [
-            ...widget.clinics.map((e) {
+            ...clinics.map((e) {
               return Tab(child: Text(l.isEnglish ? e.name_en : e.name_ar));
             }),
           ],
@@ -51,4 +30,7 @@ class _ClinicsTabBarState extends State<ClinicsTabBar>
       },
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(80);
 }

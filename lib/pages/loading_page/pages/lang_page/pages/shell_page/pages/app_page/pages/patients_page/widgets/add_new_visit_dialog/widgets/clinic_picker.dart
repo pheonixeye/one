@@ -30,6 +30,7 @@ class ClinicPicker extends StatelessWidget {
                     s.selectScheduleShift(null);
                     s.selectVisitDate(null);
                     s.visitDateController.clear();
+                    s.selectReferral(null);
                   },
                   child: Column(
                     spacing: 8,

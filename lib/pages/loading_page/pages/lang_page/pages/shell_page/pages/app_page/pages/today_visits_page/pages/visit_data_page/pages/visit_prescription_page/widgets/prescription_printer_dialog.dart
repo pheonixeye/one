@@ -1,3 +1,7 @@
+// import 'package:one/assets/assets.dart';
+import 'dart:async';
+
+import 'package:one/utils/g_fonts_loader.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,24 +9,24 @@ import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:one/assets/assets.dart';
+// import 'package:one/assets/assets.dart';
 import 'package:one/extensions/loc_ext.dart';
 
-final Map<String, ByteData> _fontBytesCache = {};
+// final Map<String, ByteData> _fontBytesCache = {};
 
-Future<ByteData> _getFontBytes(String key) async {
-  if (_fontBytesCache[key] == null) {
-    final _bytes = switch (key) {
-      'base' => await rootBundle.load(AppAssets.ibm_base),
-      'bold' => await rootBundle.load(AppAssets.ibm_bold),
-      _ => throw UnimplementedError(),
-    };
-    _fontBytesCache[key] = _bytes;
-    return _bytes;
-  } else {
-    return _fontBytesCache[key]!;
-  }
-}
+// Future<ByteData> _getFontBytes(String key) async {
+//   if (_fontBytesCache[key] == null) {
+//     final _bytes = switch (key) {
+//       'base' => await rootBundle.load(AppAssets.ibm_base),
+//       'bold' => await rootBundle.load(AppAssets.ibm_bold),
+//       _ => throw UnimplementedError(),
+//     };
+//     _fontBytesCache[key] = _bytes;
+//     return _bytes;
+//   } else {
+//     return _fontBytesCache[key]!;
+//   }
+// }
 
 class PrescriptionPrinterDialog extends StatefulWidget {
   const PrescriptionPrinterDialog({
@@ -43,17 +47,17 @@ class _PrescriptionPrinterDialogState extends State<PrescriptionPrinterDialog> {
 
   @override
   Widget build(BuildContext context) {
-    Future<Uint8List> _build(PdfPageFormat format) async {
+    FutureOr<Uint8List> _build(PdfPageFormat format) {
       final doc = pw.Document();
-      final _font_base = await _getFontBytes('base');
-      final _font_bold = await _getFontBytes('bold');
+      // final _font_base = await _getFontBytes('base');
+      // final _font_bold = await _getFontBytes('bold');
       doc.addPage(
         pw.Page(
           pageTheme: pw.PageTheme(
             theme: pw.ThemeData.withFont(
-              base: pw.Font.ttf(_font_base),
-              bold: pw.Font.ttf(_font_bold),
-              icons: pw.Font.ttf(_font_base),
+              base: GFontsLoader.baseFont,
+              bold: GFontsLoader.boldFont,
+              icons: pw.Font.zapfDingbats(),
             ),
             clip: true,
             margin: pw.EdgeInsets.all(0),

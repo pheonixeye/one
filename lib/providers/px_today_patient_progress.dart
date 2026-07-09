@@ -83,9 +83,9 @@ class PxTodayPatientProgress extends ChangeNotifier {
     });
   }
 
-  @override
-  void dispose() {
-    unSubscribe();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   unSubscribe();
+  //   super.dispose();
+  // }
 }
