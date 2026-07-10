@@ -4,16 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/doctor_items/doctor_lab_item.dart';
-import 'package:one/models/doctor_items/doctor_procedure_item.dart';
-import 'package:one/models/doctor_items/doctor_rad_item.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
-import 'package:one/models/doctor_items/profile_setup_item.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_clinical_notes_page/clinical_notes_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/drugs_page/drugs_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/forms_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/visit_prescription_page/visit_prescription_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/visit_single_items_page/visit_single_items_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/3_drugs_page/drugs_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/forms_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/labs_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/5_rads_page/rads_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/6_procedures_page/procedures_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/7_supplies_page/supplies_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/8_prescription_page/prescription_page.dart';
 
 class VisitDataNavItem extends Equatable {
   final String title;
@@ -54,33 +52,25 @@ class VisitDataNavItem extends Equatable {
       title: context.loc.visitLabs,
       icon: const Icon(FontAwesomeIcons.droplet),
       selectedIcon: const Icon(FontAwesomeIcons.notesMedical),
-      page: VisitSingleItemsPage<DoctorLabItem>(
-        setupItem: ProfileSetupItem.labs,
-      ),
+      page: VisitLabsPage(),
     ),
     VisitDataNavItem(
       title: context.loc.visitRads,
       icon: const Icon(FontAwesomeIcons.radiation),
       selectedIcon: const Icon(FontAwesomeIcons.laptopMedical),
-      page: VisitSingleItemsPage<DoctorRadItem>(
-        setupItem: ProfileSetupItem.rads,
-      ),
+      page: VisitRadsPage(),
     ),
     VisitDataNavItem(
       title: context.loc.visitProcedures,
       icon: const Icon(FontAwesomeIcons.userDoctor),
       selectedIcon: const Icon(FontAwesomeIcons.kitMedical),
-      page: VisitSingleItemsPage<DoctorProcedureItem>(
-        setupItem: ProfileSetupItem.procedures,
-      ),
+      page: VisitProceduresPage(),
     ),
     VisitDataNavItem(
       title: context.loc.visitSupplies,
       icon: const Icon(FontAwesomeIcons.warehouse),
       selectedIcon: const Icon(FontAwesomeIcons.handHoldingMedical),
-      page: VisitSingleItemsPage<DoctorSupplyItem>(
-        setupItem: ProfileSetupItem.supplies,
-      ),
+      page: VisitSuppliesPage(),
     ),
     VisitDataNavItem(
       title: context.loc.visitPrescription,

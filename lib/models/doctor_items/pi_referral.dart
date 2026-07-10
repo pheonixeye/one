@@ -52,4 +52,22 @@ class PiReferral extends Equatable {
 
   @override
   List<Object> get props => [id, doc_id, name_en, name_ar];
+
+  factory PiReferral.unknown() {
+    return const PiReferral(
+      id: '',
+      doc_id: '',
+      name_en: 'Unknown',
+      name_ar: 'غير معروف',
+    );
+  }
+
+  factory PiReferral.onlineBooking([String? doc_id]) {
+    return PiReferral(
+      id: '',
+      doc_id: doc_id ?? '',
+      name_en: 'Online Booking',
+      name_ar: 'حجز اونلاين',
+    );
+  }
 }

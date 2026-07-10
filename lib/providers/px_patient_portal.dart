@@ -12,7 +12,7 @@ import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
-import 'package:one/models/doctor_items/doctor_referral_item.dart';
+import 'package:one/models/doctor_items/pi_referral.dart';
 import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
@@ -304,7 +304,7 @@ class PxPatientPortal extends ChangeNotifier {
     final _ref = await api.fetchOrCreatePortalBookingsReferral(
       _selectedClinic?.doc_id.first,
     );
-    final _refData = (_ref as ApiDataResult<DoctorReferralItem>).data;
+    final _refData = (_ref as ApiDataResult<PiReferral>).data;
 
     _formulatedVisit = Visit(
       id: '',

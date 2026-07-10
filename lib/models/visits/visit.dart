@@ -5,7 +5,7 @@ import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/clinic/schedule_shift.dart';
 import 'package:one/models/doctor.dart';
-import 'package:one/models/doctor_items/doctor_referral_item.dart';
+import 'package:one/models/doctor_items/pi_referral.dart';
 import 'package:one/models/patient.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -193,7 +193,7 @@ class VisitExpanded extends Visit {
   final Clinic clinic;
   final Doctor doctor;
   final Patient patient;
-  final DoctorReferralItem referral;
+  final PiReferral referral;
 
   factory VisitExpanded.fromRecordModel(RecordModel record) {
     final map = record.data;
@@ -225,7 +225,7 @@ class VisitExpanded extends Visit {
       doctor: Doctor.fromJson(
         record.get<RecordModel>('expand.doc_id').toJson(),
       ),
-      referral: DoctorReferralItem.fromJson(
+      referral: PiReferral.fromJson(
         record.get<RecordModel>('expand.referral_id').toJson(),
       ),
     );

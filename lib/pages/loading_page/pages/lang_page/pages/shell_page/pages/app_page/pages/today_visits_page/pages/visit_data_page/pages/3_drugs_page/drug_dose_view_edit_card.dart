@@ -1,10 +1,10 @@
 import 'package:one/extensions/number_translator.dart';
+import 'package:one/models/doctor_items/pi_drug.dart';
+import 'package:one/providers/px_profile_items/px_pi_drugs.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/doctor_items/doctor_drug_item.dart';
-import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,7 @@ class DrugDoseViewEditCard extends StatefulWidget {
     required this.index,
     this.dose,
   });
-  final DoctorDrugItem item;
+  final PiDrug item;
   final int index;
   final String? dose;
 
@@ -43,6 +43,7 @@ class _DrugDoseViewEditCardState extends State<DrugDoseViewEditCard> {
   @override
   void initState() {
     super.initState();
+    _state = DrugCardState.saved_dose;
     if (widget.item.default_doses.contains(widget.dose)) {
       _drugSavedDose = widget.dose;
     } else {
@@ -52,12 +53,8 @@ class _DrugDoseViewEditCardState extends State<DrugDoseViewEditCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<
-      PxDoctorProfileItems<DoctorDrugItem>,
-      PxVisitData,
-      PxLocale
-    >(
-      builder: (context, p, v, l, _) {
+    return Consumer3<PxPiDrugs, PxVisitData, PxLocale>(
+      builder: (context, d, v, l, _) {
         return Card.outlined(
           elevation: 6,
           child: Padding(
@@ -229,8 +226,9 @@ class _DrugDoseViewEditCardState extends State<DrugDoseViewEditCard> {
                                                     _drugNewDose!,
                                                   ],
                                                 );
-                                            await p.updateItem(
-                                              _toUpdateDrug.toJson(),
+                                            await d.updateItem(
+                                              widget.item.id,
+                                              _toUpdateDrug,
                                             );
                                           },
                                         );

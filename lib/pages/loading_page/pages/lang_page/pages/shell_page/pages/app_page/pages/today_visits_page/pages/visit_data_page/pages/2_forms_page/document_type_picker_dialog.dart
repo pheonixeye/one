@@ -1,8 +1,8 @@
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/doctor_items/doctor_doument_type.dart';
-import 'package:one/providers/px_doctor_profile_items.dart';
+import 'package:one/models/doctor_items/pi_document_type.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/providers/px_profile_items/px_pi_documents.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -18,23 +18,23 @@ class DocumentTypePickerDialog extends StatefulWidget {
 }
 
 class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
-  DoctorDocumentTypeItem? _document_type;
+  PiDocumentType? _document_type;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxDoctorProfileItems<DoctorDocumentTypeItem>, PxLocale>(
+    return Consumer2<PxPiDocuments, PxLocale>(
       builder: (context, a, l, _) {
-        while (a.data == null) {
+        while (a.documentTypes == null) {
           return const CentralLoading();
         }
-        while (a.data is ApiErrorResult) {
+        while (a.documentTypes is ApiErrorResult) {
           return CentralError(
-            code: (a.data as ApiErrorResult).errorCode,
+            code: (a.documentTypes as ApiErrorResult).errorCode,
             toExecute: a.retry,
           );
         }
         final _data =
-            (a.data as ApiDataResult<List<DoctorDocumentTypeItem>>).data;
+            (a.documentTypes as ApiDataResult<List<PiDocumentType>>).data;
         return AlertDialog(
           title: Row(
             children: [
@@ -70,10 +70,10 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(context.loc.pickDocumentType),
                       ),
-                      subtitle: FormField<DoctorDocumentTypeItem?>(
+                      subtitle: FormField<PiDocumentType?>(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         builder: (field) {
-                          return RadioGroup<DoctorDocumentTypeItem>(
+                          return RadioGroup<PiDocumentType>(
                             groupValue: _document_type,
                             onChanged: (val) {
                               setState(() {
@@ -85,7 +85,7 @@ class _DocumentTypePickerDialogState extends State<DocumentTypePickerDialog> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ..._data.map((e) {
-                                  return RadioListTile<DoctorDocumentTypeItem>(
+                                  return RadioListTile<PiDocumentType>(
                                     title: Text(
                                       l.isEnglish ? e.name_en : e.name_ar,
                                     ),

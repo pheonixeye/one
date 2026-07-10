@@ -2,7 +2,7 @@ import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/bookkeeping/bookkeeping_direction.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/bookkeeping/bookkeeping_name.dart';
-import 'package:one/models/doctor_items/doctor_procedure_item.dart';
+import 'package:one/models/doctor_items/pi_procedure.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/models/visit_data/visit_data.dart';
@@ -196,7 +196,7 @@ class BookkeepingTransformer {
 
   BookkeepingItem fromVisitDataAddProcedure(
     VisitData visit_data,
-    DoctorProcedureItem procedure,
+    PiProcedure procedure,
   ) {
     final BookkeepingName _item_name = BookkeepingName.visit_procedure_add;
     final String _type = 'in';
@@ -229,7 +229,7 @@ class BookkeepingTransformer {
 
   BookkeepingItem fromVisitDataRemoveProcedure(
     VisitData visit_data,
-    DoctorProcedureItem procedure,
+    PiProcedure procedure,
   ) {
     final BookkeepingName _item_name = BookkeepingName.visit_procedure_remove;
     final String _type = 'out';

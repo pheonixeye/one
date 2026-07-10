@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  const AppTheme();
+  AppTheme(this.context);
+  final BuildContext context;
 
   static final appBarColor = Colors.blue.shade500.withValues(alpha: 0.9);
-  static final secondaryOrangeColor =
-      Colors.orange.shade500.withValues(alpha: 0.9);
+  static final secondaryOrangeColor = Colors.orange.shade500.withValues(
+    alpha: 0.9,
+  );
 
   static final fab_bg = Colors.orange.shade300;
   static final fab_fg = Colors.white;
 
-  static final _theme = ThemeData(
+  late final _theme = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
     useMaterial3: true,
     fontFamily: "IBM",
+    textTheme: GoogleFonts.ibmPlexSansArabicTextTheme(
+      Theme.of(context).textTheme,
+    ),
 
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
@@ -148,7 +154,7 @@ class AppTheme {
     ),
   );
 
-  static ThemeData get theme => _theme;
+  ThemeData get theme => _theme;
 
   static BoxDecoration searchContainerDecoration = BoxDecoration(
     border: Border.all(

@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:one/models/supplies/clinic_inventory_item.dart';
-import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/providers/px_profile_items/px_pi_supplies.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/central_no_items.dart';
 import 'package:provider/provider.dart';
@@ -61,12 +61,14 @@ class _AddNewInventoryItemDialogState extends State<AddNewInventoryItemDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PxDoctorProfileItems<DoctorSupplyItem>, PxLocale>(
+    return Consumer2<PxPiSupplies, PxLocale>(
       builder: (context, p, l, _) {
-        while (p.data == null) {
+        while (p.supplyItems == null) {
           return const CentralLoading();
         }
-        while ((p.data as ApiDataResult<List<DoctorSupplyItem>>).data.isEmpty) {
+        while ((p.supplyItems as ApiDataResult<List<PiSupplyItem>>)
+            .data
+            .isEmpty) {
           return AlertDialog(
             title: Row(
               children: [
@@ -85,7 +87,8 @@ class _AddNewInventoryItemDialogState extends State<AddNewInventoryItemDialog> {
             content: CentralNoItems(message: context.loc.noItemsFound),
           );
         }
-        final _items = (p.data as ApiDataResult<List<DoctorSupplyItem>>).data;
+        final _items =
+            (p.supplyItems as ApiDataResult<List<PiSupplyItem>>).data;
         return AlertDialog(
           title: Row(
             children: [

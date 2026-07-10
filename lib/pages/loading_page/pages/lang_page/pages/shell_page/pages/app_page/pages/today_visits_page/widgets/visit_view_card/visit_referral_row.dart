@@ -3,11 +3,11 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
-import 'package:one/models/doctor_items/doctor_referral_item.dart';
+import 'package:one/models/doctor_items/pi_referral.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_auth.dart';
-import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/providers/px_profile_items/px_pi_referrals.dart';
 import 'package:one/providers/px_visits.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:provider/provider.dart';
@@ -18,19 +18,15 @@ class VisitReferralRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<
-      PxDoctorProfileItems<DoctorReferralItem>,
-      PxVisits,
-      PxLocale
-    >(
+    return Consumer3<PxPiReferrals, PxVisits, PxLocale>(
       builder: (context, p, v, l, _) {
-        while (p.data == null) {
+        while (p.referrals == null) {
           return const SizedBox(
             height: 10,
             child: LinearProgressIndicator(),
           );
         }
-        final _refs = (p.data as ApiDataResult<List<DoctorReferralItem>>).data;
+        final _refs = (p.referrals as ApiDataResult<List<PiReferral>>).data;
 
         return Row(
           children: [

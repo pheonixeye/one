@@ -155,22 +155,22 @@ class PrescriptionDetails implements Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        'details': Map.fromEntries(
-          details.entries.map(
-            (e) => MapEntry(
-              e.key,
-              e.value.toJson(),
-            ),
-          ),
+    'details': Map.fromEntries(
+      details.entries.map(
+        (e) => MapEntry(
+          e.key,
+          e.value.toJson(),
         ),
-      };
+      ),
+    ),
+  };
 
   factory PrescriptionDetails.fromJson(Map<String, dynamic> map) {
     return PrescriptionDetails(
       details: Map.fromEntries(
         (map['details'] as Map<String, dynamic>).entries.map(
-              (e) => MapEntry(e.key, ItemDetail.fromJson(e.value)),
-            ),
+          (e) => MapEntry(e.key, ItemDetail.fromJson(e.value)),
+        ),
       ),
     );
   }
@@ -199,6 +199,6 @@ class PrescriptionDetails implements Equatable {
 
   @override
   List<Object> get props => [
-        details,
-      ];
+    details,
+  ];
 }

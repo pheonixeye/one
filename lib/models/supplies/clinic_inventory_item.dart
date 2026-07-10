@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
 
 class ClinicInventoryItem extends Equatable {
   final String id;
   final String clinic_id;
-  final DoctorSupplyItem supply_item;
+  final PiSupplyItem supply_item;
   final double available_quantity;
 
   const ClinicInventoryItem({
@@ -18,7 +18,7 @@ class ClinicInventoryItem extends Equatable {
   ClinicInventoryItem copyWith({
     String? id,
     String? clinic_id,
-    DoctorSupplyItem? supply_item,
+    PiSupplyItem? supply_item,
     double? available_quantity,
   }) {
     return ClinicInventoryItem(
@@ -42,7 +42,7 @@ class ClinicInventoryItem extends Equatable {
     return ClinicInventoryItem(
       id: map['id'] as String,
       clinic_id: map['clinic_id'] as String,
-      supply_item: DoctorSupplyItem.fromJson(
+      supply_item: PiSupplyItem.fromJson(
         map['supply_id'] as Map<String, dynamic>,
       ),
       available_quantity: map['available_quantity'] as double,
@@ -59,7 +59,7 @@ class ClinicInventoryItem extends Equatable {
     return ClinicInventoryItem(
       id: e.id,
       clinic_id: e.getStringValue('clinic_id'),
-      supply_item: DoctorSupplyItem.fromJson(
+      supply_item: PiSupplyItem.fromJson(
         e.get<RecordModel>('expand.supply_id').toJson(),
       ),
       available_quantity: e.getDoubleValue('available_quantity'),

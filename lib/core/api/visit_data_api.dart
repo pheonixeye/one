@@ -1,4 +1,5 @@
 import 'package:one/annotations/pb_annotations.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
@@ -8,7 +9,6 @@ import 'package:one/core/logic/bookkeeping_transformer.dart';
 import 'package:one/core/logic/supply_movement_transformer.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/functions/first_where_or_null.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/models/doctor_items/profile_setup_item.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
@@ -137,6 +137,130 @@ class VisitDataApi {
         );
   }
 
+  Future<void> addLabToVisitData({
+    required String visit_data_id,
+    required String lab_id,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'labs_ids+': lab_id},
+          expand: _expand,
+        );
+  }
+
+  Future<void> removeLabFromVisitData({
+    required String visit_data_id,
+    required String lab_id,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'labs_ids-': lab_id},
+          expand: _expand,
+        );
+  }
+
+  Future<void> addRadToVisitData({
+    required String visit_data_id,
+    required String rad_id,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'rads_ids+': rad_id},
+          expand: _expand,
+        );
+  }
+
+  Future<void> removeRadFromVisitData({
+    required String visit_data_id,
+    required String rad_id,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'rads_ids-': rad_id},
+          expand: _expand,
+        );
+  }
+
+  Future<void> addProcedureToVisitData({
+    required String visit_data_id,
+    required String proc_id,
+  }) async {
+    final _data_update_request = await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'procedures_ids+': proc_id},
+          expand: _expand,
+        );
+
+    final _visit_data = VisitData.fromRecordModel(_data_update_request);
+
+    final _bk_transformer = BookkeepingTransformer(
+      item_id: visit_data_id,
+      collection_id: collection,
+      added_by: added_by,
+    );
+    //todo: get added item
+    final _added_procedure = _visit_data.procedures.firstWhereOrNull(
+      (x) => x.id == proc_id,
+    );
+
+    //todo: initialize bk_item
+    if (_added_procedure != null) {
+      final _item = _bk_transformer.fromVisitDataAddProcedure(
+        _visit_data,
+        _added_procedure,
+      );
+
+      //todo: send bookkeeping request
+      await BookkeepingApi().addBookkeepingItem(_item);
+    }
+  }
+
+  Future<void> removeProcedureFromVisitData({
+    required String visit_data_id,
+    required String proc_id,
+  }) async {
+    final _data_update_request = await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'procedures_ids-': proc_id},
+          expand: _expand,
+        );
+
+    final _visit_data = VisitData.fromRecordModel(_data_update_request);
+
+    final _bk_transformer = BookkeepingTransformer(
+      item_id: _visit_data.id,
+      collection_id: collection,
+      added_by: added_by,
+    );
+    //todo: get added item
+    final _removed_procedure = _visit_data.procedures.firstWhereOrNull(
+      (x) => x.id == proc_id,
+    );
+
+    //todo: initialize bk_item
+    if (_removed_procedure != null) {
+      final _item = _bk_transformer.fromVisitDataRemoveProcedure(
+        _visit_data,
+        _removed_procedure,
+      );
+
+      //todo: send bookkeeping request
+      await BookkeepingApi().addBookkeepingItem(_item);
+    }
+  }
+
   Future<void> addToItemList(
     VisitData visit_data,
     String item_id,
@@ -230,9 +354,35 @@ class VisitDataApi {
     }
   }
 
+  Future<void> addSupplyItemToVisitData({
+    required String visit_data_id,
+    required String supply_id,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'supplies_ids+': supply_id},
+          expand: _expand,
+        );
+  }
+
+  Future<void> removeSupplyItemFromVisitData({
+    required String visit_data_id,
+    required String supply_id,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {'supplies_ids-': supply_id},
+          expand: _expand,
+        );
+  }
+
   Future<void> updateSupplyItemQuantity(
     VisitData visit_data,
-    DoctorSupplyItem item,
+    PiSupplyItem item,
     double new_quantity,
     double quantity_change,
   ) async {

@@ -2,10 +2,10 @@ import 'dart:typed_data';
 
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/extensions/datetime_ext.dart';
-import 'package:one/models/doctor_items/doctor_doument_type.dart';
+import 'package:one/models/doctor_items/pi_document_type.dart';
 import 'package:one/models/patient_document/patient_document.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/visual_sheet_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/document_type_picker_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/visual_sheet_dialog.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/floating_ax_menu_bubble.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +15,8 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/form_picker_dialog.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/form_view_edit_card.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/form_picker_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/form_view_edit_card.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/visit_details_page_info_header.dart';
 import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
@@ -197,7 +197,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                   //todo: open visual sheet dialog
                   final _data = (v.result as ApiDataResult<VisitData>).data;
                   Uint8List? _imageData;
-                  DoctorDocumentTypeItem? _documentType;
+                  PiDocumentType? _documentType;
                   _imageData = await showDialog<Uint8List?>(
                     context: context,
                     builder: (context) {
@@ -209,7 +209,7 @@ class _VisitFormsPageState extends State<VisitFormsPage>
                   }
                   if (context.mounted) {
                     //todo: select document type
-                    _documentType = await showDialog<DoctorDocumentTypeItem?>(
+                    _documentType = await showDialog<PiDocumentType?>(
                       context: context,
                       builder: (context) {
                         return DocumentTypePickerDialog();

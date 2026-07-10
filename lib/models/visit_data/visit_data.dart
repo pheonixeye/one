@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/doctor_items/pi_drug.dart';
+import 'package:one/models/doctor_items/pi_lab.dart';
+import 'package:one/models/doctor_items/pi_procedure.dart';
+import 'package:one/models/doctor_items/pi_rads.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import 'package:one/models/doctor_items/doctor_drug_item.dart';
-import 'package:one/models/doctor_items/doctor_lab_item.dart';
-import 'package:one/models/doctor_items/doctor_procedure_item.dart';
-import 'package:one/models/doctor_items/doctor_rad_item.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
@@ -15,11 +15,11 @@ class VisitData extends Equatable {
   final String clinic_id;
   final String visit_id;
   final Patient patient;
-  final List<DoctorDrugItem> drugs;
-  final List<DoctorLabItem> labs;
-  final List<DoctorRadItem> rads;
-  final List<DoctorProcedureItem> procedures;
-  final List<DoctorSupplyItem> supplies;
+  final List<PiDrug> drugs;
+  final List<PiLab> labs;
+  final List<PiRad> rads;
+  final List<PiProcedure> procedures;
+  final List<PiSupplyItem> supplies;
   final List<PkForm> forms;
   final List<VisitFormItem> forms_data;
   final Map drug_data;
@@ -46,11 +46,11 @@ class VisitData extends Equatable {
     String? clinic_id,
     String? visit_id,
     Patient? patient,
-    List<DoctorDrugItem>? drugs,
-    List<DoctorLabItem>? labs,
-    List<DoctorRadItem>? rads,
-    List<DoctorProcedureItem>? procedures,
-    List<DoctorSupplyItem>? supplies,
+    List<PiDrug>? drugs,
+    List<PiLab>? labs,
+    List<PiRad>? rads,
+    List<PiProcedure>? procedures,
+    List<PiSupplyItem>? supplies,
     List<PkForm>? forms,
     List<VisitFormItem>? forms_data,
     Map? drug_data,
@@ -97,29 +97,29 @@ class VisitData extends Equatable {
       clinic_id: map['clinic_id'] as String,
       visit_id: map['visit_id'] as String,
       patient: Patient.fromJson(map['patient_id']),
-      drugs: List<DoctorDrugItem>.from(
-        (map['drugs'] as List<dynamic>).map<DoctorDrugItem>(
-          (x) => DoctorDrugItem.fromJson(x as Map<String, dynamic>),
+      drugs: List<PiDrug>.from(
+        (map['drugs'] as List<dynamic>).map<PiDrug>(
+          (x) => PiDrug.fromJson(x as Map<String, dynamic>),
         ),
       ),
-      labs: List<DoctorLabItem>.from(
-        (map['labs'] as List<dynamic>).map<DoctorLabItem>(
-          (x) => DoctorLabItem.fromJson(x as Map<String, dynamic>),
+      labs: List<PiLab>.from(
+        (map['labs'] as List<dynamic>).map<PiLab>(
+          (x) => PiLab.fromJson(x as Map<String, dynamic>),
         ),
       ),
-      rads: List<DoctorRadItem>.from(
-        (map['rads'] as List<dynamic>).map<DoctorRadItem>(
-          (x) => DoctorRadItem.fromJson(x as Map<String, dynamic>),
+      rads: List<PiRad>.from(
+        (map['rads'] as List<dynamic>).map<PiRad>(
+          (x) => PiRad.fromJson(x as Map<String, dynamic>),
         ),
       ),
-      procedures: List<DoctorProcedureItem>.from(
-        (map['procedures'] as List<dynamic>).map<DoctorProcedureItem>(
-          (x) => DoctorProcedureItem.fromJson(x as Map<String, dynamic>),
+      procedures: List<PiProcedure>.from(
+        (map['procedures'] as List<dynamic>).map<PiProcedure>(
+          (x) => PiProcedure.fromJson(x as Map<String, dynamic>),
         ),
       ),
-      supplies: List<DoctorSupplyItem>.from(
-        (map['supplies'] as List<dynamic>).map<DoctorSupplyItem>(
-          (x) => DoctorSupplyItem.fromJson(x as Map<String, dynamic>),
+      supplies: List<PiSupplyItem>.from(
+        (map['supplies'] as List<dynamic>).map<PiSupplyItem>(
+          (x) => PiSupplyItem.fromJson(x as Map<String, dynamic>),
         ),
       ),
       forms: List<PkForm>.from(
@@ -182,23 +182,23 @@ class VisitData extends Equatable {
       ),
       drugs: e
           .get<List<RecordModel>>('expand.drugs_ids')
-          .map((x) => DoctorDrugItem.fromJson(x.toJson()))
+          .map((x) => PiDrug.fromJson(x.toJson()))
           .toList(),
       labs: e
           .get<List<RecordModel>>('expand.labs_ids')
-          .map((x) => DoctorLabItem.fromJson(x.toJson()))
+          .map((x) => PiLab.fromJson(x.toJson()))
           .toList(),
       rads: e
           .get<List<RecordModel>>('expand.rads_ids')
-          .map((x) => DoctorRadItem.fromJson(x.toJson()))
+          .map((x) => PiRad.fromJson(x.toJson()))
           .toList(),
       procedures: e
           .get<List<RecordModel>>('expand.procedures_ids')
-          .map((x) => DoctorProcedureItem.fromJson(x.toJson()))
+          .map((x) => PiProcedure.fromJson(x.toJson()))
           .toList(),
       supplies: e
           .get<List<RecordModel>>('expand.supplies_ids')
-          .map((x) => DoctorSupplyItem.fromJson(x.toJson()))
+          .map((x) => PiSupplyItem.fromJson(x.toJson()))
           .toList(),
       forms: _forms,
       forms_data: e

@@ -4,10 +4,10 @@ import 'package:one/constants/app_business_constants.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/clinic/prescription_details.dart';
-import 'package:one/models/doctor_items/doctor_doument_type.dart';
+import 'package:one/models/doctor_items/pi_document_type.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/document_type_picker_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/document_type_picker_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -23,7 +23,7 @@ import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/visit_data/visit_data.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/visit_prescription_page/widgets/prescription_printer_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/8_prescription_page/prescription_printer_dialog.dart';
 import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visit_data.dart';
@@ -534,7 +534,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                       onPressed: () async {
                                         //todo: Print
                                         Uint8List? _bytesWithImage;
-                                        DoctorDocumentTypeItem? _documentType;
+                                        PiDocumentType? _documentType;
                                         await shellFunction(
                                           context,
                                           toExecute: () async {
@@ -554,7 +554,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                               //todo: select document type
                                               _documentType =
                                                   await showDialog<
-                                                    DoctorDocumentTypeItem?
+                                                    PiDocumentType?
                                                   >(
                                                     context: context,
                                                     builder: (context) {

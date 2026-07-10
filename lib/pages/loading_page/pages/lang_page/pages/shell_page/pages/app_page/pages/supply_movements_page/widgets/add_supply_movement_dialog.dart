@@ -5,7 +5,7 @@ import 'package:one/core/api/clinic_inventory_api.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/clinic/clinic.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:one/models/supplies/clinic_inventory_item.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_dto.dart';
@@ -13,8 +13,8 @@ import 'package:one/models/supplies/supply_movement_type.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_clinic_inventory.dart';
 import 'package:one/providers/px_clinics.dart';
-import 'package:one/providers/px_doctor_profile_items.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/providers/px_profile_items/px_pi_supplies.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
   final formKey = GlobalKey<FormState>();
   late final TextEditingController _movement_amount_controller;
   late final TextEditingController _reason_controller;
-  DoctorSupplyItem? _supplyItem;
+  PiSupplyItem? _supplyItem;
   Clinic? _sourceClinic;
   Clinic? _destinationClinic;
   double? _movement_amount;
@@ -59,24 +59,20 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
   @override
   Widget build(BuildContext context) {
     //todo: Update to accomodate for adding supplies initially && inter-clinic supply transfer
-    return Consumer3<
-      PxClinics,
-      PxDoctorProfileItems<DoctorSupplyItem>,
-      PxLocale
-    >(
+    return Consumer3<PxClinics, PxPiSupplies, PxLocale>(
       builder: (context, c, s, l, _) {
-        while (c.result == null || s.data == null) {
+        while (c.result == null || s.supplyItems == null) {
           return const CentralLoading();
         }
 
-        while (s.data is ApiErrorResult) {
-          final _err = (s.data as ApiErrorResult);
+        while (s.supplyItems is ApiErrorResult) {
+          final _err = (s.supplyItems as ApiErrorResult);
           return CentralError(
             code: _err.errorCode,
             toExecute: s.retry,
           );
         }
-        final _data = (s.data as ApiDataResult<List<DoctorSupplyItem>>).data;
+        final _data = (s.supplyItems as ApiDataResult<List<PiSupplyItem>>).data;
         return AlertDialog(
           title: Row(
             children: [
@@ -120,9 +116,9 @@ class _AddSupplyMovementDialogState extends State<AddSupplyMovementDialog> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField<DoctorSupplyItem>(
+                      child: DropdownButtonFormField<PiSupplyItem>(
                         items: _data.map((e) {
-                          return DropdownMenuItem<DoctorSupplyItem>(
+                          return DropdownMenuItem<PiSupplyItem>(
                             alignment: Alignment.center,
                             value: e,
                             child: Text(

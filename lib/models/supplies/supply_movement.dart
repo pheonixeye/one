@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/models/clinic/clinic.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
 
 class SupplyMovement extends Equatable {
   final String id;
   final Clinic clinic;
-  final DoctorSupplyItem supply_item;
+  final PiSupplyItem supply_item;
   final String? visit_id;
   final String added_by;
   final String? updated_by;
@@ -40,7 +40,7 @@ class SupplyMovement extends Equatable {
   SupplyMovement copyWith({
     String? id,
     Clinic? clinic,
-    DoctorSupplyItem? supply_item,
+    PiSupplyItem? supply_item,
     String? visit_id,
     String? added_by,
     String? updated_by,
@@ -91,7 +91,7 @@ class SupplyMovement extends Equatable {
     return SupplyMovement(
       id: map['id'] as String,
       clinic: Clinic.fromJson(map['clinic'] as Map<String, dynamic>),
-      supply_item: DoctorSupplyItem.fromJson(
+      supply_item: PiSupplyItem.fromJson(
         map['supply_item'] as Map<String, dynamic>,
       ),
       visit_id: map['related_visit_id'] as String?,
@@ -134,7 +134,7 @@ class SupplyMovement extends Equatable {
     return SupplyMovement(
       id: e.id,
       clinic: Clinic.fromJson(e.get<RecordModel>('expand.clinic_id').toJson()),
-      supply_item: DoctorSupplyItem.fromJson(
+      supply_item: PiSupplyItem.fromJson(
         e.get<RecordModel>('expand.supply_item_id').toJson(),
       ),
       added_by: e.getStringValue('added_by'),

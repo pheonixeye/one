@@ -42,7 +42,7 @@ class VisitDetailsBtn extends StatelessWidget {
               return;
             }
             GoRouter.of(context).goNamed(
-              AppRouter.visit_forms,
+              AppRouter.visit_clinical_notes,
               pathParameters: defaultPathParameters(context)
                 ..addAll({'visit_id': visit.id}),
               extra: visit.patient_id,

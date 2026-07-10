@@ -9,24 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
-// import 'package:one/assets/assets.dart';
 import 'package:one/extensions/loc_ext.dart';
-
-// final Map<String, ByteData> _fontBytesCache = {};
-
-// Future<ByteData> _getFontBytes(String key) async {
-//   if (_fontBytesCache[key] == null) {
-//     final _bytes = switch (key) {
-//       'base' => await rootBundle.load(AppAssets.ibm_base),
-//       'bold' => await rootBundle.load(AppAssets.ibm_bold),
-//       _ => throw UnimplementedError(),
-//     };
-//     _fontBytesCache[key] = _bytes;
-//     return _bytes;
-//   } else {
-//     return _fontBytesCache[key]!;
-//   }
-// }
 
 class PrescriptionPrinterDialog extends StatefulWidget {
   const PrescriptionPrinterDialog({

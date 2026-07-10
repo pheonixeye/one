@@ -1,5 +1,5 @@
 import 'package:one/models/bookkeeping/bookkeeping_name.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
+import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:one/models/supplies/clinic_inventory_item.dart';
 import 'package:one/models/supplies/supply_movement.dart';
 import 'package:one/models/supplies/supply_movement_dto.dart';
@@ -55,7 +55,7 @@ class SupplyMovementTransformer {
 
   SupplyMovementDto fromSuppliesOfVisit(
     VisitData data,
-    DoctorSupplyItem item,
+    PiSupplyItem item,
     double quantity_change,
   ) {
     String? _reason;

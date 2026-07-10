@@ -7,7 +7,7 @@ import 'package:one/errors/code_to_error.dart';
 import 'package:one/models/app_constants/account_type.dart';
 import 'package:one/models/bookkeeping/bookkeeping_item.dart';
 import 'package:one/models/clinic/clinic.dart';
-import 'package:one/models/doctor_items/doctor_referral_item.dart';
+import 'package:one/models/doctor_items/pi_referral.dart';
 import 'package:one/models/organization.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
@@ -329,7 +329,7 @@ class PatientPortalApi {
   }
 
   @PbPortal()
-  Future<ApiResult<DoctorReferralItem>> fetchOrCreatePortalBookingsReferral(
+  Future<ApiResult<PiReferral>> fetchOrCreatePortalBookingsReferral(
     String? doc_id,
   ) async {
     if (doc_id == null || doc_id.isEmpty) {
@@ -343,26 +343,26 @@ class PatientPortalApi {
       final _result = await PocketbaseHelper().pbPortal
           .collection('referrals')
           .getFirstListItem(
-            "name_en = '${DoctorReferralItem.onlineBooking(doc_id).name_en}' && doc_id = '$doc_id'",
+            "name_en = '${PiReferral.onlineBooking(doc_id).name_en}' && doc_id = '$doc_id'",
           );
-      final _referral = DoctorReferralItem.fromJson(
+      final _referral = PiReferral.fromJson(
         _result.toJson(),
       );
 
-      return ApiDataResult<DoctorReferralItem>(data: _referral);
+      return ApiDataResult<PiReferral>(data: _referral);
     } catch (e) {
       try {
         final _result = await PocketbaseHelper().pbPortal
             .collection('referrals')
             .create(
-              body: DoctorReferralItem.onlineBooking(doc_id).toJson(),
+              body: PiReferral.onlineBooking(doc_id).toJson(),
             );
 
-        final _referral = DoctorReferralItem.fromJson(
+        final _referral = PiReferral.fromJson(
           _result.toJson(),
         );
 
-        return ApiDataResult<DoctorReferralItem>(data: _referral);
+        return ApiDataResult<PiReferral>(data: _referral);
       } on ClientException catch (e) {
         return ApiErrorResult(
           errorCode: AppErrorCode.clientException.code,

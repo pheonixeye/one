@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           locale: l.locale,
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
-          theme: AppTheme.theme,
+          theme: AppTheme(context).theme,
           builder: (context, child) {
             return Overlay(
               initialEntries: [OverlayEntry(builder: (context) => child!)],

@@ -28,6 +28,10 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_clinical_notes_page/clinical_notes_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/labs_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/5_rads_page/rads_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/6_procedures_page/procedures_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/7_supplies_page/supplies_page.dart';
 import 'package:one/providers/pricing_px.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
 import 'package:one/providers/px_blobs.dart';
@@ -51,10 +55,6 @@ import 'package:one/core/api/patients_api.dart';
 import 'package:one/core/api/visit_data_api.dart';
 import 'package:one/core/api/visit_filter_api.dart';
 import 'package:one/functions/dprint.dart';
-import 'package:one/models/doctor_items/doctor_lab_item.dart';
-import 'package:one/models/doctor_items/doctor_procedure_item.dart';
-import 'package:one/models/doctor_items/doctor_rad_item.dart';
-import 'package:one/models/doctor_items/doctor_supply_item.dart';
 import 'package:one/models/doctor_items/profile_setup_item.dart';
 import 'package:one/pages/loading_page/pages/error_page/error_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/lang_page.dart';
@@ -68,10 +68,9 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/forms_page/forms_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/pages/order_details_page/order_details_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/supply_movements_page/supply_movements_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/drugs_page/drugs_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/forms_page/forms_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/visit_prescription_page/visit_prescription_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/visit_single_items_page/visit_single_items_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/3_drugs_page/drugs_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/forms_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/8_prescription_page/prescription_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/visit_data_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/today_visits_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/transaction/transaction_page.dart';
@@ -379,17 +378,6 @@ class AppRouter {
                                       ),
                                     ),
                                   ),
-                                  // ChangeNotifierProvider(
-                                  //   key: state.pageKey,
-                                  //   create: (context) => PxTodayPatientProgress(
-                                  //     api: TodayPatientProgressApi(
-                                  //       doc_id: context.read<PxAuth>().doc_id,
-
-                                  //       ///TODO:
-                                  //       clinic_id: '',
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                                 child: TodayVisitsPage(
                                   key: state.pageKey,
@@ -484,12 +472,8 @@ class AppRouter {
                                             path: '/$visit_labs',
                                             name: visit_labs,
                                             builder: (context, state) {
-                                              return VisitSingleItemsPage<
-                                                DoctorLabItem
-                                              >(
+                                              return VisitLabsPage(
                                                 key: state.pageKey,
-                                                setupItem:
-                                                    ProfileSetupItem.labs,
                                               );
                                             },
                                           ),
@@ -501,12 +485,8 @@ class AppRouter {
                                             path: '/$visit_rads',
                                             name: visit_rads,
                                             builder: (context, state) {
-                                              return VisitSingleItemsPage<
-                                                DoctorRadItem
-                                              >(
+                                              return VisitRadsPage(
                                                 key: state.pageKey,
-                                                setupItem:
-                                                    ProfileSetupItem.rads,
                                               );
                                             },
                                           ),
@@ -518,12 +498,8 @@ class AppRouter {
                                             path: '/$visit_procedures',
                                             name: visit_procedures,
                                             builder: (context, state) {
-                                              return VisitSingleItemsPage<
-                                                DoctorProcedureItem
-                                              >(
+                                              return VisitProceduresPage(
                                                 key: state.pageKey,
-                                                setupItem:
-                                                    ProfileSetupItem.procedures,
                                               );
                                             },
                                           ),
@@ -535,12 +511,8 @@ class AppRouter {
                                             path: '/$visit_supplies',
                                             name: visit_supplies,
                                             builder: (context, state) {
-                                              return VisitSingleItemsPage<
-                                                DoctorSupplyItem
-                                              >(
+                                              return VisitSuppliesPage(
                                                 key: state.pageKey,
-                                                setupItem:
-                                                    ProfileSetupItem.supplies,
                                               );
                                             },
                                           ),

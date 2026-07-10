@@ -90,4 +90,8 @@ class PiDrug extends Equatable {
       default_doses,
     ];
   }
+
+  String get prescriptionNameEn => '$name_en $concentration $unit $form';
+
+  String get prescriptionNameAr => '$name_ar ($unit $concentration)  $form';
 }
