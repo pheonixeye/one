@@ -57,8 +57,8 @@ class PxBookkeeping extends ChangeNotifier {
     notifyListeners();
   }
 
-  final Map<String, double> _foldedVisitsBookkeeping = {};
-  Map<String, double> get foldedVisitsBookkeeping => _foldedVisitsBookkeeping;
+  final Map<String, num> _foldedVisitsBookkeeping = {};
+  Map<String, num> get foldedVisitsBookkeeping => _foldedVisitsBookkeeping;
 
   //todo: create another bookkeeping format
   final List<BookkeepingItem> _bookkeepingOthers = [];
@@ -81,7 +81,7 @@ class PxBookkeeping extends ChangeNotifier {
             e.patient != null &&
             e.visit_id.isNotEmpty;
         if (_foldable) {
-          double _initialAmount = 0;
+          num _initialAmount = 0;
 
           final _key =
               '${e.patient_id}::${e.visit_id}::${DateFormat('dd-MM-yyyy').format(e.visit_date!)}';

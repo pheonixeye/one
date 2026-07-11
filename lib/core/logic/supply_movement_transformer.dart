@@ -56,7 +56,7 @@ class SupplyMovementTransformer {
   SupplyMovementDto fromSuppliesOfVisit(
     VisitData data,
     PiSupplyItem item,
-    double quantity_change,
+    num quantity_change,
   ) {
     String? _reason;
     String? _movment_type;

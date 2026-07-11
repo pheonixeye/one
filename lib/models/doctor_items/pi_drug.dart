@@ -7,7 +7,7 @@ class PiDrug extends Equatable {
   final String doc_id;
   final String name_en;
   final String name_ar;
-  final double concentration;
+  final num concentration;
   final String unit;
   final String form;
   final List<String> default_doses;
@@ -29,7 +29,7 @@ class PiDrug extends Equatable {
     String? doc_id,
     String? name_en,
     String? name_ar,
-    double? concentration,
+    num? concentration,
     String? unit,
     String? form,
     List<String>? default_doses,
@@ -65,7 +65,7 @@ class PiDrug extends Equatable {
       doc_id: map['doc_id'] as String,
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
-      concentration: map['concentration'] as double,
+      concentration: map['concentration'] as num,
       unit: map['unit'] as String,
       form: map['form'] as String,
       default_doses: List<String>.from(

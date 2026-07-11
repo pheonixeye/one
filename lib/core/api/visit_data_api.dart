@@ -383,8 +383,8 @@ class VisitDataApi {
   Future<void> updateSupplyItemQuantity(
     VisitData visit_data,
     PiSupplyItem item,
-    double new_quantity,
-    double quantity_change,
+    num new_quantity,
+    num quantity_change,
   ) async {
     final _update = {
       'supplies_data': {

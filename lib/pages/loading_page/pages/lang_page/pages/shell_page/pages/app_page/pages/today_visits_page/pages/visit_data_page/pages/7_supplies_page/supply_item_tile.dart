@@ -23,8 +23,8 @@ class SupplyItemTile extends StatefulWidget {
 }
 
 class _SupplyItemTileState extends State<SupplyItemTile> {
-  double quantity = 0;
-  double delta_quantity = 0;
+  num quantity = 0;
+  num delta_quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _SupplyItemTileState extends State<SupplyItemTile> {
         final _visit_data = (v.result as ApiDataResult<VisitData>).data;
 
         final _item_visit_quantity =
-            _visit_data.supplies_data?[widget.item.id] as double? ?? 0;
+            _visit_data.supplies_data?[widget.item.id] as num? ?? 0;
 
         final _item_clinic_quantity =
             (i.result as ApiDataResult<List<ClinicInventoryItem>>).data

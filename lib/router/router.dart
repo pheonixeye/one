@@ -1,7 +1,4 @@
-import 'package:one/core/api/assistant_accounts_api.dart';
-import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/bookkeeping_api.dart';
-import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/doctor_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
 import 'package:one/core/api/profile_items_api/pi_document_types_api.dart';
@@ -13,7 +10,6 @@ import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
 import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
 import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/subscription_api.dart';
-import 'package:one/core/api/visits_api.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_document_types_page/pi_document_types_page.dart';
@@ -33,10 +29,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/6_procedures_page/procedures_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/7_supplies_page/supplies_page.dart';
 import 'package:one/providers/pricing_px.dart';
-import 'package:one/providers/px_assistant_accounts.dart';
-import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_bookkeeping.dart';
-import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_patient_portal.dart';
 import 'package:one/providers/px_profile_items/px_pi_documents.dart';
@@ -50,8 +43,6 @@ import 'package:one/providers/px_reciept_info.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:one/core/api/clinics_api.dart';
-import 'package:one/core/api/forms_api.dart';
-import 'package:one/core/api/patients_api.dart';
 import 'package:one/core/api/visit_data_api.dart';
 import 'package:one/core/api/visit_filter_api.dart';
 import 'package:one/functions/dprint.dart';
@@ -81,14 +72,11 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/shell_page.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_clinics.dart';
-import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
-import 'package:one/providers/px_patients.dart';
 import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
 import 'package:one/providers/px_visit_prescription_state.dart';
-import 'package:one/providers/px_visits.dart';
 import 'package:one/providers/scroll_px.dart';
 import 'package:one/utils/shared_prefs.dart';
 import 'package:one/utils/utils_keys.dart';
@@ -310,17 +298,9 @@ class AppRouter {
               ShellRoute(
                 builder: (context, state, child) {
                   final _org_id = context.read<PxAuth>().organization?.id;
-                  // print('Org_id From Router : $_org_id');
-                  return ChangeNotifierProvider(
-                    create: (context) => PxBlobs(
-                      api: BlobApi(
-                        doc_id: context.read<PxAuth>().doc_id,
-                      ),
-                    ),
-                    child: ShellPage(
-                      key: ValueKey('${state.pageKey.value}$_org_id'),
-                      child: child,
-                    ),
+                  return ShellPage(
+                    key: ValueKey('${state.pageKey.value}$_org_id'),
+                    child: child,
                   );
                 },
                 redirect: (context, state) async {
@@ -358,30 +338,8 @@ class AppRouter {
                             path: '/$app', // /:lang/app
                             name: app,
                             builder: (context, state) {
-                              return MultiProvider(
-                                providers: [
-                                  ChangeNotifierProvider(
-                                    key: state.pageKey,
-                                    create: (context) => PxClinics(
-                                      context: context,
-                                      api: ClinicsApi(
-                                        doc_id: context.read<PxAuth>().doc_id,
-                                      ),
-                                    ),
-                                  ),
-                                  ChangeNotifierProvider(
-                                    key: state.pageKey,
-                                    create: (context) => PxVisits(
-                                      api: VisitsApi(
-                                        added_by:
-                                            '${context.read<PxAuth>().user?.name}',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                child: TodayVisitsPage(
-                                  key: state.pageKey,
-                                ),
+                              return TodayVisitsPage(
+                                key: state.pageKey,
                               );
                             },
                             routes: [
@@ -558,14 +516,8 @@ class AppRouter {
                             path: '/$patients',
                             name: patients,
                             builder: (context, state) {
-                              return ChangeNotifierProvider(
-                                create: (context) => PxPatients(
-                                  context: context,
-                                  api: PatientsApi(),
-                                ),
-                                child: PatientsPage(
-                                  key: state.pageKey,
-                                ),
+                              return PatientsPage(
+                                key: state.pageKey,
                               );
                             },
                           ),
@@ -764,26 +716,6 @@ class AppRouter {
                                             key: state.pageKey,
                                           ),
                                         ),
-
-                                      //TODO
-                                      // _ => ChangeNotifierProvider(
-                                      //   key: ValueKey(
-                                      //     e.getByStringValue(e.route),
-                                      //   ),
-                                      //   create: (context) =>
-                                      //       PxDoctorProfileItems(
-                                      //         api: DoctorProfileItemsApi(
-                                      //           item: e,
-                                      //           doc_id: context
-                                      //               .read<PxAuth>()
-                                      //               .doc_id,
-                                      //         ),
-                                      //       ),
-                                      //   child: ProfileItemPage(
-                                      //     key: state.pageKey,
-                                      //     profileSetupItem: e,
-                                      //   ),
-                                      // ),
                                     };
                                   },
                                 );
@@ -836,16 +768,8 @@ class AppRouter {
                     path: assistants,
                     name: assistants,
                     builder: (context, state) {
-                      return ChangeNotifierProvider(
-                        create: (context) => PxAssistantAccounts(
-                          api: AssistantAccountsApi(
-                            org_id:
-                                '${context.read<PxAuth>().organization?.id}',
-                          ),
-                        ),
-                        child: AssistantsPage(
-                          key: state.pageKey,
-                        ),
+                      return AssistantsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),
@@ -853,13 +777,8 @@ class AppRouter {
                     path: contracts,
                     name: contracts,
                     builder: (context, state) {
-                      return ChangeNotifierProvider(
-                        create: (context) => PxContracts(
-                          api: ContractsApi(),
-                        ),
-                        child: ContractsPage(
-                          key: state.pageKey,
-                        ),
+                      return ContractsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),
@@ -867,18 +786,8 @@ class AppRouter {
                     path: doctors,
                     name: doctors,
                     builder: (context, state) {
-                      return ChangeNotifierProvider(
-                        create: (context) => PxDoctor(
-                          api: DoctorApi(
-                            doc_id: context.read<PxAuth>().doc_id,
-                            org_id:
-                                '${context.read<PxAuth>().organization?.id}',
-                          ),
-                          context: context,
-                        ),
-                        child: DoctorsPage(
-                          key: state.pageKey,
-                        ),
+                      return DoctorsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),
@@ -886,16 +795,8 @@ class AppRouter {
                     path: clinics,
                     name: clinics,
                     builder: (context, state) {
-                      return ChangeNotifierProvider(
-                        create: (context) => PxClinics(
-                          context: context,
-                          api: ClinicsApi(
-                            doc_id: context.read<PxAuth>().doc_id,
-                          ),
-                        ),
-                        child: ClinicsPage(
-                          key: state.pageKey,
-                        ),
+                      return ClinicsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),
@@ -903,15 +804,8 @@ class AppRouter {
                     path: forms,
                     name: forms,
                     builder: (context, state) {
-                      return ChangeNotifierProvider(
-                        create: (context) => PxForms(
-                          api: FormsApi(
-                            doc_id: context.read<PxAuth>().doc_id,
-                          ),
-                        ),
-                        child: FormsPage(
-                          key: state.pageKey,
-                        ),
+                      return FormsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),
@@ -920,24 +814,8 @@ class AppRouter {
                     path: settings,
                     name: settings,
                     builder: (context, state) {
-                      return MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider(
-                            create: (context) => PxRecieptInfo(
-                              api: RecieptInfoApi(),
-                            ),
-                          ),
-                          ChangeNotifierProvider(
-                            create: (context) => PxBlobs(
-                              api: BlobApi(
-                                doc_id: context.read<PxAuth>().doc_id,
-                              ),
-                            ),
-                          ),
-                        ],
-                        child: SettingsPage(
-                          key: state.pageKey,
-                        ),
+                      return SettingsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),
@@ -959,7 +837,6 @@ class AppRouter {
                       );
                     },
                   ),
-                  //transaction_result page
                   GoRoute(
                     path: transaction,
                     name: transaction,
@@ -971,21 +848,12 @@ class AppRouter {
                       );
                     },
                   ),
-                  //transaction_result page
                   GoRoute(
                     path: clinics_patients_movements,
                     name: clinics_patients_movements,
                     builder: (context, state) {
-                      return ChangeNotifierProvider(
-                        create: (context) => PxClinics(
-                          context: context,
-                          api: ClinicsApi(
-                            doc_id: context.read<PxAuth>().doc_id,
-                          ),
-                        ),
-                        child: ClinicsPatientsMovementsPage(
-                          key: state.pageKey,
-                        ),
+                      return ClinicsPatientsMovementsPage(
+                        key: state.pageKey,
                       );
                     },
                   ),

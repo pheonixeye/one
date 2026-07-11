@@ -167,8 +167,8 @@ class PxVisitData extends ChangeNotifier {
 
   Future<void> updateSupplyItemQuantity(
     PiSupplyItem item,
-    double new_quantity,
-    double quantity_change,
+    num new_quantity,
+    num quantity_change,
   ) async {
     await api.updateSupplyItemQuantity(
       (_result as ApiDataResult<VisitData>).data,

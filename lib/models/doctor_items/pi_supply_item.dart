@@ -9,10 +9,10 @@ class PiSupplyItem extends Equatable {
   final String name_ar;
   final String unit_en;
   final String unit_ar;
-  final double reorder_quantity;
-  final double transfer_quantity;
-  final double buying_price;
-  final double selling_price;
+  final num reorder_quantity;
+  final num transfer_quantity;
+  final num buying_price;
+  final num selling_price;
   final bool notify_on_reorder_quantity;
 
   const PiSupplyItem({
@@ -37,10 +37,10 @@ class PiSupplyItem extends Equatable {
     String? name_ar,
     String? unit_en,
     String? unit_ar,
-    double? reorder_quantity,
-    double? transfer_quantity,
-    double? buying_price,
-    double? selling_price,
+    num? reorder_quantity,
+    num? transfer_quantity,
+    num? buying_price,
+    num? selling_price,
     bool? notify_on_reorder_quantity,
   }) {
     return PiSupplyItem(
@@ -83,10 +83,10 @@ class PiSupplyItem extends Equatable {
       name_ar: map['name_ar'] as String,
       unit_en: map['unit_en'] as String,
       unit_ar: map['unit_ar'] as String,
-      reorder_quantity: map['reorder_quantity'] as double,
-      transfer_quantity: map['transfer_quantity'] as double,
-      buying_price: map['buying_price'] as double,
-      selling_price: map['selling_price'] as double,
+      reorder_quantity: map['reorder_quantity'] as num,
+      transfer_quantity: map['transfer_quantity'] as num,
+      buying_price: map['buying_price'] as num,
+      selling_price: map['selling_price'] as num,
       notify_on_reorder_quantity: map['notify_on_reorder_quantity'] as bool,
     );
   }

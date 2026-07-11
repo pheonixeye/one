@@ -51,19 +51,23 @@ class VisitPrescriptionPage extends StatelessWidget {
           >(
             builder: (context, a, v, vd, c, s, l, _) {
               while (a.constants == null ||
-                  v.visits == null ||
                   vd.result == null ||
+                  v.visits == null ||
                   c.result == null) {
                 return const CentralLoading();
               }
               final visit_data = (vd.result as ApiDataResult<VisitData>).data;
+
               final visit =
                   (v.monthlyVisits as ApiDataResult<List<VisitExpanded>>).data
                       .firstWhereOrNull((x) => x.id == visit_data.visit_id);
+
               final clinics = (c.result as ApiDataResult<List<Clinic>>).data;
+
               final clinic = clinics.firstWhereOrNull(
                 (e) => e.id == visit_data.clinic_id,
               );
+
               if (clinic == null) {
                 return CentralError(code: 1, toExecute: c.retry);
               }

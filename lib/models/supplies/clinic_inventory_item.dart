@@ -6,7 +6,7 @@ class ClinicInventoryItem extends Equatable {
   final String id;
   final String clinic_id;
   final PiSupplyItem supply_item;
-  final double available_quantity;
+  final num available_quantity;
 
   const ClinicInventoryItem({
     required this.id,
@@ -19,7 +19,7 @@ class ClinicInventoryItem extends Equatable {
     String? id,
     String? clinic_id,
     PiSupplyItem? supply_item,
-    double? available_quantity,
+    num? available_quantity,
   }) {
     return ClinicInventoryItem(
       id: id ?? this.id,
@@ -45,7 +45,7 @@ class ClinicInventoryItem extends Equatable {
       supply_item: PiSupplyItem.fromJson(
         map['supply_id'] as Map<String, dynamic>,
       ),
-      available_quantity: map['available_quantity'] as double,
+      available_quantity: map['available_quantity'] as num,
     );
   }
 
@@ -62,7 +62,7 @@ class ClinicInventoryItem extends Equatable {
       supply_item: PiSupplyItem.fromJson(
         e.get<RecordModel>('expand.supply_id').toJson(),
       ),
-      available_quantity: e.getDoubleValue('available_quantity'),
+      available_quantity: e.get<num>('available_quantity'),
     );
   }
 }

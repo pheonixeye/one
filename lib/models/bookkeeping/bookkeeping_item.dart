@@ -11,7 +11,7 @@ class BookkeepingItem extends Equatable {
   final String collection_id;
   final String added_by;
   final String updated_by;
-  final double amount;
+  final num amount;
   final BookkeepingDirection type; //in,out,none;
   final String update_reason;
   final bool auto_add;
@@ -52,7 +52,7 @@ class BookkeepingItem extends Equatable {
     String? collection_id,
     String? added_by,
     String? updated_by,
-    double? amount,
+    num? amount,
     BookkeepingDirection? type,
     String? update_reason,
     bool? auto_add,
@@ -116,7 +116,7 @@ class BookkeepingItem extends Equatable {
       collection_id: map['collection_id'] as String,
       added_by: map['added_by'] as String,
       updated_by: map['updated_by'] as String,
-      amount: map['amount'] as double,
+      amount: map['amount'] as num,
       type: BookkeepingDirection.fromString(map['type'] as String),
       update_reason: map['update_reason'] as String,
       auto_add: map['auto_add'] as bool,

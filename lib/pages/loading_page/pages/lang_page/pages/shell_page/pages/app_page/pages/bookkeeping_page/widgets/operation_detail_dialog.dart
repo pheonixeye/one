@@ -185,7 +185,7 @@ class OperationDetailDialog extends StatelessWidget {
     );
   }
 
-  Color _buildCardColor(double value) {
+  Color _buildCardColor(num value) {
     return switch (value) {
       0 => Colors.white,
       > 0 => Colors.green.shade50,

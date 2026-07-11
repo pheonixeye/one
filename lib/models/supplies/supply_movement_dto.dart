@@ -9,8 +9,8 @@ class SupplyMovementDto extends Equatable {
   final String added_by;
   final String updated_by;
   final String reason;
-  final double movement_amount;
-  final double movement_quantity;
+  final num movement_amount;
+  final num movement_quantity;
   final int number_of_updates;
   final bool auto_add;
 

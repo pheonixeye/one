@@ -28,7 +28,7 @@ class AddNewInventoryItemDialog extends StatefulWidget {
 
 class _AddNewInventoryItemDialogState extends State<AddNewInventoryItemDialog> {
   final formKey = GlobalKey<FormState>();
-  Map<String, MapEntry<String, double>>? _state;
+  Map<String, MapEntry<String, num>>? _state;
   Map<String, String>? _idKeeper;
   @override
   void initState() {
