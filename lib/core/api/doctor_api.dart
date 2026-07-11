@@ -1,5 +1,4 @@
 import 'package:one/annotations/pb_annotations.dart';
-// import 'package:one/functions/dprint.dart';
 import 'package:one/models/user/user.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
@@ -68,9 +67,6 @@ class DoctorApi {
 
       return doctor;
     }).toList();
-
-    // //TODO
-    // prettyPrint(_doctors);
 
     return _doctors;
   }

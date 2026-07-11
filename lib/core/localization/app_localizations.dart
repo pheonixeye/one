@@ -3559,6 +3559,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error Fetching Visits'**
   String get errorFetchingVisits;
+
+  /// No description provided for @noLogoFoundRecieptWillUseDefaultImage.
+  ///
+  /// In en, this message translates to:
+  /// **'No Logo Found, Reciept Will Use Default Image.'**
+  String get noLogoFoundRecieptWillUseDefaultImage;
 }
 
 class _AppLocalizationsDelegate

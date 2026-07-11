@@ -130,8 +130,7 @@ class PxAuth extends ChangeNotifier {
 
   // static String get doc_id_static_getter => _auth!.record.id;
 
-  bool get isUserNotDoctor =>
-      _user?.account_type.name_en != 'Doctor'; //TODO: remove later
+  bool get isUserNotDoctor => _user?.account_type.name_en != 'Doctor';
 
   bool isLoggedInUserSuperAdmin(BuildContext context) {
     final _appPermissions = context

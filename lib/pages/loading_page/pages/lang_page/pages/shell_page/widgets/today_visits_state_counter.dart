@@ -7,11 +7,11 @@ import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visits.dart';
 import 'package:provider/provider.dart';
 
-enum _viewState {
+enum _ViewState {
   attendance,
   progress;
 
-  _viewState toggle() {
+  _ViewState toggle() {
     return this == attendance ? progress : attendance;
   }
 }
@@ -25,7 +25,7 @@ class TodayVisitsStateCounter extends StatefulWidget {
 }
 
 class _TodayVisitsStateCounterState extends State<TodayVisitsStateCounter> {
-  _viewState _state = _viewState.progress;
+  _ViewState _state = _ViewState.progress;
   final _progressStates = <String>[
     'Has Not Attended Yet',
     'Canceled',
@@ -94,7 +94,7 @@ class _TodayVisitsStateCounterState extends State<TodayVisitsStateCounter> {
                   );
                 }
                 return switch (_state) {
-                  _viewState.attendance => Padding(
+                  _ViewState.attendance => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +128,7 @@ class _TodayVisitsStateCounterState extends State<TodayVisitsStateCounter> {
                     ),
                   ),
 
-                  _viewState.progress => Padding(
+                  _ViewState.progress => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

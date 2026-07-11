@@ -52,7 +52,6 @@ class PxFirebaseNotifications extends ChangeNotifier {
       final _notificationOverlayWidget = NotificationOverlayCard(
         key: ValueKey(_id),
         notification: InAppNotification(
-          //TODO: allow for localization
           id: _id,
           title: 'Notifications Not Permitted',
           message:

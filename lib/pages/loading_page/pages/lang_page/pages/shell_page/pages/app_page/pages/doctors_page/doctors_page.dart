@@ -91,8 +91,6 @@ class DoctorsPage extends StatelessWidget {
               if (_toProceed == null || _toProceed == false) {
                 return;
               }
-              //TODO: send email that a new doctor needs to be added
-              //TODO: show snackbar that we will contact you
               web.window.open(
                 "tel:+201555905768",
                 "Call Mobile",

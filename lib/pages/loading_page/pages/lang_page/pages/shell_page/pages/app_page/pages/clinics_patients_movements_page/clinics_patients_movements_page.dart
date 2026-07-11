@@ -72,7 +72,7 @@ class _ClinicsPatientsMovementsPageState
         }
 
         final _clinics = (c.result as ApiDataResult<List<Clinic>>).data;
-        //TODO: find a better way - remove dependency on this tabController
+
         _tabController = TabController(length: _clinics.length, vsync: this);
 
         final _clinic = _tabController != null

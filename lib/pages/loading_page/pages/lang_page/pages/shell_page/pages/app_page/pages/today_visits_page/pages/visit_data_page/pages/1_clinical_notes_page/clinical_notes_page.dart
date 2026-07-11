@@ -32,25 +32,7 @@ class VisitClinicalNotesPage extends StatelessWidget {
               }
 
               ///TODO: clinical notes empty - first visit
-              // while ((vd.result as ApiDataResult<VisitData>)
-              //     .data
-              //     .forms
-              //     .isEmpty) {
-              //   return Column(
-              //     children: [
-              //       VisitDetailsPageInfoHeader(
-              //         patient:
-              //             (v.result as ApiDataResult<VisitData>).data.patient,
-              //         title: context.loc.visitForms,
-              //         iconData: Icons.edit_document,
-              //       ),
-              //       Expanded(
-              //         child: CentralNoItems(message: context.loc.noItemsFound),
-              //       ),
-              //     ],
-              //   );
-              // }
-              // final _data = (vd.result as ApiDataResult<VisitData>).data;
+
               //TODO: craft UI
               return Column(
                 children: [

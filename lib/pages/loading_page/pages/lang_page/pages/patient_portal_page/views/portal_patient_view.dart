@@ -164,7 +164,6 @@ class PortalPatientView extends StatelessWidget {
             // book new appointment
             Consumer<PxAppConstants>(
               builder: (context, a, _) {
-                //TODO: modify to adapt to new booking logic
                 final _patient = (p.patient is ApiDataResult)
                     ? (p.patient as ApiDataResult<Patient?>?)?.data
                     : null;

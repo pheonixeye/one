@@ -53,7 +53,6 @@ class PortalBookView extends StatefulWidget {
 }
 
 class _PortalBookViewState extends State<PortalBookView> {
-  //TODO: handle portal query accordingly
   late final _patientInfoFormKey = GlobalKey<FormState>();
   late final ScrollController _controller;
 

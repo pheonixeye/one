@@ -78,7 +78,6 @@ class _PatientIdCardDialogState extends State<PatientIdCardDialog> {
                                 height: 120,
                                 child: QrImageView.withQr(
                                   qr: QrCode.fromData(
-                                    //TODO: Modify on production
                                     data: widget.patient.id,
                                     errorCorrectLevel: QrErrorCorrectLevel.Q,
                                   ),

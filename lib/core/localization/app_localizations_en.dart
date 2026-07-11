@@ -1821,4 +1821,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorFetchingVisits => 'Error Fetching Visits';
+
+  @override
+  String get noLogoFoundRecieptWillUseDefaultImage =>
+      'No Logo Found, Reciept Will Use Default Image.';
 }

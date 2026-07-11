@@ -1,5 +1,4 @@
 enum BookkeepingName {
-  //TODO: Add to app constants
   operation_unknown,
   //visit
   visit_create,

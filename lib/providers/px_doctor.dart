@@ -33,16 +33,12 @@ class PxDoctor extends ChangeNotifier {
       _allDoctors = await api.fetchAllDoctors();
       _allDoctorsAuth = await api.fetchAllDoctorsAuthAccounts();
       notifyListeners();
-      print('fired isUserNotDoctor');
-      print('${_allDoctors?.length}');
     } else {
       _allDoctors = await api.fetchAllDoctors();
       _allDoctorsAuth = await api.fetchAllDoctorsAuthAccounts();
       _doctor = await api.fetchDoctorProfile();
       _docAuth = await api.fetchDoctorAuthUser();
       notifyListeners();
-      print('fired isUserDoctor');
-      print('${_allDoctors?.length}');
     }
   }
 

@@ -1813,4 +1813,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorFetchingVisits => 'خطأ اثناء احضار الزيارات';
+
+  @override
+  String get noLogoFoundRecieptWillUseDefaultImage =>
+      'لم يتم العثور علي لوجو للعيادة - سيتم استخدام لوجو البرنامج الاساسي';
 }
