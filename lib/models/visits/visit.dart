@@ -197,6 +197,14 @@ class VisitExpanded extends Visit {
 
   factory VisitExpanded.fromRecordModel(RecordModel record) {
     final map = record.data;
+    late PiReferral _referral;
+    try {
+      _referral = PiReferral.fromJson(
+        record.get<RecordModel>('expand.referral_id').toJson(),
+      );
+    } catch (e) {
+      _referral = PiReferral.unknown();
+    }
 
     return VisitExpanded(
       id: map['id'] as String,
@@ -225,9 +233,7 @@ class VisitExpanded extends Visit {
       doctor: Doctor.fromJson(
         record.get<RecordModel>('expand.doc_id').toJson(),
       ),
-      referral: PiReferral.fromJson(
-        record.get<RecordModel>('expand.referral_id').toJson(),
-      ),
+      referral: _referral,
     );
   }
 

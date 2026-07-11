@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/visit_filter_api.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:provider/provider.dart';
 
 class PxVisitFilter extends ChangeNotifier {
   final VisitFilterApi api;
+  final BuildContext context;
 
-  PxVisitFilter({required this.api}) {
+  late final _auth = Provider.of<PxAuth>(context);
+
+  PxVisitFilter({required this.api, required this.context}) {
     _fetchConcisedVisitsOfDateRange();
   }
 
@@ -34,14 +39,27 @@ class PxVisitFilter extends ChangeNotifier {
       DateFormat('yyyy-MM-dd', 'en').format(to.copyWith(day: to.day + 1));
 
   Future<void> _fetchConcisedVisitsOfDateRange() async {
-    _concisedVisits = await api.fetctVisitsOfDateRange(
+    final _result = await api.fetctVisitsOfDateRange(
       from: formattedFrom,
       to: formattedTo,
     );
+    //filter visits according to doctor / super-user / user
+    if (context.mounted &&
+        (_auth.isLoggedInUserSuperAdmin(context) || _auth.isUserNotDoctor)) {
+      //super-admin and user can see all visits
+      _concisedVisits = _result;
+    } else {
+      //doctor can see his visits only
+      final _data =
+          (_concisedVisits as ApiDataResult<List<VisitExpanded>>).data;
+      final _filteredByDoctor = _data
+          .where((e) => e.doc_id == _auth.doc_id)
+          .toList();
+      _concisedVisits = ApiDataResult(data: _filteredByDoctor);
+    }
     _filteredConcisedVisits.clear();
     notifyListeners();
     filterVisits(_filter, _filterId);
-    // notifyListeners();
   }
 
   Future<void> retry() async => await _fetchConcisedVisitsOfDateRange();

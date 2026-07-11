@@ -6,9 +6,7 @@ import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/doctor_items/pi_document_type.dart';
 import 'package:one/models/patient_document/patient_document.dart';
-import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/document_type_picker_dialog.dart';
-import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:one/widgets/snackbar_.dart';
@@ -19,16 +17,12 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/model_url_ext.dart';
-import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/clinic/clinic.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/8_prescription_page/prescription_printer_dialog.dart';
-import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_prescription_state.dart';
-import 'package:one/providers/px_visits.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
@@ -40,787 +34,745 @@ class VisitPrescriptionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //TODO: restructure into smaller widgets
     return Scaffold(
-      body:
-          Consumer6<
-            PxAppConstants,
-            PxVisits,
-            PxVisitData,
-            PxClinics,
-            PxVisitPrescriptionState,
-            PxLocale
-          >(
-            builder: (context, a, v, vd, c, s, l, _) {
-              while (a.constants == null ||
-                  vd.result == null ||
-                  v.visits == null ||
-                  c.result == null) {
-                return const CentralLoading();
-              }
-              final visit_data = (vd.result as ApiDataResult<VisitData>).data;
+      body: Consumer3<PxVisitData, PxVisitPrescriptionState, PxLocale>(
+        builder: (context, vd, s, l, _) {
+          while (vd.result == null) {
+            return const CentralLoading();
+          }
+          final visit_data = (vd.result as ApiDataResult<VisitData>).data;
 
-              final visit =
-                  (v.monthlyVisits as ApiDataResult<List<VisitExpanded>>).data
-                      .firstWhereOrNull((x) => x.id == visit_data.visit_id);
+          final visit = visit_data.visit;
 
-              final clinics = (c.result as ApiDataResult<List<Clinic>>).data;
+          final doctor = visit_data.doctor;
 
-              final clinic = clinics.firstWhereOrNull(
-                (e) => e.id == visit_data.clinic_id,
-              );
+          final clinic = visit_data.clinic;
 
-              if (clinic == null) {
-                return CentralError(code: 1, toExecute: c.retry);
-              }
-              return Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 420,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Screenshot(
-                          controller: s.screenshotControllerWithImage,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              image: clinic.prescriptionFileUrl().isEmpty
-                                  ? null
-                                  : DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                        clinic.prescriptionFileUrl(),
-                                      ),
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                            ),
-                            child: Screenshot(
-                              controller: s.screenshotControllerWithoutImage,
-                              child: Stack(
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                alignment: Alignment.center,
-                                fit: StackFit.expand,
-                                children: [
-                                  //todo: put items
-                                  ...PrescriptionDetails.initial().details.entries.map((
-                                    x,
-                                  ) {
-                                    return Visibility(
-                                      visible:
-                                          s.view == PrescriptionView.regular
-                                          ? s.visitPrescriptionVisibility[x
-                                                .key]!
-                                          : true,
-                                      child: Directionality(
-                                        textDirection: TextDirection.ltr,
-                                        child: Positioned(
-                                          left:
-                                              s
-                                                  .visitPrescriptionItemsOffset[x
-                                                      .key]
-                                                  ?.dx ??
-                                              x.value.x_coord,
-                                          top:
-                                              s
-                                                  .visitPrescriptionItemsOffset[x
-                                                      .key]
-                                                  ?.dy ??
-                                              x.value.y_coord,
-                                          child: GestureDetector(
-                                            behavior: HitTestBehavior.opaque,
-                                            onPanUpdate: (details) {
-                                              double _updatedX =
-                                                  s
-                                                      .visitPrescriptionItemsOffset[x
-                                                          .key]!
-                                                      .dx +
-                                                  details.delta.dx;
-                                              double _updatedY =
-                                                  s
-                                                      .visitPrescriptionItemsOffset[x
-                                                          .key]!
-                                                      .dy +
-                                                  details.delta.dy;
-                                              s.updateItemOffset(
-                                                x.key,
-                                                Offset(
-                                                  _updatedX,
-                                                  _updatedY,
-                                                ),
-                                              );
-                                            },
-                                            onDoubleTap: () {
-                                              s.increaseItemFontSize(x.key);
-                                            },
-
-                                            onLongPress: () {
-                                              s.decreaseItemFontSize(x.key);
-                                            },
-
-                                            child: switch (x.key) {
-                                              'patient_name' => SizedBox(
-                                                child: Text(
-                                                  visit_data.patient.name,
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        s.visitPrescriptionItemsFontSize[x
-                                                            .key],
-                                                  ),
-                                                ),
-                                              ),
-                                              'visit_date' => SizedBox(
-                                                child: Text(
-                                                  intl.DateFormat(
-                                                    'dd / MM / yyyy',
-                                                    l.lang,
-                                                  ).format(visit!.visit_date),
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        s.visitPrescriptionItemsFontSize[x
-                                                            .key],
-                                                  ),
-                                                ),
-                                              ),
-                                              'visit_type' => SizedBox(
-                                                child: Text(
-                                                  ' * ${VisitTypeEnum.visitType(
-                                                    visit!.visit_type,
-                                                    l.isEnglish,
-                                                  )}',
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        s.visitPrescriptionItemsFontSize[x
-                                                            .key],
-                                                  ),
-                                                ),
-                                              ),
-                                              _ => SizedBox(),
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                  if (s.view == PrescriptionView.regular)
-                                    ...PrescriptionDetails.initial().details.entries.map((
-                                      x,
-                                    ) {
-                                      return Visibility(
-                                        visible:
-                                            s.visitPrescriptionVisibility[x
-                                                .key] ??
-                                            true,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Positioned(
-                                            left:
-                                                s
-                                                    .visitPrescriptionItemsOffset[x
-                                                        .key]
-                                                    ?.dx ??
-                                                x.value.x_coord,
-                                            top:
-                                                s
-                                                    .visitPrescriptionItemsOffset[x
-                                                        .key]
-                                                    ?.dy ??
-                                                x.value.y_coord,
-                                            child: GestureDetector(
-                                              behavior: HitTestBehavior.opaque,
-                                              onPanUpdate: (details) {
-                                                double _updatedX =
-                                                    s
-                                                        .visitPrescriptionItemsOffset[x
-                                                            .key]!
-                                                        .dx +
-                                                    details.delta.dx;
-                                                double _updatedY =
-                                                    s
-                                                        .visitPrescriptionItemsOffset[x
-                                                            .key]!
-                                                        .dy +
-                                                    details.delta.dy;
-                                                s.updateItemOffset(
-                                                  x.key,
-                                                  Offset(_updatedX, _updatedY),
-                                                );
-                                              },
-                                              onDoubleTap: () {
-                                                s.increaseItemFontSize(x.key);
-                                              },
-
-                                              onLongPress: () {
-                                                s.decreaseItemFontSize(x.key);
-                                              },
-
-                                              child: switch (x.key) {
-                                                'visit_labs' => SizedBox(
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      text:
-                                                          'التحاليل المطلوبة\n',
-                                                      children: [
-                                                        ...visit_data.labs.map((
-                                                          e,
-                                                        ) {
-                                                          return TextSpan(
-                                                            text:
-                                                                ' * '
-                                                                '${e.name_en}\n',
-                                                            children: [
-                                                              if (e
-                                                                  .special_instructions
-                                                                  .isNotEmpty)
-                                                                TextSpan(
-                                                                  text:
-                                                                      '(${e.special_instructions})\n',
-                                                                ),
-                                                            ],
-                                                          );
-                                                        }),
-                                                      ],
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          s.visitPrescriptionItemsFontSize[x
-                                                              .key],
-                                                    ),
-                                                  ),
-                                                ),
-                                                'visit_rads' => SizedBox(
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      text:
-                                                          'الاشاعات المطلوبة\n',
-                                                      children: [
-                                                        ...visit_data.rads.map((
-                                                          e,
-                                                        ) {
-                                                          return TextSpan(
-                                                            text:
-                                                                ' * '
-                                                                '${e.name_en}\n',
-                                                            children: [
-                                                              if (e
-                                                                  .special_instructions
-                                                                  .isNotEmpty)
-                                                                TextSpan(
-                                                                  text:
-                                                                      '(${e.special_instructions})\n',
-                                                                ),
-                                                            ],
-                                                          );
-                                                        }),
-                                                      ],
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          s.visitPrescriptionItemsFontSize[x
-                                                              .key],
-                                                    ),
-                                                  ),
-                                                ),
-                                                'visit_procedures' => SizedBox(
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      text: 'اجراءات الزيارة\n',
-                                                      children: [
-                                                        ...visit_data.procedures
-                                                            .map((e) {
-                                                              return TextSpan(
-                                                                text:
-                                                                    ' * '
-                                                                    '${e.name_en}\n',
-                                                              );
-                                                            }),
-                                                      ],
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          s.visitPrescriptionItemsFontSize[x
-                                                              .key],
-                                                    ),
-                                                  ),
-                                                ),
-                                                'doctor_name' => SizedBox(
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      text: '',
-                                                      children: [
-                                                        TextSpan(
-                                                          text: l.isEnglish
-                                                              ? visit
-                                                                    ?.doctor
-                                                                    .name_en
-                                                              : visit
-                                                                    ?.doctor
-                                                                    .name_ar,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          s.visitPrescriptionItemsFontSize[x
-                                                              .key],
-                                                    ),
-                                                  ),
-                                                ),
-                                                'visit_drugs' => SizedBox(
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      text: '',
-                                                      children: [
-                                                        ...visit_data.drugs.map((
-                                                          e,
-                                                        ) {
-                                                          return TextSpan(
-                                                            locale:
-                                                                const Locale(
-                                                                  'en',
-                                                                ),
-                                                            text: '',
-                                                            children: [
-                                                              TextSpan(
-                                                                text: '\n',
-                                                              ),
-                                                              TextSpan(
-                                                                text: 'Rx  ',
-                                                                style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                ),
-                                                              ),
-                                                              TextSpan(
-                                                                text: e
-                                                                    .prescriptionNameEn,
-                                                              ),
-                                                              TextSpan(
-                                                                text: '\n',
-                                                              ),
-                                                              TextSpan(
-                                                                text:
-                                                                    '${visit_data.drug_data[e.id]}',
-                                                              ),
-                                                            ],
-                                                          );
-                                                        }),
-                                                      ],
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          s.visitPrescriptionItemsFontSize[x
-                                                              .key],
-                                                    ),
-                                                  ),
-                                                ),
-                                                _ => Text(''),
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  if (s.view == PrescriptionView.forms &&
-                                      s.formItems != null)
-                                    GestureDetector(
-                                      onScaleUpdate: (details) {
-                                        s.updateFormItemsScale(
-                                          details.verticalScale,
-                                          details.horizontalScale,
-                                        );
-                                        s.updateFormItemsOffset(
-                                          details.localFocalPoint,
-                                        );
-                                      },
-                                      child: Transform.scale(
-                                        scaleX: s.formItemsHorizontalScale,
-                                        scaleY: s.formItemsVerticalScale,
-                                        origin: s.formItemsOffset,
-                                        child: SizedBox(
-                                          width:
-                                              s.formItemsHorizontalScale * 10,
-                                          height: s.formItemsVerticalScale * 10,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                s.formItemsCrossAxisAlignment,
-                                            children: [
-                                              ...s.formItems!.map((f) {
-                                                //todo: Adjust large paragraphs to fit the prescription image
-                                                return Text.rich(
-                                                  TextSpan(
-                                                    text:
-                                                        '${f.field_name} : \n',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: f.field_value,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  textAlign:
-                                                      s.formItemsTextAlign,
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 75,
-                        width: MediaQuery.sizeOf(context).width,
-                        child: Card.outlined(
-                          elevation: 6,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0,
+          if (clinic == null) {
+            return CentralError(
+              code: 1,
+              toExecute: vd.retry,
+            );
+          }
+          return Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 420,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Screenshot(
+                      controller: s.screenshotControllerWithImage,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          image: clinic.prescriptionFileUrl().isEmpty
+                              ? null
+                              : DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    clinic.prescriptionFileUrl(),
                                   ),
-                                  child: SmBtn(
-                                    tooltip: context.loc.toggleFormsView,
-                                    onPressed: () {
-                                      //todo: Toggle View
-                                      s.toggleView();
-                                    },
-                                    child: const Icon(Icons.unfold_more_sharp),
-                                  ),
+                                  fit: BoxFit.fitWidth,
                                 ),
-                                if (s.view == PrescriptionView.forms) ...[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                    ),
-                                    child: SmBtn(
-                                      onPressed: () {
-                                        s.toggleAxisAlignment();
-                                      },
-                                      child: const Icon(
-                                        Icons.align_horizontal_center_rounded,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                    ),
-                                    child: SmBtn(
-                                      onPressed: () {
-                                        s.toggleTextAlignment();
-                                      },
-                                      child: const Icon(
-                                        Icons.text_rotation_none_rounded,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                Builder(
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                      ),
-                                      child: SmBtn(
-                                        tooltip: context.loc.save,
-                                        onPressed: () async {
-                                          //todo: Print
-                                          Uint8List? _bytesWithImage;
-                                          PiDocumentType? _documentType;
-                                          await shellFunction(
-                                            context,
-                                            toExecute: () async {
-                                              _bytesWithImage = await s
-                                                  .screenshotControllerWithImage
-                                                  .capture();
-                                              //todo: Add to patient documents collection
-                                              if (_bytesWithImage == null) {
-                                                if (context.mounted) {
-                                                  showIsnackbar(
-                                                    context.loc.error,
-                                                  );
-                                                  return;
-                                                }
-                                              }
-                                              if (context.mounted) {
-                                                //todo: select document type
-                                                _documentType =
-                                                    await showDialog<
-                                                      PiDocumentType?
-                                                    >(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return DocumentTypePickerDialog();
-                                                      },
-                                                    );
-                                              }
-                                              if (_documentType == null) {
-                                                return;
-                                              }
-
-                                              final _patientDocument =
-                                                  PatientDocument(
-                                                    id: '',
-                                                    patient_id:
-                                                        visit!.patient_id,
-                                                    related_visit_id: visit.id,
-                                                    related_visit_data_id:
-                                                        visit_data.id,
-                                                    document_type_id:
-                                                        _documentType!.id,
-                                                    document_url: '',
-                                                    created:
-                                                        DateTime.now().unTimed,
-                                                  );
-                                              if (context.mounted) {
-                                                await context
-                                                    .read<
-                                                      PxS3PatientDocuments
-                                                    >()
-                                                    .addPatientDocument(
-                                                      document:
-                                                          _patientDocument,
-                                                      payload: _bytesWithImage,
-                                                      objectName:
-                                                          '${visit.patient_id}/${_documentType?.name_en}/${intl.DateFormat(AppBusinessConstants.DOCUMENT_NAME_FORMAT, 'en').format(DateTime.now())}.jpg',
-                                                    );
-                                              }
-                                            },
-                                            duration: const Duration(
-                                              milliseconds: 500,
+                        ),
+                        child: Screenshot(
+                          controller: s.screenshotControllerWithoutImage,
+                          child: Stack(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            alignment: Alignment.center,
+                            fit: StackFit.expand,
+                            children: [
+                              //todo: put items
+                              ...PrescriptionDetails.initial().details.entries.map((
+                                x,
+                              ) {
+                                return Visibility(
+                                  visible: s.view == PrescriptionView.regular
+                                      ? s.visitPrescriptionVisibility[x.key]!
+                                      : true,
+                                  child: Directionality(
+                                    textDirection: TextDirection.ltr,
+                                    child: Positioned(
+                                      left:
+                                          s
+                                              .visitPrescriptionItemsOffset[x
+                                                  .key]
+                                              ?.dx ??
+                                          x.value.x_coord,
+                                      top:
+                                          s
+                                              .visitPrescriptionItemsOffset[x
+                                                  .key]
+                                              ?.dy ??
+                                          x.value.y_coord,
+                                      child: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onPanUpdate: (details) {
+                                          double _updatedX =
+                                              s
+                                                  .visitPrescriptionItemsOffset[x
+                                                      .key]!
+                                                  .dx +
+                                              details.delta.dx;
+                                          double _updatedY =
+                                              s
+                                                  .visitPrescriptionItemsOffset[x
+                                                      .key]!
+                                                  .dy +
+                                              details.delta.dy;
+                                          s.updateItemOffset(
+                                            x.key,
+                                            Offset(
+                                              _updatedX,
+                                              _updatedY,
                                             ),
                                           );
                                         },
-                                        child: const Icon(Icons.save),
+                                        onDoubleTap: () {
+                                          s.increaseItemFontSize(x.key);
+                                        },
+
+                                        onLongPress: () {
+                                          s.decreaseItemFontSize(x.key);
+                                        },
+
+                                        child: switch (x.key) {
+                                          'patient_name' => SizedBox(
+                                            child: Text(
+                                              visit_data.patient.name,
+                                              style: TextStyle(
+                                                fontSize:
+                                                    s.visitPrescriptionItemsFontSize[x
+                                                        .key],
+                                              ),
+                                            ),
+                                          ),
+                                          'visit_date' => SizedBox(
+                                            child: Text(
+                                              intl.DateFormat(
+                                                'dd / MM / yyyy',
+                                                l.lang,
+                                              ).format(visit!.visit_date),
+                                              style: TextStyle(
+                                                fontSize:
+                                                    s.visitPrescriptionItemsFontSize[x
+                                                        .key],
+                                              ),
+                                            ),
+                                          ),
+                                          'visit_type' => SizedBox(
+                                            child: Text(
+                                              ' * ${VisitTypeEnum.visitType(
+                                                visit!.visit_type,
+                                                l.isEnglish,
+                                              )}',
+                                              style: TextStyle(
+                                                fontSize:
+                                                    s.visitPrescriptionItemsFontSize[x
+                                                        .key],
+                                              ),
+                                            ),
+                                          ),
+                                          _ => SizedBox(),
+                                        },
                                       ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                              if (s.view == PrescriptionView.regular)
+                                ...PrescriptionDetails.initial().details.entries.map((
+                                  x,
+                                ) {
+                                  return Visibility(
+                                    visible:
+                                        s.visitPrescriptionVisibility[x.key] ??
+                                        true,
+                                    child: Directionality(
+                                      textDirection: TextDirection.ltr,
+                                      child: Positioned(
+                                        left:
+                                            s
+                                                .visitPrescriptionItemsOffset[x
+                                                    .key]
+                                                ?.dx ??
+                                            x.value.x_coord,
+                                        top:
+                                            s
+                                                .visitPrescriptionItemsOffset[x
+                                                    .key]
+                                                ?.dy ??
+                                            x.value.y_coord,
+                                        child: GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onPanUpdate: (details) {
+                                            double _updatedX =
+                                                s
+                                                    .visitPrescriptionItemsOffset[x
+                                                        .key]!
+                                                    .dx +
+                                                details.delta.dx;
+                                            double _updatedY =
+                                                s
+                                                    .visitPrescriptionItemsOffset[x
+                                                        .key]!
+                                                    .dy +
+                                                details.delta.dy;
+                                            s.updateItemOffset(
+                                              x.key,
+                                              Offset(_updatedX, _updatedY),
+                                            );
+                                          },
+                                          onDoubleTap: () {
+                                            s.increaseItemFontSize(x.key);
+                                          },
+
+                                          onLongPress: () {
+                                            s.decreaseItemFontSize(x.key);
+                                          },
+
+                                          child: switch (x.key) {
+                                            'visit_labs' => SizedBox(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text: 'التحاليل المطلوبة\n',
+                                                  children: [
+                                                    ...visit_data.labs.map((
+                                                      e,
+                                                    ) {
+                                                      return TextSpan(
+                                                        text:
+                                                            ' * '
+                                                            '${e.name_en}\n',
+                                                        children: [
+                                                          if (e
+                                                              .special_instructions
+                                                              .isNotEmpty)
+                                                            TextSpan(
+                                                              text:
+                                                                  '(${e.special_instructions})\n',
+                                                            ),
+                                                        ],
+                                                      );
+                                                    }),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      s.visitPrescriptionItemsFontSize[x
+                                                          .key],
+                                                ),
+                                              ),
+                                            ),
+                                            'visit_rads' => SizedBox(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text: 'الاشاعات المطلوبة\n',
+                                                  children: [
+                                                    ...visit_data.rads.map((
+                                                      e,
+                                                    ) {
+                                                      return TextSpan(
+                                                        text:
+                                                            ' * '
+                                                            '${e.name_en}\n',
+                                                        children: [
+                                                          if (e
+                                                              .special_instructions
+                                                              .isNotEmpty)
+                                                            TextSpan(
+                                                              text:
+                                                                  '(${e.special_instructions})\n',
+                                                            ),
+                                                        ],
+                                                      );
+                                                    }),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      s.visitPrescriptionItemsFontSize[x
+                                                          .key],
+                                                ),
+                                              ),
+                                            ),
+                                            'visit_procedures' => SizedBox(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text: 'اجراءات الزيارة\n',
+                                                  children: [
+                                                    ...visit_data.procedures.map(
+                                                      (e) {
+                                                        return TextSpan(
+                                                          text:
+                                                              ' * '
+                                                              '${e.name_en}\n',
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      s.visitPrescriptionItemsFontSize[x
+                                                          .key],
+                                                ),
+                                              ),
+                                            ),
+                                            'doctor_name' => SizedBox(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text: '',
+                                                  children: [
+                                                    TextSpan(
+                                                      text: l.isEnglish
+                                                          ? doctor?.name_en
+                                                          : doctor?.name_ar,
+                                                    ),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      s.visitPrescriptionItemsFontSize[x
+                                                          .key],
+                                                ),
+                                              ),
+                                            ),
+                                            'visit_drugs' => SizedBox(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text: '',
+                                                  children: [
+                                                    ...visit_data.drugs.map((
+                                                      e,
+                                                    ) {
+                                                      return TextSpan(
+                                                        locale: const Locale(
+                                                          'en',
+                                                        ),
+                                                        text: '',
+                                                        children: [
+                                                          TextSpan(
+                                                            text: '\n',
+                                                          ),
+                                                          TextSpan(
+                                                            text: 'Rx  ',
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
+                                                          ),
+                                                          TextSpan(
+                                                            text: e
+                                                                .prescriptionNameEn,
+                                                          ),
+                                                          TextSpan(
+                                                            text: '\n',
+                                                          ),
+                                                          TextSpan(
+                                                            text:
+                                                                '${visit_data.drug_data[e.id]}',
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }),
+                                                  ],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      s.visitPrescriptionItemsFontSize[x
+                                                          .key],
+                                                ),
+                                              ),
+                                            ),
+                                            _ => Text(''),
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              if (s.view == PrescriptionView.forms &&
+                                  s.formItems != null)
+                                GestureDetector(
+                                  onScaleUpdate: (details) {
+                                    s.updateFormItemsScale(
+                                      details.verticalScale,
+                                      details.horizontalScale,
+                                    );
+                                    s.updateFormItemsOffset(
+                                      details.localFocalPoint,
                                     );
                                   },
+                                  child: Transform.scale(
+                                    scaleX: s.formItemsHorizontalScale,
+                                    scaleY: s.formItemsVerticalScale,
+                                    origin: s.formItemsOffset,
+                                    child: SizedBox(
+                                      width: s.formItemsHorizontalScale * 10,
+                                      height: s.formItemsVerticalScale * 10,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            s.formItemsCrossAxisAlignment,
+                                        children: [
+                                          ...s.formItems!.map((f) {
+                                            //todo: Adjust large paragraphs to fit the prescription image
+                                            return Text.rich(
+                                              TextSpan(
+                                                text: '${f.field_name} : \n',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: f.field_value,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              textAlign: s.formItemsTextAlign,
+                                            );
+                                          }),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                Padding(
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 75,
+                    width: MediaQuery.sizeOf(context).width,
+                    child: Card.outlined(
+                      elevation: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: SmBtn(
+                                tooltip: context.loc.toggleFormsView,
+                                onPressed: () {
+                                  //todo: Toggle View
+                                  s.toggleView();
+                                },
+                                child: const Icon(Icons.unfold_more_sharp),
+                              ),
+                            ),
+                            if (s.view == PrescriptionView.forms) ...[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                ),
+                                child: SmBtn(
+                                  onPressed: () {
+                                    s.toggleAxisAlignment();
+                                  },
+                                  child: const Icon(
+                                    Icons.align_horizontal_center_rounded,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                ),
+                                child: SmBtn(
+                                  onPressed: () {
+                                    s.toggleTextAlignment();
+                                  },
+                                  child: const Icon(
+                                    Icons.text_rotation_none_rounded,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            Builder(
+                              builder: (context) {
+                                return Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0,
                                   ),
                                   child: SmBtn(
-                                    tooltip: context.loc.printPrescription,
+                                    tooltip: context.loc.save,
                                     onPressed: () async {
                                       //todo: Print
                                       Uint8List? _bytesWithImage;
-                                      Uint8List? _bytesWithoutImage;
+                                      PiDocumentType? _documentType;
                                       await shellFunction(
                                         context,
                                         toExecute: () async {
                                           _bytesWithImage = await s
                                               .screenshotControllerWithImage
                                               .capture();
-                                          _bytesWithoutImage = await s
-                                              .screenshotControllerWithoutImage
-                                              .capture();
+                                          //todo: Add to patient documents collection
+                                          if (_bytesWithImage == null) {
+                                            if (context.mounted) {
+                                              showIsnackbar(
+                                                context.loc.error,
+                                              );
+                                              return;
+                                            }
+                                          }
+                                          if (context.mounted) {
+                                            //todo: select document type
+                                            _documentType =
+                                                await showDialog<
+                                                  PiDocumentType?
+                                                >(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return DocumentTypePickerDialog();
+                                                  },
+                                                );
+                                          }
+                                          if (_documentType == null) {
+                                            return;
+                                          }
+
+                                          final _patientDocument =
+                                              PatientDocument(
+                                                id: '',
+                                                patient_id: visit!.patient_id,
+                                                related_visit_id: visit.id,
+                                                related_visit_data_id:
+                                                    visit_data.id,
+                                                document_type_id:
+                                                    _documentType!.id,
+                                                document_url: '',
+                                                created: DateTime.now().unTimed,
+                                              );
+                                          if (context.mounted) {
+                                            await context
+                                                .read<PxS3PatientDocuments>()
+                                                .addPatientDocument(
+                                                  document: _patientDocument,
+                                                  payload: _bytesWithImage,
+                                                  objectName:
+                                                      '${visit.patient_id}/${_documentType?.name_en}/${intl.DateFormat(AppBusinessConstants.DOCUMENT_NAME_FORMAT, 'en').format(DateTime.now())}.jpg',
+                                                );
+                                          }
                                         },
                                         duration: const Duration(
                                           milliseconds: 500,
                                         ),
                                       );
-                                      if (_bytesWithoutImage != null &&
-                                          _bytesWithImage != null &&
-                                          context.mounted) {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return PrescriptionPrinterDialog(
-                                              dataBytes: _bytesWithoutImage!,
-                                              imageBytes: _bytesWithImage!,
-                                            );
-                                          },
-                                        );
-                                      }
                                     },
-                                    child: const Icon(Icons.print),
+                                    child: const Icon(Icons.save),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        children: switch (s.view) {
-                                          PrescriptionView.regular => [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8.0,
-                                                    vertical: 5,
-                                                  ),
-                                              child: MenuAnchor(
-                                                builder:
-                                                    (
-                                                      context,
-                                                      controller,
-                                                      child,
-                                                    ) {
-                                                      return SmBtn(
-                                                        onPressed: () {
-                                                          if (controller
-                                                              .isOpen) {
-                                                            controller.close();
-                                                          } else {
-                                                            controller.open();
-                                                          }
-                                                        },
-                                                        tooltip: context
-                                                            .loc
-                                                            .prescriptionItemsVisibility,
-                                                        child: const Icon(
-                                                          Icons.remove_red_eye,
-                                                        ),
-                                                      );
-                                                    },
-                                                menuChildren: [
-                                                  ...PrescriptionDetails.initial()
-                                                      .details
-                                                      .entries
-                                                      .map((e) {
-                                                        final _title =
-                                                            l.isEnglish
-                                                            ? e.value.name_en
-                                                            : e.value.name_ar;
-
-                                                        return MenuItemButton(
-                                                          // enabled: false,
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              FilterChip(
-                                                                selected:
-                                                                    s.visitPrescriptionVisibility[e
-                                                                        .key]!,
-                                                                label: Text(
-                                                                  _title,
-                                                                ),
-                                                                onSelected: (val) {
-                                                                  s.toggleVisibility(
-                                                                    e.key,
-                                                                  );
-                                                                },
-                                                              ),
-                                                              const Spacer(),
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  s.resetItemOffset(
-                                                                    e.key,
-                                                                  );
-                                                                },
-                                                                icon: const Icon(
-                                                                  Icons.refresh,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      }),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-
-                                          PrescriptionView.forms => [
-                                            ...visit_data.forms.map((f) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 8.0,
-                                                    ),
-                                                child: FilterChip.elevated(
-                                                  label: Text(f.name_en),
-                                                  selectedColor:
-                                                      Colors.amber.shade200,
-                                                  selected:
-                                                      f.id ==
-                                                      s.selectedForm?.id,
-                                                  onSelected: (value) {
-                                                    if (value) {
-                                                      s.selectFormItems(
-                                                        visit_data.forms_data
-                                                            .firstWhere(
-                                                              (x) =>
-                                                                  x.form_id ==
-                                                                  f.id,
-                                                            )
-                                                            .form_data,
-                                                        f,
-                                                      );
-                                                    } else {
-                                                      s.selectFormItems(
-                                                        null,
-                                                        null,
-                                                      );
-                                                    }
-                                                  },
-                                                ),
-                                              );
-                                            }),
-                                          ],
-                                        },
-                                      ),
-                                      if (context.isMobile)
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Icon(Icons.arrow_left),
-                                            const Icon(Icons.arrow_right),
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                );
+                              },
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: SmBtn(
+                                tooltip: context.loc.printPrescription,
+                                onPressed: () async {
+                                  //todo: Print
+                                  Uint8List? _bytesWithImage;
+                                  Uint8List? _bytesWithoutImage;
+                                  await shellFunction(
+                                    context,
+                                    toExecute: () async {
+                                      _bytesWithImage = await s
+                                          .screenshotControllerWithImage
+                                          .capture();
+                                      _bytesWithoutImage = await s
+                                          .screenshotControllerWithoutImage
+                                          .capture();
+                                    },
+                                    duration: const Duration(
+                                      milliseconds: 500,
+                                    ),
+                                  );
+                                  if (_bytesWithoutImage != null &&
+                                      _bytesWithImage != null &&
+                                      context.mounted) {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return PrescriptionPrinterDialog(
+                                          dataBytes: _bytesWithoutImage!,
+                                          imageBytes: _bytesWithImage!,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                child: const Icon(Icons.print),
+                              ),
+                            ),
+                            Expanded(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: switch (s.view) {
+                                      PrescriptionView.regular => [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                            vertical: 5,
+                                          ),
+                                          child: MenuAnchor(
+                                            builder:
+                                                (
+                                                  context,
+                                                  controller,
+                                                  child,
+                                                ) {
+                                                  return SmBtn(
+                                                    onPressed: () {
+                                                      if (controller.isOpen) {
+                                                        controller.close();
+                                                      } else {
+                                                        controller.open();
+                                                      }
+                                                    },
+                                                    tooltip: context
+                                                        .loc
+                                                        .prescriptionItemsVisibility,
+                                                    child: const Icon(
+                                                      Icons.remove_red_eye,
+                                                    ),
+                                                  );
+                                                },
+                                            menuChildren: [
+                                              ...PrescriptionDetails.initial()
+                                                  .details
+                                                  .entries
+                                                  .map((e) {
+                                                    final _title = l.isEnglish
+                                                        ? e.value.name_en
+                                                        : e.value.name_ar;
+
+                                                    return MenuItemButton(
+                                                      // enabled: false,
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          FilterChip(
+                                                            selected:
+                                                                s.visitPrescriptionVisibility[e
+                                                                    .key]!,
+                                                            label: Text(
+                                                              _title,
+                                                            ),
+                                                            onSelected: (val) {
+                                                              s.toggleVisibility(
+                                                                e.key,
+                                                              );
+                                                            },
+                                                          ),
+                                                          const Spacer(),
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              s.resetItemOffset(
+                                                                e.key,
+                                                              );
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.refresh,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+
+                                      PrescriptionView.forms => [
+                                        ...visit_data.forms.map((f) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0,
+                                            ),
+                                            child: FilterChip.elevated(
+                                              label: Text(f.name_en),
+                                              selectedColor:
+                                                  Colors.amber.shade200,
+                                              selected:
+                                                  f.id == s.selectedForm?.id,
+                                              onSelected: (value) {
+                                                if (value) {
+                                                  s.selectFormItems(
+                                                    visit_data.forms_data
+                                                        .firstWhere(
+                                                          (x) =>
+                                                              x.form_id == f.id,
+                                                        )
+                                                        .form_data,
+                                                    f,
+                                                  );
+                                                } else {
+                                                  s.selectFormItems(
+                                                    null,
+                                                    null,
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          );
+                                        }),
+                                      ],
+                                    },
+                                  ),
+                                  if (context.isMobile)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Icon(Icons.arrow_left),
+                                        const Icon(Icons.arrow_right),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

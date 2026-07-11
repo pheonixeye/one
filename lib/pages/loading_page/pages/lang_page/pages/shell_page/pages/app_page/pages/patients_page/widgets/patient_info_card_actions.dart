@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/clinics_api.dart';
 import 'package:one/core/api/fcm_notifications_api.dart';
-import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/patient_forms_api.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
@@ -29,7 +28,6 @@ import 'package:one/providers/px_add_new_visit_dialog.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_clinics.dart';
-import 'package:one/providers/px_forms.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_forms.dart';
 import 'package:one/providers/px_patient_previous_visits.dart';
@@ -264,24 +262,13 @@ class PatientInfoCardActions extends StatelessWidget {
               await showDialog(
                 context: context,
                 builder: (context) {
-                  return MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider(
-                        create: (context) => PxForms(
-                          api: FormsApi(
-                            doc_id: context.read<PxAuth>().doc_id,
-                          ),
-                        ),
+                  return ChangeNotifierProvider(
+                    create: (context) => PxPatientForms(
+                      api: PatientFormsApi(
+                        patient_id: patient.id,
+                        doc_id: context.read<PxAuth>().doc_id,
                       ),
-                      ChangeNotifierProvider(
-                        create: (context) => PxPatientForms(
-                          api: PatientFormsApi(
-                            patient_id: patient.id,
-                            doc_id: context.read<PxAuth>().doc_id,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                     child: PatientFormsDialog(),
                   );
                 },

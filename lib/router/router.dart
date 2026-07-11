@@ -1,14 +1,4 @@
-import 'package:one/core/api/bookkeeping_api.dart';
-import 'package:one/core/api/doctor_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
-import 'package:one/core/api/profile_items_api/pi_document_types_api.dart';
-import 'package:one/core/api/profile_items_api/pi_drugs_api.dart';
-import 'package:one/core/api/profile_items_api/pi_labs_api.dart';
-import 'package:one/core/api/profile_items_api/pi_procedures_api.dart';
-import 'package:one/core/api/profile_items_api/pi_rads_api.dart';
-import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
-import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
-import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/subscription_api.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
@@ -29,20 +19,9 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/6_procedures_page/procedures_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/7_supplies_page/supplies_page.dart';
 import 'package:one/providers/pricing_px.dart';
-import 'package:one/providers/px_bookkeeping.dart';
-import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_patient_portal.dart';
-import 'package:one/providers/px_profile_items/px_pi_documents.dart';
-import 'package:one/providers/px_profile_items/px_pi_drugs.dart';
-import 'package:one/providers/px_profile_items/px_pi_labs.dart';
-import 'package:one/providers/px_profile_items/px_pi_procedures.dart';
-import 'package:one/providers/px_profile_items/px_pi_rads.dart';
-import 'package:one/providers/px_profile_items/px_pi_referrals.dart';
-import 'package:one/providers/px_profile_items/px_pi_supplies.dart';
-import 'package:one/providers/px_reciept_info.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:one/core/api/clinics_api.dart';
 import 'package:one/core/api/visit_data_api.dart';
 import 'package:one/core/api/visit_filter_api.dart';
 import 'package:one/functions/dprint.dart';
@@ -71,7 +50,6 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/my_subscription_page/my_subscription_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/shell_page.dart';
 import 'package:one/providers/px_auth.dart';
-import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_visit_data.dart';
@@ -483,21 +461,14 @@ class AppRouter {
                                                 '/$visit_prescription', //:visit_id/visit_prescription
                                             name: visit_prescription,
                                             builder: (context, state) {
-                                              try {
-                                                return MultiProvider(
-                                                  providers: [
-                                                    ChangeNotifierProvider(
-                                                      create: (context) =>
-                                                          PxVisitPrescriptionState(),
-                                                    ),
-                                                  ],
-                                                  child: VisitPrescriptionPage(
-                                                    key: state.pageKey,
-                                                  ),
-                                                );
-                                              } catch (e) {
-                                                rethrow;
-                                              }
+                                              return ChangeNotifierProvider(
+                                                create: (context) =>
+                                                    PxVisitPrescriptionState(),
+
+                                                child: VisitPrescriptionPage(
+                                                  key: state.pageKey,
+                                                ),
+                                              );
                                             },
                                           ),
                                         ],
@@ -532,31 +503,9 @@ class AppRouter {
                               return MultiProvider(
                                 providers: [
                                   ChangeNotifierProvider(
-                                    create: (context) => PxDoctor(
-                                      context: context,
-                                      api: DoctorApi(
-                                        doc_id: context.read<PxAuth>().doc_id,
-                                        org_id:
-                                            '${context.read<PxAuth>().organization?.id}',
-                                      ),
-                                    ),
-                                  ),
-                                  ChangeNotifierProvider(
-                                    create: (context) => PxClinics(
-                                      context: context,
-                                      api: ClinicsApi(
-                                        doc_id: context.read<PxAuth>().doc_id,
-                                      ),
-                                    ),
-                                  ),
-                                  ChangeNotifierProvider(
                                     create: (context) => PxVisitFilter(
+                                      context: context,
                                       api: VisitFilterApi(),
-                                    ),
-                                  ),
-                                  ChangeNotifierProvider(
-                                    create: (context) => PxRecieptInfo(
-                                      api: RecieptInfoApi(),
                                     ),
                                   ),
                                 ],
@@ -574,13 +523,8 @@ class AppRouter {
                             path: '/$bookkeeping',
                             name: bookkeeping,
                             builder: (context, state) {
-                              return ChangeNotifierProvider(
-                                create: (context) => PxBookkeeping(
-                                  api: BookkeepingApi(),
-                                ),
-                                child: BookkeepingPage(
-                                  key: state.pageKey,
-                                ),
+                              return BookkeepingPage(
+                                key: state.pageKey,
                               );
                             },
                           ),
@@ -603,118 +547,31 @@ class AppRouter {
                                   name: e.route,
                                   builder: (context, state) {
                                     return switch (e) {
-                                      ProfileSetupItem.drugs =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiDrugs(
-                                            api: PiDrugsApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiDrugsPage(
-                                            key: state.pageKey,
-                                          ),
-                                        ),
+                                      ProfileSetupItem.drugs => PiDrugsPage(
+                                        key: state.pageKey,
+                                      ),
 
-                                      ProfileSetupItem.labs =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiLabs(
-                                            api: PiLabsApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiLabsPage(
-                                            key: state.pageKey,
-                                          ),
-                                        ),
-                                      ProfileSetupItem.rads =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiRads(
-                                            api: PiRadsApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiRadsPage(
-                                            key: state.pageKey,
-                                          ),
-                                        ),
+                                      ProfileSetupItem.labs => PiLabsPage(
+                                        key: state.pageKey,
+                                      ),
+                                      ProfileSetupItem.rads => PiRadsPage(
+                                        key: state.pageKey,
+                                      ),
                                       ProfileSetupItem.procedures =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiProcedures(
-                                            api: PiProceduresApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiProceduresPage(
-                                            key: state.pageKey,
-                                          ),
+                                        PiProceduresPage(
+                                          key: state.pageKey,
                                         ),
                                       ProfileSetupItem.supplies =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiSupplies(
-                                            api: PiSupplyItemsApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiSupplyItemsPage(
-                                            key: state.pageKey,
-                                          ),
+                                        PiSupplyItemsPage(
+                                          key: state.pageKey,
                                         ),
                                       ProfileSetupItem.documents =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiDocuments(
-                                            api: PiDocumentTypesApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiDocumentTypesPage(
-                                            key: state.pageKey,
-                                          ),
+                                        PiDocumentTypesPage(
+                                          key: state.pageKey,
                                         ),
                                       ProfileSetupItem.referrals =>
-                                        ChangeNotifierProvider(
-                                          key: ValueKey(
-                                            e.getByStringValue(e.route),
-                                          ),
-                                          create: (context) => PxPiReferrals(
-                                            api: PiReferralsApi(
-                                              doc_id: context
-                                                  .read<PxAuth>()
-                                                  .doc_id,
-                                            ),
-                                          ),
-                                          child: PiReferralsPage(
-                                            key: state.pageKey,
-                                          ),
+                                        PiReferralsPage(
+                                          key: state.pageKey,
                                         ),
                                     };
                                   },

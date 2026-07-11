@@ -1,8 +1,11 @@
+import 'package:go_router/go_router.dart';
+import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/router/router.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -48,11 +51,18 @@ class PreviousVisitViewCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (showPatientName)
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 50.0),
-                      child: Row(
+                ],
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsetsDirectional.only(start: 50.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    if (showPatientName) ...[
+                      Row(
                         spacing: 8,
+
                         children: [
                           Text(
                             l.isEnglish ? 'Patient Name:' : 'اسم المريض:',
@@ -63,11 +73,10 @@ class PreviousVisitViewCard extends StatelessWidget {
                           Text(item.patient.name),
                         ],
                       ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 50.0),
-                    child: Row(
+                    ],
+                    Row(
                       spacing: 8,
+
                       children: [
                         Text(
                           l.isEnglish ? 'Doctor:' : 'دكتور:',
@@ -80,8 +89,14 @@ class PreviousVisitViewCard extends StatelessWidget {
                               ? item.doctor.name_en
                               : item.doctor.name_ar,
                         ),
+                      ],
+                    ),
+                    Row(
+                      spacing: 8,
+
+                      children: [
                         Text(
-                          l.isEnglish ? 'CLinic:' : 'عيادة:',
+                          l.isEnglish ? 'Clinic:' : 'عيادة:',
                           style: TextStyle(
                             decoration: TextDecoration.underline,
                           ),
@@ -93,35 +108,57 @@ class PreviousVisitViewCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 50.0),
-                child: Row(
-                  spacing: 8,
-                  children: [
-                    Text(
-                      l.isEnglish ? 'Visit:' : 'نوع الزيارة:',
-                      style: TextStyle(decoration: TextDecoration.underline),
+                    Row(
+                      spacing: 8,
+
+                      children: [
+                        Text(
+                          l.isEnglish ? 'Visit:' : 'نوع الزيارة:',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        Text(
+                          VisitTypeEnum.visitType(
+                            item.visit_type,
+                            l.isEnglish,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      VisitTypeEnum.visitType(
-                        item.visit_type,
-                        l.isEnglish,
-                      ),
+                    Row(
+                      spacing: 8,
+                      children: [
+                        Text(
+                          l.isEnglish ? 'Attendance:' : 'الحضور:',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+
+                        if (item.visit_status ==
+                            context.read<PxAppConstants>().attended.name_en)
+                          const Icon(Icons.check, color: Colors.green)
+                        else
+                          const Icon(Icons.close, color: Colors.red),
+                      ],
                     ),
-                    Text(
-                      l.isEnglish ? 'Attendance:' : 'الحضور:',
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
-                    if (item.visit_status ==
-                        context.read<PxAppConstants>().attended.name_en)
-                      const Icon(Icons.check, color: Colors.green)
-                    else
-                      const Icon(Icons.close, color: Colors.red),
                   ],
                 ),
+              ),
+              trailing: SmBtn(
+                tooltip: context.loc.openVisit,
+                child: const Icon(Icons.arrow_forward),
+                onPressed: () {
+                  GoRouter.of(context).goNamed(
+                    AppRouter.visit_clinical_notes,
+                    pathParameters: {
+                      ...defaultPathParameters(context),
+                      'visit_id': item.id,
+                    },
+                  );
+                  Navigator.pop(context);
+                },
               ),
             ),
           ),

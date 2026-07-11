@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class RecieptInfo extends Equatable {
+  //TODO: add doc_id
   final String id;
   final String title;
   final String subtitle;

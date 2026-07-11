@@ -10,6 +10,7 @@ import 'package:one/core/api/profile_items_api/pi_procedures_api.dart';
 import 'package:one/core/api/profile_items_api/pi_rads_api.dart';
 import 'package:one/core/api/profile_items_api/pi_referrals_api.dart';
 import 'package:one/core/api/profile_items_api/pi_supply_items_api.dart';
+import 'package:one/core/api/reciept_info_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/core/api/specialities_api.dart';
 import 'package:one/providers/px_assistant_accounts.dart';
@@ -24,6 +25,7 @@ import 'package:one/providers/px_profile_items/px_pi_procedures.dart';
 import 'package:one/providers/px_profile_items/px_pi_rads.dart';
 import 'package:one/providers/px_profile_items/px_pi_referrals.dart';
 import 'package:one/providers/px_profile_items/px_pi_supplies.dart';
+import 'package:one/providers/px_reciept_info.dart';
 import 'package:one/providers/px_s3_documents.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_speciality.dart';
@@ -223,6 +225,12 @@ final List<SingleChildWidget> providers = [
       api: SupplyMovementApi(
         added_by: '${context.read<PxAuth>().user?.name}',
       ),
+    ),
+  ),
+
+  ChangeNotifierProvider(
+    create: (context) => PxRecieptInfo(
+      api: RecieptInfoApi(),
     ),
   ),
 

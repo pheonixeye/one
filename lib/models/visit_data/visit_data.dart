@@ -1,11 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:one/models/clinic/clinic.dart';
+import 'package:one/models/doctor.dart';
+import 'package:one/models/visits/visit.dart';
+import 'package:pocketbase/pocketbase.dart';
+
 import 'package:one/models/doctor_items/pi_drug.dart';
 import 'package:one/models/doctor_items/pi_lab.dart';
 import 'package:one/models/doctor_items/pi_procedure.dart';
 import 'package:one/models/doctor_items/pi_rads.dart';
 import 'package:one/models/doctor_items/pi_supply_item.dart';
-import 'package:pocketbase/pocketbase.dart';
-
 import 'package:one/models/patient.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
@@ -24,6 +27,9 @@ class VisitData extends Equatable {
   final List<VisitFormItem> forms_data;
   final Map drug_data;
   final Map<String, dynamic>? supplies_data;
+  final Doctor? doctor;
+  final Visit? visit;
+  final Clinic? clinic;
 
   const VisitData({
     required this.id,
@@ -39,6 +45,9 @@ class VisitData extends Equatable {
     required this.forms_data,
     required this.drug_data,
     required this.supplies_data,
+    this.doctor,
+    this.visit,
+    this.clinic,
   });
 
   VisitData copyWith({
@@ -55,6 +64,9 @@ class VisitData extends Equatable {
     List<VisitFormItem>? forms_data,
     Map? drug_data,
     Map<String, dynamic>? supplies_data,
+    Doctor? doctor,
+    Visit? visit,
+    Clinic? clinic,
   }) {
     return VisitData(
       id: id ?? this.id,
@@ -70,6 +82,9 @@ class VisitData extends Equatable {
       forms_data: forms_data ?? this.forms_data,
       drug_data: drug_data ?? this.drug_data,
       supplies_data: supplies_data ?? this.supplies_data,
+      doctor: doctor ?? this.doctor,
+      visit: visit ?? this.visit,
+      clinic: clinic ?? this.clinic,
     );
   }
 
@@ -132,6 +147,9 @@ class VisitData extends Equatable {
           .toList(),
       drug_data: Map.from((map['drug_data'] as Map)),
       supplies_data: map['supplies_data'] as Map<String, dynamic>?,
+      doctor: Doctor.fromJson(map['doctor'] as Map<String, dynamic>),
+      visit: Visit.fromJson(map['visit'] as Map<String, dynamic>),
+      clinic: Clinic.fromJson(map['clinic'] as Map<String, dynamic>),
     );
   }
 
@@ -207,6 +225,15 @@ class VisitData extends Equatable {
           .toList(),
       drug_data: e.data['drug_data'],
       supplies_data: e.data['supplies_data'] ?? {},
+      doctor: Doctor.fromJson(
+        e.get<RecordModel>('expand.doc_id').toJson(),
+      ),
+      visit: Visit.fromJson(
+        e.get<RecordModel>('expand.visit_id').toJson(),
+      ),
+      clinic: Clinic.fromJson(
+        e.get<RecordModel>('expand.clinic_id').toJson(),
+      ),
     );
   }
 }

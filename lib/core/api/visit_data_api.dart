@@ -28,7 +28,7 @@ class VisitDataApi {
   late final String forms_data_collection = 'visit__formdata';
 
   final String _expand =
-      'patient_id, labs_ids, rads_ids, procedures_ids, drugs_ids, supplies_ids, forms_data_ids, forms_data_ids.form_id, forms_data_ids.form_id.fields';
+      'patient_id, labs_ids, rads_ids, procedures_ids, drugs_ids, supplies_ids, forms_data_ids, forms_data_ids.form_id, forms_data_ids.form_id.fields, visit_id, doc_id, clinic_id';
 
   Future<ApiResult<VisitData>> fetchVisitData() async {
     try {
