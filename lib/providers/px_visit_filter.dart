@@ -11,8 +11,6 @@ class PxVisitFilter extends ChangeNotifier {
   final VisitFilterApi api;
   final BuildContext context;
 
-  late final _auth = Provider.of<PxAuth>(context);
-
   PxVisitFilter({required this.api, required this.context}) {
     _fetchConcisedVisitsOfDateRange();
   }
@@ -39,6 +37,8 @@ class PxVisitFilter extends ChangeNotifier {
       DateFormat('yyyy-MM-dd', 'en').format(to.copyWith(day: to.day + 1));
 
   Future<void> _fetchConcisedVisitsOfDateRange() async {
+    final _auth = context.read<PxAuth>();
+
     final _result = await api.fetctVisitsOfDateRange(
       from: formattedFrom,
       to: formattedTo,

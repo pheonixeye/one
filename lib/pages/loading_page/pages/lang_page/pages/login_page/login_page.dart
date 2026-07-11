@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:one/assets/assets.dart';
+import 'package:one/constants/app_business_constants.dart';
 import 'package:one/core/api/auth/api_auth.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/extensions/is_mobile_context.dart';
@@ -93,10 +94,24 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                       );
                                     },
-                                    child: const Text(
-                                      String.fromEnvironment(
-                                        'APPLICATION_NAME',
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: const String.fromEnvironment(
+                                          'APPLICATION_NAME',
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: '\n',
+                                            style: TextStyle(fontSize: 8),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                'v${AppBusinessConstants.APP_VERSION}',
+                                            style: TextStyle(fontSize: 8),
+                                          ),
+                                        ],
                                       ),
+                                      textAlign: TextAlign.start,
                                       style: TextStyle(
                                         fontSize: 32,
                                         fontWeight: FontWeight.bold,

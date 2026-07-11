@@ -1818,4 +1818,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get prescriptionItemsVisibility => 'Prescription Items Visibility';
+
+  @override
+  String get errorFetchingVisits => 'Error Fetching Visits';
 }

@@ -1810,4 +1810,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get prescriptionItemsVisibility => 'اخفاء / اظهار عناصر الروشتة';
+
+  @override
+  String get errorFetchingVisits => 'خطأ اثناء احضار الزيارات';
 }

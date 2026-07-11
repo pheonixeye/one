@@ -1,14 +1,13 @@
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/models/blob_file.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/clinic_calls_btn/clinic_calls_btn.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/today_visits_state_counter.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_blobs.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:one/assets/assets.dart';
 import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/providers/px_locale.dart';
-import 'package:one/router/router.dart';
 import 'package:provider/provider.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
@@ -23,95 +22,92 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context, l, _) {
         return AppBar(
           automaticallyImplyLeading: false,
-          title: InkWell(
-            mouseCursor: context.isMobile ? null : SystemMouseCursors.click,
-            onTap: context.isMobile
-                ? null
-                : () {
-                    GoRouter.of(context).go("/${l.lang}/${AppRouter.app}");
-                  },
-            child: Row(
-              children: [
-                SizedBox(width: context.isMobile ? 10 : 50),
-                Consumer<PxBlobs>(
-                  builder: (context, b, _) {
-                    while (b.result == null) {
-                      return const SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    while (b.files[BlobNames.app_logo.toString()] == null ||
-                        b.files[BlobNames.app_logo.toString()]!.isEmpty) {
+          title: Row(
+            children: [
+              SizedBox(width: context.isMobile ? 10 : 50),
+              Consumer<PxBlobs>(
+                builder: (context, b, _) {
+                  while (b.result == null) {
+                    return const SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  while (b.files[BlobNames.app_logo.toString()] == null ||
+                      b.files[BlobNames.app_logo.toString()]!.isEmpty) {
+                    return Image.asset(
+                      AppAssets.icon,
+                      width: 40,
+                      height: 40,
+                    );
+                  }
+                  return Image.memory(
+                    b.files[BlobNames.app_logo.toString()]!,
+                    width: 40,
+                    height: 40,
+                    errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
                         AppAssets.icon,
                         width: 40,
                         height: 40,
                       );
-                    }
-                    return Image.memory(
-                      b.files[BlobNames.app_logo.toString()]!,
-                      width: 40,
-                      height: 40,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          AppAssets.icon,
-                          width: 40,
-                          height: 40,
-                        );
-                      },
+                    },
+                  );
+                },
+              ),
+              const SizedBox(width: 20),
+              const Text.rich(
+                TextSpan(
+                  text: String.fromEnvironment('APPLICATION_NAME'),
+                  children: [
+                    TextSpan(text: '\n', style: TextStyle(fontSize: 8)),
+                    TextSpan(
+                      text: 'v${AppBusinessConstants.APP_VERSION}',
+                      style: TextStyle(fontSize: 8),
+                    ),
+                  ],
+                ),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (!context.isMobile) const Spacer(),
+              Consumer<PxAuth>(
+                builder: (context, auth, _) {
+                  while (auth.organization == null) {
+                    return const SizedBox(
+                      height: 8,
+                      width: 80,
+                      child: LinearProgressIndicator(),
                     );
-                  },
-                ),
-                const SizedBox(width: 20),
-                const Text.rich(
-                  TextSpan(
-                    text: String.fromEnvironment('APPLICATION_NAME'),
-                    children: [
-                      TextSpan(text: '\n', style: TextStyle(fontSize: 8)),
-                      TextSpan(
-                        text: 'v${AppBusinessConstants.APP_VERSION}',
-                        style: TextStyle(fontSize: 8),
+                  }
+                  if (context.isMobile) {
+                    return SizedBox();
+                  } else {
+                    return Text(
+                      '${l.isEnglish ? auth.organization?.name_en : auth.organization?.name_ar}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
                       ),
-                    ],
-                  ),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (!context.isMobile) const Spacer(),
-                Consumer<PxAuth>(
-                  builder: (context, auth, _) {
-                    while (auth.organization == null) {
-                      return const SizedBox(
-                        height: 8,
-                        width: 80,
-                        child: LinearProgressIndicator(),
-                      );
-                    }
-                    if (context.isMobile) {
-                      return SizedBox();
-                    } else {
-                      return Text(
-                        '${l.isEnglish ? auth.organization?.name_en : auth.organization?.name_ar}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      );
-                    }
-                  },
-                ),
+                    );
+                  }
+                },
+              ),
+              if (!context.isMobile) ...[
                 const Spacer(),
-
-                //todo: clinic calls
-                const ClinicCallsBtn(),
-                const SizedBox(width: 10),
+                //today visits count and state
+                const TodayVisitsStateCounter(),
               ],
-            ),
+              const Spacer(),
+
+              //todo: clinic calls
+              const ClinicCallsBtn(),
+              const SizedBox(width: 10),
+            ],
           ),
           actions: context.isMobile
               ? [

@@ -3553,6 +3553,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prescription Items Visibility'**
   String get prescriptionItemsVisibility;
+
+  /// No description provided for @errorFetchingVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'Error Fetching Visits'**
+  String get errorFetchingVisits;
 }
 
 class _AppLocalizationsDelegate
