@@ -619,5 +619,6 @@
     "bookingDetails" : "Booking Details",
     "noBookingYet" : "No Booking Yet",
     "shareBookingLink" : "Share Booking Link",
-    "clinicalNotes" : "Clinical Notes"
+    "clinicalNotes" : "Clinical Notes",
+    "prescriptionItemsVisibility" : "Prescription Items Visibility"
 }

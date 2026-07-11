@@ -1807,4 +1807,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clinicalNotes => 'الملاحظات الاكلينيكية';
+
+  @override
+  String get prescriptionItemsVisibility => 'اخفاء / اظهار عناصر الروشتة';
 }

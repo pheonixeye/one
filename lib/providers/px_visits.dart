@@ -125,7 +125,7 @@ class PxVisits extends ChangeNotifier {
     await _fetchVisitsOfToday();
   }
 
-  ApiResult<List<VisitExpanded>>? _monthlyVisits;
+  static ApiResult<List<VisitExpanded>>? _monthlyVisits;
   ApiResult<List<VisitExpanded>>? get monthlyVisits => _monthlyVisits;
 
   DateTime _nowMonth = DateTime.now().copyWith(day: 1);

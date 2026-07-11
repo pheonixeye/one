@@ -70,10 +70,25 @@ class PxVisitPrescriptionState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleVisibilityByValue(String key, bool value) {
+    _visitPrescriptionVisibility[key] = value;
+    notifyListeners();
+  }
+
   void updateItemOffset(String key, Offset offset) {
     _visitPrescriptionItemsOffset[key] = offset;
     notifyListeners();
     _offsetsSessionCache[key] = offset;
+  }
+
+  void resetItemOffset(String key) {
+    final _itemDetail = PrescriptionDetails.initial().details[key];
+    if (_itemDetail != null) {
+      final _offset = Offset(_itemDetail.x_coord, _itemDetail.y_coord);
+      _visitPrescriptionItemsOffset[key] = _offset;
+      notifyListeners();
+      _offsetsSessionCache[key] = _offset;
+    }
   }
 
   void increaseItemFontSize(String key) {

@@ -62,6 +62,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                                     as ApiDataResult<VisitExpanded>)
                                 .data;
                       },
+                      duration: const Duration(milliseconds: 260),
                     );
                   }
                   if (context.mounted) {

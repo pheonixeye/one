@@ -3547,6 +3547,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clinical Notes'**
   String get clinicalNotes;
+
+  /// No description provided for @prescriptionItemsVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Prescription Items Visibility'**
+  String get prescriptionItemsVisibility;
 }
 
 class _AppLocalizationsDelegate

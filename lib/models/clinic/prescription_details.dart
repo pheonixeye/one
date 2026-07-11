@@ -19,7 +19,7 @@ class ItemDetail implements Equatable {
   final double x_coord;
   final double y_coord;
 
-  const ItemDetail({
+  ItemDetail({
     required this.name_en,
     required this.name_ar,
     required this.x_coord,
@@ -124,23 +124,23 @@ class PrescriptionDetails implements Equatable {
           x_coord: 10,
           y_coord: 300,
         ),
-        'medical_report': ItemDetail(
-          name_en: 'Medical Report',
-          name_ar: 'تقرير طبي',
-          x_coord: 10,
-          y_coord: 350,
-        ),
-        'referral_report': ItemDetail(
-          name_en: 'Referral Report',
-          name_ar: 'خطاب تحويل',
-          x_coord: 10,
-          y_coord: 400,
-        ),
+        // 'medical_report': ItemDetail(
+        //   name_en: 'Medical Report',
+        //   name_ar: 'تقرير طبي',
+        //   x_coord: 10,
+        //   y_coord: 350,
+        // ),
+        // 'referral_report': ItemDetail(
+        //   name_en: 'Referral Report',
+        //   name_ar: 'خطاب تحويل',
+        //   x_coord: 10,
+        //   y_coord: 400,
+        // ),
         'doctor_name': ItemDetail(
           name_en: 'Doctor Name',
           name_ar: 'اسم الطبيب',
           x_coord: 10,
-          y_coord: 450,
+          y_coord: 350,
         ),
       },
     );

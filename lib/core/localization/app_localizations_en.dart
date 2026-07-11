@@ -1815,4 +1815,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clinicalNotes => 'Clinical Notes';
+
+  @override
+  String get prescriptionItemsVisibility => 'Prescription Items Visibility';
 }
