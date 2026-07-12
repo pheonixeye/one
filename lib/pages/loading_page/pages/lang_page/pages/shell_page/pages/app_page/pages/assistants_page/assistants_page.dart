@@ -111,7 +111,7 @@ class AssistantsPage extends StatelessWidget {
                                       ),
                                     ),
                                     const Spacer(),
-                                    IconButton.outlined(
+                                    SmBtn(
                                       tooltip: context.loc.editAccountName,
                                       onPressed: () async {
                                         //@permission
@@ -156,69 +156,69 @@ class AssistantsPage extends StatelessWidget {
                                           );
                                         }
                                       },
-                                      icon: const Icon(Icons.edit),
+                                      child: const Icon(Icons.edit),
                                     ),
                                     const SizedBox(width: 10),
-                                    ElevatedButton.icon(
-                                      style: ElevatedButton.styleFrom(
+                                    Tooltip(
+                                      message: item.is_active
+                                          ? context.loc.deactivateAccount
+                                          : context.loc.activateAccount,
+                                      child: SmBtn(
                                         backgroundColor: item.is_active
                                             ? Colors.red.shade200
                                             : Colors.green.shade200,
-                                      ),
-                                      label: Text(
-                                        item.is_active
-                                            ? context.loc.deactivateAccount
-                                            : context.loc.activateAccount,
-                                      ),
-                                      icon: item.is_active
-                                          ? Icon(Icons.close)
-                                          : Icon(Icons.check),
-                                      onPressed: () async {
-                                        //@permission
-                                        final _perm = context
-                                            .read<PxAuth>()
-                                            .isActionPermitted(
-                                              PermissionEnum
-                                                  .User_AccountSettings_Modify,
-                                              context,
+
+                                        child: item.is_active
+                                            ? Icon(Icons.close)
+                                            : Icon(Icons.check),
+
+                                        onPressed: () async {
+                                          //@permission
+                                          final _perm = context
+                                              .read<PxAuth>()
+                                              .isActionPermitted(
+                                                PermissionEnum
+                                                    .User_AccountSettings_Modify,
+                                                context,
+                                              );
+                                          if (!_perm.isAllowed) {
+                                            await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return NotPermittedDialog(
+                                                  permission: _perm.permission,
+                                                );
+                                              },
                                             );
-                                        if (!_perm.isAllowed) {
-                                          await showDialog(
+                                            return;
+                                          }
+                                          final _toToogle = await showDialog<bool?>(
                                             context: context,
                                             builder: (context) {
-                                              return NotPermittedDialog(
-                                                permission: _perm.permission,
+                                              return PromptDialog(
+                                                message: context
+                                                    .loc
+                                                    .toogleAccountActivityPrompt,
                                               );
                                             },
                                           );
-                                          return;
-                                        }
-                                        final _toToogle = await showDialog<bool?>(
-                                          context: context,
-                                          builder: (context) {
-                                            return PromptDialog(
-                                              message: context
-                                                  .loc
-                                                  .toogleAccountActivityPrompt,
+                                          if (_toToogle == null ||
+                                              _toToogle == false) {
+                                            return;
+                                          }
+                                          if (context.mounted) {
+                                            await shellFunction(
+                                              context,
+                                              toExecute: () async {
+                                                await c.toogleActivity(
+                                                  item.id,
+                                                  !item.is_active,
+                                                );
+                                              },
                                             );
-                                          },
-                                        );
-                                        if (_toToogle == null ||
-                                            _toToogle == false) {
-                                          return;
-                                        }
-                                        if (context.mounted) {
-                                          await shellFunction(
-                                            context,
-                                            toExecute: () async {
-                                              await c.toogleActivity(
-                                                item.id,
-                                                !item.is_active,
-                                              );
-                                            },
-                                          );
-                                        }
-                                      },
+                                          }
+                                        },
+                                      ),
                                     ),
                                     const SizedBox(width: 10),
                                   ],
