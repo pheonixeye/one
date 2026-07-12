@@ -2,11 +2,11 @@ import 'dart:typed_data';
 
 import 'package:one/constants/app_business_constants.dart';
 import 'package:one/extensions/datetime_ext.dart';
-import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/doctor_items/pi_document_type.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/document_type_picker_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/8_prescription_page/widget_by_key.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:one/widgets/snackbar_.dart';
@@ -14,7 +14,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:one/core/api/_api_result.dart';
-import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/model_url_ext.dart';
 import 'package:one/functions/shell_function.dart';
@@ -32,7 +31,6 @@ class VisitPrescriptionPage extends StatelessWidget {
   const VisitPrescriptionPage({super.key});
   @override
   Widget build(BuildContext context) {
-    //TODO: restructure into smaller widgets
     return Scaffold(
       body: Consumer3<PxVisitData, PxVisitPrescriptionState, PxLocale>(
         builder: (context, vd, s, l, _) {
@@ -42,8 +40,6 @@ class VisitPrescriptionPage extends StatelessWidget {
           final visit_data = (vd.result as ApiDataResult<VisitData>).data;
 
           final visit = visit_data.visit;
-
-          final doctor = visit_data.doctor;
 
           final clinic = visit_data.clinic;
 
@@ -87,6 +83,12 @@ class VisitPrescriptionPage extends StatelessWidget {
                               ...PrescriptionDetails.initial().details.entries.map((
                                 x,
                               ) {
+                                final _left =
+                                    s.visitPrescriptionItemsOffset[x.key]?.dx ??
+                                    x.value.x_coord;
+                                final _top =
+                                    s.visitPrescriptionItemsOffset[x.key]?.dy ??
+                                    x.value.y_coord;
                                 return Visibility(
                                   visible: s.view == PrescriptionView.regular
                                       ? s.visitPrescriptionVisibility[x.key]!
@@ -94,18 +96,8 @@ class VisitPrescriptionPage extends StatelessWidget {
                                   child: Directionality(
                                     textDirection: TextDirection.ltr,
                                     child: Positioned(
-                                      left:
-                                          s
-                                              .visitPrescriptionItemsOffset[x
-                                                  .key]
-                                              ?.dx ??
-                                          x.value.x_coord,
-                                      top:
-                                          s
-                                              .visitPrescriptionItemsOffset[x
-                                                  .key]
-                                              ?.dy ??
-                                          x.value.y_coord,
+                                      left: _left,
+                                      top: _top,
                                       child: GestureDetector(
                                         behavior: HitTestBehavior.opaque,
                                         onPanUpdate: (details) {
@@ -138,41 +130,17 @@ class VisitPrescriptionPage extends StatelessWidget {
                                         },
 
                                         child: switch (x.key) {
-                                          'patient_name' => SizedBox(
-                                            child: Text(
-                                              visit_data.patient.name,
-                                              style: TextStyle(
-                                                fontSize:
-                                                    s.visitPrescriptionItemsFontSize[x
-                                                        .key],
-                                              ),
-                                            ),
+                                          'patient_name' => WidgetByKey(
+                                            mapKey: x.key,
+                                            visit_data: visit_data,
                                           ),
-                                          'visit_date' => SizedBox(
-                                            child: Text(
-                                              intl.DateFormat(
-                                                'dd / MM / yyyy',
-                                                l.lang,
-                                              ).format(visit!.visit_date),
-                                              style: TextStyle(
-                                                fontSize:
-                                                    s.visitPrescriptionItemsFontSize[x
-                                                        .key],
-                                              ),
-                                            ),
+                                          'visit_date' => WidgetByKey(
+                                            mapKey: x.key,
+                                            visit_data: visit_data,
                                           ),
-                                          'visit_type' => SizedBox(
-                                            child: Text(
-                                              ' * ${VisitTypeEnum.visitType(
-                                                visit!.visit_type,
-                                                l.isEnglish,
-                                              )}',
-                                              style: TextStyle(
-                                                fontSize:
-                                                    s.visitPrescriptionItemsFontSize[x
-                                                        .key],
-                                              ),
-                                            ),
+                                          'visit_type' => WidgetByKey(
+                                            mapKey: x.key,
+                                            visit_data: visit_data,
                                           ),
                                           _ => SizedBox(),
                                         },
@@ -185,6 +153,16 @@ class VisitPrescriptionPage extends StatelessWidget {
                                 ...PrescriptionDetails.initial().details.entries.map((
                                   x,
                                 ) {
+                                  final _left =
+                                      s
+                                          .visitPrescriptionItemsOffset[x.key]
+                                          ?.dx ??
+                                      x.value.x_coord;
+                                  final _top =
+                                      s
+                                          .visitPrescriptionItemsOffset[x.key]
+                                          ?.dy ??
+                                      x.value.y_coord;
                                   return Visibility(
                                     visible:
                                         s.visitPrescriptionVisibility[x.key] ??
@@ -192,18 +170,8 @@ class VisitPrescriptionPage extends StatelessWidget {
                                     child: Directionality(
                                       textDirection: TextDirection.ltr,
                                       child: Positioned(
-                                        left:
-                                            s
-                                                .visitPrescriptionItemsOffset[x
-                                                    .key]
-                                                ?.dx ??
-                                            x.value.x_coord,
-                                        top:
-                                            s
-                                                .visitPrescriptionItemsOffset[x
-                                                    .key]
-                                                ?.dy ??
-                                            x.value.y_coord,
+                                        left: _left,
+                                        top: _top,
                                         child: GestureDetector(
                                           behavior: HitTestBehavior.opaque,
                                           onPanUpdate: (details) {
@@ -233,170 +201,25 @@ class VisitPrescriptionPage extends StatelessWidget {
                                           },
 
                                           child: switch (x.key) {
-                                            'visit_labs' => SizedBox(
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text: 'التحاليل المطلوبة\n',
-                                                  children: [
-                                                    ...visit_data.labs.map((
-                                                      e,
-                                                    ) {
-                                                      return TextSpan(
-                                                        text:
-                                                            ' * '
-                                                            '${e.name_en}\n',
-                                                        children: [
-                                                          if (e
-                                                              .special_instructions
-                                                              .isNotEmpty)
-                                                            TextSpan(
-                                                              text:
-                                                                  '(${e.special_instructions})\n',
-                                                            ),
-                                                        ],
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      s.visitPrescriptionItemsFontSize[x
-                                                          .key],
-                                                ),
-                                              ),
+                                            'visit_labs' => WidgetByKey(
+                                              mapKey: x.key,
+                                              visit_data: visit_data,
                                             ),
-                                            'visit_rads' => SizedBox(
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text: 'الاشاعات المطلوبة\n',
-                                                  children: [
-                                                    ...visit_data.rads.map((
-                                                      e,
-                                                    ) {
-                                                      return TextSpan(
-                                                        text:
-                                                            ' * '
-                                                            '${e.name_en}\n',
-                                                        children: [
-                                                          if (e
-                                                              .special_instructions
-                                                              .isNotEmpty)
-                                                            TextSpan(
-                                                              text:
-                                                                  '(${e.special_instructions})\n',
-                                                            ),
-                                                        ],
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      s.visitPrescriptionItemsFontSize[x
-                                                          .key],
-                                                ),
-                                              ),
+                                            'visit_rads' => WidgetByKey(
+                                              mapKey: x.key,
+                                              visit_data: visit_data,
                                             ),
-                                            'visit_procedures' => SizedBox(
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text: 'اجراءات الزيارة\n',
-                                                  children: [
-                                                    ...visit_data.procedures.map(
-                                                      (e) {
-                                                        return TextSpan(
-                                                          text:
-                                                              ' * '
-                                                              '${e.name_en}\n',
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      s.visitPrescriptionItemsFontSize[x
-                                                          .key],
-                                                ),
-                                              ),
+                                            'visit_procedures' => WidgetByKey(
+                                              mapKey: x.key,
+                                              visit_data: visit_data,
                                             ),
-                                            'doctor_name' => SizedBox(
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text: '',
-                                                  children: [
-                                                    TextSpan(
-                                                      text: l.isEnglish
-                                                          ? doctor?.name_en
-                                                          : doctor?.name_ar,
-                                                    ),
-                                                  ],
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      s.visitPrescriptionItemsFontSize[x
-                                                          .key],
-                                                ),
-                                              ),
+                                            'doctor_name' => WidgetByKey(
+                                              mapKey: x.key,
+                                              visit_data: visit_data,
                                             ),
-                                            'visit_drugs' => SizedBox(
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text: '',
-                                                  children: [
-                                                    ...visit_data.drugs.map((
-                                                      e,
-                                                    ) {
-                                                      return TextSpan(
-                                                        locale: const Locale(
-                                                          'en',
-                                                        ),
-                                                        text: '',
-                                                        children: [
-                                                          TextSpan(
-                                                            text: '\n',
-                                                          ),
-                                                          TextSpan(
-                                                            text: 'Rx  ',
-                                                            style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: e
-                                                                .prescriptionNameEn,
-                                                          ),
-                                                          TextSpan(
-                                                            text: '\n',
-                                                          ),
-                                                          TextSpan(
-                                                            text:
-                                                                '${visit_data.drug_data[e.id]}',
-                                                          ),
-                                                        ],
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      s.visitPrescriptionItemsFontSize[x
-                                                          .key],
-                                                ),
-                                              ),
+                                            'visit_drugs' => WidgetByKey(
+                                              mapKey: x.key,
+                                              visit_data: visit_data,
                                             ),
                                             _ => Text(''),
                                           },
@@ -491,6 +314,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                   horizontal: 8.0,
                                 ),
                                 child: SmBtn(
+                                  tooltip: context.loc.formTitleAlignment,
                                   onPressed: () {
                                     s.toggleAxisAlignment();
                                   },
@@ -504,6 +328,7 @@ class VisitPrescriptionPage extends StatelessWidget {
                                   horizontal: 8.0,
                                 ),
                                 child: SmBtn(
+                                  tooltip: context.loc.formTextAlignment,
                                   onPressed: () {
                                     s.toggleTextAlignment();
                                   },
@@ -718,47 +543,71 @@ class VisitPrescriptionPage extends StatelessWidget {
                                         ...visit_data.forms.map((f) {
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(
+                                              vertical: 5,
                                               horizontal: 8.0,
                                             ),
-                                            child: FilterChip.elevated(
-                                              label: Text(f.name_en),
-                                              selectedColor:
-                                                  Colors.amber.shade200,
-                                              selected:
-                                                  f.id == s.selectedForm?.id,
-                                              onSelected: (value) {
-                                                if (value) {
-                                                  s.selectFormItems(
-                                                    visit_data.forms_data
-                                                        .firstWhere(
-                                                          (x) =>
-                                                              x.form_id == f.id,
-                                                        )
-                                                        .form_data,
-                                                    f,
+                                            child: MenuAnchor(
+                                              builder:
+                                                  (
+                                                    context,
+                                                    controller,
+                                                    child,
+                                                  ) {
+                                                    return SmBtn(
+                                                      onPressed: () {
+                                                        if (controller.isOpen) {
+                                                          controller.close();
+                                                        } else {
+                                                          controller.open();
+                                                        }
+                                                      },
+                                                      tooltip:
+                                                          context.loc.forms,
+                                                      child: const Icon(
+                                                        Icons.document_scanner,
+                                                      ),
+                                                    );
+                                                  },
+                                              menuChildren: [
+                                                ...visit_data.forms.map((f) {
+                                                  return MenuItemButton(
+                                                    child: FilterChip.elevated(
+                                                      label: Text(f.name_en),
+                                                      selectedColor:
+                                                          Colors.amber.shade200,
+                                                      selected:
+                                                          f.id ==
+                                                          s.selectedForm?.id,
+                                                      onSelected: (value) {
+                                                        if (value) {
+                                                          s.selectFormItems(
+                                                            visit_data
+                                                                .forms_data
+                                                                .firstWhere(
+                                                                  (x) =>
+                                                                      x.form_id ==
+                                                                      f.id,
+                                                                )
+                                                                .form_data,
+                                                            f,
+                                                          );
+                                                        } else {
+                                                          s.selectFormItems(
+                                                            null,
+                                                            null,
+                                                          );
+                                                        }
+                                                      },
+                                                    ),
                                                   );
-                                                } else {
-                                                  s.selectFormItems(
-                                                    null,
-                                                    null,
-                                                  );
-                                                }
-                                              },
+                                                }),
+                                              ],
                                             ),
                                           );
                                         }),
                                       ],
                                     },
                                   ),
-                                  if (context.isMobile)
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Icon(Icons.arrow_left),
-                                        const Icon(Icons.arrow_right),
-                                      ],
-                                    ),
                                 ],
                               ),
                             ),

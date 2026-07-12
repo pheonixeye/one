@@ -1817,4 +1817,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noLogoFoundRecieptWillUseDefaultImage =>
       'لم يتم العثور علي لوجو للعيادة - سيتم استخدام لوجو البرنامج الاساسي';
+
+  @override
+  String get formTitleAlignment => 'تغيير اتجاه عنوان النموذج';
+
+  @override
+  String get formTextAlignment => 'تغيير اتجاه بيانات النموذج';
 }

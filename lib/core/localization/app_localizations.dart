@@ -3565,6 +3565,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Logo Found, Reciept Will Use Default Image.'**
   String get noLogoFoundRecieptWillUseDefaultImage;
+
+  /// No description provided for @formTitleAlignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Form Title Alignment'**
+  String get formTitleAlignment;
+
+  /// No description provided for @formTextAlignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Form Text Alignment'**
+  String get formTextAlignment;
 }
 
 class _AppLocalizationsDelegate

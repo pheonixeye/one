@@ -621,5 +621,7 @@
     "clinicalNotes" : "الملاحظات الاكلينيكية",
     "prescriptionItemsVisibility" : "اخفاء / اظهار عناصر الروشتة",
     "errorFetchingVisits" : "خطأ اثناء احضار الزيارات",
-    "noLogoFoundRecieptWillUseDefaultImage" : "لم يتم العثور علي لوجو للعيادة - سيتم استخدام لوجو البرنامج الاساسي"
+    "noLogoFoundRecieptWillUseDefaultImage" : "لم يتم العثور علي لوجو للعيادة - سيتم استخدام لوجو البرنامج الاساسي",
+    "formTitleAlignment" : "تغيير اتجاه عنوان النموذج",
+    "formTextAlignment" : "تغيير اتجاه بيانات النموذج"
 }

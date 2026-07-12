@@ -103,22 +103,37 @@ class _TodayVisitsStateCounterState extends State<TodayVisitsStateCounter> {
                           return Expanded(
                             child: Tooltip(
                               message: x,
-                              child: CircleAvatar(
-                                radius: 16,
-                                backgroundColor: switch (x) {
-                                  'Attended' => Colors.blue.shade400,
-                                  'Not Attended' => Colors.red.shade400,
-                                  _ => Colors.white,
-                                },
-                                child: Builder(
-                                  builder: (context) {
-                                    final _count = _data
-                                        .where(
-                                          (e) => e.visit_status == x,
-                                        )
-                                        .length;
-                                    return Text('$_count');
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(1, 1),
+                                      blurRadius: 2,
+                                      spreadRadius: 2,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                                child: CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: switch (x) {
+                                    'Attended' => Colors.blue.shade400,
+                                    'Not Attended' => Colors.red.shade400,
+                                    _ => Colors.white,
                                   },
+                                  child: Builder(
+                                    builder: (context) {
+                                      final _count = _data
+                                          .where(
+                                            (e) => e.visit_status == x,
+                                          )
+                                          .length;
+                                      return Text('$_count');
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
@@ -137,25 +152,41 @@ class _TodayVisitsStateCounterState extends State<TodayVisitsStateCounter> {
                           return Expanded(
                             child: Tooltip(
                               message: x,
-                              child: CircleAvatar(
-                                radius: 16,
-                                backgroundColor: switch (x) {
-                                  'Has Not Attended Yet' => Colors.white,
-                                  'Canceled' => Colors.red.shade400,
-                                  'In Waiting' => Colors.yellow.shade400,
-                                  'In Consultation' => Colors.green.shade400,
-                                  'Done Consultation' => Colors.blue.shade400,
-                                  _ => Colors.white,
-                                },
-                                child: Builder(
-                                  builder: (context) {
-                                    final _count = _data
-                                        .where(
-                                          (e) => e.patient_progress_status == x,
-                                        )
-                                        .length;
-                                    return Text('$_count');
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(1, 1),
+                                      blurRadius: 2,
+                                      spreadRadius: 2,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                                child: CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: switch (x) {
+                                    'Has Not Attended Yet' => Colors.white,
+                                    'Canceled' => Colors.red.shade400,
+                                    'In Waiting' => Colors.yellow.shade400,
+                                    'In Consultation' => Colors.green.shade400,
+                                    'Done Consultation' => Colors.blue.shade400,
+                                    _ => Colors.white,
                                   },
+                                  child: Builder(
+                                    builder: (context) {
+                                      final _count = _data
+                                          .where(
+                                            (e) =>
+                                                e.patient_progress_status == x,
+                                          )
+                                          .length;
+                                      return Text('$_count');
+                                    },
+                                  ),
                                 ),
                               ),
                             ),

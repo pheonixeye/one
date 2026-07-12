@@ -1825,4 +1825,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noLogoFoundRecieptWillUseDefaultImage =>
       'No Logo Found, Reciept Will Use Default Image.';
+
+  @override
+  String get formTitleAlignment => 'Form Title Alignment';
+
+  @override
+  String get formTextAlignment => 'Form Text Alignment';
 }
