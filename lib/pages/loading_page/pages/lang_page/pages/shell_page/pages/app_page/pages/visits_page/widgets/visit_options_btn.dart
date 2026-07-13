@@ -22,6 +22,7 @@ import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
 import 'package:one/router/router.dart';
+import 'package:one/widgets/error_dialog.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/snackbar_.dart';
 import 'package:one/widgets/themed_popupmenu_btn.dart';
@@ -208,12 +209,11 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                           ),
                           onTap: () async {
                             //@permission
-                            final _perm = context
-                                .read<PxAuth>()
-                                .isActionPermitted(
-                                  PermissionEnum.Admin,
-                                  context,
-                                );
+                            final _auth = context.read<PxAuth>();
+                            final _perm = _auth.isActionPermitted(
+                              PermissionEnum.Admin,
+                              context,
+                            );
                             if (!_perm.isAllowed) {
                               await showDialog(
                                 context: context,
@@ -227,11 +227,33 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                             }
                             if (widget.visit.visit_status ==
                                 a.notAttended.name_en) {
-                              showIsnackbar(context.loc.visitNotAttended);
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ErrorDialog(
+                                    message: context.loc.visitNotAttended,
+                                  );
+                                },
+                              );
                               return;
                             }
+
+                            if (_auth.doc_id != widget.visit.doc_id) {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ErrorDialog(
+                                    message: context
+                                        .loc
+                                        .cannotOpenAVisitByAnotherDoctor,
+                                  );
+                                },
+                              );
+                              return;
+                            }
+
                             GoRouter.of(context).goNamed(
-                              AppRouter.visit_forms,
+                              AppRouter.visit_clinical_notes,
                               pathParameters: defaultPathParameters(context)
                                 ..addAll({'visit_id': widget.visit.id}),
                             );

@@ -1823,4 +1823,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get formTextAlignment => 'تغيير اتجاه بيانات النموذج';
+
+  @override
+  String get cannotOpenAVisitByAnotherDoctor =>
+      'لا يمكن فتح زيارة تم مناظرتها بواسطة طبيب اخر';
 }

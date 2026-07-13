@@ -1831,4 +1831,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get formTextAlignment => 'Form Text Alignment';
+
+  @override
+  String get cannotOpenAVisitByAnotherDoctor =>
+      'Cannot Open A Visit That Was Attended By Another Doctor';
 }

@@ -75,7 +75,7 @@ class _RescheduleVisitDialogState extends State<RescheduleVisitDialog> {
                   spacing: 4,
                   children: [
                     PreviousVisitViewCard(
-                      item: widget.visit,
+                      visit: widget.visit,
                       index: 0,
                       showIndexNumber: false,
                       showPatientName: true,

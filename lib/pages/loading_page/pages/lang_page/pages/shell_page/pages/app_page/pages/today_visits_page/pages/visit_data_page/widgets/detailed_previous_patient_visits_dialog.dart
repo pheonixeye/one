@@ -136,7 +136,7 @@ class _DetailedPreviousPatientVisitsDialogState
                                   },
                                   child: PreviousVisitViewCard(
                                     index: index,
-                                    item: item,
+                                    visit: item,
                                   ),
                                 );
                               },
@@ -207,7 +207,7 @@ class _DetailedPreviousPatientVisitsDialogState
                                 _selectedVisit == null
                                     ? SizedBox()
                                     : PreviousVisitViewCard(
-                                        item: _selectedVisit!,
+                                        visit: _selectedVisit!,
                                         index: 0,
                                         showIndexNumber: false,
                                       ),

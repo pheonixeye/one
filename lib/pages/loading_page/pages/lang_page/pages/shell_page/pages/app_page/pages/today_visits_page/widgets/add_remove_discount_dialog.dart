@@ -76,7 +76,7 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               PreviousVisitViewCard(
-                item: widget.visit,
+                visit: widget.visit,
                 index: 0,
                 showIndexNumber: false,
                 showPatientName: true,

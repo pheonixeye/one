@@ -78,7 +78,7 @@ class PreviousVisitsDialog extends StatelessWidget {
                     itemCount: _data.length,
                     itemBuilder: (context, index) {
                       final item = _data[index];
-                      return PreviousVisitViewCard(index: index, item: item);
+                      return PreviousVisitViewCard(index: index, visit: item);
                     },
                   ),
                 ),

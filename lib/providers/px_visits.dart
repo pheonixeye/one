@@ -154,4 +154,13 @@ class PxVisits extends ChangeNotifier {
 
     //notify patient via whatsapp
   }
+
+  ApiResult<VisitExpanded>? _visitForRouter;
+  VisitExpanded? get visitForRouter =>
+      (_visitForRouter as ApiDataResult<VisitExpanded>?)?.data;
+
+  Future<void> fetchVisitForRouter(String visit_id) async {
+    _visitForRouter = await api.fetchOneVisitExpandedById(visit_id);
+    notifyListeners();
+  }
 }

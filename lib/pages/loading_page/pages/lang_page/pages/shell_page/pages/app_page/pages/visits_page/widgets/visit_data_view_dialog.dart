@@ -67,7 +67,7 @@ class VisitDataViewDialog extends StatelessWidget {
             child: ListView(
               children: [
                 PreviousVisitViewCard(
-                  item: visit,
+                  visit: visit,
                   index: 0,
                   showIndexNumber: false,
                 ),

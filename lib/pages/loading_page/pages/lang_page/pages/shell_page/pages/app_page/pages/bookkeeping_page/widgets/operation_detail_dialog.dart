@@ -67,7 +67,7 @@ class OperationDetailDialog extends StatelessWidget {
             child: ListView(
               children: [
                 PreviousVisitViewCard(
-                  item: _visit,
+                  visit: _visit,
                   index: 0,
                   showPatientName: true,
                   showIndexNumber: false,

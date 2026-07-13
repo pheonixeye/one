@@ -1,5 +1,6 @@
 import 'package:one/core/api/patient_portal_api.dart';
 import 'package:one/core/api/subscription_api.dart';
+import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/patient_portal_page/patient_portal_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_document_types_page/pi_document_types_page.dart';
@@ -55,10 +56,12 @@ import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
 import 'package:one/providers/px_visit_prescription_state.dart';
+import 'package:one/providers/px_visits.dart';
 import 'package:one/providers/scroll_px.dart';
 import 'package:one/utils/shared_prefs.dart';
 import 'package:one/utils/utils_keys.dart';
 import 'package:one/widgets/central_loading.dart';
+import 'package:one/widgets/snackbar_.dart';
 import 'package:provider/provider.dart';
 
 Map<String, String> defaultPathParameters(BuildContext context) {
@@ -329,10 +332,44 @@ class AppRouter {
                                     key: ValueKey('${state.pageKey}-loading'),
                                   );
                                 },
-                                redirect: (context, state) {
+                                redirect: (context, state) async {
+                                  final _auth = context.read<PxAuth>();
+
+                                  final _pxVisits = context.read<PxVisits>();
+
+                                  final _l = context.read<PxLocale>();
+
                                   final _lang = state.pathParameters['lang'];
+
                                   final _visit_id =
                                       state.pathParameters['visit_id'];
+
+                                  await _pxVisits.fetchVisitForRouter(
+                                    _visit_id!,
+                                  );
+
+                                  //unauthorized visit access redirect guard for users
+                                  if (_pxVisits.visitForRouter != null) {
+                                    final _visit = _pxVisits.visitForRouter;
+                                    if (_auth.isUserNotDoctor &&
+                                        context.mounted) {
+                                      showIsnackbar(
+                                        '${context.loc.accountNotAuthorizedToPerformAction}\n(-${_l.isEnglish ? 'Admin' : 'مدير'}-)',
+                                      );
+                                      return '/$_lang/app';
+                                    }
+                                    //unauthorized visit access redirect guard for doctors
+                                    if (_auth.doc_id != _visit!.doc_id &&
+                                        context.mounted) {
+                                      showIsnackbar(
+                                        context
+                                            .loc
+                                            .cannotOpenAVisitByAnotherDoctor,
+                                      );
+                                      return '/$_lang/app';
+                                    }
+                                  }
+
                                   if (state.fullPath ==
                                       '/:lang/app/data/:visit_id') {
                                     return '/$_lang/app/data/$_visit_id/$visit_clinical_notes';

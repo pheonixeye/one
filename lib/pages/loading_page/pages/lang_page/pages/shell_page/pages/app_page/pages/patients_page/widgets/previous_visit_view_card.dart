@@ -1,11 +1,16 @@
 import 'package:go_router/go_router.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
+import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/app_constants/visit_type.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/router/router.dart';
+import 'package:one/widgets/error_dialog.dart';
+import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,12 +19,12 @@ import 'package:provider/provider.dart';
 class PreviousVisitViewCard extends StatelessWidget {
   const PreviousVisitViewCard({
     super.key,
-    required this.item,
+    required this.visit,
     required this.index,
     this.showIndexNumber = true,
     this.showPatientName = false,
   });
-  final VisitExpanded item;
+  final VisitExpanded visit;
   final int index;
   final bool showIndexNumber;
   final bool showPatientName;
@@ -47,7 +52,7 @@ class PreviousVisitViewCard extends StatelessWidget {
                         DateFormat(
                           'dd - MM - yyyy',
                           l.lang,
-                        ).format(item.visit_date),
+                        ).format(visit.visit_date),
                       ),
                     ],
                   ),
@@ -70,7 +75,7 @@ class PreviousVisitViewCard extends StatelessWidget {
                               decoration: TextDecoration.underline,
                             ),
                           ),
-                          Text(item.patient.name),
+                          Text(visit.patient.name),
                         ],
                       ),
                     ],
@@ -86,8 +91,8 @@ class PreviousVisitViewCard extends StatelessWidget {
                         ),
                         Text(
                           l.isEnglish
-                              ? item.doctor.name_en
-                              : item.doctor.name_ar,
+                              ? visit.doctor.name_en
+                              : visit.doctor.name_ar,
                         ),
                       ],
                     ),
@@ -103,8 +108,8 @@ class PreviousVisitViewCard extends StatelessWidget {
                         ),
                         Text(
                           l.isEnglish
-                              ? item.clinic.name_en
-                              : item.clinic.name_ar,
+                              ? visit.clinic.name_en
+                              : visit.clinic.name_ar,
                         ),
                       ],
                     ),
@@ -120,7 +125,7 @@ class PreviousVisitViewCard extends StatelessWidget {
                         ),
                         Text(
                           VisitTypeEnum.visitType(
-                            item.visit_type,
+                            visit.visit_type,
                             l.isEnglish,
                           ),
                         ),
@@ -136,7 +141,7 @@ class PreviousVisitViewCard extends StatelessWidget {
                           ),
                         ),
 
-                        if (item.visit_status ==
+                        if (visit.visit_status ==
                             context.read<PxAppConstants>().attended.name_en)
                           const Icon(Icons.check, color: Colors.green)
                         else
@@ -149,12 +154,52 @@ class PreviousVisitViewCard extends StatelessWidget {
               trailing: SmBtn(
                 tooltip: context.loc.openVisit,
                 child: const Icon(Icons.arrow_forward),
-                onPressed: () {
+                onPressed: () async {
+                  //@permission
+                  final _auth = context.read<PxAuth>();
+
+                  final _perm = _auth.isActionPermitted(
+                    PermissionEnum.Admin,
+                    context,
+                  );
+                  if (!_perm.isAllowed) {
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return NotPermittedDialog(
+                          permission: _perm.permission,
+                        );
+                      },
+                    );
+                    return;
+                  }
+                  if (visit.visit_status == VisitStatusEnum.NotAttended.en) {
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ErrorDialog(
+                          message: context.loc.visitNotAttended,
+                        );
+                      },
+                    );
+                    return;
+                  }
+                  if (_auth.doc_id != visit.doc_id) {
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ErrorDialog(
+                          message: context.loc.cannotOpenAVisitByAnotherDoctor,
+                        );
+                      },
+                    );
+                    return;
+                  }
                   GoRouter.of(context).goNamed(
                     AppRouter.visit_clinical_notes,
                     pathParameters: {
                       ...defaultPathParameters(context),
-                      'visit_id': item.id,
+                      'visit_id': visit.id,
                     },
                   );
                   Navigator.pop(context);

@@ -2,12 +2,10 @@ import 'package:one/extensions/number_translator.dart';
 import 'package:one/extensions/visit_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
-import 'package:one/models/clinic/clinic.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/logic/excel_file_prep.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/visit_data_table_columns.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/visits_page/widgets/visit_options_btn.dart';
 import 'package:one/providers/px_auth.dart';
-import 'package:one/providers/px_clinics.dart';
 import 'package:one/providers/px_doctor.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/not_permitted_template_page.dart';
@@ -52,17 +50,10 @@ class _VisitsPageState extends State<VisitsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer5<
-      PxAppConstants,
-      PxDoctor,
-      PxClinics,
-      PxVisitFilter,
-      PxLocale
-    >(
-      builder: (context, a, d, c, v, l, _) {
+    return Consumer4<PxAppConstants, PxDoctor, PxVisitFilter, PxLocale>(
+      builder: (context, a, d, v, l, _) {
         while (a.constants == null ||
             d.allDoctors == null ||
-            c.result == null ||
             v.concisedVisits == null) {
           return CentralLoading();
         }
@@ -223,21 +214,10 @@ class _VisitsPageState extends State<VisitsPage> {
                                               Center(
                                                 child: Builder(
                                                   builder: (context) {
-                                                    final _clinic =
-                                                        (c.result
-                                                                as ApiDataResult<
-                                                                  List<Clinic>
-                                                                >)
-                                                            .data
-                                                            .firstWhere(
-                                                              (e) =>
-                                                                  e.id ==
-                                                                  x.clinic_id,
-                                                            );
                                                     return Text(
                                                       l.isEnglish
-                                                          ? _clinic.name_en
-                                                          : _clinic.name_ar,
+                                                          ? x.clinic.name_en
+                                                          : x.clinic.name_ar,
                                                     );
                                                   },
                                                 ),

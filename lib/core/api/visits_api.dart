@@ -75,6 +75,28 @@ class VisitsApi {
     }
   }
 
+  Future<ApiResult<VisitExpanded>> fetchOneVisitExpandedById(
+    String visit_id,
+  ) async {
+    try {
+      final _response = await PocketbaseHelper().pbData
+          .collection(collection)
+          .getOne(
+            visit_id,
+            expand: _expand,
+          );
+
+      final _visits = VisitExpanded.fromRecordModel(_response);
+
+      return ApiDataResult<VisitExpanded>(data: _visits);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
   Future<VisitExpanded> addNewVisit(
     Visit visit,
   ) async {

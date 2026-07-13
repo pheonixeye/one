@@ -3577,6 +3577,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Form Text Alignment'**
   String get formTextAlignment;
+
+  /// No description provided for @cannotOpenAVisitByAnotherDoctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Open A Visit That Was Attended By Another Doctor'**
+  String get cannotOpenAVisitByAnotherDoctor;
 }
 
 class _AppLocalizationsDelegate

@@ -6,9 +6,9 @@ import 'package:one/models/app_constants/visit_status.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/router/router.dart';
+import 'package:one/widgets/error_dialog.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
-import 'package:one/widgets/snackbar_.dart';
 import 'package:provider/provider.dart';
 
 class VisitDetailsBtn extends StatelessWidget {
@@ -22,7 +22,9 @@ class VisitDetailsBtn extends StatelessWidget {
         SmBtn(
           onPressed: () async {
             //@permission
-            final _perm = context.read<PxAuth>().isActionPermitted(
+            final _auth = context.read<PxAuth>();
+
+            final _perm = _auth.isActionPermitted(
               PermissionEnum.Admin,
               context,
             );
@@ -38,9 +40,28 @@ class VisitDetailsBtn extends StatelessWidget {
               return;
             }
             if (visit.visit_status == VisitStatusEnum.NotAttended.en) {
-              showIsnackbar(context.loc.visitNotAttended);
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return ErrorDialog(
+                    message: context.loc.visitNotAttended,
+                  );
+                },
+              );
               return;
             }
+            if (_auth.doc_id != visit.doc_id) {
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return ErrorDialog(
+                    message: context.loc.cannotOpenAVisitByAnotherDoctor,
+                  );
+                },
+              );
+              return;
+            }
+
             GoRouter.of(context).goNamed(
               AppRouter.visit_clinical_notes,
               pathParameters: defaultPathParameters(context)
