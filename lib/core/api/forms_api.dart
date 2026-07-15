@@ -50,6 +50,25 @@ class FormsApi {
     }
   }
 
+  Future<ApiResult<List<PkForm>>> fetchAllForms() async {
+    try {
+      final _result = await PocketbaseHelper().pbData
+          .collection(forms_collection)
+          .getFullList(
+            expand: _expand,
+          );
+
+      final _forms = _result.map((e) => PkForm.fromRecordModel(e)).toList();
+
+      return ApiDataResult<List<PkForm>>(data: _forms);
+    } on ClientException catch (e) {
+      return ApiErrorResult<List<PkForm>>(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
   Future<void> updatePcForm(PkForm form) async {
     await PocketbaseHelper().pbData
         .collection(forms_collection)

@@ -4,19 +4,28 @@ import 'package:one/core/api/forms_api.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:one/models/pk_field.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:provider/provider.dart';
 
 @PbData()
 class PxForms extends ChangeNotifier {
-  PxForms({required this.api}) {
+  PxForms({
+    required this.api,
+    required this.context,
+  }) {
     _fetchDoctorForms();
   }
   final FormsApi api;
+  final BuildContext context;
 
   ApiResult<List<PkForm>>? _result;
   ApiResult<List<PkForm>>? get result => _result;
 
   Future<void> _fetchDoctorForms() async {
-    _result = await api.fetchDoctorForms();
+    final _auth = context.read<PxAuth>();
+    _result = _auth.isUserNotDoctor
+        ? await api.fetchAllForms()
+        : await api.fetchDoctorForms();
     notifyListeners();
   }
 

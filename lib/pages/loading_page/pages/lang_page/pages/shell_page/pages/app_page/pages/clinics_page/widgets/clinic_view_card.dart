@@ -384,8 +384,8 @@ class ClinicViewCard extends StatelessWidget {
                               builder: (context) {
                                 return MultiProvider(
                                   providers: [
-                                    ChangeNotifierProvider(
-                                      create: (context) => PxDoctor(
+                                    ChangeNotifierProvider.value(
+                                      value: PxDoctor(
                                         api: DoctorApi(
                                           doc_id: context.read<PxAuth>().doc_id,
                                           org_id:
@@ -394,8 +394,8 @@ class ClinicViewCard extends StatelessWidget {
                                         context: context,
                                       ),
                                     ),
-                                    ChangeNotifierProvider(
-                                      create: (context) => PxClinics(
+                                    ChangeNotifierProvider.value(
+                                      value: PxClinics(
                                         api: ClinicsApi(
                                           doc_id: context.read<PxAuth>().doc_id,
                                         ),

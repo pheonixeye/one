@@ -4,11 +4,17 @@ import 'package:one/core/api/patient_forms_api.dart';
 import 'package:one/models/patient_form_field_data.dart';
 import 'package:one/models/patient_form_item.dart';
 import 'package:one/models/pk_form.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:provider/provider.dart';
 
 class PxPatientForms extends ChangeNotifier {
   final PatientFormsApi api;
+  final BuildContext context;
 
-  PxPatientForms({required this.api}) {
+  PxPatientForms({
+    required this.api,
+    required this.context,
+  }) {
     _fetchPatientForms();
   }
 
@@ -16,7 +22,10 @@ class PxPatientForms extends ChangeNotifier {
   ApiResult<List<PatientFormItem>>? get result => _result;
 
   Future<void> _fetchPatientForms() async {
-    _result = await api.fetchPatientForms();
+    final _auth = context.read<PxAuth>();
+    _result = _auth.isUserNotDoctor
+        ? await api.fetchAllPatientForms()
+        : await api.fetchDoctorPatientForms();
     notifyListeners();
   }
 

@@ -20,7 +20,31 @@ class PatientFormsApi {
 
   late final String collection = 'patient__formdata';
 
-  Future<ApiResult<List<PatientFormItem>>> fetchPatientForms() async {
+  Future<ApiResult<List<PatientFormItem>>> fetchAllPatientForms() async {
+    try {
+      final _response = await PocketbaseHelper().pbData
+          .collection(collection)
+          .getList(
+            filter: "patient_id = '$patient_id'",
+            sort: '-created',
+          );
+
+      final _patientFormData = _response.items
+          .map((e) => PatientFormItem.fromJson(e.toJson()))
+          .toList();
+
+      // dprint(_patientFormData);
+
+      return ApiDataResult<List<PatientFormItem>>(data: _patientFormData);
+    } on ClientException catch (e) {
+      return ApiErrorResult(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
+  Future<ApiResult<List<PatientFormItem>>> fetchDoctorPatientForms() async {
     try {
       final _response = await PocketbaseHelper().pbData
           .collection(collection)

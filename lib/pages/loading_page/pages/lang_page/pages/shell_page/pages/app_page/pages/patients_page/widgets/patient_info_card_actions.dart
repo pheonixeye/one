@@ -19,7 +19,7 @@ import 'package:one/models/patient.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/add_new_visit_dialog.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_forms_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_forms_dialog/patient_forms_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_id_card_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/previous_visits_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/image_source_and_document_type_dialog.dart';
@@ -264,6 +264,7 @@ class PatientInfoCardActions extends StatelessWidget {
                 builder: (context) {
                   return ChangeNotifierProvider(
                     create: (context) => PxPatientForms(
+                      context: context,
                       api: PatientFormsApi(
                         patient_id: patient.id,
                         doc_id: context.read<PxAuth>().doc_id,

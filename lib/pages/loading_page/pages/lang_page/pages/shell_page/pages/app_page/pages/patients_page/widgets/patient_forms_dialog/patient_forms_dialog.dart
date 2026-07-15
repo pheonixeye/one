@@ -1,12 +1,11 @@
 import 'package:one/models/pk_form.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_forms_dialog/form_view_assign_card.dart';
 import 'package:one/widgets/sm_btn.dart';
-import 'package:one/widgets/snackbar_.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
-import 'package:one/models/patient_form_field_data.dart';
 import 'package:one/models/patient_form_item.dart';
 import 'package:one/models/pk_field_types.dart';
 import 'package:one/providers/px_forms.dart';
@@ -15,7 +14,6 @@ import 'package:one/providers/px_patient_forms.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/central_no_items.dart';
-import 'package:one/widgets/prompt_dialog.dart';
 import 'package:provider/provider.dart';
 
 class PatientFormsDialog extends StatefulWidget {
@@ -139,106 +137,12 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                 ? false
                                 : _formItem.form_id == _pcForm.id;
 
-                            return Card.outlined(
-                              elevation: 6,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: CheckboxListTile(
-                                        controlAffinity:
-                                            ListTileControlAffinity.leading,
-                                        title: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            l.isEnglish
-                                                ? _pcForm.name_en
-                                                : _pcForm.name_ar,
-                                          ),
-                                        ),
-                                        //todo: patient_forms contains this form
-                                        value: _value,
-                                        onChanged: (val) async {
-                                          //todo: attach/detach form to patient
-                                          await shellFunction(
-                                            context,
-                                            toExecute: () async {
-                                              if (_value) {
-                                                final _toDetach =
-                                                    await showDialog<bool>(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return PromptDialog(
-                                                          message: context
-                                                              .loc
-                                                              .confirmDeleteForm,
-                                                        );
-                                                      },
-                                                    );
-                                                if (_toDetach == true) {
-                                                  await pf
-                                                      .detachFormFromPatient(
-                                                        _formItem,
-                                                      );
-                                                }
-                                              } else {
-                                                await pf.attachFormToPatient(
-                                                  PatientFormItem(
-                                                    id: '',
-                                                    doc_id: pf.api.doc_id,
-                                                    patient_id:
-                                                        pf.api.patient_id,
-                                                    form_id: _pcForm.id,
-                                                    form_data: [
-                                                      ..._pcForm.fields.map((
-                                                        _f,
-                                                      ) {
-                                                        return PatientFormFieldData(
-                                                          id: _f.id,
-                                                          field_name:
-                                                              _f.field_name,
-                                                          field_value: '',
-                                                        );
-                                                      }),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SmBtn(
-                                        tooltip: context.loc.fillForm,
-                                        onPressed: () async {
-                                          //todo: navigate to edit page with form designed
-                                          if (_formItem == null) {
-                                            showIsnackbar(
-                                              context.loc.addFormBeforeEditing,
-                                            );
-                                            return;
-                                          }
-                                          await shellFunction(
-                                            context,
-                                            toExecute: () async {
-                                              await pf.selectForms(
-                                                _pcForm,
-                                                _formItem,
-                                              );
-                                              _tabController.animateTo(1);
-                                            },
-                                          );
-                                        },
-                                        child: const Icon(Icons.arrow_forward),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            return FormViewAssignCard(
+                              form: _pcForm,
+                              patientFormItem: _formItem,
+                              tabController: _tabController,
+                              value: _value,
+                              index: index,
                             );
                           },
                         );

@@ -51,6 +51,7 @@ class _PatientDocumentsViewDialogState
   @override
   Widget build(BuildContext context) {
     return Consumer3<PxPiDocuments, PxS3PatientDocuments, PxLocale>(
+      //TODO: assistant cannot see document types for doctors
       builder: (context, a, d, l, _) {
         while (a.documentTypes == null || d.documents == null) {
           return const CentralLoading();
