@@ -1,3 +1,4 @@
+import 'package:one/core/api/patient_forms_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
 import 'package:one/core/api/subscription_api.dart';
 import 'package:one/extensions/loc_ext.dart';
@@ -20,6 +21,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/6_procedures_page/procedures_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/7_supplies_page/supplies_page.dart';
 import 'package:one/providers/pricing_px.dart';
+import 'package:one/providers/px_patient_forms.dart';
 import 'package:one/providers/px_patient_portal.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -332,6 +334,7 @@ class AppRouter {
                                     key: ValueKey('${state.pageKey}-loading'),
                                   );
                                 },
+
                                 redirect: (context, state) async {
                                   final _auth = context.read<PxAuth>();
 
@@ -382,14 +385,38 @@ class AppRouter {
                                       final _visit_id =
                                           state.pathParameters['visit_id'];
                                       try {
-                                        return ChangeNotifierProvider(
-                                          create: (context) => PxVisitData(
-                                            api: VisitDataApi(
-                                              visit_id: _visit_id!,
-                                              added_by:
-                                                  '${context.read<PxAuth>().user?.name}',
+                                        final _pxVisits = context
+                                            .read<PxVisits>();
+                                        return MultiProvider(
+                                          providers: [
+                                            ChangeNotifierProvider(
+                                              create: (context) => PxVisitData(
+                                                api: VisitDataApi(
+                                                  visit_id: _visit_id!,
+                                                  added_by:
+                                                      '${context.read<PxAuth>().user?.name}',
+                                                ),
+                                              ),
                                             ),
-                                          ),
+
+                                            ChangeNotifierProvider.value(
+                                              value: PxPatientForms(
+                                                context: context,
+                                                api: PatientFormsApi(
+                                                  patient_id:
+                                                      _pxVisits
+                                                          .visitForRouter
+                                                          ?.patient_id ??
+                                                      '',
+                                                  doc_id:
+                                                      _pxVisits
+                                                          .visitForRouter
+                                                          ?.doc_id ??
+                                                      '',
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                           child: VisitDataPage(
                                             key: state.pageKey,
                                             navigationShell: navigationShell,
