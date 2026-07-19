@@ -3583,6 +3583,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cannot Open A Visit That Was Attended By Another Doctor'**
   String get cannotOpenAVisitByAnotherDoctor;
+
+  /// No description provided for @selectValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Value ...'**
+  String get selectValue;
 }
 
 class _AppLocalizationsDelegate

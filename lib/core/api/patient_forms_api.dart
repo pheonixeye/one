@@ -78,6 +78,20 @@ class PatientFormsApi {
     await PocketbaseHelper().pbData.collection(collection).delete(formItem.id);
   }
 
+  Future<void> toggleFormPresentationInClinicalNotes(
+    PatientFormItem formItem,
+  ) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          formItem.id,
+          body: {
+            'presentable_in_clinical_notes':
+                !formItem.presentable_in_clinical_notes,
+          },
+        );
+  }
+
   Future<void> updatePatientFormFieldData(
     PatientFormItem formItem,
     PatientFormFieldData formData,

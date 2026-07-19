@@ -624,5 +624,6 @@
     "noLogoFoundRecieptWillUseDefaultImage" : "لم يتم العثور علي لوجو للعيادة - سيتم استخدام لوجو البرنامج الاساسي",
     "formTitleAlignment" : "تغيير اتجاه عنوان النموذج",
     "formTextAlignment" : "تغيير اتجاه بيانات النموذج",
-    "cannotOpenAVisitByAnotherDoctor" : "لا يمكن فتح زيارة تم مناظرتها بواسطة طبيب اخر"
+    "cannotOpenAVisitByAnotherDoctor" : "لا يمكن فتح زيارة تم مناظرتها بواسطة طبيب اخر",
+    "selectValue" : "اختر القيمة ..."
 }

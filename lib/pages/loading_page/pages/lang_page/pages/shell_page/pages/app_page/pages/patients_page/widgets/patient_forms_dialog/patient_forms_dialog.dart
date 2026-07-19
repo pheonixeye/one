@@ -1,5 +1,6 @@
 import 'package:one/models/pk_form.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_forms_dialog/form_view_assign_card.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
@@ -58,8 +59,8 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
       content: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
-        child: Consumer3<PxForms, PxPatientForms, PxLocale>(
-          builder: (context, f, pf, l, _) {
+        child: Consumer4<PxAuth, PxForms, PxPatientForms, PxLocale>(
+          builder: (context, auth, f, pf, l, _) {
             return Scaffold(
               appBar: TabBar(
                 physics: const NeverScrollableScrollPhysics(),
@@ -88,6 +89,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
+                  /// form assign view
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -106,7 +108,10 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                           return CentralError(
                             code: (f.result as ApiErrorResult).errorCode,
                             toExecute: () async {
-                              await Future.wait([f.retry(), pf.retry()]);
+                              await Future.wait([
+                                f.retry(),
+                                pf.retry(),
+                              ]);
                             },
                           );
                         }
@@ -132,7 +137,7 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                     .firstWhereOrNull(
                                       (e) => e.form_id == _pcForm.id,
                                     );
-                            // print('_formItem => $_formItem');
+
                             final _value = _formItem == null
                                 ? false
                                 : _formItem.form_id == _pcForm.id;
@@ -149,6 +154,8 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                       },
                     ),
                   ),
+
+                  /// form data entry view
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
@@ -256,62 +263,67 @@ class _PatientFormsDialogState extends State<PatientFormsDialog>
                                       },
                                     ),
                                   ),
-                                  PkFieldType.dropdown => ListTile(
+                                  PkFieldType.dropdown => ExpansionTile(
+                                    initiallyExpanded: true,
+                                    showTrailingIcon: false,
                                     title: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(_formField.field_name),
                                     ),
-                                    subtitle: Row(
-                                      children: [
-                                        Expanded(
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButtonFormField<String>(
-                                              items: _formField.values.map((e) {
-                                                return DropdownMenuItem<String>(
-                                                  value: e,
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    e,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              initialValue:
-                                                  _patientFormData
-                                                          ?.field_value ==
-                                                      ''
-                                                  ? null
-                                                  : _patientFormData
-                                                        ?.field_value,
-                                              alignment: Alignment.center,
-                                              onChanged: (value) async {
-                                                //todo: update values in _formItem.formData
-
-                                                if (value != null) {
-                                                  final _toUpdate =
-                                                      _patientFormData
-                                                          ?.copyWith(
-                                                            field_value: value,
-                                                          );
-                                                  if (_toUpdate != null) {
-                                                    await shellFunction(
-                                                      context,
-                                                      toExecute: () async {
-                                                        await pf
-                                                            .updatePatientFormFieldData(
-                                                              pf.formItem!,
-                                                              _toUpdate,
-                                                            );
-                                                      },
-                                                    );
-                                                  }
-                                                }
-                                              },
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButtonFormField<String>(
+                                            items: _formField.values.map((
+                                              e,
+                                            ) {
+                                              return DropdownMenuItem<String>(
+                                                value: e,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  e,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }).toList(),
+                                            isExpanded: true,
+                                            initialValue:
+                                                _patientFormData?.field_value ==
+                                                    ''
+                                                ? null
+                                                : _patientFormData?.field_value,
+                                            hint: Text(
+                                              context.loc.selectValue,
+                                              textAlign: TextAlign.center,
                                             ),
+                                            alignment: Alignment.center,
+                                            onChanged: (value) async {
+                                              //todo: update values in _formItem.formData
+
+                                              if (value != null) {
+                                                final _toUpdate =
+                                                    _patientFormData?.copyWith(
+                                                      field_value: value,
+                                                    );
+                                                if (_toUpdate != null) {
+                                                  await shellFunction(
+                                                    context,
+                                                    toExecute: () async {
+                                                      await pf
+                                                          .updatePatientFormFieldData(
+                                                            pf.formItem!,
+                                                            _toUpdate,
+                                                          );
+                                                    },
+                                                  );
+                                                }
+                                              }
+                                            },
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                   PkFieldType.checkbox => ListTile(
                                     title: Padding(

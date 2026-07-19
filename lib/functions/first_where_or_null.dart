@@ -9,4 +9,13 @@ extension FirstWhereOrNull<T> on Iterable<T> {
       return null;
     }
   }
+
+  Iterable<T> whereOrEmpty(bool Function(T) test) {
+    try {
+      return where(test);
+    } on StateError catch (e) {
+      dprint('whereOrEmpty($runtimeType-->${e.message})');
+      return [];
+    }
+  }
 }

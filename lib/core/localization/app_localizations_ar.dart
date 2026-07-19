@@ -1827,4 +1827,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get cannotOpenAVisitByAnotherDoctor =>
       'لا يمكن فتح زيارة تم مناظرتها بواسطة طبيب اخر';
+
+  @override
+  String get selectValue => 'اختر القيمة ...';
 }

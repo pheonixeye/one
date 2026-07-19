@@ -7,6 +7,7 @@ class PatientFormItem extends Equatable {
   final String doc_id;
   final String form_id;
   final List<PatientFormFieldData> form_data;
+  final bool presentable_in_clinical_notes;
 
   const PatientFormItem({
     required this.id,
@@ -14,6 +15,7 @@ class PatientFormItem extends Equatable {
     required this.doc_id,
     required this.form_id,
     required this.form_data,
+    required this.presentable_in_clinical_notes,
   });
 
   PatientFormItem copyWith({
@@ -22,6 +24,7 @@ class PatientFormItem extends Equatable {
     String? doc_id,
     String? form_id,
     List<PatientFormFieldData>? form_data,
+    bool? presentable_in_clinical_notes,
   }) {
     return PatientFormItem(
       id: id ?? this.id,
@@ -29,6 +32,8 @@ class PatientFormItem extends Equatable {
       patient_id: patient_id ?? this.patient_id,
       form_id: form_id ?? this.form_id,
       form_data: form_data ?? this.form_data,
+      presentable_in_clinical_notes:
+          presentable_in_clinical_notes ?? this.presentable_in_clinical_notes,
     );
   }
 
@@ -39,6 +44,7 @@ class PatientFormItem extends Equatable {
       'patient_id': patient_id,
       'form_id': form_id,
       'form_data': form_data.map((e) => e.toJson()).toList(),
+      'presentable_in_clinical_notes': presentable_in_clinical_notes,
     };
   }
 
@@ -51,6 +57,8 @@ class PatientFormItem extends Equatable {
       form_data: (map['form_data'] as List<dynamic>)
           .map((e) => PatientFormFieldData.fromJson(e as Map<String, dynamic>))
           .toList(),
+      presentable_in_clinical_notes:
+          map['presentable_in_clinical_notes'] as bool,
     );
   }
 
@@ -64,5 +72,6 @@ class PatientFormItem extends Equatable {
     doc_id,
     form_id,
     form_data,
+    presentable_in_clinical_notes,
   ];
 }

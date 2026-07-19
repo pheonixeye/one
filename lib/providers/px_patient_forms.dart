@@ -41,6 +41,13 @@ class PxPatientForms extends ChangeNotifier {
     await _fetchPatientForms();
   }
 
+  Future<void> toggleFormPresentationInClinicalNotes(
+    PatientFormItem formItem,
+  ) async {
+    await api.toggleFormPresentationInClinicalNotes(formItem);
+    await _fetchPatientForms();
+  }
+
   Future<void> updatePatientFormFieldData(
     PatientFormItem formItem,
     PatientFormFieldData formData,
