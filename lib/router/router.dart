@@ -1,5 +1,6 @@
 import 'package:one/core/api/patient_forms_api.dart';
 import 'package:one/core/api/patient_portal_api.dart';
+import 'package:one/core/api/progress_notes_api.dart';
 import 'package:one/core/api/subscription_api.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/patients_portal/portal_query.dart';
@@ -15,7 +16,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_clinical_notes_page/clinical_notes_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/progress_notes_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/labs_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/5_rads_page/rads_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/6_procedures_page/procedures_page.dart';
@@ -54,6 +55,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/shell_page.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
+import 'package:one/providers/px_progress_notes.dart';
 import 'package:one/providers/px_subscription.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/providers/px_visit_filter.dart';
@@ -416,6 +418,22 @@ class AppRouter {
                                                 ),
                                               ),
                                             ),
+                                            ChangeNotifierProvider.value(
+                                              value: PxProgressNotes(
+                                                api: ProgressNotesApi(
+                                                  patient_id:
+                                                      _pxVisits
+                                                          .visitForRouter
+                                                          ?.patient_id ??
+                                                      '',
+                                                  doc_id:
+                                                      _pxVisits
+                                                          .visitForRouter
+                                                          ?.doc_id ??
+                                                      '',
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                           child: VisitDataPage(
                                             key: state.pageKey,
@@ -433,7 +451,7 @@ class AppRouter {
                                             path: '/$visit_clinical_notes',
                                             name: visit_clinical_notes,
                                             builder: (context, state) {
-                                              return VisitClinicalNotesPage(
+                                              return VisitProgressNotesPage(
                                                 key: state.pageKey,
                                               );
                                             },

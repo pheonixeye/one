@@ -1830,4 +1830,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectValue => 'اختر القيمة ...';
+
+  @override
+  String get addClinicalProgressNote => 'اضافة ملاحظات تقدم';
+
+  @override
+  String get noProgressNotesFound => 'لم يتم العثور علي ملاحظات تقدم';
+
+  @override
+  String get editNote => 'تعديل';
+
+  @override
+  String get deleteNote => 'الغاء';
+
+  @override
+  String get deleteProgressNotePrompt =>
+      'هل تريد الغاء هذه الملاحظة ؟ هل انت متأكد ؟';
+
+  @override
+  String get cannotDeleteAnOldProgressNote =>
+      'يمكن الغاء الملاحظات الاكلينيكية في تاريخ تسجيلها فقط';
 }

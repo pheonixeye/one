@@ -625,5 +625,11 @@
     "formTitleAlignment" : "تغيير اتجاه عنوان النموذج",
     "formTextAlignment" : "تغيير اتجاه بيانات النموذج",
     "cannotOpenAVisitByAnotherDoctor" : "لا يمكن فتح زيارة تم مناظرتها بواسطة طبيب اخر",
-    "selectValue" : "اختر القيمة ..."
+    "selectValue" : "اختر القيمة ...",
+    "addClinicalProgressNote" : "اضافة ملاحظات تقدم",
+    "noProgressNotesFound" : "لم يتم العثور علي ملاحظات تقدم",
+    "editNote" : "تعديل",
+    "deleteNote" : "الغاء",
+    "deleteProgressNotePrompt" : "هل تريد الغاء هذه الملاحظة ؟ هل انت متأكد ؟",
+    "cannotDeleteAnOldProgressNote" : "يمكن الغاء الملاحظات الاكلينيكية في تاريخ تسجيلها فقط"
 }

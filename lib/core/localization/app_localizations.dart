@@ -3589,6 +3589,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Value ...'**
   String get selectValue;
+
+  /// No description provided for @addClinicalProgressNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Clinical Progress Note'**
+  String get addClinicalProgressNote;
+
+  /// No description provided for @noProgressNotesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Progress Notes Found'**
+  String get noProgressNotesFound;
+
+  /// No description provided for @editNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Note'**
+  String get editNote;
+
+  /// No description provided for @deleteNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Note'**
+  String get deleteNote;
+
+  /// No description provided for @deleteProgressNotePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete This Progress Note ? Are You Sure ?'**
+  String get deleteProgressNotePrompt;
+
+  /// No description provided for @cannotDeleteAnOldProgressNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Can Delete A Progress Note On The Day Of The Visit Only'**
+  String get cannotDeleteAnOldProgressNote;
 }
 
 class _AppLocalizationsDelegate

@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_clinical_notes_page/clinical_notes_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/progress_notes_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/3_drugs_page/drugs_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/forms_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/labs_page.dart';
@@ -34,7 +34,7 @@ class VisitDataNavItem extends Equatable {
       title: context.loc.clinicalNotes,
       icon: const Icon(FontAwesomeIcons.notesMedical),
       selectedIcon: const Icon(FontAwesomeIcons.noteSticky),
-      page: VisitClinicalNotesPage(),
+      page: VisitProgressNotesPage(),
     ),
     VisitDataNavItem(
       title: context.loc.visitForms,

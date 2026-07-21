@@ -1838,4 +1838,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectValue => 'Select Value ...';
+
+  @override
+  String get addClinicalProgressNote => 'Add Clinical Progress Note';
+
+  @override
+  String get noProgressNotesFound => 'No Progress Notes Found';
+
+  @override
+  String get editNote => 'Edit Note';
+
+  @override
+  String get deleteNote => 'Delete Note';
+
+  @override
+  String get deleteProgressNotePrompt =>
+      'Delete This Progress Note ? Are You Sure ?';
+
+  @override
+  String get cannotDeleteAnOldProgressNote =>
+      'Can Delete A Progress Note On The Day Of The Visit Only';
 }
