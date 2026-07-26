@@ -60,7 +60,7 @@ enum PermissionEnum {
   User_Patient_Email, //done
   User_Patient_Forms, //done
   User_Patient_AddDocument,
-  User_Patient_ViewDocuments,
+  User_Patient_ViewDocument,
   User_Visits_Read, //done
   User_Visits_PrintReciept,
   User_Visits_PrintExcel,

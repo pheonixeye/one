@@ -287,7 +287,7 @@ class PatientInfoCardActions extends StatelessWidget {
             onTap: () async {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
-                PermissionEnum.User_Patient_ViewDocuments,
+                PermissionEnum.User_Patient_ViewDocument,
                 context,
               );
               if (!_perm.isAllowed) {

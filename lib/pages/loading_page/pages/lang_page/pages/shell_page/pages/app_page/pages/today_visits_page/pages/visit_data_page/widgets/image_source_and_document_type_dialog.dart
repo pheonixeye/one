@@ -1,6 +1,10 @@
 import 'package:one/core/api/_api_result.dart';
+import 'package:one/core/api/profile_items_api/pi_document_types_api.dart';
+import 'package:one/extensions/is_mobile_context.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/doctor_items/pi_document_type.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_doctor.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_profile_items/px_pi_documents.dart';
 import 'package:one/widgets/central_error.dart';
@@ -29,13 +33,318 @@ class ImageSourceAndDocumentTypeDialog extends StatefulWidget {
 }
 
 class _ImageSourceAndDocumentTypeDialogState
-    extends State<ImageSourceAndDocumentTypeDialog> {
+    extends State<ImageSourceAndDocumentTypeDialog>
+    with SingleTickerProviderStateMixin {
   ImageSource? _imageSource;
+
   PiDocumentType? _document_type;
+
   final _formKey = GlobalKey<FormState>();
+
+  late final _auth = context.read<PxAuth>();
+
+  late final TabController _tabController = TabController(
+    length: 3,
+    vsync: this,
+  );
+
+  String? _doc_id;
+
+  late final List<Widget> _actions = [
+    ElevatedButton.icon(
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          final _d = ImageSourceAndDocumentType(
+            document_type: _document_type!,
+            imageSource: _imageSource!,
+          );
+          Navigator.pop(context, _d);
+        }
+      },
+      label: Text(context.loc.confirm),
+      icon: Icon(Icons.check, color: Colors.green.shade100),
+    ),
+    ElevatedButton.icon(
+      onPressed: () {
+        Navigator.pop(context, null);
+      },
+      label: Text(context.loc.cancel),
+      icon: const Icon(Icons.close, color: Colors.red),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    if (_auth.isUserNotDoctor) {
+      //TODO: split into 2 views
+      return AlertDialog(
+        title: Row(
+          children: [
+            Expanded(child: Text(context.loc.pickImageSourceAndDocumentType)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton.outlined(
+                onPressed: () {
+                  Navigator.pop(context, null);
+                },
+                icon: const Icon(Icons.close),
+              ),
+            ),
+          ],
+        ),
+        contentPadding: const EdgeInsets.all(8),
+        insetPadding: const EdgeInsets.all(8),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.heightOf(context) / 2,
+          maxWidth: context.isMobile
+              ? MediaQuery.heightOf(context)
+              : MediaQuery.heightOf(context) / 2,
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        content: Form(
+          key: _formKey,
+          child: SizedBox(
+            height: 200,
+            width: double.maxFinite,
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _tabController,
+              children: [
+                Card.outlined(
+                  elevation: 6,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      titleAlignment: ListTileTitleAlignment.titleHeight,
+                      leading: const SmBtn(),
+                      title: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(context.loc.pickImageSource),
+                      ),
+                      subtitle: FormField<ImageSource?>(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        builder: (field) {
+                          return RadioGroup<ImageSource>(
+                            groupValue: _imageSource,
+                            onChanged: (val) {
+                              setState(() {
+                                _imageSource = val;
+                              });
+                              _tabController.animateTo(1);
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 8,
+                              children: [
+                                ...ImageSource.values.map((e) {
+                                  return RadioListTile(
+                                    title: Text(switch (e) {
+                                      ImageSource.camera => context.loc.camera,
+                                      ImageSource.gallery => context.loc.file,
+                                    }),
+                                    value: e,
+                                  );
+                                }),
+                                if (field.hasError)
+                                  Text(
+                                    field.errorText ?? '',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                        validator: (value) {
+                          if (_imageSource == null) {
+                            return context.loc.pickImageSource;
+                          }
+                          return null;
+                        },
+                        errorBuilder: (context, errorText) {
+                          return Text(errorText);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Consumer2<PxDoctor, PxLocale>(
+                  builder: (context, d, l, _) {
+                    while (d.allDoctors == null) {
+                      return const CentralLoading();
+                    }
+                    final _doctors = d.allDoctors;
+                    return Card.outlined(
+                      elevation: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          titleAlignment: ListTileTitleAlignment.titleHeight,
+                          leading: SmBtn(
+                            onPressed: null,
+                            key: UniqueKey(),
+                          ),
+                          title: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(context.loc.pickDoctor),
+                          ),
+                          subtitle: FormField<String?>(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            builder: (field) {
+                              return RadioGroup<String>(
+                                groupValue: _doc_id,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _doc_id = val;
+                                  });
+                                  _tabController.animateTo(2);
+                                },
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    spacing: 8,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ..._doctors!.map((e) {
+                                        return RadioListTile<String>(
+                                          title: Text(
+                                            l.isEnglish ? e.name_en : e.name_ar,
+                                          ),
+                                          value: e.id,
+                                        );
+                                      }),
+                                      if (field.hasError)
+                                        Text(
+                                          field.errorText ?? '',
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            validator: (value) {
+                              if (_doc_id == null) {
+                                return context.loc.pickDoctor;
+                              }
+                              return null;
+                            },
+                            errorBuilder: (context, errorText) {
+                              return Text(errorText);
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => PxPiDocuments(
+                    api: PiDocumentTypesApi(
+                      doc_id: _doc_id ?? '',
+                    ),
+                  ),
+                  child: Card.outlined(
+                    elevation: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        titleAlignment: ListTileTitleAlignment.titleHeight,
+                        leading: SmBtn(onPressed: null, key: UniqueKey()),
+                        title: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(context.loc.pickDocumentType),
+                        ),
+                        subtitle: Consumer2<PxPiDocuments, PxLocale>(
+                          builder: (context, d, l, _) {
+                            while (d.documentTypes == null) {
+                              return const CentralLoading();
+                            }
+                            while (d.documentTypes is ApiErrorResult) {
+                              final _err =
+                                  (d.documentTypes
+                                      as ApiErrorResult<List<PiDocumentType>>);
+                              return CentralError(
+                                code: _err.errorCode,
+                                toExecute: d.retry,
+                              );
+                            }
+                            final _data =
+                                (d.documentTypes
+                                        as ApiDataResult<List<PiDocumentType>>)
+                                    .data;
+                            return FormField<PiDocumentType?>(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              builder: (field) {
+                                return RadioGroup<PiDocumentType>(
+                                  groupValue: _document_type,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      _document_type = val;
+                                    });
+                                  },
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      spacing: 8,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ..._data.map((e) {
+                                          return RadioListTile<PiDocumentType>(
+                                            title: Text(
+                                              l.isEnglish
+                                                  ? e.name_en
+                                                  : e.name_ar,
+                                            ),
+                                            value: e,
+                                          );
+                                        }),
+                                        if (field.hasError)
+                                          Text(
+                                            field.errorText ?? '',
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              validator: (value) {
+                                if (_document_type == null) {
+                                  return context.loc.pickDocumentType;
+                                }
+                                return null;
+                              },
+                              errorBuilder: (context, errorText) {
+                                return Text(errorText);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: _actions,
+      );
+    }
     return Consumer2<PxPiDocuments, PxLocale>(
       builder: (context, a, l, _) {
         while (a.documentTypes == null) {
@@ -195,28 +504,7 @@ class _ImageSourceAndDocumentTypeDialogState
               ],
             ),
           ),
-          actions: [
-            ElevatedButton.icon(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final _d = ImageSourceAndDocumentType(
-                    document_type: _document_type!,
-                    imageSource: _imageSource!,
-                  );
-                  Navigator.pop(context, _d);
-                }
-              },
-              label: Text(context.loc.confirm),
-              icon: Icon(Icons.check, color: Colors.green.shade100),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pop(context, null);
-              },
-              label: Text(context.loc.cancel),
-              icon: const Icon(Icons.close, color: Colors.red),
-            ),
-          ],
+          actions: _actions,
         );
       },
     );
