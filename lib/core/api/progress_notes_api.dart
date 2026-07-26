@@ -47,6 +47,7 @@ class ProgressNotesApi {
           .collection(collection)
           .getList(
             page: page,
+            perPage: perPage,
             filter: "patient_id = '$patient_id' && doc_id = '$doc_id'",
             sort: '-visit_date, -time_of_note',
           );

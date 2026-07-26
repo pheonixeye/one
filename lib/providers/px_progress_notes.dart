@@ -42,7 +42,9 @@ class PxProgressNotes extends ChangeNotifier {
         (_result! as ApiDataResult<List<PatientProgressNote>>).data.length ==
             _perPage) {
       _page++;
+      toggleLoading();
       await _init();
+      toggleLoading();
     }
   }
 
@@ -74,5 +76,13 @@ class PxProgressNotes extends ChangeNotifier {
       _notes[_index] = _note;
       notifyListeners();
     }
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  void toggleLoading() {
+    _isLoading = !_isLoading;
+    notifyListeners();
   }
 }

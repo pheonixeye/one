@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/extensions/loc_ext.dart';
@@ -7,6 +6,7 @@ import 'package:one/functions/shell_function.dart';
 import 'package:one/models/patient_progress_note.dart';
 import 'package:one/models/patient_form_item.dart';
 import 'package:one/models/visit_data/visit_data.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/progress_notes_card.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/visit_details_page_info_header.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_forms.dart';
@@ -14,13 +14,38 @@ import 'package:one/providers/px_progress_notes.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
-import 'package:one/widgets/prompt_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
-import 'package:one/widgets/snackbar_.dart';
 import 'package:provider/provider.dart';
 
-class VisitProgressNotesPage extends StatelessWidget {
+class VisitProgressNotesPage extends StatefulWidget {
   const VisitProgressNotesPage({super.key});
+
+  @override
+  State<VisitProgressNotesPage> createState() => _VisitProgressNotesPageState();
+}
+
+class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
+  late final ScrollController _scrollController;
+  late final PxProgressNotes _pxPn;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _pxPn = context.read<PxProgressNotes>();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent * 0.8 &&
+          !_pxPn.isLoading) {
+        _pxPn.fetchNextBatch();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +73,6 @@ class VisitProgressNotesPage extends StatelessWidget {
         }
         final _visit_data = (vd.result as ApiDataResult<VisitData>).data;
 
-        ///TODO: clinical notes empty - first visit
-
-        //TODO: craft UI
         final _patientForms =
             (pf.result as ApiDataResult<List<PatientFormItem>>).data;
 
@@ -59,6 +81,12 @@ class VisitProgressNotesPage extends StatelessWidget {
         return Scaffold(
           body: Column(
             children: [
+              if (pn.isLoading)
+                const SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(),
+                ),
               VisitDetailsPageInfoHeader(
                 patient: (vd.result as ApiDataResult<VisitData>).data.patient,
                 title: context.loc.clinicalNotes,
@@ -67,6 +95,7 @@ class VisitProgressNotesPage extends StatelessWidget {
               Expanded(
                 child: ListView(
                   cacheExtent: 3000,
+                  controller: _scrollController,
                   children: [
                     if (_patientForms.isNotEmpty) ...[
                       ..._patientForms.map((form) {
@@ -128,141 +157,10 @@ class VisitProgressNotesPage extends StatelessWidget {
                     ///rest of progress notes
                     if (_notes.isNotEmpty)
                       ..._notes.map((note) {
-                        final _isTodayVisit = note.visit_date.isTheSameDate(
-                          DateTime.now().unTimed,
-                        );
-
                         final _index = _notes.indexOf(note);
-                        return Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card.outlined(
-                              elevation: 6,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ExpansionTile(
-                                  initiallyExpanded: true,
-                                  showTrailingIcon: true,
-                                  title: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      spacing: 8,
-                                      children: [
-                                        SmBtn(
-                                          child: Text('${_index + 1}'),
-                                        ),
-                                        Card.outlined(
-                                          elevation: 6,
-                                          color: _isTodayVisit
-                                              ? Colors.amber.shade50
-                                              : Colors.blue.shade50,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              intl.DateFormat(
-                                                'dd - MM - yyyy',
-                                                'en',
-                                              ).format(note.visit_date),
-                                            ),
-                                          ),
-                                        ),
-                                        Text('  '),
-                                        Text(
-                                          intl.DateFormat.jmv(
-                                            'en',
-                                          ).format(note.time_of_note),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      spacing: 8,
-                                      children: [
-                                        ElevatedButton.icon(
-                                          onPressed: () async {
-                                            await shellFunction(
-                                              context,
-                                              toExecute: () async {
-                                                await pn.updateNote(
-                                                  note.id,
-                                                  {
-                                                    ///TODO
-                                                  },
-                                                );
-                                              },
-                                            );
-                                          },
-                                          label: Text(
-                                            context.loc.editNote,
-                                          ),
-                                          icon: const Icon(Icons.edit),
-                                        ),
-                                        ElevatedButton.icon(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red,
-                                          ),
-                                          onPressed: () async {
-                                            if (!_isTodayVisit) {
-                                              showIsnackbar(
-                                                context
-                                                    .loc
-                                                    .cannotDeleteAnOldProgressNote,
-                                              );
-                                              return;
-                                            }
-                                            final _toDelete =
-                                                await showDialog<bool?>(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      PromptDialog(
-                                                        message: context
-                                                            .loc
-                                                            .deleteProgressNotePrompt,
-                                                      ),
-                                                );
-                                            if (_toDelete == null ||
-                                                _toDelete == false) {
-                                              return;
-                                            }
-                                            if (context.mounted) {
-                                              await shellFunction(
-                                                context,
-                                                toExecute: () async {
-                                                  await pn.deleteNote(note.id);
-                                                },
-                                              );
-                                            }
-                                          },
-                                          label: Text(
-                                            context.loc.deleteNote,
-                                          ),
-                                          icon: const Icon(Icons.delete),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  children: [
-                                    ListTile(
-                                      leading: const SizedBox(),
-                                      title: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text('Subjective'),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(note.subjective),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                        return ProgressNotesCard(
+                          note: note,
+                          index: _index,
                         );
                       })
                     else
