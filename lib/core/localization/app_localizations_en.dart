@@ -1858,4 +1858,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cannotDeleteAnOldProgressNote =>
       'Can Delete A Progress Note On The Day Of The Visit Only';
+
+  @override
+  String get previousVisit => 'Previous Visit';
 }

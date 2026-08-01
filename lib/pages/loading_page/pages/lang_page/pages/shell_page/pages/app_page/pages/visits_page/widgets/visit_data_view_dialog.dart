@@ -70,6 +70,7 @@ class VisitDataViewDialog extends StatelessWidget {
                   visit: visit,
                   index: 0,
                   showIndexNumber: false,
+                  showOpenVisitBtn: false,
                 ),
                 //forms
                 Card.outlined(

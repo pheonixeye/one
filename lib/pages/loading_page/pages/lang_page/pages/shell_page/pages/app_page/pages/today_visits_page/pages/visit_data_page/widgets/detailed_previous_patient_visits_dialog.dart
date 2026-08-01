@@ -29,7 +29,7 @@ class _DetailedPreviousPatientVisitsDialogState
     extends State<DetailedPreviousPatientVisitsDialog>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  VisitExpanded? _selectedVisit;
+  final ValueNotifier<VisitExpanded?> _selectedVisit = ValueNotifier(null);
 
   @override
   void initState() {
@@ -107,12 +107,12 @@ class _DetailedPreviousPatientVisitsDialogState
                     Tab(text: context.loc.visitData),
                   ],
                   onTap: (value) {
-                    if (_selectedVisit == null && value == 1) {
+                    if (_selectedVisit.value == null && value == 1) {
                       _tabController.animateTo(0);
                       return;
                     }
                     if (value == 0) {
-                      _selectedVisit = null;
+                      _selectedVisit.value = null;
                     }
                   },
                 ),
@@ -131,12 +131,13 @@ class _DetailedPreviousPatientVisitsDialogState
                                 return InkWell(
                                   mouseCursor: SystemMouseCursors.click,
                                   onTap: () async {
-                                    _selectedVisit = item;
+                                    _selectedVisit.value = item;
                                     _tabController.animateTo(1);
                                   },
                                   child: PreviousVisitViewCard(
                                     index: index,
                                     visit: item,
+                                    showOpenVisitBtn: true,
                                   ),
                                 );
                               },
@@ -162,7 +163,7 @@ class _DetailedPreviousPatientVisitsDialogState
                                   horizontal: 24.0,
                                 ),
                                 child: Text(
-                                  '-${p.page}-'.toArabicNumber(context),
+                                  '- ${p.page} -'.toArabicNumber(context),
                                 ),
                               ),
                               IconButton.outlined(
@@ -183,9 +184,10 @@ class _DetailedPreviousPatientVisitsDialogState
                       ),
                       //visit details side
                       ChangeNotifierProvider(
+                        key: ValueKey(_selectedVisit.value?.id),
                         create: (context) => PxVisitData(
                           api: VisitDataApi(
-                            visit_id: _selectedVisit!.id,
+                            visit_id: _selectedVisit.value!.id,
                             added_by: '${context.read<PxAuth>().user?.name}',
                           ),
                         ),
@@ -204,12 +206,13 @@ class _DetailedPreviousPatientVisitsDialogState
                                 (v.result as ApiDataResult<VisitData>).data;
                             return ListView(
                               children: [
-                                _selectedVisit == null
+                                _selectedVisit.value == null
                                     ? SizedBox()
                                     : PreviousVisitViewCard(
-                                        visit: _selectedVisit!,
+                                        visit: _selectedVisit.value!,
                                         index: 0,
                                         showIndexNumber: false,
+                                        showOpenVisitBtn: true,
                                       ),
                                 //forms
                                 Card.outlined(
@@ -252,7 +255,9 @@ class _DetailedPreviousPatientVisitsDialogState
                                                           CircleAvatar(
                                                             radius: 8,
                                                           ),
-                                                          Text(d.field_name),
+                                                          Text(
+                                                            d.field_name,
+                                                          ),
                                                         ],
                                                       ),
                                                       subtitle: Padding(
@@ -263,7 +268,9 @@ class _DetailedPreviousPatientVisitsDialogState
                                                         child: Wrap(
                                                           spacing: 8,
                                                           children: [
-                                                            Text(d.field_value),
+                                                            Text(
+                                                              d.field_value,
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
@@ -384,7 +391,9 @@ class _DetailedPreviousPatientVisitsDialogState
                                     child: ExpansionTile(
                                       initiallyExpanded: true,
                                       leading: const SmBtn(),
-                                      title: Text(context.loc.visitProcedures),
+                                      title: Text(
+                                        context.loc.visitProcedures,
+                                      ),
                                       children: [
                                         ..._data.procedures.map((x) {
                                           return ListTile(
@@ -413,7 +422,9 @@ class _DetailedPreviousPatientVisitsDialogState
                                     child: ExpansionTile(
                                       initiallyExpanded: true,
                                       leading: const SmBtn(),
-                                      title: Text(context.loc.visitSupplies),
+                                      title: Text(
+                                        context.loc.visitSupplies,
+                                      ),
                                       children: [
                                         ..._data.supplies.map((x) {
                                           return ListTile(

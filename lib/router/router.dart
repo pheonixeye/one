@@ -386,13 +386,16 @@ class AppRouter {
                                     builder: (context, state, navigationShell) {
                                       final _visit_id =
                                           state.pathParameters['visit_id'];
+
                                       try {
                                         final _pxVisits = context
                                             .read<PxVisits>();
                                         return MultiProvider(
+                                          key: ValueKey(_visit_id),
                                           providers: [
-                                            ChangeNotifierProvider(
-                                              create: (context) => PxVisitData(
+                                            ChangeNotifierProvider.value(
+                                              key: ValueKey(_visit_id),
+                                              value: PxVisitData(
                                                 api: VisitDataApi(
                                                   visit_id: _visit_id!,
                                                   added_by:
@@ -435,10 +438,12 @@ class AppRouter {
                                               ),
                                             ),
                                           ],
-                                          child: VisitDataPage(
-                                            key: state.pageKey,
-                                            navigationShell: navigationShell,
-                                          ),
+                                          builder: (context, child) {
+                                            return VisitDataPage(
+                                              key: state.pageKey,
+                                              navigationShell: navigationShell,
+                                            );
+                                          },
                                         );
                                       } catch (e) {
                                         rethrow;
@@ -544,6 +549,10 @@ class AppRouter {
                                             name: visit_prescription,
                                             builder: (context, state) {
                                               return ChangeNotifierProvider(
+                                                key: ValueKey(
+                                                  state
+                                                      .pathParameters['visit_id'],
+                                                ),
                                                 create: (context) =>
                                                     PxVisitPrescriptionState(),
 
@@ -632,7 +641,6 @@ class AppRouter {
                                       ProfileSetupItem.drugs => PiDrugsPage(
                                         key: state.pageKey,
                                       ),
-
                                       ProfileSetupItem.labs => PiLabsPage(
                                         key: state.pageKey,
                                       ),

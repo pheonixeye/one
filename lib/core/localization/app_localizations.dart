@@ -3625,6 +3625,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Can Delete A Progress Note On The Day Of The Visit Only'**
   String get cannotDeleteAnOldProgressNote;
+
+  /// No description provided for @previousVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous Visit'**
+  String get previousVisit;
 }
 
 class _AppLocalizationsDelegate

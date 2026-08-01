@@ -9,7 +9,6 @@ import 'package:one/core/logic/bookkeeping_transformer.dart';
 import 'package:one/core/logic/supply_movement_transformer.dart';
 import 'package:one/errors/code_to_error.dart';
 import 'package:one/functions/first_where_or_null.dart';
-import 'package:one/models/doctor_items/profile_setup_item.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
 
@@ -261,98 +260,98 @@ class VisitDataApi {
     }
   }
 
-  Future<void> addToItemList(
-    VisitData visit_data,
-    String item_id,
-    ProfileSetupItem setupItem,
-  ) async {
-    final Map<String, dynamic> _update = switch (setupItem) {
-      ProfileSetupItem.drugs ||
-      ProfileSetupItem.documents ||
-      ProfileSetupItem.referrals => {},
-      ProfileSetupItem.labs => {'labs_ids+': item_id},
-      ProfileSetupItem.rads => {'rads_ids+': item_id},
-      ProfileSetupItem.procedures => {'procedures_ids+': item_id},
-      ProfileSetupItem.supplies => {'supplies_ids+': item_id},
-    };
+  // Future<void> addToItemList(
+  //   VisitData visit_data,
+  //   String item_id,
+  //   ProfileSetupItem setupItem,
+  // ) async {
+  //   final Map<String, dynamic> _update = switch (setupItem) {
+  //     ProfileSetupItem.drugs ||
+  //     ProfileSetupItem.documents ||
+  //     ProfileSetupItem.referrals => {},
+  //     ProfileSetupItem.labs => {'labs_ids+': item_id},
+  //     ProfileSetupItem.rads => {'rads_ids+': item_id},
+  //     ProfileSetupItem.procedures => {'procedures_ids+': item_id},
+  //     ProfileSetupItem.supplies => {'supplies_ids+': item_id},
+  //   };
 
-    final _response = await PocketbaseHelper().pbData
-        .collection(collection)
-        .update(visit_data.id, body: _update, expand: _expand);
-    //todo: parse data
-    final _visit_data = VisitData.fromRecordModel(_response);
+  //   final _response = await PocketbaseHelper().pbData
+  //       .collection(collection)
+  //       .update(visit_data.id, body: _update, expand: _expand);
+  //   //todo: parse data
+  //   final _visit_data = VisitData.fromRecordModel(_response);
 
-    if (setupItem == ProfileSetupItem.procedures) {
-      //todo: initialize transformer
-      final _bk_transformer = BookkeepingTransformer(
-        item_id: _visit_data.id,
-        collection_id: collection,
-        added_by: added_by,
-      );
-      //todo: get added item
-      final _added_procedure = _visit_data.procedures.firstWhereOrNull(
-        (x) => x.id == item_id,
-      );
+  //   if (setupItem == ProfileSetupItem.procedures) {
+  //     //todo: initialize transformer
+  //     final _bk_transformer = BookkeepingTransformer(
+  //       item_id: _visit_data.id,
+  //       collection_id: collection,
+  //       added_by: added_by,
+  //     );
+  //     //todo: get added item
+  //     final _added_procedure = _visit_data.procedures.firstWhereOrNull(
+  //       (x) => x.id == item_id,
+  //     );
 
-      //todo: initialize bk_item
-      if (_added_procedure != null) {
-        final _item = _bk_transformer.fromVisitDataAddProcedure(
-          _visit_data,
-          _added_procedure,
-        );
+  //     //todo: initialize bk_item
+  //     if (_added_procedure != null) {
+  //       final _item = _bk_transformer.fromVisitDataAddProcedure(
+  //         _visit_data,
+  //         _added_procedure,
+  //       );
 
-        //todo: send bookkeeping request
-        await BookkeepingApi().addBookkeepingItem(_item);
-      }
-    }
-  }
+  //       //todo: send bookkeeping request
+  //       await BookkeepingApi().addBookkeepingItem(_item);
+  //     }
+  //   }
+  // }
 
-  Future<void> removeFromItemList(
-    VisitData visit_data,
-    String item_id,
-    ProfileSetupItem setupItem,
-  ) async {
-    final Map<String, dynamic> _update = switch (setupItem) {
-      ProfileSetupItem.drugs ||
-      ProfileSetupItem.documents ||
-      ProfileSetupItem.referrals => {},
-      ProfileSetupItem.labs => {'labs_ids-': item_id},
-      ProfileSetupItem.rads => {'rads_ids-': item_id},
-      ProfileSetupItem.procedures => {'procedures_ids-': item_id},
-      ProfileSetupItem.supplies => {'supplies_ids-': item_id},
-    };
+  // Future<void> removeFromItemList(
+  //   VisitData visit_data,
+  //   String item_id,
+  //   ProfileSetupItem setupItem,
+  // ) async {
+  //   final Map<String, dynamic> _update = switch (setupItem) {
+  //     ProfileSetupItem.drugs ||
+  //     ProfileSetupItem.documents ||
+  //     ProfileSetupItem.referrals => {},
+  //     ProfileSetupItem.labs => {'labs_ids-': item_id},
+  //     ProfileSetupItem.rads => {'rads_ids-': item_id},
+  //     ProfileSetupItem.procedures => {'procedures_ids-': item_id},
+  //     ProfileSetupItem.supplies => {'supplies_ids-': item_id},
+  //   };
 
-    final _response = await PocketbaseHelper().pbData
-        .collection(collection)
-        .update(visit_data.id, body: _update, expand: _expand);
+  //   final _response = await PocketbaseHelper().pbData
+  //       .collection(collection)
+  //       .update(visit_data.id, body: _update, expand: _expand);
 
-    //todo: parse data
-    final _visit_data = VisitData.fromRecordModel(_response);
+  //   //todo: parse data
+  //   final _visit_data = VisitData.fromRecordModel(_response);
 
-    if (setupItem == ProfileSetupItem.procedures) {
-      //todo: initialize transformer
-      final _bk_transformer = BookkeepingTransformer(
-        item_id: _visit_data.id,
-        collection_id: collection,
-        added_by: added_by,
-      );
-      //todo: get added item
-      final _removed_procedure = visit_data.procedures.firstWhereOrNull(
-        (x) => x.id == item_id,
-      );
+  //   if (setupItem == ProfileSetupItem.procedures) {
+  //     //todo: initialize transformer
+  //     final _bk_transformer = BookkeepingTransformer(
+  //       item_id: _visit_data.id,
+  //       collection_id: collection,
+  //       added_by: added_by,
+  //     );
+  //     //todo: get added item
+  //     final _removed_procedure = visit_data.procedures.firstWhereOrNull(
+  //       (x) => x.id == item_id,
+  //     );
 
-      //todo: initialize bk_item
-      if (_removed_procedure != null) {
-        final _item = _bk_transformer.fromVisitDataRemoveProcedure(
-          _visit_data,
-          _removed_procedure,
-        );
+  //     //todo: initialize bk_item
+  //     if (_removed_procedure != null) {
+  //       final _item = _bk_transformer.fromVisitDataRemoveProcedure(
+  //         _visit_data,
+  //         _removed_procedure,
+  //       );
 
-        //todo: send bookkeeping request
-        await BookkeepingApi().addBookkeepingItem(_item);
-      }
-    }
-  }
+  //       //todo: send bookkeeping request
+  //       await BookkeepingApi().addBookkeepingItem(_item);
+  //     }
+  //   }
+  // }
 
   Future<void> addSupplyItemToVisitData({
     required String visit_data_id,

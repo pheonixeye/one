@@ -4,19 +4,16 @@ import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/number_translator.dart';
-import 'package:one/functions/first_where_or_null.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/doctor_items/pi_procedure.dart';
 import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/visit_data/visit_data.dart';
-import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/visit_details_page_info_header.dart';
 import 'package:one/providers/px_app_constants.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_profile_items/px_pi_procedures.dart';
 import 'package:one/providers/px_visit_data.dart';
-import 'package:one/providers/px_visits.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:one/widgets/sm_btn.dart';
@@ -28,25 +25,21 @@ class VisitProceduresPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer4<PxPiProcedures, PxVisits, PxVisitData, PxLocale>(
-        builder: (context, p, vs, v, l, _) {
+      body: Consumer3<PxPiProcedures, PxVisitData, PxLocale>(
+        builder: (context, p, v, l, _) {
           return Builder(
             builder: (context) {
-              while (v.result == null ||
-                  p.procedures == null ||
-                  vs.visits == null) {
+              while (v.result == null || p.procedures == null) {
                 return const CentralLoading();
               }
 
               while (v.result is ApiErrorResult ||
-                  p.procedures is ApiErrorResult ||
-                  vs.visits is ApiErrorResult) {
+                  p.procedures is ApiErrorResult) {
                 return CentralError(
                   code: (v.result as ApiErrorResult).errorCode,
                   toExecute: () async {
                     v.retry();
                     p.retry();
-                    vs.retry();
                   },
                 );
               }
@@ -58,12 +51,6 @@ class VisitProceduresPage extends StatelessWidget {
 
               final _visit_procedures = _data.procedures;
 
-              final _visits =
-                  (vs.visits as ApiDataResult<List<VisitExpanded>>).data;
-
-              final _visit = _visits.firstWhereOrNull(
-                (e) => e.id == _data.visit_id,
-              );
               return Column(
                 children: [
                   Builder(
@@ -185,10 +172,10 @@ class VisitProceduresPage extends StatelessWidget {
                                                 .constants
                                                 ?.accountTypes ??
                                             [],
-                                        patient_name: _visit?.patient.name,
+                                        patient_name: _data.patient.name,
                                         doctor_name: l.isEnglish
-                                            ? _visit?.doctor.name_en
-                                            : _visit?.doctor.name_ar,
+                                            ? _data.doctor?.name_en
+                                            : _data.doctor?.name_ar,
                                         procedure_name: l.isEnglish
                                             ? _piProcedure.name_en
                                             : _piProcedure.name_ar,

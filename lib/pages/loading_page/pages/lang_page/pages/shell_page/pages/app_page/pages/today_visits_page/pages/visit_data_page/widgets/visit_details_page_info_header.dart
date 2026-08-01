@@ -1,10 +1,13 @@
+import 'package:intl/intl.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
+import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/image_source_and_document_type_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/detailed_previous_patient_visits_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
+import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_previous_visits.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
 import 'package:flutter/material.dart';
@@ -33,17 +36,42 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PxVisitData>(
-      builder: (context, v, _) {
+    return Consumer2<PxVisitData, PxLocale>(
+      builder: (context, v, l, _) {
         while (v.result == null) {
           return LinearProgressIndicator();
         }
         final _data = (v.result as ApiDataResult<VisitData>).data;
+        final _visitDate = _data.visit?.visit_date;
+        final _isVisitOfToday =
+            _visitDate != null &&
+            DateTime.now().unTimed.isTheSameDate(_visitDate);
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             leading: CircleAvatar(child: Icon(iconData)),
-            title: Row(children: [Flexible(child: Text(patient.name))]),
+            title: Row(
+              children: [
+                Flexible(
+                  child: Text.rich(
+                    TextSpan(
+                      text: patient.name,
+                      children: [
+                        if (!_isVisitOfToday) ...[
+                          TextSpan(text: '\n'),
+                          TextSpan(text: '(${context.loc.previousVisit})'),
+                          TextSpan(text: ' - '),
+                          TextSpan(
+                            text:
+                                '(${DateFormat('dd - MM - yyyy', l.lang).format(_visitDate!)})',
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
             subtitle: Text(title),
             trailing: ThemedPopupmenuBtn<void>(
               tooltip: context.loc.patientActions,

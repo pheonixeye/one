@@ -79,6 +79,7 @@ class _RescheduleVisitDialogState extends State<RescheduleVisitDialog> {
                       index: 0,
                       showIndexNumber: false,
                       showPatientName: true,
+                      showOpenVisitBtn: false,
                     ),
                     const Divider(),
                     RadioGroup(

@@ -31,6 +31,6 @@ class KuttApi {
     if (_response['link'] != null) {
       return _response['link'];
     }
-    return _response['error'];
+    return original;
   }
 }

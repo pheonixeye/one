@@ -72,8 +72,8 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                     await showDialog<void>(
                       context: context,
                       builder: (context) {
-                        return ChangeNotifierProvider(
-                          create: (context) => PxVisitData(
+                        return ChangeNotifierProvider.value(
+                          value: PxVisitData(
                             api: VisitDataApi(
                               visit_id: widget.visit.id,
                               added_by: '${context.read<PxAuth>().user?.name}',
@@ -192,8 +192,8 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                     PopupMenuItem<void>(
                       onTap: null,
                       padding: const EdgeInsets.all(0),
-                      child: ChangeNotifierProvider(
-                        create: (context) => PxVisitData(
+                      child: ChangeNotifierProvider.value(
+                        value: PxVisitData(
                           api: VisitDataApi(
                             visit_id: widget.visit.id,
                             added_by: '${context.read<PxAuth>().user?.name}',

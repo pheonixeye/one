@@ -23,11 +23,13 @@ class PreviousVisitViewCard extends StatelessWidget {
     required this.index,
     this.showIndexNumber = true,
     this.showPatientName = false,
+    required this.showOpenVisitBtn,
   });
   final VisitExpanded visit;
   final int index;
   final bool showIndexNumber;
   final bool showPatientName;
+  final bool showOpenVisitBtn;
   @override
   Widget build(BuildContext context) {
     return Consumer<PxLocale>(
@@ -151,60 +153,73 @@ class PreviousVisitViewCard extends StatelessWidget {
                   ],
                 ),
               ),
-              trailing: SmBtn(
-                tooltip: context.loc.openVisit,
-                child: const Icon(Icons.arrow_forward),
-                onPressed: () async {
-                  //@permission
-                  final _auth = context.read<PxAuth>();
+              trailing: showOpenVisitBtn
+                  ? SmBtn(
+                      tooltip: context.loc.openVisit,
+                      child: const Icon(Icons.arrow_forward),
+                      onPressed: () async {
+                        //@permission
+                        final _auth = context.read<PxAuth>();
 
-                  final _perm = _auth.isActionPermitted(
-                    PermissionEnum.Admin,
-                    context,
-                  );
-                  if (!_perm.isAllowed) {
-                    await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return NotPermittedDialog(
-                          permission: _perm.permission,
+                        final _perm = _auth.isActionPermitted(
+                          PermissionEnum.Admin,
+                          context,
                         );
-                      },
-                    );
-                    return;
-                  }
-                  if (visit.visit_status == VisitStatusEnum.NotAttended.en) {
-                    await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return ErrorDialog(
-                          message: context.loc.visitNotAttended,
+                        if (!_perm.isAllowed) {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return NotPermittedDialog(
+                                permission: _perm.permission,
+                              );
+                            },
+                          );
+                          return;
+                        }
+                        if (visit.visit_status ==
+                            VisitStatusEnum.NotAttended.en) {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ErrorDialog(
+                                message: context.loc.visitNotAttended,
+                              );
+                            },
+                          );
+                          return;
+                        }
+                        if (_auth.doc_id != visit.doc_id) {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ErrorDialog(
+                                message:
+                                    context.loc.cannotOpenAVisitByAnotherDoctor,
+                              );
+                            },
+                          );
+                          return;
+                        }
+
+                        ///HACK:
+                        GoRouter.of(context).goNamed(
+                          AppRouter.app,
+                          pathParameters: defaultPathParameters(context),
                         );
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        if (context.mounted) {
+                          GoRouter.of(context).goNamed(
+                            AppRouter.visit_clinical_notes,
+                            pathParameters: {
+                              ...defaultPathParameters(context),
+                              'visit_id': visit.id,
+                            },
+                          );
+                          Navigator.pop(context);
+                        }
                       },
-                    );
-                    return;
-                  }
-                  if (_auth.doc_id != visit.doc_id) {
-                    await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return ErrorDialog(
-                          message: context.loc.cannotOpenAVisitByAnotherDoctor,
-                        );
-                      },
-                    );
-                    return;
-                  }
-                  GoRouter.of(context).goNamed(
-                    AppRouter.visit_clinical_notes,
-                    pathParameters: {
-                      ...defaultPathParameters(context),
-                      'visit_id': visit.id,
-                    },
-                  );
-                  Navigator.pop(context);
-                },
-              ),
+                    )
+                  : null,
             ),
           ),
         );

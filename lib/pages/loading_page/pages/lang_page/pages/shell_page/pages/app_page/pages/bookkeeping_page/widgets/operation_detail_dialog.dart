@@ -71,6 +71,7 @@ class OperationDetailDialog extends StatelessWidget {
                   index: 0,
                   showPatientName: true,
                   showIndexNumber: false,
+                  showOpenVisitBtn: true,
                 ),
                 const Divider(),
                 ..._bk_items.map((bk) {

@@ -80,6 +80,7 @@ class _AddRemoveDiscountDialogState extends State<AddRemoveDiscountDialog> {
                 index: 0,
                 showIndexNumber: false,
                 showPatientName: true,
+                showOpenVisitBtn: false,
               ),
               ListTile(
                 title: Padding(

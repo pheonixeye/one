@@ -1850,4 +1850,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get cannotDeleteAnOldProgressNote =>
       'يمكن الغاء الملاحظات الاكلينيكية في تاريخ تسجيلها فقط';
+
+  @override
+  String get previousVisit => 'زيارة سابقة';
 }
