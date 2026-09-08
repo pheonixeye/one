@@ -2,8 +2,10 @@ import 'package:intl/intl.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
 import 'package:one/extensions/datetime_ext.dart';
+import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/patient_document/patient_document.dart';
+import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/image_source_and_document_type_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/detailed_previous_patient_visits_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
@@ -50,27 +52,57 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             leading: CircleAvatar(child: Icon(iconData)),
-            title: Row(
-              children: [
-                Flexible(
-                  child: Text.rich(
-                    TextSpan(
-                      text: patient.name,
-                      children: [
-                        if (!_isVisitOfToday) ...[
-                          TextSpan(text: '\n'),
-                          TextSpan(text: '(${context.loc.previousVisit})'),
-                          TextSpan(text: ' - '),
+            title: ChangeNotifierProvider(
+              create: (context) => PxPatientPreviousVisits(
+                api: PatientPreviousVisitsApi(
+                  patient_id: patient.id,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Consumer<PxPatientPreviousVisits>(
+                      builder: (context, prv, _) {
+                        final _data =
+                            (prv.data as ApiDataResult<List<VisitExpanded>>?)
+                                ?.data;
+                        return Text.rich(
                           TextSpan(
-                            text:
-                                '(${DateFormat('dd - MM - yyyy', l.lang).format(_visitDate!)})',
+                            text: patient.name,
+                            children: [
+                              if (prv.data == null)
+                                TextSpan(text: '')
+                              else if (prv.data is ApiErrorResult)
+                                TextSpan(text: ' - (${context.loc.error})')
+                              else if (_data != null && _data.isEmpty)
+                                TextSpan(
+                                  text: ' - (0)'.toArabicNumber(context),
+                                )
+                              else
+                                TextSpan(
+                                  text: ' - (${_data?.length})'.toArabicNumber(
+                                    context,
+                                  ),
+                                ),
+                              if (!_isVisitOfToday) ...[
+                                TextSpan(text: '\n'),
+                                TextSpan(
+                                  text: '(${context.loc.previousVisit})',
+                                ),
+                                TextSpan(text: ' - '),
+                                TextSpan(
+                                  text:
+                                      '(${DateFormat('dd - MM - yyyy', l.lang).format(_visitDate!)})',
+                                ),
+                              ],
+                            ],
                           ),
-                        ],
-                      ],
+                        );
+                      },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             subtitle: Text(title),
             trailing: ThemedPopupmenuBtn<void>(
