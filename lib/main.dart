@@ -79,6 +79,10 @@ class MyApp extends StatelessWidget {
   //todo: doctor visits in table form
   //todo: create / link assistant account => add permissions +/-
   //todo: patient visit progression view => listen to todays visits realtime => assistant app (same app vs another)
+  //---------------------------------------------------------------------------------//
+  //TODO: can view past medical prescription from current visit
+  //TODO: can split and filter bookkeeping details based on referral
+  //TODO: referral can change amount paid of consultation, followup & procedure
 }
 
 

@@ -1853,4 +1853,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get previousVisit => 'زيارة سابقة';
+
+  @override
+  String get completeVisit => 'انهاء الزيارة';
+
+  @override
+  String get errorEndingVisit => 'خطأ اثناء انهاء الزيارة';
 }

@@ -3631,6 +3631,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Previous Visit'**
   String get previousVisit;
+
+  /// No description provided for @completeVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Visit'**
+  String get completeVisit;
+
+  /// No description provided for @errorEndingVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Error Ending Visit.'**
+  String get errorEndingVisit;
 }
 
 class _AppLocalizationsDelegate

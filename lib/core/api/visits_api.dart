@@ -233,4 +233,29 @@ class VisitsApi {
         );
     //TODO: send inclinic notification
   }
+
+  bool _visitsSubscribed = false;
+  bool get visitsSubscribed => _visitsSubscribed;
+
+  Future<void> subscribeToVisitsCollection(
+    void Function(RecordSubscriptionEvent) onEvent,
+  ) async {
+    if (_visitsSubscribed) return;
+    _visitsSubscribed = true;
+    try {
+      await PocketbaseHelper().pbData
+          .collection(collection)
+          .subscribe('*', onEvent);
+    } catch (_) {
+    } finally {
+      _visitsSubscribed = false;
+    }
+  }
+
+  Future<void> unsubscribeFromVisits() async {
+    _visitsSubscribed = false;
+    try {
+      await PocketbaseHelper().pbData.collection(collection).unsubscribe('*');
+    } catch (_) {}
+  }
 }

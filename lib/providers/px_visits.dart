@@ -12,6 +12,7 @@ class PxVisits extends ChangeNotifier {
   }) {
     _fetchVisitsOfToday();
     fetchVisitsOfOneMonth();
+    _setupRealtime();
   }
 
   static ApiResult<List<VisitExpanded>>? _visits;
@@ -162,5 +163,17 @@ class PxVisits extends ChangeNotifier {
   Future<void> fetchVisitForRouter(String visit_id) async {
     _visitForRouter = await api.fetchOneVisitExpandedById(visit_id);
     notifyListeners();
+  }
+
+  Future<void> _setupRealtime() async {
+    await api.subscribeToVisitsCollection((event) async {
+      await _fetchVisitsOfToday();
+    });
+  }
+
+  @override
+  void dispose() {
+    api.unsubscribeFromVisits();
+    super.dispose();
   }
 }

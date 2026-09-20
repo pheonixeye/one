@@ -14,6 +14,11 @@ enum InAppAction {
     ar_title: 'تم ازالة اجراء من زيارة',
     toNotify: 'Assistant',
   ),
+  doctor_finished_consultation(
+    en_title: 'Doctor Has Finished Current Conultation',
+    ar_title: 'اتم الطبيب الزيارة الحالية',
+    toNotify: 'Assistant',
+  ),
   add_discount_to_visit(
     en_title: 'Discount Added To Visit',
     ar_title: 'تم اضافة خصم للزيارة',

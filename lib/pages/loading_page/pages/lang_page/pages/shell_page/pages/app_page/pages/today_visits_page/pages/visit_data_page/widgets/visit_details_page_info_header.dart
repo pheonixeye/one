@@ -1,14 +1,18 @@
 import 'package:intl/intl.dart';
 import 'package:one/core/api/patient_previous_visits_api.dart';
 import 'package:one/core/api/s3_patient_documents_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/datetime_ext.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
+import 'package:one/models/notifications/in_app_action.dart';
 import 'package:one/models/patient_document/patient_document.dart';
 import 'package:one/models/visits/visit.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/image_source_and_document_type_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/detailed_previous_patient_visits_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/widgets/patient_documents_view_dialog.dart';
+import 'package:one/providers/px_app_constants.dart';
+import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_patient_previous_visits.dart';
 import 'package:one/providers/px_s3_patient_documents.dart';
@@ -20,8 +24,10 @@ import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/patient.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/providers/px_visit_data.dart';
+import 'package:one/providers/px_visits.dart';
 import 'package:one/router/router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:one/widgets/snackbar_.dart';
 import 'package:one/widgets/themed_popupmenu_btn.dart';
 import 'package:provider/provider.dart';
 
@@ -249,6 +255,78 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
                         Text(context.loc.attachDocument),
                       ],
                     ),
+                  ),
+                  PopupMenuDivider(),
+                  PopupMenuItem(
+                    child: Card(
+                      color: Colors.amber.shade100,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          spacing: 8,
+                          children: [
+                            const Icon(Icons.exit_to_app),
+                            Text(context.loc.completeVisit),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      final _pxVisits = context.read<PxVisits>();
+                      try {
+                        final _visit =
+                            (_pxVisits.visits
+                                    as ApiDataResult<List<VisitExpanded>>)
+                                .data
+                                .firstWhere((e) => e.id == _data.visit_id);
+                        await shellFunction(
+                          context,
+                          toExecute: () async {
+                            await _pxVisits.updateVisit(
+                              visit: _visit,
+                              key: 'patient_progress_status',
+                              value: 'Done Consultation',
+                            );
+                          },
+                          duration: const Duration(milliseconds: 300),
+                        );
+                        if (context.mounted) {
+                          ClientNotificationFormatterSender(
+                              organizationExpanded: context
+                                  .read<PxAuth>()
+                                  .organization!,
+                              isEnglish: context.read<PxLocale>().isEnglish,
+                            )
+                            ..formatFromInAppAction(
+                              action: InAppAction.doctor_finished_consultation,
+                              account_types:
+                                  context
+                                      .read<PxAppConstants>()
+                                      .constants
+                                      ?.accountTypes ??
+                                  [],
+                              clinic_name: l.isEnglish
+                                  ? _visit.clinic.name_en
+                                  : _visit.clinic.name_ar,
+                              patient_name: _visit.patient.name,
+                              doctor_name: l.isEnglish
+                                  ? _visit.doctor.name_en
+                                  : _visit.doctor.name_ar,
+                            )
+                            ..send();
+                        }
+                        if (context.mounted) {
+                          GoRouter.of(context).goNamed(
+                            AppRouter.app,
+                            pathParameters: defaultPathParameters(context),
+                          );
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          showIsnackbar(context.loc.errorEndingVisit);
+                        }
+                      }
+                    },
                   ),
                 ];
               },

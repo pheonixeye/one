@@ -136,6 +136,16 @@ Kindly Note If The Procedure Fees Is Returned To The Patient.
 المبلغ : $procedure_amount,
 برجاء التأكد من رد المبلغ للمريض.
  ''',
+      InAppAction.doctor_finished_consultation =>
+        isEnglish
+            ? '''
+Doctor $doctor_name Has Finished Current Consultation With $patient_name,
+Clinic : $clinic_name.
+'''
+            : '''
+قام الدكتور / $doctor_name بانهاء زيارة المريض $patient_name,
+العيادة : $clinic_name.
+''',
 
       InAppAction.add_discount_to_visit =>
         isEnglish
