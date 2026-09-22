@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/core/api/visit_data_api.dart';
+import 'package:one/models/doctor_items/pi_drug.dart';
+import 'package:one/models/doctor_items/pi_lab.dart';
+import 'package:one/models/doctor_items/pi_procedure.dart';
+import 'package:one/models/doctor_items/pi_rads.dart';
 import 'package:one/models/doctor_items/pi_supply_item.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
@@ -10,16 +14,57 @@ class PxVisitData extends ChangeNotifier {
 
   PxVisitData({required this.api}) {
     _fetchVisitData();
+    _fetchPreviousVisitDataByPatientId();
   }
 
   ApiResult<VisitData>? _result;
   ApiResult<VisitData>? get result => _result;
+
+  ApiResult<List<VisitData>>? _previousVisitData;
+  // ApiResult<List<VisitData>>? get previousVisitData => _previousVisitData;
 
   Future<void> retry() async => await _fetchVisitData();
 
   Future<void> _fetchVisitData() async {
     _result = await api.fetchVisitData();
     // _subscribe();
+    notifyListeners();
+  }
+
+  Future<void> _fetchPreviousVisitDataByPatientId() async {
+    _previousVisitData = await api.fetchPreviousVisitDataByPatientId();
+    handleVisitDatafragmentation();
+  }
+
+  Map<DateTime, Map<PiDrug, String>>? _drugData;
+  Map<DateTime, Map<PiDrug, String>>? get drugData => _drugData;
+
+  Map<DateTime, List<PiLab>>? _labData;
+  Map<DateTime, List<PiLab>>? get labData => _labData;
+
+  Map<DateTime, List<PiRad>>? _radData;
+  Map<DateTime, List<PiRad>>? get radData => _radData;
+
+  Map<DateTime, List<PiProcedure>>? _procedureData;
+  Map<DateTime, List<PiProcedure>>? get procedureData => _procedureData;
+
+  void handleVisitDatafragmentation() {
+    final _data = (_previousVisitData as ApiDataResult<List<VisitData>>).data;
+    _drugData = {};
+    _labData = {};
+    _radData = {};
+    _procedureData = {};
+    _data.map((e) {
+      if (e.visit != null) {
+        final _visitDate = e.visit!.visit_date;
+        _drugData?[_visitDate] = Map.fromEntries(
+          e.drugs.map((d) => MapEntry(d, e.drug_data[d.id])),
+        );
+        _labData?[_visitDate] = e.labs;
+        _radData?[_visitDate] = e.rads;
+        _procedureData?[_visitDate] = e.procedures;
+      }
+    }).toList();
     notifyListeners();
   }
 

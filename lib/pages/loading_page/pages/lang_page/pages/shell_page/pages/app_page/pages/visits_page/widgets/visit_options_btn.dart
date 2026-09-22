@@ -76,6 +76,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                           value: PxVisitData(
                             api: VisitDataApi(
                               visit_id: widget.visit.id,
+                              patient_id: widget.visit.patient_id,
                               added_by: '${context.read<PxAuth>().user?.name}',
                             ),
                           ),
@@ -196,6 +197,7 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                         value: PxVisitData(
                           api: VisitDataApi(
                             visit_id: widget.visit.id,
+                            patient_id: widget.visit.patient_id,
                             added_by: '${context.read<PxAuth>().user?.name}',
                           ),
                         ),

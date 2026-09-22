@@ -188,6 +188,7 @@ class _DetailedPreviousPatientVisitsDialogState
                         create: (context) => PxVisitData(
                           api: VisitDataApi(
                             visit_id: _selectedVisit.value!.id,
+                            patient_id: _selectedVisit.value!.patient_id,
                             added_by: '${context.read<PxAuth>().user?.name}',
                           ),
                         ),

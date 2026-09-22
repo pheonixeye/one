@@ -3643,6 +3643,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error Ending Visit.'**
   String get errorEndingVisit;
+
+  /// No description provided for @noDrugsWerePrescribed.
+  ///
+  /// In en, this message translates to:
+  /// **'No Drugs Were Prescribed.'**
+  String get noDrugsWerePrescribed;
+
+  /// No description provided for @noLabsWereRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'No Labs Were Requested.'**
+  String get noLabsWereRequested;
+
+  /// No description provided for @noRadsWereRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'No Rads Were Requested.'**
+  String get noRadsWereRequested;
+
+  /// No description provided for @noProceduresWerePerformed.
+  ///
+  /// In en, this message translates to:
+  /// **'No Procedures Were Performed.'**
+  String get noProceduresWerePerformed;
 }
 
 class _AppLocalizationsDelegate

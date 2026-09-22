@@ -635,5 +635,9 @@
     "cannotDeleteAnOldProgressNote" : "Can Delete A Progress Note On The Day Of The Visit Only",
     "previousVisit" : "Previous Visit",
     "completeVisit" : "Complete Visit",
-    "errorEndingVisit" : "Error Ending Visit."
+    "errorEndingVisit" : "Error Ending Visit.",
+    "noDrugsWerePrescribed" : "No Drugs Were Prescribed.",
+    "noLabsWereRequested" : "No Labs Were Requested.",
+    "noRadsWereRequested" : "No Rads Were Requested.",
+    "noProceduresWerePerformed" : "No Procedures Were Performed."
 }

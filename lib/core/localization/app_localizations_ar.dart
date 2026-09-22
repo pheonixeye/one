@@ -1859,4 +1859,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorEndingVisit => 'خطأ اثناء انهاء الزيارة';
+
+  @override
+  String get noDrugsWerePrescribed => 'لم يتم وصف دواء.';
+
+  @override
+  String get noLabsWereRequested => 'لم يتم طلب تحاليل.';
+
+  @override
+  String get noRadsWereRequested => 'لم يتم طلب اشاعات.';
+
+  @override
+  String get noProceduresWerePerformed => 'لم يتم عمل اجرائات طبية.';
 }

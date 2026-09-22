@@ -398,6 +398,11 @@ class AppRouter {
                                               value: PxVisitData(
                                                 api: VisitDataApi(
                                                   visit_id: _visit_id!,
+                                                  patient_id:
+                                                      _pxVisits
+                                                          .visitForRouter
+                                                          ?.patient_id ??
+                                                      '',
                                                   added_by:
                                                       '${context.read<PxAuth>().user?.name}',
                                                 ),

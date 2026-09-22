@@ -634,5 +634,9 @@
     "cannotDeleteAnOldProgressNote" : "يمكن الغاء الملاحظات الاكلينيكية في تاريخ تسجيلها فقط",
     "previousVisit" : "زيارة سابقة",
     "completeVisit" : "انهاء الزيارة",
-    "errorEndingVisit" : "خطأ اثناء انهاء الزيارة"
+    "errorEndingVisit" : "خطأ اثناء انهاء الزيارة",
+    "noDrugsWerePrescribed" : "لم يتم وصف دواء.",
+    "noLabsWereRequested" : "لم يتم طلب تحاليل.",
+    "noRadsWereRequested" : "لم يتم طلب اشاعات.",
+    "noProceduresWerePerformed" : "لم يتم عمل اجرائات طبية."
 }

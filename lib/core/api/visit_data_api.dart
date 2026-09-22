@@ -15,10 +15,12 @@ import 'package:one/models/visit_data/visit_form_item.dart';
 @PbData()
 class VisitDataApi {
   final String visit_id;
+  final String patient_id;
   final String added_by;
 
   VisitDataApi({
     required this.visit_id,
+    required this.patient_id,
     required this.added_by,
   });
 
@@ -41,6 +43,30 @@ class VisitDataApi {
       return ApiDataResult<VisitData>(data: _visitData);
     } on ClientException catch (e) {
       return ApiErrorResult<VisitData>(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
+  Future<ApiResult<List<VisitData>>> fetchPreviousVisitDataByPatientId() async {
+    try {
+      final _result = await PocketbaseHelper().pbData
+          .collection(collection)
+          .getFullList(
+            filter: "patient_id = '$patient_id'",
+            expand: _expand,
+            sort: '-created',
+          );
+      // prettyPrint(_result);
+      final _visitData = _result
+          .map((e) => VisitData.fromRecordModel(e))
+          .toList();
+      // prettyPrint(_visitData);
+
+      return ApiDataResult<List<VisitData>>(data: _visitData);
+    } on ClientException catch (e) {
+      return ApiErrorResult<List<VisitData>>(
         errorCode: AppErrorCode.clientException.code,
         originalErrorMessage: e.toString(),
       );

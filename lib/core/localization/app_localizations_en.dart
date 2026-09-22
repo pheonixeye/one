@@ -1867,4 +1867,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorEndingVisit => 'Error Ending Visit.';
+
+  @override
+  String get noDrugsWerePrescribed => 'No Drugs Were Prescribed.';
+
+  @override
+  String get noLabsWereRequested => 'No Labs Were Requested.';
+
+  @override
+  String get noRadsWereRequested => 'No Rads Were Requested.';
+
+  @override
+  String get noProceduresWerePerformed => 'No Procedures Were Performed.';
 }
