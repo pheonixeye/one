@@ -203,6 +203,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxContracts(
+      context: context,
       api: ContractsApi(),
     ),
   ),

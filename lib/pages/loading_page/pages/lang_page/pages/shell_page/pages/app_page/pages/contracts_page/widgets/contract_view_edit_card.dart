@@ -4,6 +4,7 @@ import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/contract.dart';
+import 'package:one/models/doctor.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/widgets/create_edit_contract_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_contracts.dart';
@@ -18,9 +19,11 @@ class ContractViewEditCard extends StatelessWidget {
     super.key,
     required this.contract,
     required this.index,
+    required this.doctor,
   });
   final Contract contract;
   final int index;
+  final Doctor? doctor;
   @override
   Widget build(BuildContext context) {
     return Consumer2<PxContracts, PxLocale>(
@@ -44,17 +47,39 @@ class ContractViewEditCard extends StatelessWidget {
                   child: Row(
                     spacing: 4,
                     children: [
-                      Text(
-                        l.isEnglish ? contract.name_en : contract.name_ar,
-                        style: TextStyle(
-                          decoration: contract.is_active
-                              ? null
-                              : TextDecoration.lineThrough,
+                      Text.rich(
+                        TextSpan(
+                          text: l.isEnglish
+                              ? contract.name_en
+                              : contract.name_ar,
+                          style: TextStyle(
+                            decoration: contract.is_active
+                                ? null
+                                : TextDecoration.lineThrough,
+                          ),
+                          children: [
+                            if (doctor != null)
+                              TextSpan(
+                                text:
+                                    ' - ${l.isEnglish ? doctor?.name_en : doctor?.name_ar}',
+                                style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            TextSpan(text: '\n'),
+                            TextSpan(
+                              text:
+                                  '(${contract.is_active ? context.loc.active : context.loc.inactive})',
+                              style: TextStyle(
+                                decoration: contract.is_active
+                                    ? null
+                                    : TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        '(${contract.is_active ? context.loc.active : context.loc.inactive})',
-                      ),
+
                       const Spacer(),
                       SmBtn(
                         tooltip: context.loc.contractActivity,

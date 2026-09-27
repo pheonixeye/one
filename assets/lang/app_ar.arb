@@ -638,5 +638,6 @@
     "noDrugsWerePrescribed" : "لم يتم وصف دواء.",
     "noLabsWereRequested" : "لم يتم طلب تحاليل.",
     "noRadsWereRequested" : "لم يتم طلب اشاعات.",
-    "noProceduresWerePerformed" : "لم يتم عمل اجرائات طبية."
+    "noProceduresWerePerformed" : "لم يتم عمل اجرائات طبية.",
+    "allContracts" : "كل العقود"
 }

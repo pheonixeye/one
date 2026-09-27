@@ -1879,4 +1879,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noProceduresWerePerformed => 'No Procedures Were Performed.';
+
+  @override
+  String get allContracts => 'All Contracts';
 }

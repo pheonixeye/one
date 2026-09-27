@@ -1871,4 +1871,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noProceduresWerePerformed => 'لم يتم عمل اجرائات طبية.';
+
+  @override
+  String get allContracts => 'كل العقود';
 }

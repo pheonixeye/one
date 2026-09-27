@@ -82,8 +82,13 @@ class MyApp extends StatelessWidget {
   //---------------------------------------------------------------------------------//
   //todo: can view past medical prescription from current visit
   //todo: can attach form in visit of today => progress notes
-  //TODO: can split and filter bookkeeping details based on referral
-  //TODO: referral can change amount paid of consultation, followup & procedure
+  //todo: can split and filter bookkeeping details based on referral
+  //---------------------------------------------------------------------------------//
+  //todo: contract api updated for doctors to create their own contract and super admin to control and filter all doctors contracts
+  //TODO: select contract upon creating a new visit based op doctor contracts available
+  //TODO: contract can change amount paid of consultation, followup & procedure
+  //---------------------------------------------------------------------------------//
+  //TODO: visits filter header needs to improve for the superAdmin account
 }
 
 

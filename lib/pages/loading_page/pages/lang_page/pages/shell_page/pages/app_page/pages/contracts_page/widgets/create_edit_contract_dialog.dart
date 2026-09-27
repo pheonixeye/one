@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/contract.dart';
+import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_doctor.dart';
+import 'package:one/providers/px_locale.dart';
+import 'package:provider/provider.dart';
 
 class CreateEditContractDialog extends StatefulWidget {
   const CreateEditContractDialog({super.key, this.contract});
@@ -21,6 +25,10 @@ class _CreateEditContractDialogState extends State<CreateEditContractDialog> {
   late final TextEditingController _followupCostController;
   String? _doc_id;
 
+  late final _isUserSuperAdmin = context
+      .read<PxAuth>()
+      .isLoggedInUserSuperAdmin(context);
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +47,8 @@ class _CreateEditContractDialogState extends State<CreateEditContractDialog> {
     _followupCostController = TextEditingController(
       text: widget.contract?.followup_cost.toString() ?? '0.0',
     );
+
+    _doc_id = widget.contract?.doc_id;
   }
 
   @override
@@ -75,6 +85,97 @@ class _CreateEditContractDialogState extends State<CreateEditContractDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (_isUserSuperAdmin)
+              ExpansionTile(
+                enabled: false,
+                initiallyExpanded: true,
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(context.loc.pickDoctor),
+                ),
+                showTrailingIcon: false,
+                children: [
+                  Consumer2<PxDoctor, PxLocale>(
+                    builder: (context, d, l, _) {
+                      while (d.allDoctors == null) {
+                        return const SizedBox(
+                          height: 8,
+                          child: LinearProgressIndicator(),
+                        );
+                      }
+                      final _doctors = d.allDoctors;
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 80,
+                                child: DropdownButtonFormField<String?>(
+                                  alignment: Alignment.center,
+                                  initialValue: _doc_id,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  isExpanded: true,
+                                  items: [
+                                    if (_doctors != null)
+                                      ..._doctors.map((e) {
+                                        return DropdownMenuItem<String?>(
+                                          value: e.id,
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  text: l.isEnglish
+                                                      ? e.name_en
+                                                      : e.name_ar,
+                                                  children: [
+                                                    TextSpan(text: ' - '),
+                                                    TextSpan(
+                                                      text: l.isEnglish
+                                                          ? e.spec_en
+                                                          : e.spec_ar,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                  ],
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        _doc_id = value;
+                                      });
+                                    }
+                                  },
+                                  validator: _isUserSuperAdmin
+                                      ? (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return context
+                                                .loc
+                                                .enterEnglishContractName;
+                                          }
+                                          return null;
+                                        }
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ListTile(
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -199,7 +300,9 @@ class _CreateEditContractDialogState extends State<CreateEditContractDialog> {
             if (formKey.currentState!.validate()) {
               final _contract = Contract(
                 id: widget.contract?.id ?? '',
-                doc_id: _doc_id ?? '',
+                doc_id: _isUserSuperAdmin
+                    ? _doc_id ?? ''
+                    : context.read<PxAuth>().doc_id,
                 name_en: _nameEnController.text,
                 name_ar: _nameArController.text,
                 is_active: widget.contract?.is_active ?? true,

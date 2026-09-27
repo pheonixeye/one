@@ -36,6 +36,27 @@ class ContractsApi {
     }
   }
 
+  Future<ApiResult<List<Contract>>> fetchOneDoctorContracts(
+    String doc_id,
+  ) async {
+    try {
+      final _result = await PocketbaseHelper().pbData
+          .collection(collection)
+          .getFullList(filter: "doc_id = '$doc_id'");
+
+      final _contracts = _result
+          .map((e) => Contract.fromJson(e.toJson()))
+          .toList();
+
+      return ApiDataResult<List<Contract>>(data: _contracts);
+    } on ClientException catch (e) {
+      return ApiErrorResult<List<Contract>>(
+        errorCode: AppErrorCode.clientException.code,
+        originalErrorMessage: e.toString(),
+      );
+    }
+  }
+
   Future<void> updateContract(String contract_id, Contract updated) async {
     await PocketbaseHelper().pbData
         .collection(collection)

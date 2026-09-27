@@ -3667,6 +3667,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Procedures Were Performed.'**
   String get noProceduresWerePerformed;
+
+  /// No description provided for @allContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'All Contracts'**
+  String get allContracts;
 }
 
 class _AppLocalizationsDelegate

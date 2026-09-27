@@ -639,5 +639,6 @@
     "noDrugsWerePrescribed" : "No Drugs Were Prescribed.",
     "noLabsWereRequested" : "No Labs Were Requested.",
     "noRadsWereRequested" : "No Rads Were Requested.",
-    "noProceduresWerePerformed" : "No Procedures Were Performed."
+    "noProceduresWerePerformed" : "No Procedures Were Performed.",
+    "allContracts" : "All Contracts"
 }
