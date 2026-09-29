@@ -78,7 +78,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxAuth(
-      api: AuthApi(),
+      api: const AuthApi(),
       context: context,
     ),
   ),
@@ -204,13 +204,13 @@ final List<SingleChildWidget> providers = [
   ChangeNotifierProvider(
     create: (context) => PxContracts(
       context: context,
-      api: ContractsApi(),
+      api: const ContractsApi(),
     ),
   ),
   ChangeNotifierProvider(
     create: (context) => PxPatients(
       context: context,
-      api: PatientsApi(),
+      api: const PatientsApi(),
     ),
   ),
 
@@ -232,7 +232,7 @@ final List<SingleChildWidget> providers = [
 
   ChangeNotifierProvider(
     create: (context) => PxRecieptInfo(
-      api: RecieptInfoApi(),
+      api: const RecieptInfoApi(),
     ),
   ),
 
@@ -243,7 +243,7 @@ final List<SingleChildWidget> providers = [
   ),
   ChangeNotifierProvider(
     create: (context) => PxPbNotifications(
-      api: PbNotificationsApi(),
+      api: const PbNotificationsApi(),
     ),
   ),
 ];

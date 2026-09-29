@@ -27,7 +27,7 @@ class _CreateEditContractDialogState extends State<CreateEditContractDialog> {
 
   late final _isUserSuperAdmin = context
       .read<PxAuth>()
-      .isLoggedInUserSuperAdmin(context);
+      .isLoggedInUserSuperAdmin();
 
   @override
   void initState() {

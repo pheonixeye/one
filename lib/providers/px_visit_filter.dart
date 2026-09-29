@@ -45,7 +45,7 @@ class PxVisitFilter extends ChangeNotifier {
     );
     //filter visits according to doctor / super-user / user
     if (context.mounted &&
-        (_auth.isLoggedInUserSuperAdmin(context) || _auth.isUserNotDoctor)) {
+        (_auth.isLoggedInUserSuperAdmin() || _auth.isUserNotDoctor)) {
       //super-admin and user can see all visits
       _concisedVisits = _result;
     } else {

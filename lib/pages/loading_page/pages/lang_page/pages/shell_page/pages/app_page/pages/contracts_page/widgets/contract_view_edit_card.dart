@@ -89,7 +89,6 @@ class ContractViewEditCard extends StatelessWidget {
                               .read<PxAuth>()
                               .isActionPermitted(
                                 PermissionEnum.User_Contracts_Modify,
-                                context,
                               );
                           if (!_perm.isAllowed) {
                             await showDialog(
@@ -147,7 +146,6 @@ class ContractViewEditCard extends StatelessWidget {
                               .read<PxAuth>()
                               .isActionPermitted(
                                 PermissionEnum.User_Contracts_Modify,
-                                context,
                               );
                           if (!_perm.isAllowed) {
                             await showDialog(

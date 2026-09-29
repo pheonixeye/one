@@ -58,7 +58,6 @@ class AppProfileSetup extends StatelessWidget {
                                 .read<PxAuth>()
                                 .isActionPermitted(
                                   PermissionEnum.User_AccountSettings_Read,
-                                  context,
                                 );
                             if (!_perm.isAllowed) {
                               await showDialog(

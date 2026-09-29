@@ -29,7 +29,6 @@ class FormsPage extends StatelessWidget {
         //@permission
         final _perm = context.read<PxAuth>().isActionPermitted(
           PermissionEnum.User_Forms_Read,
-          context,
         );
         while (!_perm.isAllowed) {
           return NotPermittedTemplatePage(title: context.loc.forms);
@@ -40,7 +39,6 @@ class FormsPage extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Forms_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:one/core/api/auth/api_auth.dart';
 import 'package:one/core/api/constants/pocketbase_helper.dart';
 import 'package:one/functions/dprint.dart';
@@ -132,28 +131,25 @@ class PxAuth extends ChangeNotifier {
 
   bool get isUserNotDoctor => _user?.account_type.name_en != 'Doctor';
 
-  bool isLoggedInUserSuperAdmin(BuildContext context) {
-    final _appPermissions = context
-        .read<PxAppConstants>()
-        .constants
-        ?.appPermission;
+  bool isLoggedInUserSuperAdmin() {
+    final _pxConst = context.read<PxAppConstants>();
 
-    final _superAdminPermission = _appPermissions?.firstWhere(
+    final constants = _pxConst.constants;
+
+    final _superAdminPermission = constants?.appPermission.firstWhere(
       (e) => e.name_en == 'SuperAdmin',
     );
-
+    print(_superAdminPermission);
     return _user != null &&
         _user!.app_permissions.contains(_superAdminPermission);
   }
 
   PermissionWithPermission isActionPermitted(
     PermissionEnum permission,
-    BuildContext context,
   ) {
-    final _appPermissions = context
-        .read<PxAppConstants>()
-        .constants
-        ?.appPermission;
+    final _pxAppConstants = context.read<PxAppConstants>();
+
+    final _appPermissions = _pxAppConstants.constants?.appPermission;
 
     final _adminPermission = context.read<PxAppConstants>().admin;
 

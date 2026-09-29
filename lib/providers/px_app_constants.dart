@@ -15,7 +15,7 @@ class PxAppConstants extends ChangeNotifier {
     _init();
   }
 
-  AppConstants? _constants;
+  static AppConstants? _constants;
   AppConstants? get constants => _constants;
 
   Future<void> _init() async {

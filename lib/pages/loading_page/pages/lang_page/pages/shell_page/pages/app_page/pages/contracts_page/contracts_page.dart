@@ -32,7 +32,6 @@ class ContractsPage extends StatelessWidget {
         //@permission
         final _perm = context.read<PxAuth>().isActionPermitted(
           PermissionEnum.User_Contracts_Read,
-          context,
         );
         while (!_perm.isAllowed) {
           return NotPermittedTemplatePage(title: context.loc.contracts);
@@ -43,7 +42,6 @@ class ContractsPage extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Contracts_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(
@@ -84,58 +82,57 @@ class ContractsPage extends StatelessWidget {
                 child: ListTile(
                   title: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(context.loc.contracts),
-                  ),
-                  subtitle: Column(
-                    children: [
-                      if (context.read<PxAuth>().isLoggedInUserSuperAdmin(
-                        context,
-                      ))
-                        SizedBox(
-                          height: 80,
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              const Icon(Icons.filter_alt),
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  initialValue: null,
-                                  isExpanded: true,
+                    child: Row(
+                      spacing: 8,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(context.loc.contracts),
+                        if (context
+                            .read<PxAuth>()
+                            .isLoggedInUserSuperAdmin()) ...[
+                          const Spacer(),
+                          IconButton(
+                            onPressed: null,
+                            icon: const Icon(Icons.filter_alt),
+                          ),
+                          Expanded(
+                            child: DropdownButtonFormField<String?>(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              initialValue: null,
+                              isExpanded: true,
+                              alignment: Alignment.center,
+                              items: [
+                                DropdownMenuItem(
+                                  value: null,
                                   alignment: Alignment.center,
-                                  items: [
-                                    DropdownMenuItem(
-                                      value: null,
+                                  child: Text(
+                                    context.loc.allContracts,
+                                  ),
+                                ),
+                                if (d.allDoctors != null)
+                                  ...d.allDoctors!.map((e) {
+                                    return DropdownMenuItem(
+                                      value: e.id,
                                       alignment: Alignment.center,
                                       child: Text(
-                                        context.loc.allContracts,
+                                        l.isEnglish ? e.name_en : e.name_ar,
                                       ),
-                                    ),
-                                    if (d.allDoctors != null)
-                                      ...d.allDoctors!.map((e) {
-                                        return DropdownMenuItem(
-                                          value: e.id,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            l.isEnglish ? e.name_en : e.name_ar,
-                                          ),
-                                        );
-                                      }),
-                                  ],
-                                  onChanged: (val) {
-                                    c.filterContracts(doc_id: val);
-                                  },
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
+                                    );
+                                  }),
+                              ],
+                              onChanged: (val) {
+                                c.filterContracts(doc_id: val);
+                              },
+                            ),
                           ),
-                        ),
-                      const Divider(),
-                    ],
+                          const Spacer(),
+                        ],
+                      ],
+                    ),
                   ),
+                  subtitle: const Divider(),
                 ),
               ),
               Expanded(

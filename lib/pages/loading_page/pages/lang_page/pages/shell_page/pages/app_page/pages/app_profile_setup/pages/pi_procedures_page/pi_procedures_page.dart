@@ -155,7 +155,6 @@ class _PiProceduresPageState extends State<PiProceduresPage> {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_AccountSettings_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

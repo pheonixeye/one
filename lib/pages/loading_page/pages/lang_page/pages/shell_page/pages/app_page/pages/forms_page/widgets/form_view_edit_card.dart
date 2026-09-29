@@ -87,7 +87,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                       .read<PxAuth>()
                                       .isActionPermitted(
                                         PermissionEnum.User_Forms_Modify,
-                                        context,
                                       );
                                   if (!_perm.isAllowed) {
                                     await showDialog(
@@ -138,7 +137,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                       .read<PxAuth>()
                                       .isActionPermitted(
                                         PermissionEnum.User_Forms_Modify,
-                                        context,
                                       );
                                   if (!_perm.isAllowed) {
                                     await showDialog(
@@ -199,7 +197,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                             .read<PxAuth>()
                                             .isActionPermitted(
                                               PermissionEnum.User_Forms_Modify,
-                                              context,
                                             );
                                         if (!_perm.isAllowed) {
                                           await showDialog(
@@ -274,7 +271,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                                                 .isActionPermitted(
                                                   PermissionEnum
                                                       .User_Forms_Modify,
-                                                  context,
                                                 );
                                             if (!_perm.isAllowed) {
                                               await showDialog(
@@ -337,7 +333,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_Forms_Modify,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(
@@ -377,7 +372,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_Forms_Modify,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(
@@ -420,7 +414,6 @@ class _FormViewEditCardState extends State<FormViewEditCard> {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_Forms_Delete,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(

@@ -44,7 +44,6 @@ class _PatientsPageState extends State<PatientsPage> {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_AddNew,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

@@ -63,7 +63,6 @@ class PatientInfoCard extends StatelessWidget {
                       //@permission
                       final _perm = context.read<PxAuth>().isActionPermitted(
                         PermissionEnum.User_Patient_EditInfo,
-                        context,
                       );
                       if (!_perm.isAllowed) {
                         await showDialog(
@@ -146,7 +145,6 @@ class PatientInfoCard extends StatelessWidget {
                                           .read<PxAuth>()
                                           .isActionPermitted(
                                             PermissionEnum.User_Patient_Call,
-                                            context,
                                           );
                                       if (!_perm.isAllowed) {
                                         await showDialog(
@@ -179,7 +177,6 @@ class PatientInfoCard extends StatelessWidget {
                                           .isActionPermitted(
                                             PermissionEnum
                                                 .User_Patient_Whatsapp,
-                                            context,
                                           );
                                       if (!_perm.isAllowed) {
                                         await showDialog(
@@ -222,7 +219,6 @@ class PatientInfoCard extends StatelessWidget {
                                               .isActionPermitted(
                                                 PermissionEnum
                                                     .User_Patient_Email,
-                                                context,
                                               );
                                           if (!_perm.isAllowed) {
                                             await showDialog(

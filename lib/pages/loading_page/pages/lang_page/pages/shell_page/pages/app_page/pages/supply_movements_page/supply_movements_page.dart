@@ -69,7 +69,6 @@ class _SupplyMovementsPageState extends State<SupplyMovementsPage> {
         //@permission
         final _perm = context.read<PxAuth>().isActionPermitted(
           PermissionEnum.User_SupplyMovements_Read,
-          context,
         );
         while (!_perm.isAllowed) {
           return NotPermittedTemplatePage(

@@ -19,14 +19,22 @@ class PxContracts extends ChangeNotifier {
   ApiResult<List<Contract>>? _data;
   ApiResult<List<Contract>>? get data => _data;
 
+  //TODO: fix later
+  /// this function depends on auth which depends on constants
+  /// when the user logs in directly to the contracts the constants
+  /// are delayed hence the app permissions are not fetched yet
+  /// so the auth provider does not know that the logged in user is
+  /// a super admin and gets his contracts only => fix later ??
   Future<void> _init() async {
     final _auth = context.read<PxAuth>();
     final _loggedInDocId = _auth.doc_id;
-    final _isLoggedInUserSuperAdmin = _auth.isLoggedInUserSuperAdmin(context);
+    final _isLoggedInUserSuperAdmin = _auth.isLoggedInUserSuperAdmin();
     if (_isLoggedInUserSuperAdmin) {
       _data = await api.fetchAllContracts();
+      print('PxContracts.fetchAllContracts()');
     } else {
       _data = await api.fetchOneDoctorContracts(_loggedInDocId);
+      print('PxContracts.fetchOneDoctorContracts($_loggedInDocId)');
     }
     notifyListeners();
     filterContracts();

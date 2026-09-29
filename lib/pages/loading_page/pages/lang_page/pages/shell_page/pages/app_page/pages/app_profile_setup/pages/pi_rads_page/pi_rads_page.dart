@@ -149,7 +149,6 @@ class _PiRadsPageState extends State<PiRadsPage> {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_AccountSettings_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

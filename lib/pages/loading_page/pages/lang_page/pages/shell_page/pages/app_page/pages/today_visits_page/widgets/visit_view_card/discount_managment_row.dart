@@ -121,7 +121,6 @@ class DiscountManagmentRow extends StatelessWidget {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_TodayVisits_Add_Discount,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(
@@ -204,7 +203,6 @@ class DiscountManagmentRow extends StatelessWidget {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_TodayVisits_Remove_Discount,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(

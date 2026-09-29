@@ -119,7 +119,6 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                               .read<PxAuth>()
                               .isActionPermitted(
                                 PermissionEnum.User_Visits_PrintReciept,
-                                context,
                               );
                           if (!_perm.isAllowed) {
                             await showDialog(
@@ -214,7 +213,6 @@ class _VisitOptionsBtnState extends State<VisitOptionsBtn> {
                             final _auth = context.read<PxAuth>();
                             final _perm = _auth.isActionPermitted(
                               PermissionEnum.Admin,
-                              context,
                             );
                             if (!_perm.isAllowed) {
                               await showDialog(

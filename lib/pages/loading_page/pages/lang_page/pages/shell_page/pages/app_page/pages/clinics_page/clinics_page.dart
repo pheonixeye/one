@@ -32,7 +32,6 @@ class ClinicsPage extends StatelessWidget {
         //@permission
         final _perm = context.read<PxAuth>().isActionPermitted(
           PermissionEnum.User_Clinics_Read,
-          context,
         );
         while (!_perm.isAllowed) {
           return NotPermittedTemplatePage(title: context.loc.clinics);
@@ -44,7 +43,6 @@ class ClinicsPage extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Clinics_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

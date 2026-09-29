@@ -64,7 +64,6 @@ class PatientInfoCardActions extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_AddNewVisit,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(
@@ -169,7 +168,6 @@ class PatientInfoCardActions extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_PreviousVisits,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(
@@ -211,7 +209,6 @@ class PatientInfoCardActions extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_InfoCard,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(
@@ -246,7 +243,6 @@ class PatientInfoCardActions extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_Forms,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(
@@ -288,7 +284,6 @@ class PatientInfoCardActions extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_ViewDocument,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(
@@ -326,7 +321,6 @@ class PatientInfoCardActions extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Patient_AddDocument,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

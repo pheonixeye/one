@@ -153,7 +153,6 @@ class _PiReferralsPageState extends State<PiReferralsPage> {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_AccountSettings_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

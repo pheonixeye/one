@@ -79,7 +79,6 @@ class VisitStatusRow extends StatelessWidget {
                                   .isActionPermitted(
                                     PermissionEnum
                                         .User_TodayVisits_Modify_Attendance,
-                                    context,
                                   );
                               if (!_perm.isAllowed) {
                                 await showDialog(

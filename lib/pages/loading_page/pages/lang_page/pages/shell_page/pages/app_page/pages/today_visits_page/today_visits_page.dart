@@ -83,7 +83,6 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
         //@permission
         final _perm = context.read<PxAuth>().isActionPermitted(
           PermissionEnum.User_TodayVisits_Read,
-          context,
         );
         while (!_perm.isAllowed) {
           return NotPermittedTemplatePage(title: context.loc.todayVisits);
@@ -228,7 +227,6 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                   //@permission
                   final _perm = context.read<PxAuth>().isActionPermitted(
                     PermissionEnum.User_TodayVisits_Read,
-                    context,
                   );
                   if (!_perm.isAllowed) {
                     await showDialog(
@@ -260,7 +258,6 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                   //@permission
                   final _perm = context.read<PxAuth>().isActionPermitted(
                     PermissionEnum.User_Patient_AddNewVisit,
-                    context,
                   );
                   if (!_perm.isAllowed) {
                     await showDialog(
@@ -290,7 +287,6 @@ class _TodayVisitsPageState extends State<TodayVisitsPage>
                   //@permission
                   final _perm = context.read<PxAuth>().isActionPermitted(
                     PermissionEnum.User_Patient_AddNewVisit,
-                    context,
                   );
                   if (!_perm.isAllowed) {
                     await showDialog(

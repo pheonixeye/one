@@ -73,7 +73,6 @@ class _BookkeepingPageActionBtnState extends State<BookkeepingPageActionBtn>
                 //@permission
                 final _perm = context.read<PxAuth>().isActionPermitted(
                   PermissionEnum.User_Bookkeeping_Read,
-                  context,
                 );
                 if (!_perm.isAllowed) {
                   await showDialog(
@@ -105,7 +104,6 @@ class _BookkeepingPageActionBtnState extends State<BookkeepingPageActionBtn>
                 //@permission
                 final _perm = context.read<PxAuth>().isActionPermitted(
                   PermissionEnum.User_Bookkeeping_Add,
-                  context,
                 );
                 if (!_perm.isAllowed) {
                   await showDialog(

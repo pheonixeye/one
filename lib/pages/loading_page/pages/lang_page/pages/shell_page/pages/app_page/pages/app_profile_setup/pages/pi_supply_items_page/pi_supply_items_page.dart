@@ -155,7 +155,6 @@ class _PiSupplyItemsPageState extends State<PiSupplyItemsPage> {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_AccountSettings_Add,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

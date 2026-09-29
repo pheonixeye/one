@@ -120,7 +120,6 @@ class AssistantsPage extends StatelessWidget {
                                             .isActionPermitted(
                                               PermissionEnum
                                                   .User_AccountSettings_Modify,
-                                              context,
                                             );
                                         if (!_perm.isAllowed) {
                                           await showDialog(
@@ -179,7 +178,6 @@ class AssistantsPage extends StatelessWidget {
                                               .isActionPermitted(
                                                 PermissionEnum
                                                     .User_AccountSettings_Modify,
-                                                context,
                                               );
                                           if (!_perm.isAllowed) {
                                             await showDialog(

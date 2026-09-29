@@ -28,7 +28,6 @@ class EntryNumberColumn extends StatelessWidget {
                 //@permission
                 final _perm = context.read<PxAuth>().isActionPermitted(
                   PermissionEnum.User_TodayVisits_Modify_Entry_Number,
-                  context,
                 );
                 if (!_perm.isAllowed) {
                   await showDialog(
@@ -68,7 +67,6 @@ class EntryNumberColumn extends StatelessWidget {
                 //@permission
                 final _perm = context.read<PxAuth>().isActionPermitted(
                   PermissionEnum.User_TodayVisits_Modify_Entry_Number,
-                  context,
                 );
                 if (!_perm.isAllowed) {
                   await showDialog(

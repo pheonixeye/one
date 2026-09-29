@@ -91,7 +91,6 @@ class VisitTypeRow extends StatelessWidget {
                               .isActionPermitted(
                                 PermissionEnum
                                     .User_TodayVisits_Modify_Visit_Type,
-                                context,
                               );
                           if (!_perm.isAllowed) {
                             await showDialog(

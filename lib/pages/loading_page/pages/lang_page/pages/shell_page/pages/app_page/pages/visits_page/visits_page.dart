@@ -60,7 +60,6 @@ class _VisitsPageState extends State<VisitsPage> {
         //@permission
         final _perm = context.read<PxAuth>().isActionPermitted(
           PermissionEnum.User_Visits_Read,
-          context,
         );
         while (!_perm.isAllowed) {
           return NotPermittedTemplatePage(title: context.loc.visits);
@@ -267,7 +266,6 @@ class _VisitsPageState extends State<VisitsPage> {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_Visits_PrintReciept,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

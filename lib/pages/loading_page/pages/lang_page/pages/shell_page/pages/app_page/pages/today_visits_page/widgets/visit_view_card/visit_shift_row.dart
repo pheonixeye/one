@@ -38,7 +38,6 @@ class VisitShiftRow extends StatelessWidget {
               //@permission
               final _perm = context.read<PxAuth>().isActionPermitted(
                 PermissionEnum.User_TodayVisits_Reschedule_Visit,
-                context,
               );
               if (!_perm.isAllowed) {
                 await showDialog(

@@ -90,9 +90,7 @@ class DoctorAccountCard extends StatelessWidget {
                       onTap: () async {
                         final _isSuperAdmin = context
                             .read<PxAuth>()
-                            .isLoggedInUserSuperAdmin(
-                              context,
-                            );
+                            .isLoggedInUserSuperAdmin();
 
                         if (!_isSuperAdmin) {
                           showIsnackbar(context.loc.needSuperAdminPermission);

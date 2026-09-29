@@ -66,7 +66,6 @@ class PiDocumentTypeViewCard extends StatelessWidget {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_AccountSettings_Modify,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(
@@ -115,7 +114,6 @@ class PiDocumentTypeViewCard extends StatelessWidget {
                         //@permission
                         final _perm = context.read<PxAuth>().isActionPermitted(
                           PermissionEnum.User_AccountSettings_Delete,
-                          context,
                         );
                         if (!_perm.isAllowed) {
                           await showDialog(

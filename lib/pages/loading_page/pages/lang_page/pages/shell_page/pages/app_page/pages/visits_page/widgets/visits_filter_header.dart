@@ -186,7 +186,7 @@ class _VisitsFilterHeaderState extends State<VisitsFilterHeader> {
                 ],
               ),
               SizedBox(height: 4),
-              if (context.read<PxAuth>().isLoggedInUserSuperAdmin(context))
+              if (context.read<PxAuth>().isLoggedInUserSuperAdmin())
                 Card.outlined(
                   elevation: 0,
                   color: Colors.transparent,

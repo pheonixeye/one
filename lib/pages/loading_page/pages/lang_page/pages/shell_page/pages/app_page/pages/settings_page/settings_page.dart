@@ -56,9 +56,7 @@ class SettingsPage extends StatelessWidget {
                                   else ...[
                                     if (context
                                         .read<PxAuth>()
-                                        .isLoggedInUserSuperAdmin(
-                                          context,
-                                        ))
+                                        .isLoggedInUserSuperAdmin())
                                       Card.outlined(
                                         elevation: 6,
                                         child: Padding(

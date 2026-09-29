@@ -73,7 +73,6 @@ class ProgressStatusRow extends StatelessWidget {
                               .isActionPermitted(
                                 PermissionEnum
                                     .User_TodayVisits_Modify_Visit_Progress,
-                                context,
                               );
                           if (!_perm.isAllowed) {
                             await showDialog(

@@ -73,7 +73,6 @@ class _SupplyMovementActionBubbleState extends State<SupplyMovementActionBubble>
                 //@permission
                 final _perm = context.read<PxAuth>().isActionPermitted(
                   PermissionEnum.User_SupplyMovements_Read,
-                  context,
                 );
                 if (!_perm.isAllowed) {
                   await showDialog(
@@ -105,7 +104,6 @@ class _SupplyMovementActionBubbleState extends State<SupplyMovementActionBubble>
                 //@permission
                 final _perm = context.read<PxAuth>().isActionPermitted(
                   PermissionEnum.User_SupplyMovement_Add,
-                  context,
                 );
                 if (!_perm.isAllowed) {
                   await showDialog(

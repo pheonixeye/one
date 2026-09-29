@@ -7,6 +7,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 @PbData()
 class ContractsApi {
+  const ContractsApi();
   static const String collection = 'contracts';
 
   Future<void> addNewContract(Contract contract) async {

@@ -83,7 +83,6 @@ class ClinicViewCard extends StatelessWidget {
                       //@permission
                       final _perm = context.read<PxAuth>().isActionPermitted(
                         PermissionEnum.User_Clinics_Modify,
-                        context,
                       );
                       if (!_perm.isAllowed) {
                         await showDialog(
@@ -215,7 +214,6 @@ class ClinicViewCard extends StatelessWidget {
                                 .read<PxAuth>()
                                 .isActionPermitted(
                                   PermissionEnum.User_Clinics_Activity,
-                                  context,
                                 );
                             if (!_perm.isAllowed) {
                               await showDialog(
@@ -249,7 +247,6 @@ class ClinicViewCard extends StatelessWidget {
                                 .read<PxAuth>()
                                 .isActionPermitted(
                                   PermissionEnum.User_Clinics_Schedule,
-                                  context,
                                 );
                             if (!_perm.isAllowed) {
                               await showDialog(
@@ -289,7 +286,6 @@ class ClinicViewCard extends StatelessWidget {
                                 .read<PxAuth>()
                                 .isActionPermitted(
                                   PermissionEnum.User_Clinics_Prescription,
-                                  context,
                                 );
                             if (!_perm.isAllowed) {
                               await showDialog(
@@ -329,7 +325,6 @@ class ClinicViewCard extends StatelessWidget {
                                 .read<PxAuth>()
                                 .isActionPermitted(
                                   PermissionEnum.User_Clinics_Store,
-                                  context,
                                 );
                             if (!_perm.isAllowed) {
                               await showDialog(
@@ -370,7 +365,7 @@ class ClinicViewCard extends StatelessWidget {
                           onTap: () async {
                             final _isSuperAdmin = context
                                 .read<PxAuth>()
-                                .isLoggedInUserSuperAdmin(context);
+                                .isLoggedInUserSuperAdmin();
 
                             if (!_isSuperAdmin) {
                               showIsnackbar(

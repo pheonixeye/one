@@ -26,7 +26,6 @@ class VisitDetailsBtn extends StatelessWidget {
 
             final _perm = _auth.isActionPermitted(
               PermissionEnum.Admin,
-              context,
             );
             if (!_perm.isAllowed) {
               await showDialog(
