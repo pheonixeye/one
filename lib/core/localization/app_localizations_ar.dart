@@ -1874,4 +1874,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get allContracts => 'كل العقود';
+
+  @override
+  String get selectContractType => 'اختر نوع العقد';
 }

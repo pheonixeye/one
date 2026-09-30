@@ -639,5 +639,6 @@
     "noLabsWereRequested" : "لم يتم طلب تحاليل.",
     "noRadsWereRequested" : "لم يتم طلب اشاعات.",
     "noProceduresWerePerformed" : "لم يتم عمل اجرائات طبية.",
-    "allContracts" : "كل العقود"
+    "allContracts" : "كل العقود",
+    "selectContractType" : "اختر نوع العقد"
 }

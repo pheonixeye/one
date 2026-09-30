@@ -1,7 +1,7 @@
 // See this file for the latest firebase-js-sdk version:
 // https://github.com/firebase/flutterfire/blob/main/packages/firebase_core/firebase_core_web/lib/src/firebase_sdk_version.dart
-importScripts("https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/12.7.0/firebase-messaging-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging-compat.js");
 
 const config = {
     apiKey: 'AIzaSyAXAxPpvOuOnMQLd3W0mWebWd2cUJmtL5I',

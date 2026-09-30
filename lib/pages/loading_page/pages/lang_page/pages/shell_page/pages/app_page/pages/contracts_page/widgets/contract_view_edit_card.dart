@@ -47,36 +47,59 @@ class ContractViewEditCard extends StatelessWidget {
                   child: Row(
                     spacing: 4,
                     children: [
-                      Text.rich(
-                        TextSpan(
-                          text: l.isEnglish
-                              ? contract.name_en
-                              : contract.name_ar,
+                      Text(
+                        l.isEnglish ? contract.name_en : contract.name_ar,
+                        style: TextStyle(
+                          decoration: contract.is_active
+                              ? null
+                              : TextDecoration.lineThrough,
+                        ),
+                      ),
+                      Card.outlined(
+                        color: Colors.amber.shade200,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(32),
+                        ),
+                        child: Text(
+                          '${l.isEnglish ? doctor?.name_en : doctor?.name_ar}',
                           style: TextStyle(
-                            decoration: contract.is_active
-                                ? null
-                                : TextDecoration.lineThrough,
+                            fontSize: 12,
                           ),
-                          children: [
-                            if (doctor != null)
-                              TextSpan(
-                                text:
-                                    ' - ${l.isEnglish ? doctor?.name_en : doctor?.name_ar}',
-                                style: TextStyle(
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            TextSpan(text: '\n'),
-                            TextSpan(
-                              text:
-                                  '(${contract.is_active ? context.loc.active : context.loc.inactive})',
-                              style: TextStyle(
-                                decoration: contract.is_active
-                                    ? null
-                                    : TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
+                        ),
+                      ),
+                      Card.outlined(
+                        color: switch (contract.contract_type) {
+                          ContractType.not_specified => Colors.white,
+                          ContractType.booking_application =>
+                            Colors.green.shade200,
+                          ContractType.insurance_company =>
+                            Colors.teal.shade200,
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(32),
+                        ),
+                        child: Text(
+                          l.isEnglish
+                              ? contract.contract_type.name_en
+                              : contract.contract_type.name_ar,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Card.outlined(
+                        color: switch (contract.is_active) {
+                          true => Colors.green,
+                          false => Colors.red,
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(32),
+                        ),
+                        child: Text(
+                          '(${contract.is_active ? context.loc.active : context.loc.inactive})',
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
                         ),
                       ),
 
@@ -194,37 +217,17 @@ class ContractViewEditCard extends StatelessWidget {
                   spacing: 4,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      spacing: 4,
-                      children: [
-                        Text(context.loc.patientPercent),
-                        Text(' : '),
-                        Text('${contract.patient_percent} %'),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      spacing: 4,
-                      children: [
-                        Text(context.loc.consultationCost),
-                        Text(' : '),
-                        Text(
-                          '${contract.consultation_cost} ${context.loc.egp}',
+                    ...contract.contract_data.forWidgets().entries.map((e) {
+                      return Text.rich(
+                        TextSpan(
+                          text: l.isEnglish ? e.value.en : e.value.ar,
+                          children: [
+                            TextSpan(text: ' : '),
+                            TextSpan(text: '${contract.toJson()[e.key]}'),
+                          ],
                         ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      spacing: 4,
-                      children: [
-                        Text(context.loc.followupCost),
-                        Text(' : '),
-                        Text(
-                          '${contract.followup_cost} ${context.loc.egp}',
-                        ),
-                      ],
-                    ),
+                      );
+                    }),
                   ],
                 ),
               ),

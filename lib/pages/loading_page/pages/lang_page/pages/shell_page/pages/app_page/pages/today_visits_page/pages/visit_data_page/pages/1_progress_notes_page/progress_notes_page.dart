@@ -408,7 +408,7 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                                   ),
                                 if (_patientForms.isNotEmpty) ...[
                                   ..._patientForms.map((form) {
-                                    final _index = _patientForms.indexOf(form);
+                                    // final _index = _patientForms.indexOf(form);
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Card.outlined(
@@ -418,9 +418,9 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                                           child: ListTile(
                                             titleAlignment:
                                                 ListTileTitleAlignment.top,
-                                            leading: SmBtn(
-                                              child: Text('${_index + 1}'),
-                                            ),
+                                            // leading: SmBtn(
+                                            //   child: Text('${_index + 1}'),
+                                            // ),
                                             trailing: SmBtn(
                                               tooltip: context.loc.deleteForm,
                                               backgroundColor: Colors.red,

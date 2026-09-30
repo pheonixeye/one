@@ -139,7 +139,7 @@ class PxAuth extends ChangeNotifier {
     final _superAdminPermission = constants?.appPermission.firstWhere(
       (e) => e.name_en == 'SuperAdmin',
     );
-    print(_superAdminPermission);
+    // print(_superAdminPermission);
     return _user != null &&
         _user!.app_permissions.contains(_superAdminPermission);
   }

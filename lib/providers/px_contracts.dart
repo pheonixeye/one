@@ -31,10 +31,10 @@ class PxContracts extends ChangeNotifier {
     final _isLoggedInUserSuperAdmin = _auth.isLoggedInUserSuperAdmin();
     if (_isLoggedInUserSuperAdmin) {
       _data = await api.fetchAllContracts();
-      print('PxContracts.fetchAllContracts()');
+      // print('PxContracts.fetchAllContracts()');
     } else {
       _data = await api.fetchOneDoctorContracts(_loggedInDocId);
-      print('PxContracts.fetchOneDoctorContracts($_loggedInDocId)');
+      // print('PxContracts.fetchOneDoctorContracts($_loggedInDocId)');
     }
     notifyListeners();
     filterContracts();
