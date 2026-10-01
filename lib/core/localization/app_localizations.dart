@@ -3679,6 +3679,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Contract Type'**
   String get selectContractType;
+
+  /// No description provided for @contractInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Information'**
+  String get contractInformation;
 }
 
 class _AppLocalizationsDelegate

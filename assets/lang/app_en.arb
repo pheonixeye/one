@@ -641,5 +641,6 @@
     "noRadsWereRequested" : "No Rads Were Requested.",
     "noProceduresWerePerformed" : "No Procedures Were Performed.",
     "allContracts" : "All Contracts",
-    "selectContractType" : "Select Contract Type"
+    "selectContractType" : "Select Contract Type",
+    "contractInformation" : "Contract Information"
 }

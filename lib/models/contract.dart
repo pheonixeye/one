@@ -152,7 +152,14 @@ abstract class ContractData with EquatableMixin {
 
   Map<String, dynamic> toJson();
 
-  Map<String, Translatable> forWidgets();
+  Map<String, TypedTranslatable> forWidgets();
+
+  ContractData copyWith();
+
+  ContractData copyWithOneParameter({
+    required String key,
+    required dynamic value,
+  });
 }
 
 class ContractDataNotSpecified extends ContractData {
@@ -162,13 +169,26 @@ class ContractDataNotSpecified extends ContractData {
   Map<String, dynamic> toJson() => {};
 
   @override
-  Map<String, Translatable> forWidgets() => {};
+  Map<String, TypedTranslatable> forWidgets() => {};
+
+  @override
+  ContractDataNotSpecified copyWith() {
+    return ContractDataNotSpecified();
+  }
+
+  @override
+  ContractDataNotSpecified copyWithOneParameter({
+    required String key,
+    required dynamic value,
+  }) {
+    return ContractDataNotSpecified();
+  }
 }
 
 class ContractDataBookingApplication extends ContractData {
-  final num consultation_fees;
-  final num followup_fees;
-  final bool is_fixed_fees;
+  final num? consultation_fees;
+  final num? followup_fees;
+  final bool? is_fixed_fees;
   final num? application_fees;
   final num? application_percentage;
 
@@ -192,6 +212,7 @@ class ContractDataBookingApplication extends ContractData {
     application_percentage,
   ];
 
+  @override
   ContractDataBookingApplication copyWith({
     num? consultation_fees,
     num? followup_fees,
@@ -222,59 +243,74 @@ class ContractDataBookingApplication extends ContractData {
 
   factory ContractDataBookingApplication.fromJson(Map<String, dynamic> map) {
     return ContractDataBookingApplication(
-      consultation_fees: map['consultation_fees'] as num,
-      followup_fees: map['followup_fees'] as num,
-      is_fixed_fees: map['is_fixed_fees'] as bool,
+      consultation_fees: map['consultation_fees'] as num?,
+      followup_fees: map['followup_fees'] as num?,
+      is_fixed_fees: map['is_fixed_fees'] as bool?,
       application_fees: map['application_fees'] != null
-          ? map['application_fees'] as num
+          ? map['application_fees'] as num?
           : null,
       application_percentage: map['application_percentage'] != null
-          ? map['application_percentage'] as num
+          ? map['application_percentage'] as num?
           : null,
     );
   }
 
-  num? get calculatedClinicConsultationFees {
-    if (is_fixed_fees && application_fees != null) {
-      return consultation_fees - application_fees!;
-    } else if (!is_fixed_fees && application_percentage != null) {
-      return consultation_fees * application_percentage! / 100;
-    } else {
-      return null;
-    }
-  }
+  // num? get calculatedClinicConsultationFees {
+  //   if (is_fixed_fees && application_fees != null) {
+  //     return consultation_fees - application_fees!;
+  //   } else if (!is_fixed_fees && application_percentage != null) {
+  //     return consultation_fees * application_percentage! / 100;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   @override
-  Map<String, Translatable> forWidgets() => {
-    'consultation_fees': Translatable(
+  Map<String, TypedTranslatable> forWidgets() => {
+    'consultation_fees': TypedTranslatable(
       en: 'Consultation Fees',
       ar: 'رسوم الكشف',
+      type: num,
     ),
-    'followup_fees': Translatable(
+    'followup_fees': TypedTranslatable(
       en: 'Follow Up Fees',
       ar: 'رسوم الاستشارة',
+      type: num,
     ),
-    'is_fixed_fees': Translatable(
+    'is_fixed_fees': TypedTranslatable(
       en: 'Application Fees Are Fixed Not Percentage',
       ar: 'منصة الحجز تتعامل بسعر ثابت و ليس نسبة',
+      type: bool,
     ),
-    'application_fees': Translatable(
+    'application_fees': TypedTranslatable(
       en: 'Application Fees In Pounds',
       ar: 'رسوم منصة الحجز بالجنيه',
+      type: num,
     ),
-    'application_percentage': Translatable(
+    'application_percentage': TypedTranslatable(
       en: 'Application Percentage %',
       ar: 'نسبة رسوم منصة الحجز',
+      type: num,
     ),
   };
+
+  @override
+  ContractDataBookingApplication copyWithOneParameter({
+    required String key,
+    required dynamic value,
+  }) {
+    final _newJson = toJson();
+    _newJson[key] = value;
+    return ContractDataBookingApplication.fromJson(_newJson);
+  }
 }
 
 class ContractDataInsuranceCompany extends ContractData {
-  final num consultation_fees;
-  final num followup_fees;
-  final bool patient_pays_percentage;
+  final num? consultation_fees;
+  final num? followup_fees;
+  final bool? patient_pays_percentage;
   final num? patient_percent;
-  final bool requires_approval_for_each_visit;
+  final bool? requires_approval_for_each_visit;
   ContractDataInsuranceCompany({
     required this.consultation_fees,
     required this.followup_fees,
@@ -287,6 +323,7 @@ class ContractDataInsuranceCompany extends ContractData {
   //              (!patient_pays_percentage),
   //          'If Patient Pays A Percentage, This Percentace Has To Be Set',
   //        )
+  @override
   ContractDataInsuranceCompany copyWith({
     num? consultation_fees,
     num? followup_fees,
@@ -319,14 +356,14 @@ class ContractDataInsuranceCompany extends ContractData {
 
   factory ContractDataInsuranceCompany.fromJson(Map<String, dynamic> map) {
     return ContractDataInsuranceCompany(
-      consultation_fees: map['consultation_fees'] as num,
-      followup_fees: map['followup_fees'] as num,
-      patient_pays_percentage: map['patient_pays_percentage'] as bool,
+      consultation_fees: map['consultation_fees'] as num?,
+      followup_fees: map['followup_fees'] as num?,
+      patient_pays_percentage: map['patient_pays_percentage'] as bool?,
       patient_percent: map['patient_percent'] != null
-          ? map['patient_percent'] as num
+          ? map['patient_percent'] as num?
           : null,
       requires_approval_for_each_visit:
-          map['requires_approval_for_each_visit'] as bool,
+          map['requires_approval_for_each_visit'] as bool?,
     );
   }
 
@@ -339,26 +376,41 @@ class ContractDataInsuranceCompany extends ContractData {
     requires_approval_for_each_visit,
   ];
   @override
-  Map<String, Translatable> forWidgets() => {
-    'consultation_fees': Translatable(
+  Map<String, TypedTranslatable> forWidgets() => {
+    'consultation_fees': TypedTranslatable(
       en: 'Consultation Fees',
       ar: 'رسوم الكشف',
+      type: num,
     ),
-    'followup_fees': Translatable(
+    'followup_fees': TypedTranslatable(
       en: 'Follow Up Fees',
       ar: 'رسوم الاستشارة',
+      type: num,
     ),
-    'patient_pays_percentage': Translatable(
+    'patient_pays_percentage': TypedTranslatable(
       en: 'Patient Pays A Percentage Per Visit %',
       ar: 'يتحمل المريض نسبة من رسوم الزيارة %',
+      type: bool,
     ),
-    'patient_percent': Translatable(
+    'patient_percent': TypedTranslatable(
       en: 'Patient Percentage Per Visit %',
       ar: 'نسبة تحمل المريض من رسوم الزيارة %',
+      type: num,
     ),
-    'requires_approval_for_each_visit': Translatable(
+    'requires_approval_for_each_visit': TypedTranslatable(
       en: 'Requires Approval For Each Visit',
       ar: 'يحتاج موافقة من الجهة علي كل زيارة',
+      type: bool,
     ),
   };
+
+  @override
+  ContractDataInsuranceCompany copyWithOneParameter({
+    required String key,
+    required dynamic value,
+  }) {
+    final _newJson = toJson();
+    _newJson[key] = value;
+    return ContractDataInsuranceCompany.fromJson(_newJson);
+  }
 }

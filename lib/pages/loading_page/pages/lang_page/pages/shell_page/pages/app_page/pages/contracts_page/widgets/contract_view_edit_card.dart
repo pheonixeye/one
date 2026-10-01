@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/extensions/number_translator.dart';
 import 'package:one/functions/shell_function.dart';
 import 'package:one/models/app_constants/app_permission.dart';
 import 'package:one/models/contract.dart';
@@ -30,36 +29,132 @@ class ContractViewEditCard extends StatelessWidget {
       builder: (context, c, l, _) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Card.outlined(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.titleHeight,
-                leading: SmBtn(
-                  child: Text('${index + 1}'.toArabicNumber(context)),
-                ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              titleAlignment: ListTileTitleAlignment.titleHeight,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(12),
+              ),
+              tileColor: contract.is_active
+                  ? Colors.green.shade50
+                  : Colors.red.shade50,
+              onTap: () async {
+                //@permission
+                final _perm = context.read<PxAuth>().isActionPermitted(
+                  PermissionEnum.User_Contracts_Modify,
+                );
+                if (!_perm.isAllowed) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return NotPermittedDialog(
+                        permission: _perm.permission,
+                      );
+                    },
+                  );
+                  return;
+                }
+                final _toToggle = await showDialog<bool?>(
+                  context: context,
+                  builder: (context) {
+                    return PromptDialog(
+                      message: context.loc.activateDeactivateContractPrompt,
+                    );
+                  },
+                );
+                if (_toToggle == null || _toToggle == false) {
+                  return;
+                }
 
-                tileColor: contract.is_active
-                    ? Colors.green.shade50
-                    : Colors.red.shade50,
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    spacing: 4,
-                    children: [
-                      Text(
-                        l.isEnglish ? contract.name_en : contract.name_ar,
-                        style: TextStyle(
-                          decoration: contract.is_active
-                              ? null
-                              : TextDecoration.lineThrough,
+                if (context.mounted) {
+                  await shellFunction(
+                    context,
+                    toExecute: () async {
+                      final _updated = contract.copyWith(
+                        is_active: !contract.is_active,
+                      );
+                      await c.updateContract(
+                        contract.id,
+                        _updated,
+                      );
+                    },
+                  );
+                }
+              },
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  runSpacing: 8,
+                  runAlignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  children: [
+                    SmBtn(
+                      tooltip: context.loc.editContract,
+                      onPressed: () async {
+                        //@permission
+                        final _perm = context.read<PxAuth>().isActionPermitted(
+                          PermissionEnum.User_Contracts_Modify,
+                        );
+                        if (!_perm.isAllowed) {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return NotPermittedDialog(
+                                permission: _perm.permission,
+                              );
+                            },
+                          );
+                          return;
+                        }
+
+                        final _updated = await showDialog<Contract?>(
+                          context: context,
+                          builder: (context) {
+                            return CreateEditContractDialog(
+                              contract: contract,
+                            );
+                          },
+                        );
+
+                        if (_updated == null) {
+                          return;
+                        }
+                        if (context.mounted) {
+                          await shellFunction(
+                            context,
+                            toExecute: () async {
+                              await c.updateContract(
+                                contract.id,
+                                _updated,
+                              );
+                            },
+                          );
+                        }
+                      },
+
+                      child: const Icon(Icons.edit),
+                    ),
+                    Text(
+                      l.isEnglish ? contract.name_en : contract.name_ar,
+                      style: TextStyle(
+                        decoration: contract.is_active
+                            ? null
+                            : TextDecoration.lineThrough,
+                      ),
+                    ),
+                    Card.outlined(
+                      elevation: 4,
+                      color: Colors.amber.shade200,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(32),
+                        side: BorderSide(
+                          color: Colors.amber,
                         ),
                       ),
-                      Card.outlined(
-                        color: Colors.amber.shade200,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusGeometry.circular(32),
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
                           '${l.isEnglish ? doctor?.name_en : doctor?.name_ar}',
                           style: TextStyle(
@@ -67,17 +162,27 @@ class ContractViewEditCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Card.outlined(
-                        color: switch (contract.contract_type) {
-                          ContractType.not_specified => Colors.white,
-                          ContractType.booking_application =>
-                            Colors.green.shade200,
-                          ContractType.insurance_company =>
-                            Colors.teal.shade200,
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusGeometry.circular(32),
+                    ),
+                    Card.outlined(
+                      elevation: 4,
+                      color: switch (contract.contract_type) {
+                        ContractType.not_specified => Colors.white,
+                        ContractType.booking_application =>
+                          Colors.indigo.shade200,
+                        ContractType.insurance_company => Colors.teal.shade200,
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(32),
+                        side: BorderSide(
+                          color: switch (contract.contract_type) {
+                            ContractType.not_specified => Colors.black45,
+                            ContractType.booking_application => Colors.indigo,
+                            ContractType.insurance_company => Colors.teal,
+                          },
                         ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
                           l.isEnglish
                               ? contract.contract_type.name_en
@@ -87,149 +192,85 @@ class ContractViewEditCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Card.outlined(
-                        color: switch (contract.is_active) {
-                          true => Colors.green,
-                          false => Colors.red,
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusGeometry.circular(32),
+                    ),
+                    Card.outlined(
+                      elevation: 4,
+                      color: switch (contract.is_active) {
+                        true => Colors.green.shade200,
+                        false => Colors.red.shade200,
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(32),
+                        side: BorderSide(
+                          color: switch (contract.is_active) {
+                            true => Colors.green,
+                            false => Colors.red,
+                          },
                         ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          '(${contract.is_active ? context.loc.active : context.loc.inactive})',
+                          contract.is_active
+                              ? context.loc.active
+                              : context.loc.inactive,
                           style: TextStyle(
                             fontSize: 12,
                           ),
                         ),
                       ),
-
-                      const Spacer(),
-                      SmBtn(
-                        tooltip: context.loc.contractActivity,
-                        onPressed: () async {
-                          //@permission
-                          final _perm = context
-                              .read<PxAuth>()
-                              .isActionPermitted(
-                                PermissionEnum.User_Contracts_Modify,
-                              );
-                          if (!_perm.isAllowed) {
-                            await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return NotPermittedDialog(
-                                  permission: _perm.permission,
-                                );
-                              },
-                            );
-                            return;
-                          }
-                          final _toToggle = await showDialog<bool?>(
-                            context: context,
-                            builder: (context) {
-                              return PromptDialog(
-                                message: context
-                                    .loc
-                                    .activateDeactivateContractPrompt,
-                              );
-                            },
-                          );
-                          if (_toToggle == null || _toToggle == false) {
-                            return;
-                          }
-
-                          if (context.mounted) {
-                            await shellFunction(
-                              context,
-                              toExecute: () async {
-                                final _updated = contract.copyWith(
-                                  is_active: !contract.is_active,
-                                );
-                                await c.updateContract(
-                                  contract.id,
-                                  _updated,
-                                );
-                              },
-                            );
-                          }
-                        },
-                        backgroundColor: contract.is_active
-                            ? Colors.red.shade200
-                            : Colors.green.shade200,
-                        child: Icon(
-                          contract.is_active ? Icons.close : Icons.check,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      SmBtn(
-                        tooltip: context.loc.editContract,
-                        onPressed: () async {
-                          //@permission
-                          final _perm = context
-                              .read<PxAuth>()
-                              .isActionPermitted(
-                                PermissionEnum.User_Contracts_Modify,
-                              );
-                          if (!_perm.isAllowed) {
-                            await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return NotPermittedDialog(
-                                  permission: _perm.permission,
-                                );
-                              },
-                            );
-                            return;
-                          }
-
-                          final _updated = await showDialog<Contract?>(
-                            context: context,
-                            builder: (context) {
-                              return CreateEditContractDialog(
-                                contract: contract,
-                              );
-                            },
-                          );
-
-                          if (_updated == null) {
-                            return;
-                          }
-                          if (context.mounted) {
-                            await shellFunction(
-                              context,
-                              toExecute: () async {
-                                await c.updateContract(
-                                  contract.id,
-                                  _updated,
-                                );
-                              },
-                            );
-                          }
-                        },
-
-                        child: const Icon(Icons.edit),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-                ),
-                subtitle: Column(
-                  spacing: 4,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...contract.contract_data.forWidgets().entries.map((e) {
-                      return Text.rich(
-                        TextSpan(
-                          text: l.isEnglish ? e.value.en : e.value.ar,
-                          children: [
-                            TextSpan(text: ' : '),
-                            TextSpan(text: '${contract.toJson()[e.key]}'),
-                          ],
-                        ),
-                      );
-                    }),
+                    ),
                   ],
                 ),
+              ),
+              subtitle: Column(
+                spacing: 4,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...contract.contract_data.forWidgets().entries.map((e) {
+                    return Text.rich(
+                      TextSpan(
+                        text: '',
+                        children: [
+                          WidgetSpan(
+                            child: const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                          ),
+                          TextSpan(text: ' '),
+                          TextSpan(
+                            text: l.isEnglish ? e.value.en : e.value.ar,
+                          ),
+                          TextSpan(text: ' : '),
+                          if (contract.contract_data.toJson()[e.key] == true ||
+                              contract.contract_data.toJson()[e.key] == false)
+                            WidgetSpan(
+                              child: Icon(
+                                switch (contract.contract_data
+                                    .toJson()[e.key]) {
+                                  true => Icons.check,
+                                  false => Icons.close,
+                                  _ => Icons.error,
+                                },
+                                color: switch (contract.contract_data
+                                    .toJson()[e.key]) {
+                                  true => Colors.green,
+                                  false => Colors.red,
+                                  _ => Colors.transparent,
+                                },
+                              ),
+                            )
+                          else
+                            TextSpan(
+                              text:
+                                  '${contract.contract_data.toJson()[e.key] ?? (l.isEnglish ? ContractType.not_specified.name_en : ContractType.not_specified.name_ar)}',
+                            ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
               ),
             ),
           ),

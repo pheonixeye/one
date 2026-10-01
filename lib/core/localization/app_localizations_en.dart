@@ -1885,4 +1885,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectContractType => 'Select Contract Type';
+
+  @override
+  String get contractInformation => 'Contract Information';
 }
