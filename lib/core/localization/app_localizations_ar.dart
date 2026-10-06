@@ -1880,4 +1880,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get contractInformation => 'تفاصيل العقد';
+
+  @override
+  String get shift => 'الفترة';
 }

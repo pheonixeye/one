@@ -22,6 +22,7 @@ class VisitStatusRow extends StatelessWidget {
     return Consumer3<PxAppConstants, PxVisits, PxLocale>(
       builder: (context, a, v, l, _) {
         return Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -29,8 +30,11 @@ class VisitStatusRow extends StatelessWidget {
               ),
               child: const Icon(Icons.wash_rounded),
             ),
-            Expanded(
-              child: Text(context.loc.attendanceStatus),
+            Text(
+              context.loc.attendanceStatus,
+              style: TextStyle(
+                fontSize: 12,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -57,14 +61,23 @@ class VisitStatusRow extends StatelessWidget {
                         enabled: _enabled,
                         child: Center(
                           child: Card.outlined(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusGeometry.circular(12),
+                              side: BorderSide(
+                                color: VisitStatusEnum.member(
+                                  e.name_en,
+                                ).getCardBorderColor,
+                              ),
+                            ),
                             color: e.getCardColor,
                             elevation: 2,
                             child: Padding(
-                              padding: const EdgeInsets.all(
-                                8.0,
-                              ),
+                              padding: const EdgeInsets.all(4.0),
                               child: Text(
                                 l.isEnglish ? e.name_en : e.name_ar,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ),
@@ -128,16 +141,27 @@ class VisitStatusRow extends StatelessWidget {
                   ];
                 },
                 child: Card.outlined(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(12),
+                    side: BorderSide(
+                      color: VisitStatusEnum.member(
+                        visit.visit_status,
+                      ).getCardBorderColor,
+                    ),
+                  ),
                   color: VisitStatusEnum.member(
                     visit.visit_status,
                   ).getCardColor,
                   elevation: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Text(
                       VisitStatusEnum.visitStatus(
                         visit.visit_status,
                         l.isEnglish,
+                      ),
+                      style: TextStyle(
+                        fontSize: 12,
                       ),
                     ),
                   ),

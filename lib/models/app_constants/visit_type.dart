@@ -52,7 +52,7 @@ enum VisitTypeEnum {
     ar: 'كشف',
   ),
   FollowUp(
-    en: 'FollowUp',
+    en: 'Follow Up',
     ar: 'استشارة',
   ),
   Procedure(

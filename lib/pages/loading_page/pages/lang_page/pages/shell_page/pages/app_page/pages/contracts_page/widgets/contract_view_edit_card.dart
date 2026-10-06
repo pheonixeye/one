@@ -223,9 +223,9 @@ class ContractViewEditCard extends StatelessWidget {
                   ],
                 ),
               ),
-              subtitle: Column(
+              subtitle: Wrap(
                 spacing: 4,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                runSpacing: 4,
                 children: [
                   ...contract.contract_data.forWidgets().entries.map((e) {
                     return Text.rich(

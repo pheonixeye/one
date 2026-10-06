@@ -20,6 +20,7 @@ class ProgressStatusRow extends StatelessWidget {
     return Consumer3<PxAppConstants, PxVisits, PxLocale>(
       builder: (context, a, v, l, _) {
         return Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -27,7 +28,10 @@ class ProgressStatusRow extends StatelessWidget {
               ),
               child: const Icon(Icons.add_task_outlined),
             ),
-            Expanded(child: Text(context.loc.progressStatus)),
+            Text(
+              context.loc.progressStatus,
+              style: TextStyle(fontSize: 12),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8.0,
@@ -54,14 +58,21 @@ class ProgressStatusRow extends StatelessWidget {
                         enabled: _enabled,
                         child: Center(
                           child: Card.outlined(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusGeometry.circular(12),
+                              side: BorderSide(
+                                color: PatientProgressStatusEnum.member(
+                                  e.name_en,
+                                ).getCardBorderColor,
+                              ),
+                            ),
                             color: e.getCardColor,
                             elevation: 2,
                             child: Padding(
-                              padding: const EdgeInsets.all(
-                                8.0,
-                              ),
+                              padding: const EdgeInsets.all(4.0),
                               child: Text(
                                 l.isEnglish ? e.name_en : e.name_ar,
+                                style: TextStyle(fontSize: 12),
                               ),
                             ),
                           ),
@@ -101,17 +112,26 @@ class ProgressStatusRow extends StatelessWidget {
                   ];
                 },
                 child: Card.outlined(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(12),
+                    side: BorderSide(
+                      color: PatientProgressStatusEnum.member(
+                        visit.patient_progress_status,
+                      ).getCardBorderColor,
+                    ),
+                  ),
                   color: PatientProgressStatusEnum.member(
                     visit.patient_progress_status,
                   ).getCardColor,
                   elevation: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Text(
                       PatientProgressStatusEnum.progressStatus(
                         visit.patient_progress_status,
                         l.isEnglish,
                       ),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ),
                 ),

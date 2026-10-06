@@ -20,6 +20,8 @@ class EntryNumberColumn extends StatelessWidget {
     return Consumer<PxVisits>(
       builder: (context, v, _) {
         return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           spacing: 12,
           children: [
             InkWell(

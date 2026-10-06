@@ -1,7 +1,18 @@
+import 'package:go_router/go_router.dart';
+import 'package:one/core/api/_api_result.dart';
+import 'package:one/core/api/fcm_notifications_api.dart';
+import 'package:one/core/logic/client_notification_formatter_sender.dart';
 import 'package:one/extensions/number_translator.dart';
 import 'package:one/models/app_constants/app_permission.dart';
+import 'package:one/models/clinic/clinic.dart';
+import 'package:one/models/notifications/in_app_action.dart';
+import 'package:one/models/visits/visit.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/add_new_visit_dialog/add_new_visit_dialog.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/patients_page/widgets/patient_info_card_actions.dart';
+import 'package:one/providers/px_add_new_visit_dialog.dart';
 import 'package:one/providers/px_auth.dart';
+import 'package:one/providers/px_visits.dart';
+import 'package:one/router/router.dart';
 import 'package:one/widgets/not_permitted_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:flutter/gestures.dart';
@@ -52,200 +63,366 @@ class PatientInfoCard extends StatelessWidget {
                 onPressed: null,
                 child: Text('${index + 1}'.toArabicNumber(context)),
               ),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(child: Text(patient.name)),
-                  SmBtn(
-                    tooltip: context.loc.editPatientData,
-                    onPressed: () async {
-                      //todo: edit patient name/phone/dob
-                      //@permission
-                      final _perm = context.read<PxAuth>().isActionPermitted(
-                        PermissionEnum.User_Patient_EditInfo,
-                      );
-                      if (!_perm.isAllowed) {
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return NotPermittedDialog(
-                              permission: _perm.permission,
-                            );
-                          },
-                        );
-                        return;
-                      }
-                      final _patient = await showDialog<Patient?>(
-                        context: context,
-                        builder: (context) {
-                          return CreateEditPatientDialog(
-                            patient: patient,
-                          );
-                        },
-                      );
-                      if (_patient == null) {
-                        return;
-                      }
-                      if (context.mounted) {
-                        await shellFunction(
-                          context,
-                          toExecute: () async {
-                            await p.editPatientBaseData(_patient);
-                          },
-                        );
-                      }
-                    },
-                    child: const Icon(Icons.edit),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              titleAlignment: ListTileTitleAlignment.top,
-              subtitle: Padding(
-                padding: const EdgeInsets.all(8.0),
+
+              title: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 8,
+                    Text.rich(
+                      TextSpan(
+                        text: patient.name,
                         children: [
-                          Text.rich(
-                            TextSpan(
-                              text: context.loc.dateOfBirth,
-                              children: [
-                                TextSpan(text: ' : '),
-                                if (patient.dob.isNotEmpty)
-                                  TextSpan(
-                                    text: DateFormat(
-                                      'dd / MM / yyyy',
-                                      context.read<PxLocale>().lang,
-                                    ).format(DateTime.parse(patient.dob)),
-                                  )
-                                else
-                                  TextSpan(text: '-- / -- / ----'),
-                              ],
-                            ),
-                          ),
-                          Text.rich(
-                            TextSpan(
-                              text: context.loc.phone,
-                              children: [
-                                TextSpan(text: ' : '),
-                                TextSpan(text: patient.phone),
-                                TextSpan(text: '  '),
-                                WidgetSpan(
-                                  child: InkWell(
-                                    child: const Icon(Icons.call),
-                                    onTap: () async {
-                                      //@permission
-                                      final _perm = context
-                                          .read<PxAuth>()
-                                          .isActionPermitted(
-                                            PermissionEnum.User_Patient_Call,
-                                          );
-                                      if (!_perm.isAllowed) {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return NotPermittedDialog(
-                                              permission: _perm.permission,
-                                            );
-                                          },
+                          TextSpan(text: '  '),
+                          WidgetSpan(
+                            child: Tooltip(
+                              message: context.loc.editPatientData,
+                              child: InkWell(
+                                onTap: () async {
+                                  //todo: edit patient name/phone/dob
+                                  //@permission
+                                  final _perm = context
+                                      .read<PxAuth>()
+                                      .isActionPermitted(
+                                        PermissionEnum.User_Patient_EditInfo,
+                                      );
+                                  if (!_perm.isAllowed) {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return NotPermittedDialog(
+                                          permission: _perm.permission,
                                         );
-                                        return;
-                                      }
-                                      web.window.open(
-                                        'tel://+2${patient.phone}',
-                                        '_blank',
+                                      },
+                                    );
+                                    return;
+                                  }
+                                  final _patient = await showDialog<Patient?>(
+                                    context: context,
+                                    builder: (context) {
+                                      return CreateEditPatientDialog(
+                                        patient: patient,
                                       );
                                     },
-                                  ),
+                                  );
+                                  if (_patient == null) {
+                                    return;
+                                  }
+                                  if (context.mounted) {
+                                    await shellFunction(
+                                      context,
+                                      toExecute: () async {
+                                        await p.editPatientBaseData(_patient);
+                                      },
+                                    );
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.edit,
+                                  size: 16,
                                 ),
-                                TextSpan(text: '  '),
-                                WidgetSpan(
-                                  child: InkWell(
-                                    child: const Icon(
-                                      FontAwesomeIcons.whatsapp,
-                                    ),
-                                    onTap: () async {
-                                      //@permission
-                                      final _perm = context
-                                          .read<PxAuth>()
-                                          .isActionPermitted(
-                                            PermissionEnum
-                                                .User_Patient_Whatsapp,
-                                          );
-                                      if (!_perm.isAllowed) {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return NotPermittedDialog(
-                                              permission: _perm.permission,
-                                            );
-                                          },
-                                        );
-                                        return;
-                                      }
-                                      web.window.open(
-                                        'https://wa.me/+2${patient.phone}',
-                                        '_blank',
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                          if (patient.email.isNotEmpty)
-                            Text.rich(
-                              TextSpan(
-                                text: context.loc.email,
-                                children: [
-                                  TextSpan(text: ' : '),
-                                  if (patient.email.isNotEmpty)
-                                    TextSpan(
-                                      text: patient.email,
-                                      style: TextStyle(
-                                        decoration: TextDecoration.underline,
+                          TextSpan(text: '  '),
+                          WidgetSpan(
+                            child: Tooltip(
+                              message: context.loc.addNewVisit,
+                              child: InkWell(
+                                mouseCursor: SystemMouseCursors.zoomIn,
+                                onTap: () async {
+                                  //@permission
+                                  final _perm = context
+                                      .read<PxAuth>()
+                                      .isActionPermitted(
+                                        PermissionEnum.User_Patient_AddNewVisit,
+                                      );
+                                  if (!_perm.isAllowed) {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return NotPermittedDialog(
+                                          permission: _perm.permission,
+                                        );
+                                      },
+                                    );
+                                    return;
+                                  }
+                                  final _visitDto = await showDialog<Visit?>(
+                                    context: context,
+                                    builder: (context) {
+                                      return ChangeNotifierProvider.value(
+                                        value: c,
+                                        child: ChangeNotifierProvider(
+                                          create: (context) =>
+                                              PxAddNewVisitDialog(
+                                                context: context,
+                                              ),
+                                          child: AddNewVisitDialog(
+                                            patient: patient,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  if (_visitDto == null) {
+                                    return;
+                                  }
+                                  //todo:
+                                  if (context.mounted) {
+                                    await shellFunction(
+                                      context,
+                                      toExecute: () async {
+                                        await context
+                                            .read<PxVisits>()
+                                            .addNewVisit(
+                                              _visitDto,
+                                            );
+                                        if (context.mounted) {
+                                          final _clinic =
+                                              (c.result
+                                                      as ApiDataResult<
+                                                        List<Clinic>
+                                                      >)
+                                                  .data
+                                                  .firstWhere(
+                                                    (c) =>
+                                                        c.id ==
+                                                        _visitDto.clinic_id,
+                                                  );
+                                          ClientNotificationFormatterSender(
+                                              api: const FcmNotificationsApi(),
+                                              organizationExpanded: context
+                                                  .read<PxAuth>()
+                                                  .organization!,
+                                              isEnglish: context
+                                                  .read<PxLocale>()
+                                                  .isEnglish,
+                                            )
+                                            ..formatFromInAppAction(
+                                              action: InAppAction.add_new_visit,
+                                              account_types: context
+                                                  .read<PxAppConstants>()
+                                                  .constants!
+                                                  .accountTypes,
+                                              patient_name: patient.name,
+                                              clinic_name:
+                                                  context
+                                                      .read<PxLocale>()
+                                                      .isEnglish
+                                                  ? _clinic.name_en
+                                                  : _clinic.name_ar,
+                                              visit_date: _visitDto.visit_date,
+                                              visit_type: _visitDto.visit_type,
+                                            )
+                                            ..send();
+                                        }
+                                        //todo: notify patient with visit details && entry number => manual
+                                        //todo: generate bookkeeping entry based on the state of the visit
+                                      },
+                                      duration: const Duration(
+                                        milliseconds: 500,
                                       ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
-                                          //@permission
-                                          final _perm = context
-                                              .read<PxAuth>()
-                                              .isActionPermitted(
-                                                PermissionEnum
-                                                    .User_Patient_Email,
-                                              );
-                                          if (!_perm.isAllowed) {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return NotPermittedDialog(
-                                                  permission: _perm.permission,
-                                                );
-                                              },
-                                            );
-                                            return;
-                                          }
-                                          web.window.open(
-                                            'mailto://${patient.email}',
-                                            '_blank',
-                                          );
-                                        },
-                                    )
-                                  else
-                                    TextSpan(text: ''),
-                                ],
+                                    );
+                                  }
+                                  if (context.mounted) {
+                                    GoRouter.of(context).goNamed(
+                                      AppRouter.app,
+                                      pathParameters: defaultPathParameters(
+                                        context,
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    PatientInfoCardActions(patient: patient),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ),
+              titleAlignment: ListTileTitleAlignment.top,
+              subtitle: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  runAlignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        text: context.loc.dateOfBirth,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12,
+                        ),
+                        children: [
+                          TextSpan(text: ' : '),
+                          if (patient.dob.isNotEmpty)
+                            TextSpan(
+                              text: DateFormat(
+                                'dd / MM / yyyy',
+                                context.read<PxLocale>().lang,
+                              ).format(DateTime.parse(patient.dob)),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            )
+                          else
+                            TextSpan(
+                              text: '-- / -- / ----',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
                               ),
                             ),
                         ],
                       ),
                     ),
-                    PatientInfoCardActions(patient: patient),
+                    Text.rich(
+                      TextSpan(
+                        text: context.loc.phone,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12,
+                        ),
+                        children: [
+                          TextSpan(text: ' : '),
+                          TextSpan(
+                            text: patient.phone,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                          TextSpan(text: '  '),
+                          WidgetSpan(
+                            child: InkWell(
+                              child: const Icon(
+                                Icons.call,
+                                size: 16,
+                              ),
+                              onTap: () async {
+                                //@permission
+                                final _perm = context
+                                    .read<PxAuth>()
+                                    .isActionPermitted(
+                                      PermissionEnum.User_Patient_Call,
+                                    );
+                                if (!_perm.isAllowed) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return NotPermittedDialog(
+                                        permission: _perm.permission,
+                                      );
+                                    },
+                                  );
+                                  return;
+                                }
+                                web.window.open(
+                                  'tel://+2${patient.phone}',
+                                  '_blank',
+                                );
+                              },
+                            ),
+                          ),
+                          TextSpan(text: '  '),
+                          WidgetSpan(
+                            child: InkWell(
+                              child: const Icon(
+                                FontAwesomeIcons.whatsapp,
+                                size: 16,
+                              ),
+                              onTap: () async {
+                                //@permission
+                                final _perm = context
+                                    .read<PxAuth>()
+                                    .isActionPermitted(
+                                      PermissionEnum.User_Patient_Whatsapp,
+                                    );
+                                if (!_perm.isAllowed) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return NotPermittedDialog(
+                                        permission: _perm.permission,
+                                      );
+                                    },
+                                  );
+                                  return;
+                                }
+                                web.window.open(
+                                  'https://wa.me/+2${patient.phone}',
+                                  '_blank',
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (patient.email.isNotEmpty)
+                      Text.rich(
+                        TextSpan(
+                          text: context.loc.email,
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                          children: [
+                            TextSpan(text: ' : '),
+                            if (patient.email.isNotEmpty)
+                              TextSpan(
+                                text: patient.email,
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    //@permission
+                                    final _perm = context
+                                        .read<PxAuth>()
+                                        .isActionPermitted(
+                                          PermissionEnum.User_Patient_Email,
+                                        );
+                                    if (!_perm.isAllowed) {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return NotPermittedDialog(
+                                            permission: _perm.permission,
+                                          );
+                                        },
+                                      );
+                                      return;
+                                    }
+                                    web.window.open(
+                                      'mailto://${patient.email}',
+                                      '_blank',
+                                    );
+                                  },
+                              )
+                            else
+                              TextSpan(text: ''),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
               ),

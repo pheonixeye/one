@@ -31,254 +31,297 @@ class DiscountManagmentRow extends StatelessWidget {
             children: [Expanded(child: LinearProgressIndicator())],
           );
         }
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: const Icon(Icons.discount),
-              ),
-              Expanded(child: Text(context.loc.discount)),
-              Builder(
-                builder: (context) {
-                  while (b.result is ApiErrorResult) {
-                    return Expanded(
-                      flex: 3,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.error),
-                          Text(
-                            context.loc.error,
-                            style: TextStyle(color: Colors.red, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  //todo: calculate discounts
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: const Icon(Icons.discount),
+            ),
+            Text(
+              context.loc.discount,
+              style: TextStyle(fontSize: 12),
+            ),
+            Builder(
+              builder: (context) {
+                while (b.result is ApiErrorResult) {
                   return Expanded(
-                    child: Text.rich(
-                      TextSpan(
-                        text: '(${b.discountTotal})'.toArabicNumber(context),
-                        children: [
-                          TextSpan(text: ' '),
-                          TextSpan(
-                            text: context.loc.egp,
-                            style: TextStyle(letterSpacing: 0),
-                          ),
-                        ],
-                      ),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color:
-                            (b.discountTotal != null &&
-                                b.discountTotal!.isNegative)
-                            ? Colors.red
-                            : null,
-                        letterSpacing: 2,
-                      ),
+                    flex: 3,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error),
+                        Text(
+                          context.loc.error,
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                      ],
                     ),
                   );
-                },
-              ),
-              SizedBox(width: 10),
-              PopupMenuButton<void>(
-                offset: Offset(0, 48),
-                elevation: 6,
-                shadowColor: Colors.transparent,
-                color: Colors.white.withValues(alpha: 0.5),
+                }
+                //todo: calculate discounts
+                return Text.rich(
+                  TextSpan(
+                    text: ' (${b.discountTotal}) '.toArabicNumber(context),
+                    children: [
+                      TextSpan(text: ''),
+                      TextSpan(
+                        text: context.loc.egp,
+                        style: TextStyle(letterSpacing: 0),
+                      ),
+                    ],
+                  ),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color:
+                        (b.discountTotal != null && b.discountTotal!.isNegative)
+                        ? Colors.red
+                        : null,
+                    letterSpacing: 2,
+                  ),
+                );
+              },
+            ),
+            SizedBox(width: 10),
+            PopupMenuButton<void>(
+              offset: Offset(0, 48),
+              elevation: 6,
+              shadowColor: Colors.transparent,
+              color: Colors.white.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(12),
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
+                side: BorderSide(),
+              ),
+              child: Card.outlined(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(),
-                ),
-                child: Card.outlined(
-                  elevation: 6,
-                  color: Colors.amber.shade50,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: const Icon(Icons.menu),
+                  borderRadius: BorderRadiusGeometry.circular(12),
+                  side: BorderSide(
+                    color: Colors.amber,
                   ),
                 ),
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      mouseCursor: SystemMouseCursors.click,
-                      enabled: true,
-                      child: Center(
-                        child: Card.outlined(
-                          color: Colors.green.shade50,
-                          elevation: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(context.loc.addDiscount),
-                          ),
-                        ),
-                      ),
-                      onTap: () async {
-                        //@permission
-                        final _perm = context.read<PxAuth>().isActionPermitted(
-                          PermissionEnum.User_TodayVisits_Add_Discount,
-                        );
-                        if (!_perm.isAllowed) {
-                          await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return NotPermittedDialog(
-                                permission: _perm.permission,
-                              );
-                            },
-                          );
-                          return;
-                        }
-
-                        if (visit.visit_status == a.notAttended.name_en) {
-                          showIsnackbar(context.loc.visitNotAttended);
-                          return;
-                        }
-
-                        final _dto = await showDialog<BookkeepingItem?>(
-                          context: context,
-                          builder: (context) {
-                            return AddRemoveDiscountDialog(
-                              visit: visit,
-                              direction: BookkeepingDirection.OUT,
-                            );
-                          },
-                        );
-                        if (_dto == null) {
-                          return;
-                        }
-                        if (context.mounted) {
-                          await shellFunction(
-                            context,
-                            toExecute: () async {
-                              await b.addBookkeepingEntry(_dto);
-                              //todo: Notify FCM to Org Members discount applied
-                              if (context.mounted) {
-                                ClientNotificationFormatterSender(
-                                    organizationExpanded: context
-                                        .read<PxAuth>()
-                                        .organization!,
-                                    isEnglish: context
-                                        .read<PxLocale>()
-                                        .isEnglish,
-                                  )
-                                  ..formatFromInAppAction(
-                                    action: InAppAction.add_discount_to_visit,
-                                    account_types:
-                                        context
-                                            .read<PxAppConstants>()
-                                            .constants
-                                            ?.accountTypes ??
-                                        [],
-                                    visit_date: visit.visit_date,
-                                    discount_amount: _dto.amount.toString(),
-                                    patient_name: visit.patient.name,
-                                    doctor_name: visit.doctor.name_en,
-                                  )
-                                  ..send();
-                              }
-                            },
-                          );
-                        }
-                      },
-                    ),
-                    PopupMenuItem(
-                      mouseCursor: SystemMouseCursors.click,
-                      enabled: true,
-                      child: Center(
-                        child: Card.outlined(
-                          color: Colors.red.shade50,
-                          elevation: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(context.loc.removeDiscount),
-                          ),
-                        ),
-                      ),
-                      onTap: () async {
-                        //@permission
-                        final _perm = context.read<PxAuth>().isActionPermitted(
-                          PermissionEnum.User_TodayVisits_Remove_Discount,
-                        );
-                        if (!_perm.isAllowed) {
-                          await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return NotPermittedDialog(
-                                permission: _perm.permission,
-                              );
-                            },
-                          );
-                          return;
-                        }
-                        if (visit.visit_status == a.notAttended.name_en) {
-                          showIsnackbar(context.loc.visitNotAttended);
-                          return;
-                        }
-
-                        if (b.discountTotal != null && b.discountTotal! >= 0) {
-                          showIsnackbar(context.loc.noDiscountApplied);
-                          return;
-                        }
-
-                        final _dto = await showDialog<BookkeepingItem?>(
-                          context: context,
-                          builder: (context) {
-                            return AddRemoveDiscountDialog(
-                              visit: visit,
-                              direction: BookkeepingDirection.IN,
-                            );
-                          },
-                        );
-                        if (_dto == null) {
-                          return;
-                        }
-                        if (context.mounted) {
-                          await shellFunction(
-                            context,
-                            toExecute: () async {
-                              await b.addBookkeepingEntry(_dto);
-                              //todo: Notify FCM to Org Members discount removed
-                              if (context.mounted) {
-                                ClientNotificationFormatterSender(
-                                    organizationExpanded: context
-                                        .read<PxAuth>()
-                                        .organization!,
-                                    isEnglish: context
-                                        .read<PxLocale>()
-                                        .isEnglish,
-                                  )
-                                  ..formatFromInAppAction(
-                                    action:
-                                        InAppAction.remove_discount_from_visit,
-                                    account_types:
-                                        context
-                                            .read<PxAppConstants>()
-                                            .constants
-                                            ?.accountTypes ??
-                                        [],
-                                    visit_date: visit.visit_date,
-                                    discount_amount: _dto.amount.toString(),
-                                    patient_name: visit.patient.name,
-                                    doctor_name: visit.doctor.name_en,
-                                  )
-                                  ..send();
-                              }
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ];
-                },
+                elevation: 6,
+                color: Colors.amber.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: const Icon(
+                    Icons.menu,
+                    size: 16,
+                  ),
+                ),
               ),
-              SizedBox(width: 10),
-            ],
-          ),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    mouseCursor: SystemMouseCursors.click,
+                    enabled: true,
+                    child: Center(
+                      child: Card.outlined(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                          side: BorderSide(
+                            color: Colors.green,
+                          ),
+                        ),
+                        color: Colors.green.shade50,
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 4,
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                size: 16,
+                              ),
+                              Text(
+                                context.loc.addDiscount,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      //@permission
+                      final _perm = context.read<PxAuth>().isActionPermitted(
+                        PermissionEnum.User_TodayVisits_Add_Discount,
+                      );
+                      if (!_perm.isAllowed) {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return NotPermittedDialog(
+                              permission: _perm.permission,
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      if (visit.visit_status == a.notAttended.name_en) {
+                        showIsnackbar(context.loc.visitNotAttended);
+                        return;
+                      }
+
+                      final _dto = await showDialog<BookkeepingItem?>(
+                        context: context,
+                        builder: (context) {
+                          return AddRemoveDiscountDialog(
+                            visit: visit,
+                            direction: BookkeepingDirection.OUT,
+                          );
+                        },
+                      );
+                      if (_dto == null) {
+                        return;
+                      }
+                      if (context.mounted) {
+                        await shellFunction(
+                          context,
+                          toExecute: () async {
+                            await b.addBookkeepingEntry(_dto);
+                            //todo: Notify FCM to Org Members discount applied
+                            if (context.mounted) {
+                              ClientNotificationFormatterSender(
+                                  organizationExpanded: context
+                                      .read<PxAuth>()
+                                      .organization!,
+                                  isEnglish: context.read<PxLocale>().isEnglish,
+                                )
+                                ..formatFromInAppAction(
+                                  action: InAppAction.add_discount_to_visit,
+                                  account_types:
+                                      context
+                                          .read<PxAppConstants>()
+                                          .constants
+                                          ?.accountTypes ??
+                                      [],
+                                  visit_date: visit.visit_date,
+                                  discount_amount: _dto.amount.toString(),
+                                  patient_name: visit.patient.name,
+                                  doctor_name: visit.doctor.name_en,
+                                )
+                                ..send();
+                            }
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  PopupMenuItem(
+                    mouseCursor: SystemMouseCursors.click,
+                    enabled: true,
+                    child: Center(
+                      child: Card.outlined(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                          side: BorderSide(
+                            color: Colors.red,
+                          ),
+                        ),
+                        color: Colors.red.shade50,
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: 4,
+                            children: [
+                              const Icon(
+                                Icons.remove,
+                                size: 16,
+                              ),
+                              Text(
+                                context.loc.removeDiscount,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      //@permission
+                      final _perm = context.read<PxAuth>().isActionPermitted(
+                        PermissionEnum.User_TodayVisits_Remove_Discount,
+                      );
+                      if (!_perm.isAllowed) {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return NotPermittedDialog(
+                              permission: _perm.permission,
+                            );
+                          },
+                        );
+                        return;
+                      }
+                      if (visit.visit_status == a.notAttended.name_en) {
+                        showIsnackbar(context.loc.visitNotAttended);
+                        return;
+                      }
+
+                      if (b.discountTotal != null && b.discountTotal! >= 0) {
+                        showIsnackbar(context.loc.noDiscountApplied);
+                        return;
+                      }
+
+                      final _dto = await showDialog<BookkeepingItem?>(
+                        context: context,
+                        builder: (context) {
+                          return AddRemoveDiscountDialog(
+                            visit: visit,
+                            direction: BookkeepingDirection.IN,
+                          );
+                        },
+                      );
+                      if (_dto == null) {
+                        return;
+                      }
+                      if (context.mounted) {
+                        await shellFunction(
+                          context,
+                          toExecute: () async {
+                            await b.addBookkeepingEntry(_dto);
+                            //todo: Notify FCM to Org Members discount removed
+                            if (context.mounted) {
+                              ClientNotificationFormatterSender(
+                                  organizationExpanded: context
+                                      .read<PxAuth>()
+                                      .organization!,
+                                  isEnglish: context.read<PxLocale>().isEnglish,
+                                )
+                                ..formatFromInAppAction(
+                                  action:
+                                      InAppAction.remove_discount_from_visit,
+                                  account_types:
+                                      context
+                                          .read<PxAppConstants>()
+                                          .constants
+                                          ?.accountTypes ??
+                                      [],
+                                  visit_date: visit.visit_date,
+                                  discount_amount: _dto.amount.toString(),
+                                  patient_name: visit.patient.name,
+                                  doctor_name: visit.doctor.name_en,
+                                )
+                                ..send();
+                            }
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ];
+              },
+            ),
+            SizedBox(width: 10),
+          ],
         );
       },
     );

@@ -641,5 +641,6 @@
     "noProceduresWerePerformed" : "لم يتم عمل اجرائات طبية.",
     "allContracts" : "كل العقود",
     "selectContractType" : "اختر نوع العقد",
-    "contractInformation" : "تفاصيل العقد"
+    "contractInformation" : "تفاصيل العقد",
+    "shift" : "الفترة"
 }

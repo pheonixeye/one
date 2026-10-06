@@ -642,5 +642,6 @@
     "noProceduresWerePerformed" : "No Procedures Were Performed.",
     "allContracts" : "All Contracts",
     "selectContractType" : "Select Contract Type",
-    "contractInformation" : "Contract Information"
+    "contractInformation" : "Contract Information",
+    "shift" : "Shift"
 }

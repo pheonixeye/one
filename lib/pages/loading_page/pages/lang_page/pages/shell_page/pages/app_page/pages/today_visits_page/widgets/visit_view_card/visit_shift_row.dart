@@ -26,97 +26,115 @@ class VisitShiftRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: const Icon(Icons.more_time_rounded),
         ),
-        Expanded(
-          flex: 3,
-          child: ElevatedButton(
-            onPressed: () async {
-              //@permission
-              final _perm = context.read<PxAuth>().isActionPermitted(
-                PermissionEnum.User_TodayVisits_Reschedule_Visit,
-              );
-              if (!_perm.isAllowed) {
-                await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return NotPermittedDialog(permission: _perm.permission);
-                  },
-                );
-                return;
-              }
-              final _shift = await showDialog<ScheduleShift?>(
-                context: context,
-                builder: (context) {
-                  return ChangeNotifierProvider(
-                    create: (context) => PxVisitsPerClinicShift(
-                      visit_date: visit.visit_date,
-                      clinic_id: visit.clinic_id,
-                      api: VisitsApi(
-                        added_by: '${context.read<PxAuth>().user?.name}',
-                      ),
-                    ),
-                    child: RescheduleVisitDialog(visit: visit),
-                  );
-                },
-              );
-              if (_shift == null) {
-                return;
-              }
-              final _clinicSchedule = visit.clinic.clinic_schedule.firstWhere(
-                (sch) => sch.intday == visit.intday,
-              );
-
-              if (visit.isInSameShift(_clinicSchedule, _shift)) {
-                if (context.mounted) {
-                  showIsnackbar(context.loc.sameShiftSelected);
-                }
-                return;
-              }
-
-              if (context.mounted) {
-                await shellFunction(
-                  context,
-                  toExecute: () async {
-                    await context.read<PxVisits>().updateVisitScheduleShift(
-                      visit_id: visit.id,
-                      shift: Shift.fromScheduleShift(_shift),
-                    );
-                    //todo: Notify FCM to Org Members visit Shift changed
-                    if (context.mounted) {
-                      ClientNotificationFormatterSender(
-                          organizationExpanded: context
-                              .read<PxAuth>()
-                              .organization!,
-                          isEnglish: context.read<PxLocale>().isEnglish,
-                        )
-                        ..formatFromInAppAction(
-                          action: InAppAction.update_visit_shift,
-                          account_types:
-                              context
-                                  .read<PxAppConstants>()
-                                  .constants
-                                  ?.accountTypes ??
-                              [],
-                          visit_date: visit.visit_date,
-                          patient_name: visit.patient.name,
-                          doctor_name: visit.doctor.name_en,
-                          visit_shift: visit.formattedShift(context),
-                          new_visit_shift: _shift.formattedFromTo(context),
-                        )
-                        ..send();
-                    }
-                  },
-                );
-              }
-            },
-            child: Text(visit.formattedShift(context)),
+        Text(
+          context.loc.shift,
+          style: TextStyle(
+            fontSize: 12,
           ),
         ),
-        const Spacer(),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusGeometry.circular(12),
+            ),
+            padding: EdgeInsets.all(4),
+          ),
+
+          onPressed: () async {
+            //@permission
+            final _perm = context.read<PxAuth>().isActionPermitted(
+              PermissionEnum.User_TodayVisits_Reschedule_Visit,
+            );
+            if (!_perm.isAllowed) {
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return NotPermittedDialog(permission: _perm.permission);
+                },
+              );
+              return;
+            }
+            final _shift = await showDialog<ScheduleShift?>(
+              context: context,
+              builder: (context) {
+                return ChangeNotifierProvider(
+                  create: (context) => PxVisitsPerClinicShift(
+                    visit_date: visit.visit_date,
+                    clinic_id: visit.clinic_id,
+                    api: VisitsApi(
+                      added_by: '${context.read<PxAuth>().user?.name}',
+                    ),
+                  ),
+                  child: RescheduleVisitDialog(visit: visit),
+                );
+              },
+            );
+            if (_shift == null) {
+              return;
+            }
+            final _clinicSchedule = visit.clinic.clinic_schedule.firstWhere(
+              (sch) => sch.intday == visit.intday,
+            );
+
+            if (visit.isInSameShift(_clinicSchedule, _shift)) {
+              if (context.mounted) {
+                showIsnackbar(context.loc.sameShiftSelected);
+              }
+              return;
+            }
+
+            if (context.mounted) {
+              await shellFunction(
+                context,
+                toExecute: () async {
+                  await context.read<PxVisits>().updateVisitScheduleShift(
+                    visit_id: visit.id,
+                    shift: Shift.fromScheduleShift(_shift),
+                  );
+                  //todo: Notify FCM to Org Members visit Shift changed
+                  if (context.mounted) {
+                    ClientNotificationFormatterSender(
+                        organizationExpanded: context
+                            .read<PxAuth>()
+                            .organization!,
+                        isEnglish: context.read<PxLocale>().isEnglish,
+                      )
+                      ..formatFromInAppAction(
+                        action: InAppAction.update_visit_shift,
+                        account_types:
+                            context
+                                .read<PxAppConstants>()
+                                .constants
+                                ?.accountTypes ??
+                            [],
+                        visit_date: visit.visit_date,
+                        patient_name: visit.patient.name,
+                        doctor_name: visit.doctor.name_en,
+                        visit_shift: visit.formattedShift(context),
+                        new_visit_shift: _shift.formattedFromTo(context),
+                      )
+                      ..send();
+                  }
+                },
+              );
+            }
+          },
+          child: Text(
+            visit.formattedShift(context),
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
+        ),
+        // const Spacer(),
+        const SizedBox(width: 10),
       ],
     );
   }

@@ -3685,6 +3685,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contract Information'**
   String get contractInformation;
+
+  /// No description provided for @shift.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift'**
+  String get shift;
 }
 
 class _AppLocalizationsDelegate

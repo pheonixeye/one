@@ -38,6 +38,15 @@ extension WxColorsVisitTypeEnum on VisitTypeEnum {
       _ => Colors.transparent,
     };
   }
+
+  Color get getCardBorderColor {
+    return switch (en) {
+      'Consultation' => Colors.blue,
+      'Follow Up' => Colors.amber,
+      'Procedure' => Colors.green,
+      _ => Colors.transparent,
+    };
+  }
 }
 
 extension WxColorsVisitType on VisitType {
@@ -46,6 +55,15 @@ extension WxColorsVisitType on VisitType {
       'Consultation' => Colors.blue.shade50,
       'Follow Up' => Colors.amber.shade50,
       'Procedure' => Colors.green.shade50,
+      _ => Colors.transparent,
+    };
+  }
+
+  Color get getCardBorderColor {
+    return switch (name_en) {
+      'Consultation' => Colors.blue,
+      'Follow Up' => Colors.amber,
+      'Procedure' => Colors.green,
       _ => Colors.transparent,
     };
   }
@@ -59,6 +77,14 @@ extension WxColorsVisitStatusEnum on VisitStatusEnum {
       _ => Colors.transparent,
     };
   }
+
+  Color get getCardBorderColor {
+    return switch (en) {
+      'Attended' => Colors.blue,
+      'Not Attended' => Colors.red,
+      _ => Colors.transparent,
+    };
+  }
 }
 
 extension WxColorsVisitStatus on VisitStatus {
@@ -66,6 +92,14 @@ extension WxColorsVisitStatus on VisitStatus {
     return switch (name_en) {
       'Attended' => Colors.blue.shade50,
       'Not Attended' => Colors.red.shade50,
+      _ => Colors.transparent,
+    };
+  }
+
+  Color get getCardBorderColor {
+    return switch (name_en) {
+      'Attended' => Colors.blue,
+      'Not Attended' => Colors.red,
       _ => Colors.transparent,
     };
   }
@@ -82,6 +116,17 @@ extension WxColorsPatientProgressStatusEnum on PatientProgressStatusEnum {
       _ => Colors.transparent,
     };
   }
+
+  Color get getCardBorderColor {
+    return switch (en) {
+      'Has Not Attended Yet' => Colors.purple,
+      'Done Consultation' => Colors.blue,
+      'In Consultation' => Colors.green,
+      'In Waiting' => Colors.amber,
+      'Canceled' => Colors.red,
+      _ => Colors.transparent,
+    };
+  }
 }
 
 extension WxColorsPatientProgressStatus on PatientProgressStatus {
@@ -92,6 +137,17 @@ extension WxColorsPatientProgressStatus on PatientProgressStatus {
       'In Consultation' => Colors.green.shade50,
       'In Waiting' => Colors.amber.shade50,
       'Canceled' => Colors.red.shade50,
+      _ => Colors.transparent,
+    };
+  }
+
+  Color get getCardBorderColor {
+    return switch (name_en) {
+      'Has Not Attended Yet' => Colors.purple,
+      'Done Consultation' => Colors.blue,
+      'In Consultation' => Colors.green,
+      'In Waiting' => Colors.amber,
+      'Canceled' => Colors.red,
       _ => Colors.transparent,
     };
   }

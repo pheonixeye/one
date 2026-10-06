@@ -1888,4 +1888,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contractInformation => 'Contract Information';
+
+  @override
+  String get shift => 'Shift';
 }

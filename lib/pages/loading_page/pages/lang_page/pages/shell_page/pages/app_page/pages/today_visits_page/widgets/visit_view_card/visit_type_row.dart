@@ -72,14 +72,23 @@ class VisitTypeRow extends StatelessWidget {
                         enabled: _enabled,
                         child: Center(
                           child: Card.outlined(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusGeometry.circular(12),
+                              side: BorderSide(
+                                color: VisitTypeEnum.member(
+                                  e.name_en,
+                                ).getCardBorderColor,
+                              ),
+                            ),
                             color: e.getCardColor,
                             elevation: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(
-                                8.0,
+                                4.0,
                               ),
                               child: Text(
                                 l.isEnglish ? e.name_en : e.name_ar,
+                                style: TextStyle(fontSize: 12),
                               ),
                             ),
                           ),
@@ -143,17 +152,26 @@ class VisitTypeRow extends StatelessWidget {
                   ];
                 },
                 child: Card.outlined(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(12),
+                    side: BorderSide(
+                      color: VisitTypeEnum.member(
+                        visit.visit_type,
+                      ).getCardBorderColor,
+                    ),
+                  ),
                   color: VisitTypeEnum.member(
                     visit.visit_type,
                   ).getCardColor,
                   elevation: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Text(
                       VisitTypeEnum.visitType(
                         visit.visit_type,
                         l.isEnglish,
                       ),
+                      style: TextStyle(fontSize: 12),
                     ),
                   ),
                 ),
