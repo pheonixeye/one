@@ -553,13 +553,21 @@ class AppRouter {
                                                 '/$visit_prescription', //:visit_id/visit_prescription
                                             name: visit_prescription,
                                             builder: (context, state) {
+                                              final _pxVisits = context
+                                                  .read<PxVisits>();
                                               return ChangeNotifierProvider(
                                                 key: ValueKey(
                                                   state
                                                       .pathParameters['visit_id'],
                                                 ),
                                                 create: (context) =>
-                                                    PxVisitPrescriptionState(),
+                                                    PxVisitPrescriptionState(
+                                                      clinicId:
+                                                          _pxVisits
+                                                              .visitForRouter
+                                                              ?.clinic_id ??
+                                                          '',
+                                                    ),
 
                                                 child: VisitPrescriptionPage(
                                                   key: state.pageKey,

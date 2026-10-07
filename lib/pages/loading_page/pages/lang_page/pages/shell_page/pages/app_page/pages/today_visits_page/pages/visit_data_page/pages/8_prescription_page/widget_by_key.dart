@@ -23,7 +23,7 @@ class WidgetByKey extends StatelessWidget {
             child: Text(
               visit_data.patient.name,
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -35,7 +35,7 @@ class WidgetByKey extends StatelessWidget {
                 l.lang,
               ).format(visit_data.visit!.visit_date),
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -46,7 +46,7 @@ class WidgetByKey extends StatelessWidget {
                 l.isEnglish,
               )}',
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -76,7 +76,7 @@ class WidgetByKey extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -105,7 +105,7 @@ class WidgetByKey extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -128,7 +128,7 @@ class WidgetByKey extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -148,7 +148,7 @@ class WidgetByKey extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),
@@ -194,7 +194,7 @@ class WidgetByKey extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               style: TextStyle(
-                fontSize: s.visitPrescriptionItemsFontSize[mapKey],
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
               ),
             ),
           ),

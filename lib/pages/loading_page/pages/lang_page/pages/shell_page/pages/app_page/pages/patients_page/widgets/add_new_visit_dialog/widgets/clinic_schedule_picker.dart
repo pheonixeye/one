@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/models/clinic/clinic_schedule.dart';
 import 'package:one/models/weekdays.dart';
@@ -33,9 +34,18 @@ class ClinicSchedulePicker extends StatelessWidget {
                   groupValue: s.clinicSchedule,
                   onChanged: (value) async {
                     s.selectClinicSchedule(value);
+                    if (s.clinicSchedule != null &&
+                        s.clinicSchedule!.intday == DateTime.now().weekday) {
+                      s.visitDateController.text = DateFormat(
+                        'dd / MM / yyyy',
+                        l.lang,
+                      ).format(DateTime.now());
+                      s.selectVisitDate(DateTime.now());
+                    } else {
+                      s.selectVisitDate(null);
+                      s.visitDateController.clear();
+                    }
                     s.selectScheduleShift(null);
-                    s.selectVisitDate(null);
-                    s.visitDateController.clear();
 
                     if (s.clinic != null && s.visitDate != null) {
                       await v.calculateVisitsPerClinicShift(

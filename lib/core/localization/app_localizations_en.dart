@@ -1891,4 +1891,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shift => 'Shift';
+
+  @override
+  String get savePrescriptionConfigurationForDevice =>
+      'Save Prescription Configuration For Device';
+
+  @override
+  String get toggleRegularView => 'Toggle Regular View';
 }

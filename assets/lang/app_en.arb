@@ -643,5 +643,7 @@
     "allContracts" : "All Contracts",
     "selectContractType" : "Select Contract Type",
     "contractInformation" : "Contract Information",
-    "shift" : "Shift"
+    "shift" : "Shift",
+    "savePrescriptionConfigurationForDevice" : "Save Prescription Configuration For Device",
+    "toggleRegularView" : "Toggle Regular View"
 }

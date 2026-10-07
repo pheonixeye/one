@@ -1,20 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:one/models/clinic/prescription_details.dart';
 import 'package:one/models/pk_form.dart';
 import 'package:one/models/visit_data/visit_form_item.dart';
+import 'package:one/models/visit_prescription_state.dart';
+import 'package:one/utils/shared_prefs.dart';
 import 'package:screenshot/screenshot.dart';
 
 enum PrescriptionView { regular, forms }
 
 class PxVisitPrescriptionState extends ChangeNotifier {
-  PxVisitPrescriptionState() {
+  PxVisitPrescriptionState({required this.clinicId}) {
     init();
-    //TODO: Implement hive caching instead of session caching
+    //todo: Implement hive caching instead of session caching
   }
 
-  static final Map<String, Offset> _offsetsSessionCache = {};
+  final String clinicId;
 
-  static final Map<String, double> _fontSizedSessionCache = {};
+  static const _prescriptionState = 'prescription_state';
 
   late final ScreenshotController _screenshotController1 =
       ScreenshotController();
@@ -26,86 +30,115 @@ class PxVisitPrescriptionState extends ChangeNotifier {
   ScreenshotController get screenshotControllerWithoutImage =>
       _screenshotController2;
 
-  Map<String, bool> _visitPrescriptionVisibility = {};
-  Map<String, bool> get visitPrescriptionVisibility =>
-      _visitPrescriptionVisibility;
+  VisitPrescriptionState? _state;
+  VisitPrescriptionState? get state => _state;
 
-  Map<String, Offset> _visitPrescriptionItemsOffset = {};
-  Map<String, Offset> get visitPrescriptionItemsOffset =>
-      _visitPrescriptionItemsOffset;
+  void init() async {
+    final strJson = await asyncPrefs.getString(_prescriptionState);
+    if (strJson != null) {
+      final decoded = jsonDecode(strJson) as Map<String, dynamic>;
+      _state = VisitPrescriptionState(
+        clinicId: clinicId,
+        items: (decoded[clinicId] as List<dynamic>)
+            .map((e) => VisitPrescriptionItem.fromJson(e))
+            .toList(),
+      );
+      notifyListeners();
+    } else {
+      _state = VisitPrescriptionState(
+        clinicId: clinicId,
+      );
+      notifyListeners();
+    }
+  }
 
-  Map<String, double> _visitPrescriptionItemsFontSize = {};
-  Map<String, double> get visitPrescriptionItemsFontSize =>
-      _visitPrescriptionItemsFontSize;
-
-  void init() {
-    _visitPrescriptionVisibility = Map.fromEntries(
-      PrescriptionDetails.initial().details.keys.map((e) {
-        return MapEntry(e, true);
-      }),
-    );
-    _visitPrescriptionItemsOffset = Map.fromEntries(
-      PrescriptionDetails.initial().details.entries.map((e) {
-        if (_offsetsSessionCache[e.key] != null) {
-          return MapEntry(e.key, _offsetsSessionCache[e.key]!);
-        } else {
-          return MapEntry(e.key, Offset(e.value.x_coord, e.value.y_coord));
-        }
-      }),
-    );
-    _visitPrescriptionItemsFontSize = Map.fromEntries(
-      PrescriptionDetails.initial().details.entries.map((e) {
-        if (_fontSizedSessionCache[e.key] != null) {
-          return MapEntry(e.key, _fontSizedSessionCache[e.key]!);
-        } else {
-          return MapEntry(e.key, 14);
-        }
-      }),
-    );
-    notifyListeners();
+  Future<void> saveConfiguration() async {
+    if (_state != null) {
+      final _encoded = jsonEncode(_state);
+      await asyncPrefs.setString(_prescriptionState, _encoded);
+    }
   }
 
   void toggleVisibility(String key) {
-    _visitPrescriptionVisibility[key] = !_visitPrescriptionVisibility[key]!;
-    notifyListeners();
+    final _item = _state?.getItemByKey(key);
+    if (_item != null) {
+      _state?.updateStateItemByKey(
+        key,
+        _item.copyWith(
+          isVisible: !_item.isVisible,
+        ),
+      );
+      notifyListeners();
+    }
   }
 
   void toggleVisibilityByValue(String key, bool value) {
-    _visitPrescriptionVisibility[key] = value;
-    notifyListeners();
+    final _item = _state?.getItemByKey(key);
+    if (_item != null) {
+      _state?.updateStateItemByKey(
+        key,
+        _item.copyWith(
+          isVisible: value,
+        ),
+      );
+      notifyListeners();
+    }
   }
 
   void updateItemOffset(String key, Offset offset) {
-    _visitPrescriptionItemsOffset[key] = offset;
-    notifyListeners();
-    _offsetsSessionCache[key] = offset;
+    final _item = _state?.getItemByKey(key);
+    if (_item != null) {
+      _state?.updateStateItemByKey(
+        key,
+        _item.copyWith(
+          xCoord: offset.dx,
+          yCoord: offset.dy,
+        ),
+      );
+      notifyListeners();
+    }
   }
 
   void resetItemOffset(String key) {
     final _itemDetail = PrescriptionDetails.initial().details[key];
     if (_itemDetail != null) {
-      final _offset = Offset(_itemDetail.x_coord, _itemDetail.y_coord);
-      _visitPrescriptionItemsOffset[key] = _offset;
-      notifyListeners();
-      _offsetsSessionCache[key] = _offset;
+      final _item = _state?.getItemByKey(key);
+      if (_item != null) {
+        _state?.updateStateItemByKey(
+          key,
+          _item.copyWith(
+            xCoord: _itemDetail.x_coord,
+            yCoord: _itemDetail.y_coord,
+          ),
+        );
+        notifyListeners();
+      }
     }
   }
 
   void increaseItemFontSize(String key) {
-    if (_visitPrescriptionItemsFontSize[key] != null) {
-      _visitPrescriptionItemsFontSize[key] =
-          _visitPrescriptionItemsFontSize[key]! + 1;
+    final _item = _state?.getItemByKey(key);
+    if (_item != null) {
+      _state?.updateStateItemByKey(
+        key,
+        _item.copyWith(
+          fontSize: _item.fontSize + 1,
+        ),
+      );
       notifyListeners();
-      _fontSizedSessionCache[key] = _visitPrescriptionItemsFontSize[key]!;
     }
   }
 
   void decreaseItemFontSize(String key) {
-    if (_visitPrescriptionItemsFontSize[key] != null) {
-      _visitPrescriptionItemsFontSize[key] =
-          _visitPrescriptionItemsFontSize[key]! - 1;
+    final _item = _state?.getItemByKey(key);
+    if (_item != null) {
+      _state?.updateStateItemByKey(
+        key,
+        _item.copyWith(
+          fontSize: _item.fontSize - 1,
+        ),
+      );
       notifyListeners();
-      _fontSizedSessionCache[key] = _visitPrescriptionItemsFontSize[key]!;
     }
   }
 

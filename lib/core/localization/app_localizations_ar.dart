@@ -1883,4 +1883,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shift => 'الفترة';
+
+  @override
+  String get savePrescriptionConfigurationForDevice =>
+      'حفظ ترتيب الروشتة للجهاز';
+
+  @override
+  String get toggleRegularView => 'الروشتة';
 }

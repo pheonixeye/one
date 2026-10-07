@@ -642,5 +642,7 @@
     "allContracts" : "كل العقود",
     "selectContractType" : "اختر نوع العقد",
     "contractInformation" : "تفاصيل العقد",
-    "shift" : "الفترة"
+    "shift" : "الفترة",
+    "savePrescriptionConfigurationForDevice" : "حفظ ترتيب الروشتة للجهاز",
+    "toggleRegularView" : "الروشتة"
 }

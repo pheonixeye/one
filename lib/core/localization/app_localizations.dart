@@ -3691,6 +3691,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shift'**
   String get shift;
+
+  /// No description provided for @savePrescriptionConfigurationForDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Prescription Configuration For Device'**
+  String get savePrescriptionConfigurationForDevice;
+
+  /// No description provided for @toggleRegularView.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle Regular View'**
+  String get toggleRegularView;
 }
 
 class _AppLocalizationsDelegate

@@ -34,7 +34,7 @@ class VisitPrescriptionPage extends StatelessWidget {
     return Scaffold(
       body: Consumer3<PxVisitData, PxVisitPrescriptionState, PxLocale>(
         builder: (context, vd, s, l, _) {
-          while (vd.result == null) {
+          while (vd.result == null || s.state == null) {
             return const CentralLoading();
           }
           final visit_data = (vd.result as ApiDataResult<VisitData>).data;
@@ -80,154 +80,166 @@ class VisitPrescriptionPage extends StatelessWidget {
                             fit: StackFit.expand,
                             children: [
                               //todo: put items
-                              ...PrescriptionDetails.initial().details.entries.map((
-                                x,
-                              ) {
-                                final _left =
-                                    s.visitPrescriptionItemsOffset[x.key]?.dx ??
-                                    x.value.x_coord;
-                                final _top =
-                                    s.visitPrescriptionItemsOffset[x.key]?.dy ??
-                                    x.value.y_coord;
-                                return Visibility(
-                                  visible: s.view == PrescriptionView.regular
-                                      ? s.visitPrescriptionVisibility[x.key]!
-                                      : true,
-                                  child: Directionality(
-                                    textDirection: TextDirection.ltr,
-                                    child: Positioned(
-                                      left: _left,
-                                      top: _top,
-                                      child: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onPanUpdate: (details) {
-                                          double _updatedX =
-                                              s
-                                                  .visitPrescriptionItemsOffset[x
-                                                      .key]!
-                                                  .dx +
-                                              details.delta.dx;
-                                          double _updatedY =
-                                              s
-                                                  .visitPrescriptionItemsOffset[x
-                                                      .key]!
-                                                  .dy +
-                                              details.delta.dy;
-                                          s.updateItemOffset(
-                                            x.key,
-                                            Offset(
-                                              _updatedX,
-                                              _updatedY,
-                                            ),
-                                          );
-                                        },
-                                        onDoubleTap: () {
-                                          s.increaseItemFontSize(x.key);
-                                        },
+                              ...PrescriptionDetails.initial().details.entries
+                                  .map((
+                                    x,
+                                  ) {
+                                    final _left =
+                                        s.state?.getItemByKey(x.key)?.xCoord ??
+                                        x.value.x_coord;
+                                    final _top =
+                                        s.state?.getItemByKey(x.key)?.yCoord ??
+                                        x.value.y_coord;
+                                    return Visibility(
+                                      visible:
+                                          s.view == PrescriptionView.regular
+                                          ? s.state!
+                                                .getItemByKey(x.key)!
+                                                .isVisible
+                                          : true,
+                                      child: Directionality(
+                                        textDirection: TextDirection.ltr,
+                                        child: Positioned(
+                                          left: _left,
+                                          top: _top,
+                                          child: GestureDetector(
+                                            behavior: HitTestBehavior.opaque,
+                                            onPanUpdate: (details) {
+                                              double _updatedX =
+                                                  (s.state
+                                                          ?.getItemByKey(x.key)
+                                                          ?.xCoord ??
+                                                      0) +
+                                                  details.delta.dx;
+                                              double _updatedY =
+                                                  (s.state
+                                                          ?.getItemByKey(x.key)
+                                                          ?.yCoord ??
+                                                      0) +
+                                                  details.delta.dy;
+                                              s.updateItemOffset(
+                                                x.key,
+                                                Offset(
+                                                  _updatedX,
+                                                  _updatedY,
+                                                ),
+                                              );
+                                            },
+                                            onDoubleTap: () {
+                                              s.increaseItemFontSize(x.key);
+                                            },
 
-                                        onLongPress: () {
-                                          s.decreaseItemFontSize(x.key);
-                                        },
+                                            onLongPress: () {
+                                              s.decreaseItemFontSize(x.key);
+                                            },
 
-                                        child: switch (x.key) {
-                                          'patient_name' => WidgetByKey(
-                                            mapKey: x.key,
-                                            visit_data: visit_data,
+                                            child: switch (x.key) {
+                                              'patient_name' => WidgetByKey(
+                                                mapKey: x.key,
+                                                visit_data: visit_data,
+                                              ),
+                                              'visit_date' => WidgetByKey(
+                                                mapKey: x.key,
+                                                visit_data: visit_data,
+                                              ),
+                                              'visit_type' => WidgetByKey(
+                                                mapKey: x.key,
+                                                visit_data: visit_data,
+                                              ),
+                                              _ => SizedBox(),
+                                            },
                                           ),
-                                          'visit_date' => WidgetByKey(
-                                            mapKey: x.key,
-                                            visit_data: visit_data,
-                                          ),
-                                          'visit_type' => WidgetByKey(
-                                            mapKey: x.key,
-                                            visit_data: visit_data,
-                                          ),
-                                          _ => SizedBox(),
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                              if (s.view == PrescriptionView.regular)
-                                ...PrescriptionDetails.initial().details.entries.map((
-                                  x,
-                                ) {
-                                  final _left =
-                                      s
-                                          .visitPrescriptionItemsOffset[x.key]
-                                          ?.dx ??
-                                      x.value.x_coord;
-                                  final _top =
-                                      s
-                                          .visitPrescriptionItemsOffset[x.key]
-                                          ?.dy ??
-                                      x.value.y_coord;
-                                  return Visibility(
-                                    visible:
-                                        s.visitPrescriptionVisibility[x.key] ??
-                                        true,
-                                    child: Directionality(
-                                      textDirection: TextDirection.ltr,
-                                      child: Positioned(
-                                        left: _left,
-                                        top: _top,
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.opaque,
-                                          onPanUpdate: (details) {
-                                            double _updatedX =
-                                                s
-                                                    .visitPrescriptionItemsOffset[x
-                                                        .key]!
-                                                    .dx +
-                                                details.delta.dx;
-                                            double _updatedY =
-                                                s
-                                                    .visitPrescriptionItemsOffset[x
-                                                        .key]!
-                                                    .dy +
-                                                details.delta.dy;
-                                            s.updateItemOffset(
-                                              x.key,
-                                              Offset(_updatedX, _updatedY),
-                                            );
-                                          },
-                                          onDoubleTap: () {
-                                            s.increaseItemFontSize(x.key);
-                                          },
-
-                                          onLongPress: () {
-                                            s.decreaseItemFontSize(x.key);
-                                          },
-
-                                          child: switch (x.key) {
-                                            'visit_labs' => WidgetByKey(
-                                              mapKey: x.key,
-                                              visit_data: visit_data,
-                                            ),
-                                            'visit_rads' => WidgetByKey(
-                                              mapKey: x.key,
-                                              visit_data: visit_data,
-                                            ),
-                                            'visit_procedures' => WidgetByKey(
-                                              mapKey: x.key,
-                                              visit_data: visit_data,
-                                            ),
-                                            'doctor_name' => WidgetByKey(
-                                              mapKey: x.key,
-                                              visit_data: visit_data,
-                                            ),
-                                            'visit_drugs' => WidgetByKey(
-                                              mapKey: x.key,
-                                              visit_data: visit_data,
-                                            ),
-                                            _ => Text(''),
-                                          },
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                    );
+                                  }),
+                              if (s.view == PrescriptionView.regular)
+                                ...PrescriptionDetails.initial().details.entries
+                                    .map((
+                                      x,
+                                    ) {
+                                      final _left =
+                                          s.state
+                                              ?.getItemByKey(x.key)
+                                              ?.xCoord ??
+                                          x.value.x_coord;
+                                      final _top =
+                                          s.state
+                                              ?.getItemByKey(x.key)
+                                              ?.yCoord ??
+                                          x.value.y_coord;
+                                      return Visibility(
+                                        visible:
+                                            s.state
+                                                ?.getItemByKey(x.key)
+                                                ?.isVisible ??
+                                            true,
+                                        child: Directionality(
+                                          textDirection: TextDirection.ltr,
+                                          child: Positioned(
+                                            left: _left,
+                                            top: _top,
+                                            child: GestureDetector(
+                                              behavior: HitTestBehavior.opaque,
+                                              onPanUpdate: (details) {
+                                                double _updatedX =
+                                                    (s.state
+                                                            ?.getItemByKey(
+                                                              x.key,
+                                                            )
+                                                            ?.xCoord ??
+                                                        0) +
+                                                    details.delta.dx;
+                                                double _updatedY =
+                                                    (s.state
+                                                            ?.getItemByKey(
+                                                              x.key,
+                                                            )
+                                                            ?.yCoord ??
+                                                        0) +
+                                                    details.delta.dy;
+                                                s.updateItemOffset(
+                                                  x.key,
+                                                  Offset(_updatedX, _updatedY),
+                                                );
+                                              },
+                                              onDoubleTap: () {
+                                                s.increaseItemFontSize(x.key);
+                                              },
+
+                                              onLongPress: () {
+                                                s.decreaseItemFontSize(x.key);
+                                              },
+
+                                              child: switch (x.key) {
+                                                'visit_labs' => WidgetByKey(
+                                                  mapKey: x.key,
+                                                  visit_data: visit_data,
+                                                ),
+                                                'visit_rads' => WidgetByKey(
+                                                  mapKey: x.key,
+                                                  visit_data: visit_data,
+                                                ),
+                                                'visit_procedures' =>
+                                                  WidgetByKey(
+                                                    mapKey: x.key,
+                                                    visit_data: visit_data,
+                                                  ),
+                                                'doctor_name' => WidgetByKey(
+                                                  mapKey: x.key,
+                                                  visit_data: visit_data,
+                                                ),
+                                                'visit_drugs' => WidgetByKey(
+                                                  mapKey: x.key,
+                                                  visit_data: visit_data,
+                                                ),
+                                                _ => Text(''),
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
                               if (s.view == PrescriptionView.forms &&
                                   s.formItems != null)
                                 GestureDetector(
@@ -300,7 +312,12 @@ class VisitPrescriptionPage extends StatelessWidget {
                                 horizontal: 8.0,
                               ),
                               child: SmBtn(
-                                tooltip: context.loc.toggleFormsView,
+                                tooltip: switch (s.view) {
+                                  PrescriptionView.regular =>
+                                    context.loc.toggleFormsView,
+                                  PrescriptionView.forms =>
+                                    context.loc.toggleRegularView,
+                                },
                                 onPressed: () {
                                   //todo: Toggle View
                                   s.toggleView();
@@ -455,6 +472,25 @@ class VisitPrescriptionPage extends StatelessWidget {
                                 child: const Icon(Icons.print),
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: SmBtn(
+                                tooltip: context
+                                    .loc
+                                    .savePrescriptionConfigurationForDevice,
+                                child: const Icon(Icons.save_as),
+                                onPressed: () async {
+                                  await shellFunction(
+                                    context,
+                                    toExecute: () async {
+                                      await s.saveConfiguration();
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
                             Expanded(
                               child: Stack(
                                 alignment: Alignment.center,
@@ -508,8 +544,12 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                         children: [
                                                           FilterChip(
                                                             selected:
-                                                                s.visitPrescriptionVisibility[e
-                                                                    .key]!,
+                                                                (s.state
+                                                                    ?.getItemByKey(
+                                                                      e.key,
+                                                                    )
+                                                                    ?.isVisible ??
+                                                                true),
                                                             label: Text(
                                                               _title,
                                                             ),
