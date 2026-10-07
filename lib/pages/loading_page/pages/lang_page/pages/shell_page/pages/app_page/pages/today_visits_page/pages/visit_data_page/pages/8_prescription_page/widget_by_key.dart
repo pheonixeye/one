@@ -50,6 +50,14 @@ class WidgetByKey extends StatelessWidget {
               ),
             ),
           ),
+          'visit_diagnosis' => SizedBox(
+            child: Text(
+              ' * ${visit_data.diagnosis}',
+              style: TextStyle(
+                fontSize: s.state?.getItemByKey(mapKey)?.fontSize ?? 16,
+              ),
+            ),
+          ),
           //-----//
           'visit_labs' => SizedBox(
             child: Text.rich(

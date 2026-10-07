@@ -1890,4 +1890,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get toggleRegularView => 'الروشتة';
+
+  @override
+  String get diagnosis => 'التشخيص';
 }

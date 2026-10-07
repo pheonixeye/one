@@ -3703,6 +3703,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Toggle Regular View'**
   String get toggleRegularView;
+
+  /// No description provided for @diagnosis.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnosis'**
+  String get diagnosis;
 }
 
 class _AppLocalizationsDelegate

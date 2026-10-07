@@ -645,5 +645,6 @@
     "contractInformation" : "Contract Information",
     "shift" : "Shift",
     "savePrescriptionConfigurationForDevice" : "Save Prescription Configuration For Device",
-    "toggleRegularView" : "Toggle Regular View"
+    "toggleRegularView" : "Toggle Regular View",
+    "diagnosis" : "Diagnosis"
 }

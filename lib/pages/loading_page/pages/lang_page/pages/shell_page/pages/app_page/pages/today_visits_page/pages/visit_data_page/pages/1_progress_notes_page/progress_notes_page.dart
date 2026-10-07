@@ -70,14 +70,19 @@ class VisitProgressNotesPage extends StatefulWidget {
 class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
   late final ScrollController _scrollController;
   late final PxProgressNotes _pxPn;
+  late final PxVisitData _pxVisitData;
   final ValueNotifier<Set<String>> _selectedBtnSegment = ValueNotifier({
     'drugs',
   });
+  final ValueNotifier<bool> _isEditingDiagnosis = ValueNotifier<bool>(false);
+  late final TextEditingController _diagnosisController;
+
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _pxPn = context.read<PxProgressNotes>();
+    _pxVisitData = context.read<PxVisitData>();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
               _scrollController.position.maxScrollExtent * 0.8 &&
@@ -85,6 +90,11 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
         _pxPn.fetchNextBatch();
       }
     });
+    _diagnosisController = TextEditingController();
+    if (_pxVisitData.result != null) {
+      final _r = (_pxVisitData.result as ApiDataResult<VisitData>).data;
+      _diagnosisController.text = _r.diagnosis;
+    }
   }
 
   @override
@@ -126,6 +136,8 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
 
         final _previousDrugs = vd.drugData;
 
+        final _previousDiagnoses = vd.diagnosisData;
+
         final _previousLabs = vd.labData;
 
         final _previousRads = vd.radData;
@@ -149,14 +161,35 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                               8.0,
                             ),
                             child: ListTile(
-                              title: Text(
-                                '(${_index + 1}) ${intl.DateFormat(
-                                  'dd - MM - yyyy',
-                                  l.lang,
-                                ).format(entry.key)}',
+                              title: Text.rich(
+                                TextSpan(
+                                  text:
+                                      '(${_index + 1}) ${intl.DateFormat(
+                                        'dd - MM - yyyy',
+                                        l.lang,
+                                      ).format(entry.key)}',
+                                ),
                               ),
                               subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  if (_previousDiagnoses?[entry.key] != null &&
+                                      _previousDiagnoses![entry.key]!
+                                          .isNotEmpty) ...[
+                                    Divider(
+                                      color: Colors.blue.shade200,
+                                    ),
+                                    Text(
+                                      '${context.loc.diagnosis} : (${_previousDiagnoses[entry.key]})',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: Colors.blue.shade200,
+                                    ),
+                                  ],
                                   if (entry.value.entries.isEmpty)
                                     Text(
                                       context.loc.noDrugsWerePrescribed,
@@ -408,7 +441,6 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                                   ),
                                 if (_patientForms.isNotEmpty) ...[
                                   ..._patientForms.map((form) {
-                                    // final _index = _patientForms.indexOf(form);
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Card.outlined(
@@ -418,9 +450,7 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                                           child: ListTile(
                                             titleAlignment:
                                                 ListTileTitleAlignment.top,
-                                            // leading: SmBtn(
-                                            //   child: Text('${_index + 1}'),
-                                            // ),
+
                                             trailing: SmBtn(
                                               tooltip: context.loc.deleteForm,
                                               backgroundColor: Colors.red,
@@ -510,6 +540,116 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                                   }),
                                   const Divider(),
                                 ],
+                                //diagnosis card
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ValueListenableBuilder(
+                                    valueListenable: _isEditingDiagnosis,
+                                    builder: (context, value, child) {
+                                      return Card.outlined(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            spacing: 8,
+                                            children: [
+                                              Text(
+                                                context.loc.diagnosis,
+                                                style: Theme.of(
+                                                  context,
+                                                ).listTileTheme.titleTextStyle,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  if (value) ...[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        decoration: InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          enabled: true,
+                                                        ),
+                                                        maxLines: 1,
+                                                        minLines: null,
+                                                        expands: false,
+                                                        controller:
+                                                            _diagnosisController,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    SmBtn(
+                                                      child: const Icon(
+                                                        Icons.close,
+                                                      ),
+                                                      onPressed: () {
+                                                        _isEditingDiagnosis
+                                                                .value =
+                                                            false;
+                                                        _diagnosisController
+                                                            .text = _visit_data
+                                                            .diagnosis;
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    SmBtn(
+                                                      child: const Icon(
+                                                        Icons.save,
+                                                      ),
+                                                      onPressed: () async {
+                                                        await shellFunction(
+                                                          context,
+                                                          toExecute: () async {
+                                                            await vd.updateVisitDiagnosis(
+                                                              _diagnosisController
+                                                                  .text,
+                                                            );
+                                                          },
+                                                          duration:
+                                                              const Duration(
+                                                                milliseconds:
+                                                                    260,
+                                                              ),
+                                                        );
+                                                        _isEditingDiagnosis
+                                                                .value =
+                                                            false;
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                  ] else ...[
+                                                    Expanded(
+                                                      child: Text(
+                                                        _visit_data.diagnosis,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    SmBtn(
+                                                      child: const Icon(
+                                                        Icons.edit,
+                                                      ),
+                                                      onPressed: () {
+                                                        _isEditingDiagnosis
+                                                                .value =
+                                                            true;
+                                                        _diagnosisController
+                                                            .text = _visit_data
+                                                            .diagnosis;
+                                                      },
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                  ],
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const Divider(),
 
                                 ///rest of progress notes
                                 if (_notes.isNotEmpty)

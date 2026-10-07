@@ -100,29 +100,35 @@ class PrescriptionDetails implements Equatable {
           x_coord: 10,
           y_coord: 100,
         ),
+        'visit_diagnosis': ItemDetail(
+          name_en: 'Visit Diagnosis',
+          name_ar: 'تشخيص الزيارة',
+          x_coord: 10,
+          y_coord: 150,
+        ),
         'visit_labs': ItemDetail(
           name_en: 'Visit Labs',
           name_ar: 'التحاليل',
           x_coord: 10,
-          y_coord: 150,
+          y_coord: 200,
         ),
         'visit_rads': ItemDetail(
           name_en: 'Visit Rads',
           name_ar: 'الاشاعات',
           x_coord: 10,
-          y_coord: 200,
+          y_coord: 250,
         ),
         'visit_procedures': ItemDetail(
           name_en: 'Visit Procedures',
           name_ar: 'الاجرائات',
           x_coord: 10,
-          y_coord: 250,
+          y_coord: 300,
         ),
         'visit_drugs': ItemDetail(
           name_en: 'Visit Drugs',
           name_ar: 'الادوية',
           x_coord: 10,
-          y_coord: 300,
+          y_coord: 350,
         ),
         // 'medical_report': ItemDetail(
         //   name_en: 'Medical Report',
@@ -140,7 +146,7 @@ class PrescriptionDetails implements Equatable {
           name_en: 'Doctor Name',
           name_ar: 'اسم الطبيب',
           x_coord: 10,
-          y_coord: 350,
+          y_coord: 400,
         ),
       },
     );

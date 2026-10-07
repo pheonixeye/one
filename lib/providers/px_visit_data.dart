@@ -39,6 +39,9 @@ class PxVisitData extends ChangeNotifier {
   Map<DateTime, Map<PiDrug, String>>? _drugData;
   Map<DateTime, Map<PiDrug, String>>? get drugData => _drugData;
 
+  Map<DateTime, String>? _diagnosisData;
+  Map<DateTime, String>? get diagnosisData => _diagnosisData;
+
   Map<DateTime, List<PiLab>>? _labData;
   Map<DateTime, List<PiLab>>? get labData => _labData;
 
@@ -54,6 +57,7 @@ class PxVisitData extends ChangeNotifier {
     _labData = {};
     _radData = {};
     _procedureData = {};
+    _diagnosisData = {};
     _data.map((e) {
       if (e.visit != null) {
         final _visitDate = e.visit!.visit_date;
@@ -63,6 +67,7 @@ class PxVisitData extends ChangeNotifier {
         _labData?[_visitDate] = e.labs;
         _radData?[_visitDate] = e.rads;
         _procedureData?[_visitDate] = e.procedures;
+        _diagnosisData?[_visitDate] = e.diagnosis;
       }
     }).toList();
     notifyListeners();
@@ -220,6 +225,14 @@ class PxVisitData extends ChangeNotifier {
       item,
       new_quantity,
       quantity_change,
+    );
+    await _fetchVisitData();
+  }
+
+  Future<void> updateVisitDiagnosis(String diagnosis) async {
+    await api.updateVisitDiagnosis(
+      (_result as ApiDataResult<VisitData>).data.id,
+      diagnosis,
     );
     await _fetchVisitData();
   }

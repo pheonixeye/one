@@ -37,8 +37,7 @@ class PxVisits extends ChangeNotifier {
     await api.addNewVisit(dto);
     await _fetchVisitsOfToday();
 
-    ///TODO:
-    //notify patient via whatsapp
+    //TODO: notify patient via whatsapp
   }
 
   ///fetch visits of this date and clinic

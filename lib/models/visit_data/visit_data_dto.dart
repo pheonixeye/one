@@ -15,6 +15,7 @@ class VisitDataDto extends Equatable {
   final Map<String, dynamic> forms_data;
   final Map<String, dynamic> drug_data;
   final Map<String, dynamic> supplies_data;
+  final String diagnosis;
 
   const VisitDataDto({
     required this.id,
@@ -31,6 +32,7 @@ class VisitDataDto extends Equatable {
     required this.supplies_data,
     required this.forms_data,
     required this.drug_data,
+    required this.diagnosis,
   });
 
   VisitDataDto copyWith({
@@ -48,6 +50,7 @@ class VisitDataDto extends Equatable {
     Map<String, dynamic>? forms_data,
     Map<String, dynamic>? supplies_data,
     Map<String, dynamic>? drug_data,
+    String? diagnosis,
   }) {
     return VisitDataDto(
       id: id ?? this.id,
@@ -64,6 +67,7 @@ class VisitDataDto extends Equatable {
       forms_data_ids: forms_data_ids ?? this.forms_data_ids,
       forms_data: forms_data ?? this.forms_data,
       drug_data: drug_data ?? this.drug_data,
+      diagnosis: diagnosis ?? this.diagnosis,
     );
   }
 
@@ -88,6 +92,7 @@ class VisitDataDto extends Equatable {
       forms_data: {},
       drug_data: {},
       supplies_data: {},
+      diagnosis: '',
     );
   }
 
@@ -107,6 +112,7 @@ class VisitDataDto extends Equatable {
       'forms_data': forms_data,
       'drug_data': drug_data,
       'supplies_data': supplies_data,
+      'diagnosis': diagnosis,
     };
   }
 
@@ -130,6 +136,7 @@ class VisitDataDto extends Equatable {
       forms_data_ids,
       forms_data,
       drug_data,
+      diagnosis,
     ];
   }
 }

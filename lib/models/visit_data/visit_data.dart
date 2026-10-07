@@ -30,6 +30,7 @@ class VisitData extends Equatable {
   final Doctor? doctor;
   final Visit? visit;
   final Clinic? clinic;
+  final String diagnosis;
 
   const VisitData({
     required this.id,
@@ -45,6 +46,7 @@ class VisitData extends Equatable {
     required this.forms_data,
     required this.drug_data,
     required this.supplies_data,
+    required this.diagnosis,
     this.doctor,
     this.visit,
     this.clinic,
@@ -67,6 +69,7 @@ class VisitData extends Equatable {
     Doctor? doctor,
     Visit? visit,
     Clinic? clinic,
+    String? diagnosis,
   }) {
     return VisitData(
       id: id ?? this.id,
@@ -85,6 +88,7 @@ class VisitData extends Equatable {
       doctor: doctor ?? this.doctor,
       visit: visit ?? this.visit,
       clinic: clinic ?? this.clinic,
+      diagnosis: diagnosis ?? this.diagnosis,
     );
   }
 
@@ -103,6 +107,7 @@ class VisitData extends Equatable {
       'forms_data': forms_data.map((e) => e.toJson()).toList(),
       'drug_data': drug_data,
       'supplies_data': supplies_data,
+      'diagnosis': diagnosis,
     };
   }
 
@@ -150,6 +155,7 @@ class VisitData extends Equatable {
       doctor: Doctor.fromJson(map['doctor'] as Map<String, dynamic>),
       visit: Visit.fromJson(map['visit'] as Map<String, dynamic>),
       clinic: Clinic.fromJson(map['clinic'] as Map<String, dynamic>),
+      diagnosis: map['diagnosis'] as String,
     );
   }
 
@@ -172,6 +178,7 @@ class VisitData extends Equatable {
       forms_data,
       drug_data,
       supplies_data,
+      diagnosis,
     ];
   }
 
@@ -234,6 +241,7 @@ class VisitData extends Equatable {
       clinic: Clinic.fromJson(
         e.get<RecordModel>('expand.clinic_id').toJson(),
       ),
+      diagnosis: e.getStringValue('diagnosis'),
     );
   }
 }

@@ -1898,4 +1898,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toggleRegularView => 'Toggle Regular View';
+
+  @override
+  String get diagnosis => 'Diagnosis';
 }

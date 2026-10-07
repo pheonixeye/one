@@ -434,4 +434,19 @@ class VisitDataApi {
 
     await _supplyMovementApi.addSupplyMovements([_movement]);
   }
+
+  Future<void> updateVisitDiagnosis(
+    String visit_data_id,
+    String diagnosis,
+  ) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {
+            'diagnosis': diagnosis,
+          },
+          expand: _expand,
+        );
+  }
 }

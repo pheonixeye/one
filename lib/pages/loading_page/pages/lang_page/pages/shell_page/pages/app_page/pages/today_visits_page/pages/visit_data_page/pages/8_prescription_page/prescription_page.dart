@@ -146,6 +146,10 @@ class VisitPrescriptionPage extends StatelessWidget {
                                                 mapKey: x.key,
                                                 visit_data: visit_data,
                                               ),
+                                              'visit_diagnosis' => WidgetByKey(
+                                                mapKey: x.key,
+                                                visit_data: visit_data,
+                                              ),
                                               _ => SizedBox(),
                                             },
                                           ),
