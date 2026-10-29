@@ -646,5 +646,7 @@
     "shift" : "Shift",
     "savePrescriptionConfigurationForDevice" : "Save Prescription Configuration For Device",
     "toggleRegularView" : "Toggle Regular View",
-    "diagnosis" : "Diagnosis"
+    "diagnosis" : "Diagnosis",
+    "visitOverview" : "Visit Overview",
+    "availableOnlyOnLargeScreens" : "This Page Is Available Only On Large Screens (Tablet / Desktop)"
 }

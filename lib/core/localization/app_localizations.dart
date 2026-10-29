@@ -3709,6 +3709,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Diagnosis'**
   String get diagnosis;
+
+  /// No description provided for @visitOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Overview'**
+  String get visitOverview;
+
+  /// No description provided for @availableOnlyOnLargeScreens.
+  ///
+  /// In en, this message translates to:
+  /// **'This Page Is Available Only On Large Screens (Tablet / Desktop)'**
+  String get availableOnlyOnLargeScreens;
 }
 
 class _AppLocalizationsDelegate

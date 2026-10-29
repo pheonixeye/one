@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:one/extensions/loc_ext.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/0_overview_page/overview_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/progress_notes_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/3_drugs_page/drugs_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/2_forms_page/forms_page.dart';
@@ -30,6 +31,12 @@ class VisitDataNavItem extends Equatable {
   List<Object?> get props => [title, icon, selectedIcon, page];
 
   static List<VisitDataNavItem> items(BuildContext context) => [
+    VisitDataNavItem(
+      title: context.loc.visitOverview,
+      icon: const Icon(FontAwesomeIcons.suitcaseMedical),
+      selectedIcon: const Icon(FontAwesomeIcons.suitcaseRolling),
+      page: VisitOverviewPage(),
+    ),
     VisitDataNavItem(
       title: context.loc.clinicalNotes,
       icon: const Icon(FontAwesomeIcons.notesMedical),

@@ -14,7 +14,7 @@ class VisitDataPage extends StatefulWidget {
 }
 
 class _VisitDataPageState extends State<VisitDataPage> {
-  bool _isExtended = false;
+  bool _isExtended = true;
   late final _items = VisitDataNavItem.items(context);
   final ValueNotifier<double> _dragY = ValueNotifier(0);
   final _dragThreshold = 300;
@@ -56,9 +56,9 @@ class _VisitDataPageState extends State<VisitDataPage> {
                 selectedIndex: widget.navigationShell.currentIndex,
                 onDestinationSelected: (value) {
                   widget.navigationShell.goBranch(value);
-                  setState(() {
-                    _isExtended = false;
-                  });
+                  // setState(() {
+                  //   _isExtended = false;
+                  // });
                 },
                 trailing: Padding(
                   padding: const EdgeInsets.all(8.0),

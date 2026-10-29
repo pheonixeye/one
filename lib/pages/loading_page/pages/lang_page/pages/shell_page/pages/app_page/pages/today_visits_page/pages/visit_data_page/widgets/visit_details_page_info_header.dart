@@ -259,6 +259,28 @@ class VisitDetailsPageInfoHeader extends StatelessWidget {
                   PopupMenuDivider(),
                   PopupMenuItem(
                     child: Card(
+                      color: Colors.green.shade100,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          spacing: 8,
+                          children: [
+                            const Icon(Icons.home_work_rounded),
+                            Text(context.loc.todayVisits),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      GoRouter.of(context).goNamed(
+                        AppRouter.app,
+                        pathParameters: defaultPathParameters(context),
+                      );
+                    },
+                  ),
+                  PopupMenuDivider(),
+                  PopupMenuItem(
+                    child: Card(
                       color: Colors.amber.shade100,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

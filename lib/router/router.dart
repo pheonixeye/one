@@ -16,6 +16,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/ap
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/contracts_page/contracts_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/doctors_page/doctors_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/notifications_page/notifications_page.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/0_overview_page/overview_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/progress_notes_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/labs_page.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/5_rads_page/rads_page.dart';
@@ -112,6 +113,7 @@ class AppRouter {
   static const String app = "app";
   //visit_data
   static const String visit_data = "data/:visit_id";
+  static const String visit_overview = "visit_overview";
   static const String visit_clinical_notes = "visit_clinical_notes";
   static const String visit_forms = "visit_forms";
   static const String visit_drugs = "visit_drugs";
@@ -455,6 +457,19 @@ class AppRouter {
                                       }
                                     },
                                     branches: [
+                                      StatefulShellBranch(
+                                        routes: [
+                                          GoRoute(
+                                            path: '/$visit_overview',
+                                            name: visit_overview,
+                                            builder: (context, state) {
+                                              return VisitOverviewPage(
+                                                key: state.pageKey,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                       StatefulShellBranch(
                                         routes: [
                                           GoRoute(

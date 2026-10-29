@@ -7,9 +7,6 @@ class PiDrug extends Equatable {
   final String doc_id;
   final String name_en;
   final String name_ar;
-  final num concentration;
-  final String unit;
-  final String form;
   final List<String> default_doses;
 
   const PiDrug({
@@ -17,9 +14,6 @@ class PiDrug extends Equatable {
     required this.doc_id,
     required this.name_en,
     required this.name_ar,
-    required this.concentration,
-    required this.unit,
-    required this.form,
     required this.default_doses,
   });
   static final ProfileSetupItem item = ProfileSetupItem.drugs;
@@ -39,9 +33,6 @@ class PiDrug extends Equatable {
       doc_id: doc_id ?? this.doc_id,
       name_en: name_en ?? this.name_en,
       name_ar: name_ar ?? this.name_ar,
-      concentration: concentration ?? this.concentration,
-      unit: unit ?? this.unit,
-      form: form ?? this.form,
       default_doses: default_doses ?? this.default_doses,
     );
   }
@@ -52,9 +43,6 @@ class PiDrug extends Equatable {
       'doc_id': doc_id,
       'name_en': name_en,
       'name_ar': name_ar,
-      'concentration': concentration,
-      'unit': unit,
-      'form': form,
       'default_doses': default_doses,
     };
   }
@@ -65,9 +53,6 @@ class PiDrug extends Equatable {
       doc_id: map['doc_id'] as String,
       name_en: map['name_en'] as String,
       name_ar: map['name_ar'] as String,
-      concentration: map['concentration'] as num,
-      unit: map['unit'] as String,
-      form: map['form'] as String,
       default_doses: List<String>.from(
         (map['default_doses'] as List<dynamic>),
       ),
@@ -84,14 +69,11 @@ class PiDrug extends Equatable {
       doc_id,
       name_en,
       name_ar,
-      concentration,
-      unit,
-      form,
       default_doses,
     ];
   }
 
-  String get prescriptionNameEn => '$name_en $concentration $unit $form';
+  String get prescriptionNameEn => name_en;
 
-  String get prescriptionNameAr => '$name_ar ($unit $concentration)  $form';
+  String get prescriptionNameAr => name_ar;
 }

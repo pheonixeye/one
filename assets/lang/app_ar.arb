@@ -645,5 +645,7 @@
     "shift" : "الفترة",
     "savePrescriptionConfigurationForDevice" : "حفظ ترتيب الروشتة للجهاز",
     "toggleRegularView" : "الروشتة",
-    "diagnosis" : "التشخيص"
+    "diagnosis" : "التشخيص",
+    "visitOverview" : "نظرة عامة",
+    "availableOnlyOnLargeScreens" : "هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)"
 }

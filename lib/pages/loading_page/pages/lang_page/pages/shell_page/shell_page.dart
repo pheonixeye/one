@@ -5,6 +5,7 @@ import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/widgets/organization_is_inactive.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_subscription.dart';
+import 'package:one/router/router.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
 
@@ -16,23 +17,33 @@ class ShellPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Navbar(),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (!context.isMobile) const Expanded(flex: 1, child: EndDrawer()),
-          Expanded(
-            flex: 3,
-            child: Consumer2<PxAuth, PxSubscription>(
-              builder: (context, auth, s, _) {
-                while (auth.organization == null || s.result == null) {
-                  return const CentralLoading();
-                }
-                final _isActive = auth.organization!.activity == 'active';
-                return _isActive ? child : const OrganizationIsInactive();
-              },
-            ),
-          ),
-        ],
+      body: Builder(
+        builder: (context) {
+          final r = AppRouter.router.routeInformationProvider;
+          final _isInVisitDataPage = r.value.uri.toString().contains('/data/');
+          // print('is in visit data page : $_isInVisitDataPage');
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (!context.isMobile && _isInVisitDataPage == true)
+                const SizedBox()
+              else if (!context.isMobile)
+                const Expanded(flex: 1, child: EndDrawer()),
+              Expanded(
+                flex: 3,
+                child: Consumer2<PxAuth, PxSubscription>(
+                  builder: (context, auth, s, _) {
+                    while (auth.organization == null || s.result == null) {
+                      return const CentralLoading();
+                    }
+                    final _isActive = auth.organization!.activity == 'active';
+                    return _isActive ? child : const OrganizationIsInactive();
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
       endDrawer: context.isMobile ? const EndDrawer() : null,
     );

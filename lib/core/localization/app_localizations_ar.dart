@@ -1893,4 +1893,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get diagnosis => 'التشخيص';
+
+  @override
+  String get visitOverview => 'نظرة عامة';
+
+  @override
+  String get availableOnlyOnLargeScreens =>
+      'هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)';
 }

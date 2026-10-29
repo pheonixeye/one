@@ -151,13 +151,6 @@ class PiDrugViewCard extends StatelessWidget {
               ),
               children: [
                 ListTile(
-                  title: Text("• ${context.loc.drugFormAndConcentration} : "),
-                  subtitle: Text(
-                    '${piDrug.concentration} ${piDrug.unit} ${piDrug.form}',
-                  ),
-                ),
-
-                ListTile(
                   title: Text('• ${context.loc.drugDefaultDoses} : '),
                   subtitle: Column(
                     spacing: 4,

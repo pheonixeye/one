@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:one/extensions/loc_ext.dart';
 import 'package:one/extensions/profile_setup_item_ext.dart';
 import 'package:one/models/doctor_items/pi_drug.dart';
@@ -23,9 +22,6 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
   late final TextEditingController _nameArController;
 
   ///[DRUG]
-  late final TextEditingController _drugConcentrationController;
-  late final TextEditingController _drugUnitController;
-  late final TextEditingController _drugFormController;
   late final TextEditingController _drugDefaultDosesController;
 
   @override
@@ -40,17 +36,6 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
 
     ///[DRUGS]
     ///
-    _drugConcentrationController = TextEditingController(
-      text: widget.piDrug?.concentration == null
-          ? ''
-          : '${widget.piDrug?.concentration}',
-    );
-    _drugUnitController = TextEditingController(
-      text: widget.piDrug?.unit ?? '',
-    );
-    _drugFormController = TextEditingController(
-      text: widget.piDrug?.form ?? '',
-    );
     final List<String>? _defaultDoses = widget.piDrug?.default_doses;
     _drugDefaultDosesController = TextEditingController(
       text: _defaultDoses == null ? '' : _defaultDoses.join('-'),
@@ -61,10 +46,6 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
   void dispose() {
     _nameEnController.dispose();
     _nameArController.dispose();
-
-    _drugConcentrationController.dispose();
-    _drugUnitController.dispose();
-    _drugFormController.dispose();
     _drugDefaultDosesController.dispose();
 
     super.dispose();
@@ -135,7 +116,7 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
                 child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: context.loc.englishItemName,
+                    hintText: 'eg: Hibiotic 1 gm Tab, Rowatinex Caps, etc...',
                   ),
                   controller: _nameEnController,
                   maxLines: 2,
@@ -158,7 +139,7 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
                 child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: context.loc.arabicItemName,
+                    hintText: 'مثال: هايبيوتيك 1 جم اقراص / رواتنكس كبسول',
                   ),
                   controller: _nameArController,
                   maxLines: 2,
@@ -171,55 +152,7 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
                 ),
               ),
             ),
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(context.loc.drugConcentration),
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: context.loc.drugConcentration,
-                  ),
-                  controller: _drugConcentrationController,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-              ),
-            ),
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(context.loc.drugForm),
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: context.loc.drugForm,
-                  ),
-                  controller: _drugFormController,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(context.loc.drugUnit),
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: context.loc.drugUnit,
-                  ),
-                  controller: _drugUnitController,
-                ),
-              ),
-            ),
+
             ListTile(
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -251,10 +184,6 @@ class _PiDrugCreateEditDialogState extends State<PiDrugCreateEditDialog> {
                 'doc_id': context.read<PxAuth>().doc_id,
                 'name_en': _nameEnController.text,
                 'name_ar': _nameArController.text,
-                'concentration':
-                    double.tryParse(_drugConcentrationController.text) ?? 0,
-                'unit': _drugUnitController.text,
-                'form': _drugFormController.text,
                 'default_doses': _drugDefaultDosesController.text.split('-'),
               };
 

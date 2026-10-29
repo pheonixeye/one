@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:one/models/doctor_items/pi_rads.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/clinical_form_card.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/1_progress_notes_page/previous_visits_summary.dart';
 import 'package:provider/provider.dart';
 
 import 'package:one/core/api/_api_result.dart';
@@ -21,44 +20,7 @@ import 'package:one/providers/px_progress_notes.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
-import 'package:one/widgets/prompt_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
-
-class _btnSegData {
-  final Icon icon;
-  final String value;
-  const _btnSegData({
-    required this.icon,
-    required this.value,
-  });
-}
-
-final List<_btnSegData> _btnSegments = const [
-  _btnSegData(
-    value: 'drugs',
-    icon: Icon(
-      FontAwesomeIcons.prescriptionBottle,
-    ),
-  ),
-  _btnSegData(
-    value: 'labs',
-    icon: Icon(
-      FontAwesomeIcons.droplet,
-    ),
-  ),
-  _btnSegData(
-    value: 'rads',
-    icon: Icon(
-      FontAwesomeIcons.radiation,
-    ),
-  ),
-  _btnSegData(
-    value: 'procedures',
-    icon: Icon(
-      FontAwesomeIcons.kitMedical,
-    ),
-  ),
-];
 
 class VisitProgressNotesPage extends StatefulWidget {
   const VisitProgressNotesPage({super.key});
@@ -71,9 +33,7 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
   late final ScrollController _scrollController;
   late final PxProgressNotes _pxPn;
   late final PxVisitData _pxVisitData;
-  final ValueNotifier<Set<String>> _selectedBtnSegment = ValueNotifier({
-    'drugs',
-  });
+
   final ValueNotifier<bool> _isEditingDiagnosis = ValueNotifier<bool>(false);
   late final TextEditingController _diagnosisController;
 
@@ -133,240 +93,6 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
             (pf.result as ApiDataResult<List<PatientFormItem>>).data;
 
         final _notes = pn.notes;
-
-        final _previousDrugs = vd.drugData;
-
-        final _previousDiagnoses = vd.diagnosisData;
-
-        final _previousLabs = vd.labData;
-
-        final _previousRads = vd.radData;
-
-        final _previousprocedures = vd.procedureData;
-
-        List<Widget> _buildPreviousAccordingToValue(String value) {
-          return switch (value) {
-            'drugs' =>
-              _previousDrugs != null
-                  ? [
-                      ..._previousDrugs.entries.map((
-                        entry,
-                      ) {
-                        final _index = _previousDrugs.keys.toList().indexOf(
-                          entry.key,
-                        );
-                        return Card.outlined(
-                          child: Padding(
-                            padding: const EdgeInsets.all(
-                              8.0,
-                            ),
-                            child: ListTile(
-                              title: Text.rich(
-                                TextSpan(
-                                  text:
-                                      '(${_index + 1}) ${intl.DateFormat(
-                                        'dd - MM - yyyy',
-                                        l.lang,
-                                      ).format(entry.key)}',
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (_previousDiagnoses?[entry.key] != null &&
-                                      _previousDiagnoses![entry.key]!
-                                          .isNotEmpty) ...[
-                                    Divider(
-                                      color: Colors.blue.shade200,
-                                    ),
-                                    Text(
-                                      '${context.loc.diagnosis} : (${_previousDiagnoses[entry.key]})',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                    Divider(
-                                      color: Colors.blue.shade200,
-                                    ),
-                                  ],
-                                  if (entry.value.entries.isEmpty)
-                                    Text(
-                                      context.loc.noDrugsWerePrescribed,
-                                    ),
-                                  ...entry.value.entries.map((
-                                    e2,
-                                  ) {
-                                    return Text.rich(
-                                      TextSpan(
-                                        text: "* ${e2.key.prescriptionNameEn}",
-                                        children: [
-                                          TextSpan(
-                                            text: '\n',
-                                          ),
-                                          TextSpan(
-                                            text: e2.value,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
-                    ]
-                  : [],
-            'labs' =>
-              _previousLabs != null
-                  ? [
-                      ..._previousLabs.entries.map(
-                        (entry) {
-                          final _index = _previousLabs.keys.toList().indexOf(
-                            entry.key,
-                          );
-                          return Card.outlined(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(
-                                  '(${_index + 1}) ${intl.DateFormat(
-                                    'dd - MM - yyyy',
-                                    l.lang,
-                                  ).format(entry.key)}',
-                                ),
-                                subtitle: Column(
-                                  children: [
-                                    if (entry.value.isEmpty)
-                                      Text(
-                                        context.loc.noLabsWereRequested,
-                                      ),
-                                    ...entry.value.map(
-                                      (v) => Text.rich(
-                                        TextSpan(
-                                          text:
-                                              '* ${l.isEnglish ? v.name_en : v.name_ar}',
-                                          children: [
-                                            TextSpan(text: '\n'),
-                                            TextSpan(
-                                              text: v.special_instructions,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ]
-                  : [],
-            'rads' =>
-              _previousRads != null
-                  ? [
-                      ..._previousRads.entries.map(
-                        (entry) {
-                          final _index = _previousRads.keys.toList().indexOf(
-                            entry.key,
-                          );
-                          return Card.outlined(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(
-                                  '(${_index + 1}) ${intl.DateFormat(
-                                    'dd - MM - yyyy',
-                                    l.lang,
-                                  ).format(entry.key)}',
-                                ),
-                                subtitle: Column(
-                                  children: [
-                                    if (entry.value.isEmpty)
-                                      Text(
-                                        context.loc.noRadsWereRequested,
-                                      ),
-                                    ...entry.value.map(
-                                      (v) => Text.rich(
-                                        TextSpan(
-                                          text: l.isEnglish
-                                              ? '* ${v.name_en} (${v.type.localizedString(
-                                                  l.isEnglish,
-                                                )})'
-                                              : '* ${v.name_ar} (${v.type.localizedString(
-                                                  l.isEnglish,
-                                                )})',
-                                          children: [
-                                            TextSpan(text: '\n'),
-                                            TextSpan(
-                                              text: v.special_instructions,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ]
-                  : [],
-            'procedures' =>
-              _previousprocedures != null
-                  ? [
-                      ..._previousprocedures.entries.map(
-                        (entry) {
-                          final _index = _previousprocedures.keys
-                              .toList()
-                              .indexOf(
-                                entry.key,
-                              );
-                          return Card.outlined(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(
-                                  '(${_index + 1}) ${intl.DateFormat(
-                                    'dd - MM - yyyy',
-                                    l.lang,
-                                  ).format(entry.key)}',
-                                ),
-                                subtitle: Column(
-                                  children: [
-                                    if (entry.value.isEmpty)
-                                      Text(
-                                        context.loc.noProceduresWerePerformed,
-                                      ),
-                                    ...entry.value.map(
-                                      (v) => Text.rich(
-                                        TextSpan(
-                                          text:
-                                              '* ${l.isEnglish ? v.name_en : v.name_ar}',
-                                          children: [
-                                            TextSpan(text: '\n'),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ]
-                  : [],
-            _ => [],
-          };
-        }
 
         return Scaffold(
           body: Column(
@@ -441,102 +167,10 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                                   ),
                                 if (_patientForms.isNotEmpty) ...[
                                   ..._patientForms.map((form) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Card.outlined(
-                                        elevation: 6,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ListTile(
-                                            titleAlignment:
-                                                ListTileTitleAlignment.top,
-
-                                            trailing: SmBtn(
-                                              tooltip: context.loc.deleteForm,
-                                              backgroundColor: Colors.red,
-                                              onPressed: () async {
-                                                final _confirmDeleteForm =
-                                                    await showDialog<bool?>(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return PromptDialog(
-                                                          message: context
-                                                              .loc
-                                                              .confirmDeleteForm,
-                                                        );
-                                                      },
-                                                    );
-                                                if (_confirmDeleteForm ==
-                                                        null ||
-                                                    _confirmDeleteForm ==
-                                                        false) {
-                                                  return;
-                                                }
-                                                if (context.mounted) {
-                                                  await shellFunction(
-                                                    context,
-                                                    toExecute: () async {
-                                                      await pf
-                                                          .detachFormFromPatient(
-                                                            form,
-                                                          );
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                              child: const Icon(
-                                                Icons.delete_forever,
-                                              ),
-                                            ),
-                                            title: Padding(
-                                              padding: const EdgeInsets.all(
-                                                8.0,
-                                              ),
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text: '',
-                                                  children: [
-                                                    ...form.form_data.map((
-                                                      data,
-                                                    ) {
-                                                      return TextSpan(
-                                                        text: '',
-                                                        children: [
-                                                          TextSpan(text: '* '),
-                                                          TextSpan(
-                                                            text:
-                                                                data.field_name,
-                                                            style: TextStyle(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text:
-                                                                ': ${data.field_value}',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: '\n\n',
-                                                          ),
-                                                        ],
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                    if (!form.presentable_in_clinical_notes) {
+                                      return const SizedBox();
+                                    }
+                                    return ClinicalFormCard(form: form);
                                   }),
                                   const Divider(),
                                 ],
@@ -698,69 +332,7 @@ class _VisitProgressNotesPageState extends State<VisitProgressNotesPage> {
                         thickness: 2,
                       ),
                     //previous visit data summary
-                    if (!context.isMobile)
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ValueListenableBuilder(
-                            valueListenable: _selectedBtnSegment,
-                            builder: (context, value, child) {
-                              return Column(
-                                children: [
-                                  SegmentedButton<String>(
-                                    style: SegmentedButton.styleFrom(
-                                      selectedBackgroundColor: Colors.amber,
-                                    ),
-                                    showSelectedIcon: false,
-                                    segments: [
-                                      ..._btnSegments.map(
-                                        (e) => ButtonSegment(
-                                          value: e.value,
-                                          icon: e.icon,
-                                        ),
-                                      ),
-                                    ],
-                                    onSelectionChanged: (val) {
-                                      _selectedBtnSegment.value = val;
-                                    },
-                                    selected: value,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  const Divider(
-                                    height: 2,
-                                    thickness: 2,
-                                  ),
-                                  Expanded(
-                                    child: ListView(
-                                      children: [
-                                        switch (value.first) {
-                                          'drugs' => Text(
-                                            '${context.loc.previous}  ${context.loc.visitDrugs}',
-                                          ),
-                                          'labs' => Text(
-                                            '${context.loc.previous}  ${context.loc.visitLabs}',
-                                          ),
-                                          'rads' => Text(
-                                            '${context.loc.previous}  ${context.loc.visitRads}',
-                                          ),
-                                          'procedures' => Text(
-                                            '${context.loc.previous}  ${context.loc.visitProcedures}',
-                                          ),
-                                          _ => SizedBox(),
-                                        },
-                                        ..._buildPreviousAccordingToValue(
-                                          value.first,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                    if (!context.isMobile) PreviousVisitsSummary(),
                   ],
                 ),
               ),

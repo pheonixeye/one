@@ -1901,4 +1901,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagnosis => 'Diagnosis';
+
+  @override
+  String get visitOverview => 'Visit Overview';
+
+  @override
+  String get availableOnlyOnLargeScreens =>
+      'This Page Is Available Only On Large Screens (Tablet / Desktop)';
 }
