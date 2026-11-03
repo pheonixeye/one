@@ -1900,4 +1900,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get availableOnlyOnLargeScreens =>
       'هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)';
+
+  @override
+  String get presets => 'التفضيلات';
 }

@@ -1908,4 +1908,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get availableOnlyOnLargeScreens =>
       'This Page Is Available Only On Large Screens (Tablet / Desktop)';
+
+  @override
+  String get presets => 'Presets';
 }

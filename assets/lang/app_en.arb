@@ -648,5 +648,6 @@
     "toggleRegularView" : "Toggle Regular View",
     "diagnosis" : "Diagnosis",
     "visitOverview" : "Visit Overview",
-    "availableOnlyOnLargeScreens" : "This Page Is Available Only On Large Screens (Tablet / Desktop)"
+    "availableOnlyOnLargeScreens" : "This Page Is Available Only On Large Screens (Tablet / Desktop)",
+    "presets" : "Presets"
 }

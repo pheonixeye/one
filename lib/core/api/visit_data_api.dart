@@ -119,16 +119,43 @@ class VisitDataApi {
         );
   }
 
+  Future<void> setDrugsForVisit({
+    required String visit_data_id,
+    required List<String> drugs_ids,
+    required Map<String, String> drug_data,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {
+            'drugs_ids': drugs_ids,
+            'drug_data': drug_data,
+          },
+        );
+  }
+
   Future<void> removeDrugsFromVisit(
     VisitData visit_data,
     List<String> drugs_ids,
   ) async {
+    final _originalDrugsIds = visit_data.drugs
+        .map((e) => e.id)
+        .toList()
+        .toSet();
+
+    final _diff = _originalDrugsIds.toSet().difference(drugs_ids.toSet());
+
+    final _drug_data = {...visit_data.drug_data}
+      ..removeWhere((k, v) => _diff.contains(k));
+
     await PocketbaseHelper().pbData
         .collection(collection)
         .update(
           visit_data.id,
           body: {
             'drugs_ids-': [...drugs_ids],
+            'drug_data': _drug_data,
           },
         );
   }
@@ -170,7 +197,24 @@ class VisitDataApi {
         .collection(collection)
         .update(
           visit_data_id,
-          body: {'labs_ids+': lab_id},
+          body: {
+            'labs_ids+': lab_id,
+          },
+          expand: _expand,
+        );
+  }
+
+  Future<void> setLabsOfVisitData({
+    required String visit_data_id,
+    required List<String> labs_ids,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {
+            'labs_ids': labs_ids,
+          },
           expand: _expand,
         );
   }
@@ -197,6 +241,21 @@ class VisitDataApi {
         .update(
           visit_data_id,
           body: {'rads_ids+': rad_id},
+          expand: _expand,
+        );
+  }
+
+  Future<void> setRadsOfVisitData({
+    required String visit_data_id,
+    required List<String> rads_ids,
+  }) async {
+    await PocketbaseHelper().pbData
+        .collection(collection)
+        .update(
+          visit_data_id,
+          body: {
+            'rads_ids': rads_ids,
+          },
           expand: _expand,
         );
   }
@@ -285,99 +344,6 @@ class VisitDataApi {
       await BookkeepingApi().addBookkeepingItem(_item);
     }
   }
-
-  // Future<void> addToItemList(
-  //   VisitData visit_data,
-  //   String item_id,
-  //   ProfileSetupItem setupItem,
-  // ) async {
-  //   final Map<String, dynamic> _update = switch (setupItem) {
-  //     ProfileSetupItem.drugs ||
-  //     ProfileSetupItem.documents ||
-  //     ProfileSetupItem.referrals => {},
-  //     ProfileSetupItem.labs => {'labs_ids+': item_id},
-  //     ProfileSetupItem.rads => {'rads_ids+': item_id},
-  //     ProfileSetupItem.procedures => {'procedures_ids+': item_id},
-  //     ProfileSetupItem.supplies => {'supplies_ids+': item_id},
-  //   };
-
-  //   final _response = await PocketbaseHelper().pbData
-  //       .collection(collection)
-  //       .update(visit_data.id, body: _update, expand: _expand);
-  //   //todo: parse data
-  //   final _visit_data = VisitData.fromRecordModel(_response);
-
-  //   if (setupItem == ProfileSetupItem.procedures) {
-  //     //todo: initialize transformer
-  //     final _bk_transformer = BookkeepingTransformer(
-  //       item_id: _visit_data.id,
-  //       collection_id: collection,
-  //       added_by: added_by,
-  //     );
-  //     //todo: get added item
-  //     final _added_procedure = _visit_data.procedures.firstWhereOrNull(
-  //       (x) => x.id == item_id,
-  //     );
-
-  //     //todo: initialize bk_item
-  //     if (_added_procedure != null) {
-  //       final _item = _bk_transformer.fromVisitDataAddProcedure(
-  //         _visit_data,
-  //         _added_procedure,
-  //       );
-
-  //       //todo: send bookkeeping request
-  //       await BookkeepingApi().addBookkeepingItem(_item);
-  //     }
-  //   }
-  // }
-
-  // Future<void> removeFromItemList(
-  //   VisitData visit_data,
-  //   String item_id,
-  //   ProfileSetupItem setupItem,
-  // ) async {
-  //   final Map<String, dynamic> _update = switch (setupItem) {
-  //     ProfileSetupItem.drugs ||
-  //     ProfileSetupItem.documents ||
-  //     ProfileSetupItem.referrals => {},
-  //     ProfileSetupItem.labs => {'labs_ids-': item_id},
-  //     ProfileSetupItem.rads => {'rads_ids-': item_id},
-  //     ProfileSetupItem.procedures => {'procedures_ids-': item_id},
-  //     ProfileSetupItem.supplies => {'supplies_ids-': item_id},
-  //   };
-
-  //   final _response = await PocketbaseHelper().pbData
-  //       .collection(collection)
-  //       .update(visit_data.id, body: _update, expand: _expand);
-
-  //   //todo: parse data
-  //   final _visit_data = VisitData.fromRecordModel(_response);
-
-  //   if (setupItem == ProfileSetupItem.procedures) {
-  //     //todo: initialize transformer
-  //     final _bk_transformer = BookkeepingTransformer(
-  //       item_id: _visit_data.id,
-  //       collection_id: collection,
-  //       added_by: added_by,
-  //     );
-  //     //todo: get added item
-  //     final _removed_procedure = visit_data.procedures.firstWhereOrNull(
-  //       (x) => x.id == item_id,
-  //     );
-
-  //     //todo: initialize bk_item
-  //     if (_removed_procedure != null) {
-  //       final _item = _bk_transformer.fromVisitDataRemoveProcedure(
-  //         _visit_data,
-  //         _removed_procedure,
-  //       );
-
-  //       //todo: send bookkeeping request
-  //       await BookkeepingApi().addBookkeepingItem(_item);
-  //     }
-  //   }
-  // }
 
   Future<void> addSupplyItemToVisitData({
     required String visit_data_id,

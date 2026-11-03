@@ -647,5 +647,6 @@
     "toggleRegularView" : "الروشتة",
     "diagnosis" : "التشخيص",
     "visitOverview" : "نظرة عامة",
-    "availableOnlyOnLargeScreens" : "هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)"
+    "availableOnlyOnLargeScreens" : "هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)",
+    "presets" : "التفضيلات"
 }

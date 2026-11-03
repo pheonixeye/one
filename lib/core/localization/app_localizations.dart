@@ -3721,6 +3721,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This Page Is Available Only On Large Screens (Tablet / Desktop)'**
   String get availableOnlyOnLargeScreens;
+
+  /// No description provided for @presets.
+  ///
+  /// In en, this message translates to:
+  /// **'Presets'**
+  String get presets;
 }
 
 class _AppLocalizationsDelegate

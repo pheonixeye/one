@@ -101,6 +101,18 @@ class PxVisitData extends ChangeNotifier {
     await _fetchVisitData();
   }
 
+  Future<void> setDrugsForVisit({
+    required List<String> drugs_ids,
+    required Map<String, String> drug_data,
+  }) async {
+    await api.setDrugsForVisit(
+      visit_data_id: (_result as ApiDataResult<VisitData>).data.id,
+      drugs_ids: drugs_ids,
+      drug_data: drug_data,
+    );
+    await _fetchVisitData();
+  }
+
   Future<void> removeDrugsFromVisit(List<String> drugs_ids) async {
     await api.removeDrugsFromVisit(
       (_result as ApiDataResult<VisitData>).data,
@@ -135,6 +147,17 @@ class PxVisitData extends ChangeNotifier {
     await _fetchVisitData();
   }
 
+  Future<void> setLabsOfVisitData({
+    required String visit_data_id,
+    required List<String> labs_ids,
+  }) async {
+    await api.setLabsOfVisitData(
+      visit_data_id: visit_data_id,
+      labs_ids: labs_ids,
+    );
+    await _fetchVisitData();
+  }
+
   Future<void> removeLabFromVisitData(String lab_id) async {
     await api.removeLabFromVisitData(
       visit_data_id: (_result as ApiDataResult<VisitData>).data.id,
@@ -148,6 +171,17 @@ class PxVisitData extends ChangeNotifier {
     await api.addRadToVisitData(
       visit_data_id: (_result as ApiDataResult<VisitData>).data.id,
       rad_id: rad_id,
+    );
+    await _fetchVisitData();
+  }
+
+  Future<void> setRadsOfVisitData({
+    required String visit_data_id,
+    required List<String> rads_ids,
+  }) async {
+    await api.setRadsOfVisitData(
+      visit_data_id: visit_data_id,
+      rads_ids: rads_ids,
     );
     await _fetchVisitData();
   }
