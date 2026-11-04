@@ -648,5 +648,7 @@
     "diagnosis" : "التشخيص",
     "visitOverview" : "نظرة عامة",
     "availableOnlyOnLargeScreens" : "هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)",
-    "presets" : "التفضيلات"
+    "presets" : "التفضيلات",
+    "saveSelection" : "حفظ الاختيار الحالي",
+    "newPreset" : "تفضيلة جديدة"
 }

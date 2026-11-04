@@ -20,6 +20,8 @@ class PxVisitData extends ChangeNotifier {
   ApiResult<VisitData>? _result;
   ApiResult<VisitData>? get result => _result;
 
+  VisitData? get visitData => (_result as ApiDataResult<VisitData>?)?.data;
+
   ApiResult<List<VisitData>>? _previousVisitData;
   // ApiResult<List<VisitData>>? get previousVisitData => _previousVisitData;
 

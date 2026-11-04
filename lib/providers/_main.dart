@@ -3,6 +3,7 @@ import 'package:one/core/api/assistant_accounts_api.dart';
 import 'package:one/core/api/blob_api.dart';
 import 'package:one/core/api/contracts_api.dart';
 import 'package:one/core/api/pb_notifications_api.dart';
+import 'package:one/core/api/presets_api.dart';
 import 'package:one/core/api/profile_items_api/pi_document_types_api.dart';
 import 'package:one/core/api/profile_items_api/pi_drugs_api.dart';
 import 'package:one/core/api/profile_items_api/pi_labs_api.dart';
@@ -18,6 +19,7 @@ import 'package:one/providers/px_blobs.dart';
 import 'package:one/providers/px_contracts.dart';
 import 'package:one/providers/px_firebase_notifications.dart';
 import 'package:one/providers/px_pb_notifications.dart';
+import 'package:one/providers/px_presets.dart';
 import 'package:one/providers/px_profile_items/px_pi_documents.dart';
 import 'package:one/providers/px_profile_items/px_pi_drugs.dart';
 import 'package:one/providers/px_profile_items/px_pi_labs.dart';
@@ -226,6 +228,13 @@ final List<SingleChildWidget> providers = [
     create: (context) => PxSupplyMovements(
       api: SupplyMovementApi(
         added_by: '${context.read<PxAuth>().user?.name}',
+      ),
+    ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PxPresets(
+      api: PresetsApi(
+        doc_id: context.read<PxAuth>().doc_id,
       ),
     ),
   ),

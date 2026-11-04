@@ -1903,4 +1903,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get presets => 'التفضيلات';
+
+  @override
+  String get saveSelection => 'حفظ الاختيار الحالي';
+
+  @override
+  String get newPreset => 'تفضيلة جديدة';
 }

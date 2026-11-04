@@ -3727,6 +3727,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Presets'**
   String get presets;
+
+  /// No description provided for @saveSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Selection'**
+  String get saveSelection;
+
+  /// No description provided for @newPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'New Preset'**
+  String get newPreset;
 }
 
 class _AppLocalizationsDelegate

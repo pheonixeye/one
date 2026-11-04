@@ -649,5 +649,7 @@
     "diagnosis" : "Diagnosis",
     "visitOverview" : "Visit Overview",
     "availableOnlyOnLargeScreens" : "This Page Is Available Only On Large Screens (Tablet / Desktop)",
-    "presets" : "Presets"
+    "presets" : "Presets",
+    "saveSelection" : "Save Selection",
+    "newPreset" : "New Preset"
 }

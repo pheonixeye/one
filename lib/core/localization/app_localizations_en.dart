@@ -1911,4 +1911,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get presets => 'Presets';
+
+  @override
+  String get saveSelection => 'Save Selection';
+
+  @override
+  String get newPreset => 'New Preset';
 }
