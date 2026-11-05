@@ -3739,6 +3739,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Preset'**
   String get newPreset;
+
+  /// No description provided for @addNewLabsPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Labs Preset'**
+  String get addNewLabsPreset;
+
+  /// No description provided for @addNewRadsPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Rads Preset'**
+  String get addNewRadsPreset;
+
+  /// No description provided for @addNewDrugsPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Drugs Preset'**
+  String get addNewDrugsPreset;
+
+  /// No description provided for @enterTitleForPreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Title For Preset'**
+  String get enterTitleForPreset;
+
+  /// No description provided for @labs.
+  ///
+  /// In en, this message translates to:
+  /// **'Labs'**
+  String get labs;
+
+  /// No description provided for @rads.
+  ///
+  /// In en, this message translates to:
+  /// **'Rads'**
+  String get rads;
+
+  /// No description provided for @drugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get drugs;
+
+  /// No description provided for @presetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preset Title'**
+  String get presetTitle;
+
+  /// No description provided for @deletePresetPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Deleting This Preset ? This Action Cannot Be Reversed ?'**
+  String get deletePresetPrompt;
 }
 
 class _AppLocalizationsDelegate

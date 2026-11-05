@@ -650,5 +650,14 @@
     "availableOnlyOnLargeScreens" : "هذه الصفحة متاحة فقط علي الشاشات الاكبر حجما (تابلت او كمبيوتر)",
     "presets" : "التفضيلات",
     "saveSelection" : "حفظ الاختيار الحالي",
-    "newPreset" : "تفضيلة جديدة"
+    "newPreset" : "تفضيلة جديدة",
+    "addNewLabsPreset" : "اضافة تفضيل معامل جديد",
+    "addNewRadsPreset" : "اضافة تفضيل اشاعات جديد",
+    "addNewDrugsPreset" : "اضافة تفضيل علاجات جديد",
+    "enterTitleForPreset" : "ادخل اسم للتفضيل",
+    "labs" : "التحاليل",
+    "rads" : "الاشاعات",
+    "drugs" : "الادوية",
+    "presetTitle" : "عنوان التفضيل",
+    "deletePresetPrompt" : "تأكيد الغاء هذا التفضيل ؟ لا يمكن الرجوع في هذا الاجراء ؟"
 }

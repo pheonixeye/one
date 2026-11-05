@@ -17,6 +17,7 @@ import 'package:one/providers/px_profile_items/px_pi_labs.dart';
 import 'package:one/providers/px_visit_data.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
+import 'package:one/widgets/prompt_dialog.dart';
 import 'package:one/widgets/sm_btn.dart';
 import 'package:provider/provider.dart';
 
@@ -413,6 +414,17 @@ class _VisitLabsPageState extends State<VisitLabsPage>
                                           ),
                                           child: ListTile(
                                             leading: SmBtn(),
+                                            trailing: IconButton(
+                                              onPressed: () {
+                                                _setPiLabsFromPreset([]);
+                                                _setPiLabsFromPreset([
+                                                  ..._visit_labs.map(
+                                                    (e) => e.id,
+                                                  ),
+                                                ]);
+                                              },
+                                              icon: const Icon(Icons.refresh),
+                                            ),
                                             title: Text(
                                               context.loc.presets,
                                               textAlign: TextAlign.start,
@@ -421,20 +433,121 @@ class _VisitLabsPageState extends State<VisitLabsPage>
                                           ),
                                         ),
                                         Expanded(
-                                          child: ListView(
-                                            children: [
-                                              ..._labPresets.map((preset) {
-                                                return ListTile(
-                                                  onTap: () {
-                                                    _setPiLabsFromPreset(
-                                                      preset.preset
-                                                          as List<String>,
+                                          child: ValueListenableBuilder(
+                                            valueListenable: _visitLabsState,
+                                            builder: (context, _, _) {
+                                              return ListView(
+                                                children: [
+                                                  ..._labPresets.map((preset) {
+                                                    final index = _labPresets
+                                                        .indexOf(preset);
+                                                    final _isPresetSelected =
+                                                        _visitLabsState.value
+                                                            .isDeeplyEqualTo(
+                                                              preset.preset
+                                                                  as List<
+                                                                    String
+                                                                  >,
+                                                            );
+
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            4.0,
+                                                          ),
+                                                      child: Card.outlined(
+                                                        color: _isPresetSelected
+                                                            ? Colors
+                                                                  .blue
+                                                                  .shade200
+                                                            : null,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                vertical: 4.0,
+                                                                horizontal: 8.0,
+                                                              ),
+                                                          child: ListTile(
+                                                            onTap: () {
+                                                              if (_isPresetSelected) {
+                                                                _setPiLabsFromPreset(
+                                                                  [],
+                                                                );
+                                                              } else {
+                                                                _setPiLabsFromPreset(
+                                                                  preset.preset
+                                                                      as List<
+                                                                        String
+                                                                      >,
+                                                                );
+                                                              }
+                                                            },
+                                                            leading: SmBtn(
+                                                              width: 30,
+                                                              height: 30,
+                                                              child: Text(
+                                                                '${index + 1}',
+                                                              ),
+                                                            ),
+                                                            trailing: IconButton(
+                                                              onPressed: () async {
+                                                                final _toDeletePreset =
+                                                                    await showDialog<
+                                                                      bool?
+                                                                    >(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (
+                                                                            context,
+                                                                          ) {
+                                                                            return PromptDialog(
+                                                                              message: context.loc.deletePresetPrompt,
+                                                                            );
+                                                                          },
+                                                                    );
+                                                                if (_toDeletePreset ==
+                                                                        null ||
+                                                                    _toDeletePreset ==
+                                                                        false) {
+                                                                  return;
+                                                                }
+                                                                if (context
+                                                                    .mounted) {
+                                                                  await shellFunction(
+                                                                    context,
+                                                                    toExecute: () async {
+                                                                      await p.deletePreset(
+                                                                        preset
+                                                                            .id,
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                }
+                                                              },
+                                                              icon: const Icon(
+                                                                Icons.delete,
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            ),
+                                                            title: Padding(
+                                                              padding:
+                                                                  const EdgeInsets.all(
+                                                                    8.0,
+                                                                  ),
+                                                              child: Text(
+                                                                preset.title,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     );
-                                                  },
-                                                  title: Text(preset.title),
-                                                );
-                                              }),
-                                            ],
+                                                  }),
+                                                ],
+                                              );
+                                            },
                                           ),
                                         ),
                                         const Divider(),
@@ -472,45 +585,9 @@ class _VisitLabsPageState extends State<VisitLabsPage>
                                               }
                                             },
                                             label: Text(
-                                              context.loc.saveSelection,
-                                            ),
-                                            icon: const Icon(Icons.save),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ElevatedButton.icon(
-                                            onPressed: () async {
-                                              final _preset =
-                                                  await showDialog<Preset?>(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return PresetCreateEditDialog(
-                                                        type: PresetType.lab,
-                                                        selectedLabs: const [],
-                                                      );
-                                                    },
-                                                  );
-
-                                              if (_preset == null) {
-                                                return;
-                                              }
-
-                                              if (context.mounted) {
-                                                await shellFunction(
-                                                  context,
-                                                  toExecute: () async {
-                                                    await p.createNewPreset(
-                                                      _preset,
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            },
-                                            label: Text(
                                               context.loc.newPreset,
                                             ),
-                                            icon: const Icon(Icons.new_label),
+                                            icon: const Icon(Icons.save),
                                           ),
                                         ),
                                       ],

@@ -1917,4 +1917,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newPreset => 'New Preset';
+
+  @override
+  String get addNewLabsPreset => 'Add New Labs Preset';
+
+  @override
+  String get addNewRadsPreset => 'Add New Rads Preset';
+
+  @override
+  String get addNewDrugsPreset => 'Add New Drugs Preset';
+
+  @override
+  String get enterTitleForPreset => 'Enter Title For Preset';
+
+  @override
+  String get labs => 'Labs';
+
+  @override
+  String get rads => 'Rads';
+
+  @override
+  String get drugs => 'Drugs';
+
+  @override
+  String get presetTitle => 'Preset Title';
+
+  @override
+  String get deletePresetPrompt =>
+      'Confirm Deleting This Preset ? This Action Cannot Be Reversed ?';
 }

@@ -7,17 +7,21 @@ class SmBtn extends StatelessWidget {
     this.child,
     this.tooltip,
     this.backgroundColor,
+    this.width = 40,
+    this.height = 40,
   });
   final VoidCallback? onPressed;
   final Widget? child;
   final String? tooltip;
   final Color? backgroundColor;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 40.0,
-      height: 40.0,
+      width: width,
+      height: height,
       child: Tooltip(
         message: tooltip ?? '',
         child: ElevatedButton(

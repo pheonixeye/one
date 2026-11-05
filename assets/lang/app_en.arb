@@ -651,5 +651,14 @@
     "availableOnlyOnLargeScreens" : "This Page Is Available Only On Large Screens (Tablet / Desktop)",
     "presets" : "Presets",
     "saveSelection" : "Save Selection",
-    "newPreset" : "New Preset"
+    "newPreset" : "New Preset",
+    "addNewLabsPreset" : "Add New Labs Preset",
+    "addNewRadsPreset" : "Add New Rads Preset",
+    "addNewDrugsPreset" : "Add New Drugs Preset",
+    "enterTitleForPreset" : "Enter Title For Preset",
+    "labs" : "Labs",
+    "rads" : "Rads",
+    "drugs" : "Drugs",
+    "presetTitle" : "Preset Title",
+    "deletePresetPrompt" : "Confirm Deleting This Preset ? This Action Cannot Be Reversed ?"
 }

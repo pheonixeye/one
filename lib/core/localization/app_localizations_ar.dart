@@ -1909,4 +1909,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get newPreset => 'تفضيلة جديدة';
+
+  @override
+  String get addNewLabsPreset => 'اضافة تفضيل معامل جديد';
+
+  @override
+  String get addNewRadsPreset => 'اضافة تفضيل اشاعات جديد';
+
+  @override
+  String get addNewDrugsPreset => 'اضافة تفضيل علاجات جديد';
+
+  @override
+  String get enterTitleForPreset => 'ادخل اسم للتفضيل';
+
+  @override
+  String get labs => 'التحاليل';
+
+  @override
+  String get rads => 'الاشاعات';
+
+  @override
+  String get drugs => 'الادوية';
+
+  @override
+  String get presetTitle => 'عنوان التفضيل';
+
+  @override
+  String get deletePresetPrompt =>
+      'تأكيد الغاء هذا التفضيل ؟ لا يمكن الرجوع في هذا الاجراء ؟';
 }
