@@ -1,51 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:one/core/api/_api_result.dart';
 import 'package:one/extensions/loc_ext.dart';
-import 'package:one/models/doctor_items/pi_lab.dart';
+import 'package:one/models/doctor_items/pi_rads.dart';
 import 'package:one/models/preset.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_presets.dart';
-import 'package:one/providers/px_profile_items/px_pi_labs.dart';
+import 'package:one/providers/px_profile_items/px_pi_rads.dart';
 import 'package:one/widgets/central_error.dart';
 import 'package:one/widgets/central_loading.dart';
 import 'package:provider/provider.dart';
 
-class PresetCreateEditDialog extends StatefulWidget {
-  const PresetCreateEditDialog({
+class RadPresetCreateEditDialog extends StatefulWidget {
+  const RadPresetCreateEditDialog({
     super.key,
-    required this.selectedLabs,
+    required this.selectedRads,
     required this.type,
   });
-  final List<String> selectedLabs;
+  final List<String> selectedRads;
   final PresetType type;
 
   @override
-  State<PresetCreateEditDialog> createState() => _PresetCreateEditDialogState();
+  State<RadPresetCreateEditDialog> createState() =>
+      _RadPresetCreateEditDialogState();
 }
 
-class _PresetCreateEditDialogState extends State<PresetCreateEditDialog> {
+class _RadPresetCreateEditDialogState extends State<RadPresetCreateEditDialog> {
   late final formKey = GlobalKey<FormState>();
   late final TextEditingController _titleController;
 
-  final ValueNotifier<List<String>> _labsNotifier = ValueNotifier([]);
+  final ValueNotifier<List<String>> _radsNotifier = ValueNotifier([]);
 
-  void _addPiLab(String id) {
-    _labsNotifier.value = [..._labsNotifier.value, id];
+  void _addPiRad(String id) {
+    _radsNotifier.value = [..._radsNotifier.value, id];
   }
 
-  void _removePiLab(String id) {
-    final _current = _labsNotifier.value;
+  void _removePiRad(String id) {
+    final _current = _radsNotifier.value;
     final _index = _current.indexOf(id);
     _current.removeAt(_index);
-    _labsNotifier.value = [..._current];
+    _radsNotifier.value = [..._current];
   }
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController();
-    _labsNotifier.value = [...widget.selectedLabs];
+    _radsNotifier.value = [...widget.selectedRads];
   }
 
   @override
@@ -56,22 +57,22 @@ class _PresetCreateEditDialogState extends State<PresetCreateEditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<PxPiLabs, PxPresets, PxLocale>(
-      builder: (context, lb, p, l, _) {
-        while (lb.labs == null || p.result == null) {
+    return Consumer3<PxPiRads, PxPresets, PxLocale>(
+      builder: (context, rb, p, l, _) {
+        while (rb.rads == null || p.result == null) {
           return const CentralLoading();
         }
 
-        while (lb.labs is ApiErrorResult || p.result is ApiErrorResult) {
+        while (rb.rads is ApiErrorResult || p.result is ApiErrorResult) {
           return CentralError(
             code: (p.result as ApiErrorResult).errorCode,
             toExecute: () async {
-              lb.retry();
+              rb.retry();
               p.retry();
             },
           );
         }
-        final _piLabs = (lb.labs as ApiDataResult<List<PiLab>>).data;
+        final _piRads = (rb.rads as ApiDataResult<List<PiRad>>).data;
 
         return AlertDialog(
           constraints: BoxConstraints(
@@ -83,7 +84,7 @@ class _PresetCreateEditDialogState extends State<PresetCreateEditDialog> {
               Expanded(
                 child: Text.rich(
                   TextSpan(
-                    text: context.loc.addNewLabsPreset,
+                    text: context.loc.addNewRadsPreset,
                   ),
                 ),
               ),
@@ -98,7 +99,7 @@ class _PresetCreateEditDialogState extends State<PresetCreateEditDialog> {
           scrollable: true,
           contentPadding: const EdgeInsets.all(8),
           content: ValueListenableBuilder(
-            valueListenable: _labsNotifier,
+            valueListenable: _radsNotifier,
             builder: (context, _, _) {
               return Form(
                 key: formKey,
@@ -127,26 +128,26 @@ class _PresetCreateEditDialogState extends State<PresetCreateEditDialog> {
                     const Divider(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(context.loc.labs),
+                      child: Text(context.loc.rads),
                     ),
-                    ..._piLabs.map((pl) {
-                      final _isSelected = _labsNotifier.value.contains(
-                        pl.id,
+                    ..._piRads.map((pr) {
+                      final _isSelected = _radsNotifier.value.contains(
+                        pr.id,
                       );
                       return Card.outlined(
                         child: CheckboxListTile(
                           title: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              l.isEnglish ? pl.name_en : pl.name_ar,
+                              l.isEnglish ? pr.name_en : pr.name_ar,
                             ),
                           ),
                           value: _isSelected,
                           onChanged: (val) {
                             if (_isSelected) {
-                              _removePiLab(pl.id);
+                              _removePiRad(pr.id);
                             } else {
-                              _addPiLab(pl.id);
+                              _addPiRad(pr.id);
                             }
                           },
                         ),
@@ -167,8 +168,8 @@ class _PresetCreateEditDialogState extends State<PresetCreateEditDialog> {
                     id: '',
                     title: _titleController.text,
                     doc_id: context.read<PxAuth>().doc_id,
-                    type: PresetType.lab,
-                    preset: [..._labsNotifier.value],
+                    type: PresetType.rad,
+                    preset: [..._radsNotifier.value],
                   );
 
                   Navigator.pop(context, _preset);

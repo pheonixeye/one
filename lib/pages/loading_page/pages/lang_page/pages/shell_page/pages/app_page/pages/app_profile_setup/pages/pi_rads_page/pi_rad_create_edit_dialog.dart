@@ -198,7 +198,7 @@ class _PiRadCreateEditDialogState extends State<PiRadCreateEditDialog> {
             ListTile(
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(context.loc.labSpecialInstructions),
+                child: Text(context.loc.radSpecialInstructions),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -206,7 +206,7 @@ class _PiRadCreateEditDialogState extends State<PiRadCreateEditDialog> {
                   maxLines: 2,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: context.loc.labSpecialInstructions,
+                    hintText: context.loc.radSpecialInstructions,
                   ),
                   controller: _radSpecialInstructionController,
                 ),

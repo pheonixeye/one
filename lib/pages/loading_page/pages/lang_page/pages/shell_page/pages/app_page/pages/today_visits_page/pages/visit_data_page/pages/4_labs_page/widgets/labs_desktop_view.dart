@@ -9,7 +9,7 @@ import 'package:one/models/doctor_items/pi_lab.dart';
 import 'package:one/models/preset.dart';
 import 'package:one/models/visit_data/visit_data.dart';
 import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/app_profile_setup/pages/pi_labs_page/pi_lab_create_edit_dialog.dart';
-import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/widgets/preset_create_edit_dialog.dart';
+import 'package:one/pages/loading_page/pages/lang_page/pages/shell_page/pages/app_page/pages/today_visits_page/pages/visit_data_page/pages/4_labs_page/widgets/lab_preset_create_edit_dialog.dart';
 import 'package:one/providers/px_auth.dart';
 import 'package:one/providers/px_locale.dart';
 import 'package:one/providers/px_presets.dart';
@@ -149,8 +149,8 @@ class LabsDesktopView extends StatelessWidget {
                             onPressed: () {
                               lb.clearSearch();
                             },
-                            label: Text(context.loc.refresh),
-                            icon: const Icon(Icons.refresh),
+                            label: Text(context.loc.clearSearch),
+                            icon: const Icon(Icons.clear_all),
                           ),
                         ),
                       ),
@@ -246,7 +246,10 @@ class LabsDesktopView extends StatelessWidget {
                                         _piLab.id,
                                       );
                                   return Card.outlined(
-                                    elevation: 6,
+                                    elevation: _isSelected ? 0 : 6,
+                                    color: _isSelected
+                                        ? Colors.amber.shade50
+                                        : null,
                                     child: CheckboxListTile(
                                       title: Padding(
                                         padding: const EdgeInsets.all(
@@ -314,9 +317,7 @@ class LabsDesktopView extends StatelessWidget {
                                             ),
                                           ]);
                                         },
-                                        icon: const Icon(
-                                          Icons.refresh,
-                                        ),
+                                        icon: const Icon(Icons.recycling),
                                       ),
                                       title: Text(
                                         context.loc.presets,
@@ -450,7 +451,7 @@ class LabsDesktopView extends StatelessWidget {
                                             await showDialog<Preset?>(
                                               context: context,
                                               builder: (context) {
-                                                return PresetCreateEditDialog(
+                                                return LabPresetCreateEditDialog(
                                                   type: PresetType.lab,
                                                   selectedLabs: [
                                                     ...visitLabsState.value,
